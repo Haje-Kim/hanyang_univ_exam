@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<!-- generated: 의생명과학을 위한 AI | nodes: 21 -->
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>의생명과학을 위한 AI — 시험대비 학습자료</title>
+<style>
+  :root{
+    --bg:#0f1218; --panel:#161b24; --panel2:#1d2531; --ink:#e7ecf3; --muted:#9aa7b8;
+    --line:#2a3340; --accent:#5b9dff; --accent2:#7c5cff; --hot:#ff6b6b; --ok:#3ecf8e;
+    --warn:#ffcf5c; --radius:14px; --maxw:1320px;
+  }
+  [data-theme="light"]{
+    --bg:#f6f8fb; --panel:#ffffff; --panel2:#eef2f7; --ink:#16202c; --muted:#5a6675;
+    --line:#dde4ec; --accent:#2563eb; --accent2:#6d28d9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Pretendard",-apple-system,"Segoe UI",Roboto,"Malgun Gothic",sans-serif;line-height:1.7}
+  a{color:var(--accent)}
+  header{position:sticky;top:0;z-index:20;background:rgba(15,18,24,.88);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  [data-theme="light"] header{background:rgba(255,255,255,.88)}
+  .hwrap{max-width:var(--maxw);margin:0 auto;padding:10px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .htitle{font-weight:800;font-size:1.05rem}
+  .htitle small{color:var(--muted);font-weight:500}
+  .grow{flex:1}
+  .search{background:var(--panel2);border:1px solid var(--line);color:var(--ink);
+    padding:8px 12px;border-radius:10px;min-width:180px}
+  .btn{background:var(--panel2);border:1px solid var(--line);color:var(--ink);
+    padding:8px 12px;border-radius:10px;cursor:pointer;font-size:.85rem}
+  .btn:hover{border-color:var(--accent)}
+  .progwrap{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.85rem}
+  .progbar{width:120px;height:8px;border-radius:6px;background:var(--panel2);overflow:hidden;border:1px solid var(--line)}
+  .progfill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--ok));transition:width .3s}
+  .layout{max-width:var(--maxw);margin:0 auto;padding:20px;display:grid;
+    grid-template-columns:320px 1fr;gap:24px;align-items:start}
+  @media(max-width:980px){.layout{grid-template-columns:1fr}.roadmap{position:static!important;max-height:none!important}}
+  .roadmap{position:sticky;top:72px;background:var(--panel);border:1px solid var(--line);
+    border-radius:var(--radius);padding:16px;max-height:calc(100vh - 96px);overflow:auto}
+  .roadmap h2{margin:.2em 0 .6em;font-size:.92rem;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+  .rm-stem{margin:0 0 14px}
+  .rm-stem>.rm-stem-name{font-weight:700;margin-bottom:6px;font-size:.9rem;color:var(--accent)}
+  .rm-node{display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:9px;
+    cursor:pointer;font-size:.86rem;color:var(--ink);border:1px solid transparent}
+  .rm-node:hover{background:var(--panel2)}
+  .rm-node.active{border-color:var(--accent);background:var(--panel2)}
+  .rm-node .dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex:none}
+  .rm-node.hot .dot{background:var(--hot)}
+  .rm-node.gate .dot{background:var(--warn);box-shadow:0 0 0 3px rgba(255,207,92,.25)}
+  .rm-node.done .dot{background:var(--ok)}
+  .rm-node .nid{color:var(--muted);font-size:.72rem;font-weight:700;flex:none;width:26px}
+  .rm-node .badge-hot{margin-left:auto;font-size:.62rem;color:var(--hot);border:1px solid var(--hot);
+    border-radius:6px;padding:0 5px;flex:none}
+  .rm-node.gate .badge-hot{color:var(--warn);border-color:var(--warn)}
+  .rm-node.gate{font-weight:700}
+  .rm-cross{font-size:.74rem;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);line-height:1.5}
+  /* 추천 학습 경로 패널 */
+  .path-panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:22px}
+  .path-panel h2{margin:.1em 0 .5em;font-size:1.1rem}
+  .path-panel .hint{color:var(--muted);font-size:.85rem;margin:0 0 12px}
+  .path-list{display:flex;flex-direction:column;gap:4px}
+  .path-step{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:9px;border:1px solid var(--line);
+    background:var(--panel2);cursor:pointer;font-size:.9rem}
+  .path-step:hover{border-color:var(--accent)}
+  .path-step .pnum{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-size:.78rem;
+    font-weight:700;display:flex;align-items:center;justify-content:center;flex:none}
+  .path-step.gate .pnum{background:var(--warn);color:#16202c}
+  .path-step .ptitle{flex:1}
+  .path-step .pwhy{color:var(--muted);font-size:.78rem;display:block}
+  .path-step .pchk{flex:none}
+  .path-step.bundle{border-style:dashed;border-color:var(--accent2)}
+  .bundle-tag{font-size:.62rem;color:var(--accent2);border:1px solid var(--accent2);border-radius:6px;padding:0 5px;flex:none}
+  .gate-tag{font-size:.62rem;color:var(--warn);border:1px solid var(--warn);border-radius:6px;padding:0 5px;flex:none;font-weight:700}
+  .focus-path{margin-top:12px;padding:10px 12px;border-radius:9px;background:rgba(91,157,255,.08);border:1px solid var(--accent);font-size:.85rem}
+  .content{min-width:0}
+  .intro{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:22px}
+  .intro h1{margin:.1em 0 .3em;font-size:1.5rem}
+  .intro .summary{background:var(--panel2);border-left:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin:12px 0}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:.82rem;margin-top:10px}
+  .legend span{display:flex;align-items:center;gap:5px}
+  .legend .dt{width:9px;height:9px;border-radius:50%;display:inline-block}
+  .stem-sec{margin:0 0 28px}
+  .stem-sec>h2{font-size:1.22rem;padding-bottom:6px;border-bottom:2px solid var(--line)}
+  .stem-sec>.stem-desc{color:var(--muted);font-size:.9rem;margin:6px 0 4px}
+  .node-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    margin:14px 0;overflow:hidden;scroll-margin-top:84px}
+  .node-card.gate{border-color:var(--warn);box-shadow:0 0 0 1px rgba(255,207,92,.3)}
+  .node-card>summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;align-items:center;gap:10px;font-weight:700;flex-wrap:wrap}
+  .node-card>summary::-webkit-details-marker{display:none}
+  .node-card>summary .chev{margin-left:auto;color:var(--muted);transition:transform .2s}
+  .node-card[open]>summary .chev{transform:rotate(90deg)}
+  .node-card[open]>summary{border-bottom:1px solid var(--line)}
+  .node-card .nid-tag{color:var(--muted);font-size:.74rem;font-weight:700;border:1px solid var(--line);border-radius:6px;padding:0 6px}
+  .nbadge{font-size:.66rem;padding:1px 7px;border-radius:6px;border:1px solid var(--line);color:var(--muted)}
+  .nbadge.hot{color:var(--hot);border-color:var(--hot)}
+  .nbadge.gate{color:var(--warn);border-color:var(--warn);font-weight:700}
+  .nbadge.mid{color:var(--accent);border-color:var(--accent)}
+  .nbody{padding:16px 18px}
+  .field{margin:0 0 14px}
+  .field .lbl{font-weight:700;color:var(--accent);font-size:.92rem;display:block;margin-bottom:3px}
+  .field ul{margin:4px 0;padding-left:20px}
+  .callout{border-left:4px solid var(--accent2);background:var(--panel2);padding:10px 14px;border-radius:8px;margin:8px 0}
+  .scenario{border-left:4px solid var(--ok);background:rgba(62,207,142,.07);padding:10px 14px;border-radius:8px;margin:8px 0}
+  .scenario .lbl{color:var(--ok)}
+  .exam-box{border:1px solid var(--warn);background:rgba(255,207,92,.08);border-radius:10px;padding:12px 14px;margin:10px 0}
+  .exam-box .lbl{color:var(--warn)}
+  .exam-box .src{color:var(--muted);font-size:.78rem;display:block;margin-top:6px}
+  .trap{border-left:4px solid var(--hot);background:rgba(255,107,107,.07);padding:10px 14px;border-radius:8px}
+  .nodata{border:1px dashed var(--muted);background:rgba(154,167,184,.06);color:var(--muted);
+    border-radius:8px;padding:10px 14px;margin:8px 0;font-size:.88rem}
+  .links{font-size:.82rem;color:var(--muted)}
+  .links a{cursor:pointer;text-decoration:underline}
+  table{border-collapse:collapse;width:100%;margin:8px 0;font-size:.88rem}
+  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+  th{background:var(--panel2)}
+  .tbl-wrap{overflow-x:auto}
+  code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-size:.86em}
+  .katex-fallback .katexsrc{color:var(--muted);font-family:ui-monospace,monospace}
+  .stepper{border:1px solid var(--line);border-radius:10px;padding:12px;margin:10px 0;background:var(--panel2)}
+  .stepper.big{border-color:var(--accent2)}
+  .stepper .step{display:none}
+  .stepper .step.show{display:block}
+  .stepper .step-head{font-weight:700;color:var(--accent2);margin-bottom:4px}
+  .stepper-nav{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+  .stepper .scount{color:var(--muted);font-size:.8rem}
+  .dots{display:flex;gap:5px;margin-left:auto;flex-wrap:wrap}
+  .dots i{width:8px;height:8px;border-radius:50%;background:var(--line);display:inline-block}
+  .dots i.on{background:var(--accent)}
+  .ncheck{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.85rem;cursor:pointer}
+  .hidden{display:none!important}
+  footer{max-width:var(--maxw);margin:0 auto;padding:30px 20px;color:var(--muted);font-size:.85rem}
+</style>
+</head>
+<body data-theme="dark">
+<a href="index.html" class="__homebtn" style="position:fixed;left:12px;bottom:12px;z-index:9999;background:#5b9dff;color:#04122e;font-weight:800;padding:8px 14px;border-radius:999px;text-decoration:none;font-family:sans-serif;font-size:.82rem;box-shadow:0 4px 14px rgba(0,0,0,.45)">🏠 통합 홈</a>
+
+<header>
+  <div class="hwrap">
+    <div class="htitle">의생명과학을 위한 AI <small>· 노미나 교수 · 시험대비 학습자료</small></div>
+    <div class="grow"></div>
+    <input class="search" id="search" placeholder="개념 검색…" oninput="filterNodes(this.value)">
+    <div class="progwrap"><span id="progtxt">0%</span><div class="progbar"><div class="progfill" id="progfill"></div></div></div>
+    <button class="btn" onclick="toggleTheme()">🌓</button>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- ===== 로드맵 (큰 그림) ===== -->
+  <nav class="roadmap" aria-label="로드맵">
+    <h2>🗺️ 로드맵 (5줄기 · 21노드)</h2>
+
+    <div class="rm-stem">
+      <div class="rm-stem-name">B1. 생물학 배경 · 문제 정의</div>
+      <div class="rm-node" data-target="C1" onclick="goNode('C1')"><span class="nid">C1</span><span class="dot"></span>정밀의료</div>
+      <div class="rm-node" data-target="C2" onclick="goNode('C2')"><span class="nid">C2</span><span class="dot"></span>변이의 종류</div>
+      <div class="rm-node" data-target="C3" onclick="goNode('C3')"><span class="nid">C3</span><span class="dot"></span>변이탐지 ML vs gLM<span class="badge-hot">中</span></div>
+      <div class="rm-node hot gate" data-target="C4" onclick="goNode('C4')"><span class="nid">C4</span><span class="dot"></span>서열=언어 패러다임<span class="badge-hot">관문</span></div>
+    </div>
+
+    <div class="rm-stem">
+      <div class="rm-stem-name">B2. 토크나이징 · 표현</div>
+      <div class="rm-node hot" data-target="C5" onclick="goNode('C5')"><span class="nid">C5</span><span class="dot"></span>single-nucleotide<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C6" onclick="goNode('C6')"><span class="nid">C6</span><span class="dot"></span>k-mer<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node" data-target="C7" onclick="goNode('C7')"><span class="nid">C7</span><span class="dot"></span>BPE<span class="badge-hot">中</span></div>
+    </div>
+
+    <div class="rm-stem">
+      <div class="rm-stem-name">B3. 아키텍처</div>
+      <div class="rm-node" data-target="C8" onclick="goNode('C8')"><span class="nid">C8</span><span class="dot"></span>CNN<span class="badge-hot">中</span></div>
+      <div class="rm-node" data-target="C9" onclick="goNode('C9')"><span class="nid">C9</span><span class="dot"></span>NeuSomatic<span class="badge-hot">中</span></div>
+      <div class="rm-node hot" data-target="C15" onclick="goNode('C15')"><span class="nid">C15</span><span class="dot"></span>Hyena 연산자<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot gate" data-target="C19" onclick="goNode('C19')"><span class="nid">C19</span><span class="dot"></span>아키텍처 비교표<span class="badge-hot">관문</span></div>
+    </div>
+
+    <div class="rm-stem">
+      <div class="rm-stem-name">B4. 사전학습 · 모델 계보</div>
+      <div class="rm-node hot gate" data-target="C10" onclick="goNode('C10')"><span class="nid">C10</span><span class="dot"></span>Pretraining 개념<span class="badge-hot">관문</span></div>
+      <div class="rm-node hot" data-target="C11" onclick="goNode('C11')"><span class="nid">C11</span><span class="dot"></span>MLM<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C12" onclick="goNode('C12')"><span class="nid">C12</span><span class="dot"></span>CLM<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C13" onclick="goNode('C13')"><span class="nid">C13</span><span class="dot"></span>DNABERT<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C14" onclick="goNode('C14')"><span class="nid">C14</span><span class="dot"></span>Nucleotide GPT<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C16" onclick="goNode('C16')"><span class="nid">C16</span><span class="dot"></span>HyenaDNA<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node" data-target="C17" onclick="goNode('C17')"><span class="nid">C17</span><span class="dot"></span>Evo<span class="badge-hot">中</span></div>
+      <div class="rm-node" data-target="C18" onclick="goNode('C18')"><span class="nid">C18</span><span class="dot"></span>ESM 단백질LM<span class="badge-hot">中</span></div>
+      <div class="rm-node" data-target="C20" onclick="goNode('C20')"><span class="nid">C20</span><span class="dot"></span>VIBE 바이러스분류</div>
+    </div>
+
+    <div class="rm-stem">
+      <div class="rm-stem-name">B5. 전이학습 실습 · 평가</div>
+      <div class="rm-node hot" data-target="C21" onclick="goNode('C21')"><span class="nid">C21</span><span class="dot"></span>ProtBERT 실습<span class="badge-hot">종착</span></div>
+    </div>
+
+    <div class="rm-cross">
+      <b>줄기 간 연결(점선):</b><br>
+      • C4 → B2 전체 · C10 (패러다임 출발점)<br>
+      • C5 → C14·C16 / C6 → C13 / C7 → DNABERT-2<br>
+      • C8 ↔ C19 ↔ C15 (아키텍처 비교)<br>
+      • C11(attention) → C19 (O(L²) 출처)<br>
+      • C18(ESM) → C21 (단백질 LM 계열)<br>
+      • C10(B) 파인튜닝 → C21 (실습 그 자체)
+    </div>
+  </nav>
+
+  <!-- ===== 콘텐츠 ===== -->
+  <main class="content">
+    <section class="intro">
+      <h1>의생명과학을 위한 AI</h1>
+      <div class="summary">
+        이 과목은 결국 <b>"생물학적 서열(DNA/RNA/단백질)을 언어로 보고, NLP의 <code>토크나이징 → 자기지도 사전학습 → 파인튜닝</code> 패러다임으로 변이 탐지·기능 예측·서열 분류를 푸는 법"</b>을 다룬다.
+      </div>
+      <p style="color:var(--muted)">
+        <b>시험은 주관식</b>이며 두 축으로 출제된다 — ① <b>모델링 방법론</b>("각 모델이 <b>왜 그런 구조를 택했는가</b>", modeling rationale)와 ② <b>논문 figure/table 해석</b>.
+        따라서 각 노드의 📝 시험 포인트는 단답이 아니라 <b>서술형(왜·어떻게)</b> 대비로 정리했다.
+      </p>
+      <div class="legend">
+        <span><i class="dt" style="background:var(--hot)"></i>⭐高 (12개)</span>
+        <span><i class="dt" style="background:var(--warn)"></i>관문 gateway (C4·C10·C19)</span>
+        <span><i class="dt" style="background:var(--ok)"></i>학습 완료</span>
+        <span>🌍 실세계 시나리오 · ✏️ 풀이 예제 · 🔍 단계별 STEP</span>
+      </div>
+    </section>
+
+    <!-- ===== 추천 학습 경로 패널 ===== -->
+    <section class="path-panel">
+      <h2>🧭 추천 학습 경로 (18단계 · 의존도 위상정렬)</h2>
+      <p class="hint">로드맵이 "공간(구조)"이라면 이 순서는 "시간(동선)"이다. 번호대로 따라가면 선행이 항상 먼저 온다. 각 단계를 클릭하면 해당 노드로 이동하고, 체크박스로 진도를 저장한다. <b style="color:var(--warn)">관문(gateway)</b> 셋(C4→C10→C19)을 못 넘으면 뒤가 안 풀린다.</p>
+      <div class="path-list">
+        <div class="path-step" onclick="goNode('C1')"><span class="pnum">1</span><input type="checkbox" class="pathchk" data-id="C1" onclick="event.stopPropagation();markDone(this)"><span class="ptitle">C1 정밀의료 <span class="pwhy">선행 없음. 과목 동기의 출발 · 下</span></span></div>
+        <div class="path-step" onclick="goNode('C2')"><span class="pnum">2</span><input type="checkbox" class="pathchk" data-id="C2" onclick="event.stopPropagation();markDone(this)"><span class="ptitle">C2 유전 변이의 종류 <span class="pwhy">생물 배경. C8/C20에서 재등장 · 下</span></span></div>
+        <div class="path-step" onclick="goNode('C3')"><span class="pnum">3</span><input type="checkbox" class="pathchk" data-id="C3" onclick="event.stopPropagation();markDone(this)"><span class="ptitle">C3 변이탐지 ML vs gLM <span class="pwhy">C2 위에서 "무엇을 탐지하는지". C4·C8 토대 · 中</span></span></div>
+        <div class="path-step gate" onclick="goNode('C4')"><span class="pnum">4</span><input type="checkbox" class="pathchk" data-id="C4" onclick="event.stopPropagation();markDone(this)"><span class="ptitle">★C4 서열=언어 패러다임 <span class="gate-tag">관문</span><span class="pwhy">이후 거의 모든 노드의 선수 · 中 ⭐高</span></span></div>
+        <div class="path-step bundle" onclick="goNode('C5')"><span class="pnum">5</span><span class="bundle-tag">묶음</span><span class="ptitle">C5 single-nt / C6 k-mer / C7 BPE <span class="pwhy">세 토크나이징은 비교하며 함께 — 시험 빈출 trade-off · 中</span></span></div>
+        <div class="path-step gate" onclick="goNode('C10')"><span class="pnum">6</span><input type="checkbox" class="pathchk" data-id="C10" onclick="event.stopPropagation();markDone(this)"><span class="ptitle">★C10 Pretraining 개념 <span class="gate-tag">관문</span><span class="pwhy">C4의 2단계 학습을 깊이. C11·C12·C18·C21 토대 · 中 ⭐高</span></span></div>
+        <div class="path-step bundle" onclick="goNode('C11')"><span class="pnum">7</span><span class="bundle-tag">묶음</span><span class="ptitle">C11 MLM / C12 CLM <span class="pwhy">양방향/이해 ↔ 단방향/생성을 짝으로 대비 · 中 ⭐高</span></span></div>
+        <div class="path-step" onclick="goNode('C8')"><span class="pnum">8</span><input type="checkbox" class="pathchk" data-id="C8" onclick="event.stopPropagation();markDone(this)"><span class="ptitle">C8 CNN <span class="pwhy">C3 후 독립적. 단 C19 전엔 필수 · 中</span></span></div>
+        <div class="path-step" onclick="goNode('C9')"><span class="pnum">9</span><input type="checkbox" class="pathchk" data-id="C9" onclick="event.stopPropagation();markDone(this)"><span class="ptitle">C9 NeuSomatic <span class="pwhy">C8 CNN의 실응용·논문 해석 연습 · 中</span></span></div>
+        <div class="path-step" onclick="goNode('C15')"><span class="pnum">10</span><input type="checkbox" class="pathchk" data-id="C15" onclick="event.stopPropagation();markDone(this)"><span class="ptitle">C15 Hyena 연산자 <span class="pwhy">CNN local 약점·attention O(L²) 동기 후 subquadratic · 上(난개념) ⭐高</span></span></div>
+        <div class="path-step gate" onclick="goNode('C19')"><span class="pnum">11</span><input type="checkbox" class="pathchk" data-id="C19" onclick="event.stopPropagation();markDone(this)"><span class="ptitle">★C19 아키텍처 비교표 <span class="gate-tag">관문</span><span class="pwhy">C8·C11·C15가 모두 모임. "modeling 방법론" 종합판 · 中 ⭐高</span></span></div>
+        <div class="path-step" onclick="goNode('C13')"><span class="pnum">12</span><input type="checkbox" class="pathchk" data-id="C13" onclick="event.stopPropagation();markDone(this)"><span class="ptitle">C13 DNABERT <span class="pwhy">C6 k-mer + C11 MLM 결합. 첫 대표 gLM · 中 ⭐高</span></span></div>
+        <div class="path-step" onclick="goNode('C14')"><span class="pnum">13</span><input type="checkbox" class="pathchk" data-id="C14" onclick="event.stopPropagation();markDone(this)"><span class="ptitle">C14 Nucleotide GPT <span class="pwhy">C5 single-nt + C12 CLM. Table 1/2/3 논문 해석 빈출 · 上(표 해석) ⭐高</span></span></div>
+        <div class="path-step" onclick="goNode('C16')"><span class="pnum">14</span><input type="checkbox" class="pathchk" data-id="C16" onclick="event.stopPropagation();markDone(this)"><span class="ptitle">C16 HyenaDNA <span class="pwhy">C5 + C12 + C15 결합. Table A.2 효율 해석 빈출 · 中 ⭐高</span></span></div>
+        <div class="path-step" onclick="goNode('C17')"><span class="pnum">15</span><input type="checkbox" class="pathchk" data-id="C17" onclick="event.stopPropagation();markDone(this)"><span class="ptitle">C17 Evo <span class="pwhy">C15·C16 확장. 하이브리드 + LoRA · 中</span></span></div>
+        <div class="path-step" onclick="goNode('C18')"><span class="pnum">16</span><input type="checkbox" class="pathchk" data-id="C18" onclick="event.stopPropagation();markDone(this)"><span class="ptitle">C18 ESM (단백질 LM) <span class="pwhy">C10/C11 위. C21 실습의 직전 개념 · 中</span></span></div>
+        <div class="path-step" onclick="goNode('C20')"><span class="pnum">17</span><input type="checkbox" class="pathchk" data-id="C20" onclick="event.stopPropagation();markDone(this)"><span class="ptitle">C20 VIBE <span class="pwhy">C13 BERT 인코더 응용. 독립적·후순위 가능 · 中</span></span></div>
+        <div class="path-step gate" onclick="goNode('C21')"><span class="pnum">18</span><input type="checkbox" class="pathchk" data-id="C21" onclick="event.stopPropagation();markDone(this)"><span class="ptitle">★C21 ProtBERT 실습 <span class="gate-tag">종착</span><span class="pwhy">C4+C10+C18을 코드로 통합. Pooling·Loss·과적합이 시험 연결 · 中 ⭐高</span></span></div>
+      </div>
+      <div class="focus-path">
+        <b>🔥 시험 직전 집중 경로(추출본 ⭐권고):</b>
+        <a onclick="goNode('C4')">C4</a> → (<a onclick="goNode('C5')">C5</a>–<a onclick="goNode('C7')">C7</a>) → (<a onclick="goNode('C11')">C11</a>/<a onclick="goNode('C12')">C12</a>) → <a onclick="goNode('C19')">C19</a> → (<a onclick="goNode('C14')">C14</a>/<a onclick="goNode('C16')">C16</a> 표) → <a onclick="goNode('C21')">C21</a>
+        <br><span style="color:var(--muted)">독립(아무 때나): C1, C2, C8(C3 후), C20(C13 후). 반드시 먼저 끝낼 관문: C4 → C10 → C19.</span>
+      </div>
+    </section>
+
+    <!-- ============ 줄기 B1 ============ -->
+    <section class="stem-sec">
+      <h2>B1. 생물학 배경 · 문제 정의</h2>
+      <p class="stem-desc">"왜 genomic AI가 필요한가" 동기 라인. 출구 = C4(패러다임).</p>
+
+      <!-- C1 -->
+      <details class="node-card" id="C1" data-node-id="C1" data-title="정밀의료 Precision Medicine">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C1" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C1</span> 정밀의료 (Precision Medicine)
+          <span class="nbadge">⭐低</span><span class="nbadge">선행: 없음</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"같은 병명이라도 사람마다 유전적 원인이 다르니, 유전체를 읽어 개인 맞춤 치료를 하자."</div>
+          <div class="field"><span class="lbl">📖 정의</span>개인의 유전적 구성·환경·생활습관·임상데이터에 기반해 예방·진단·치료를 맞춤화하는 의료 접근.</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> 유방암 환자 A·B·C가 같은 "유방암" 진단을 받아도, A는 HER2 증폭, B는 BRCA1 변이, C는 PIK3CA 변이를 가진다. → A는 anti-HER2, B는 PARP 억제제, C는 PI3K 억제제로 <b>서로 다른 표적치료</b>. 이 "변이→치료 매칭"을 자동화하려면 유전체를 빠르고 정확히 해석하는 AI가 필요하다 — 이것이 본 과목의 출발점.</div>
+          </div>
+          <div class="field"><span class="lbl">🔍 작동 원리 (4단계)</span>① Same Disease → ② Genetic Testing(DNA/RNA seq, CNV, MSI/TMB) → ③ Different Alterations → ④ Different Targeted Treatments.</div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">"정밀의료=비싼 검사"가 아니라, <b>변이별 표적 매칭</b>이 핵심. 병명이 아니라 변이가 치료를 정한다.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>"왜 genomic AI가 필요한가"의 동기 설명용. 깊은 출제보다 서론.<span class="src">출처: Notion Day 2</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>응용 → <a onclick="goNode('C2')">C2(변이 종류)</a>, <a onclick="goNode('C3')">C3(탐지 파이프라인)</a></div>
+        </div>
+      </details>
+
+      <!-- C2 -->
+      <details class="node-card" id="C2" data-node-id="C2" data-title="유전 변이의 종류 Genetic Variations">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C2" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C2</span> 유전 변이의 종류 (Genetic Variations)
+          <span class="nbadge">⭐低</span><span class="nbadge">선행: 없음(생물 배경)</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>변이는 "한 글자 수준"부터 "염색체 통째" 수준까지 스케일이 다양하다.</div>
+          <div class="field"><span class="lbl">📖 정의/분류</span>
+            <ul>
+              <li><b>Small-scale (DNA 서열 수준)</b>: SNV(점돌연변이, 예 겸상적혈구 HBB A→T), Indel(작은 삽입/결실, 예 낭포성섬유증 ΔF508 3bp 결실→frameshift), 짧은 반복 확장(헌팅턴 CAG repeat, 정상 10–35 → 질병 ≥36), 유전자 수준 CNV.</li>
+              <li><b>Structural (염색체 수준)</b>: 결실(5p→Cri-du-chat), 중복(PMP22→Charcot-Marie-Tooth 1A), 역위(Factor VIII→혈우병 A), 전좌(t(9;22)→필라델피아 염색체→CML), 대규모 CNV(22q11.2 deletion→DiGeorge).</li>
+            </ul>
+          </div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> 겸상적혈구빈혈은 HBB 유전자의 <b>단 한 글자(A→T)</b> 변화로 발생한다. 이 "한 글자가 질병을 좌우"하는 사실이 → 왜 gLM이 <b>single-nucleotide 해상도</b>(C5)를 중시하고, HyenaDNA가 character-level을 고집하는지의 생물학적 근거다.</div>
+          </div>
+          <div class="field"><span class="lbl">📊 표 인사이트</span><div class="callout">변이 스케일이 클수록(SNV→전좌) 탐지 모델이 봐야 할 문맥 길이가 길어진다 → long-range 아키텍처(C15)의 동기와 연결.</div></div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">SNV(개체의 변이)와 SNP(집단 다형성)를 혼동하기 쉬움. 시험은 변이 유형↔질병 예시 매칭형.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>변이 유형↔질병 예시 매칭. "SNP/SNV가 단백질 기능·질병을 바꾼다"가 single-nt 중시 이유(C8, C20과 연결).<span class="src">출처: Notion Day 2</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>응용 → <a onclick="goNode('C5')">C5(single-nt)</a>, <a onclick="goNode('C8')">C8(CNN pileup)</a>, <a onclick="goNode('C20')">C20(바이러스 분류)</a></div>
+        </div>
+      </details>
+
+      <!-- C3 -->
+      <details class="node-card" id="C3" data-node-id="C3" data-title="변이 탐지 AI 파이프라인 전통 ML vs gLM">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C3" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C3</span> 변이 탐지 AI 파이프라인 (전통 ML vs gLM)
+          <span class="nbadge mid">⭐中</span><span class="nbadge">선행: C2</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"변이를 찾는 두 길 — (A) 손으로 만든 feature + 트리모델, (B) raw 서열을 통째로 먹는 gLM."</div>
+          <div class="field"><span class="lbl">📖 정의 (공통 파이프라인)</span>환자 DNA → 시퀀싱(raw reads, FASTQ) → 레퍼런스 정렬·변이 호출(VCF) → 변이 주석(gene / population freq gnomAD / functional SnpEff·VEP / disease DB COSMIC·ClinVar·HGMD) → AI 예측(pathogenic vs benign).</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> 임상 유전학자가 환자 VCF에서 발견한 미지의 변이가 "병을 일으키는가(pathogenic) 아닌가(benign)"를 판정해야 한다. (A) 경로는 conservation 점수·SIFT/PolyPhen 등 <b>사람이 설계한 feature</b>를 XGBoost에 넣는다. (B) 경로는 그 변이 주변 raw DNA를 사전학습된 foundation model에 직접 넣어 0.91 같은 pathogenic 확률을 얻는다 — feature 설계 노동이 사라진다.</div>
+          </div>
+          <div class="field"><span class="lbl">📊 표 인사이트 (A vs B)</span>
+            <div class="tbl-wrap"><table>
+              <tr><th></th><th>(A) Machine Learning</th><th>(B) Genomic LM</th></tr>
+              <tr><td>입력</td><td><b>engineered features</b>(변이유형, conservation PhyloP/PhastCons, SIFT/PolyPhen/CADD, epigenomic)</td><td><b>raw DNA 서열</b>(reference ± alt, flanking)</td></tr>
+              <tr><td>모델</td><td>XGBoost/LightGBM, RF, MLP</td><td>사전학습 foundation model(DNABERT-2, NT, HyenaDNA, GPN-MSA)</td></tr>
+              <tr><td>출력</td><td>pathogenic 확률(예 0.76)</td><td>pathogenic 확률(예 0.91)</td></tr>
+            </table></div>
+          </div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">(B)가 항상 우월한 게 아니라, <b>feature를 사람이 설계하느냐 모델이 학습하느냐</b>가 본질 차이. (추출본 p.36: 범용 foundation model이 특화 태스크엔 못 미칠 수 있음.)</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐</span>"feature engineering 기반 vs 서열 기반 foundation model" 차이 = <b>modeling 방법론</b> 출제 핵심. <b>서술형 대비</b>: 두 경로의 입력·모델·장단점을 표로 비교하고 "언제 어느 쪽이 유리한가"를 설명할 수 있어야.<span class="src">출처: Notion Day 2</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>선행 ← <a onclick="goNode('C2')">C2</a> / 응용 → <a onclick="goNode('C4')">C4(패러다임 정식화)</a>, <a onclick="goNode('C8')">C8(CNN)</a></div>
+        </div>
+      </details>
+
+      <!-- C4 -->
+      <details class="node-card gate" id="C4" data-node-id="C4" data-title="서열을 언어로 gLM 기본 패러다임">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C4" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C4</span> 서열을 언어로 — gLM의 기본 패러다임
+          <span class="nbadge hot">⭐高</span><span class="nbadge gate">관문</span><span class="nbadge">선행: C3</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"DNA를 문장, 뉴클레오타이드를 글자로 보고 NLP의 <code>pretrain → finetune</code>을 그대로."</div>
+          <div class="field"><span class="lbl">📖 정의</span>gLM은 ① intricate genomic grammar와 distant regulatory/functional interaction을 식별하고, ② 아키텍처·토크나이징·사전학습 전략·평가 방법론을 다운스트림 태스크에 맞게 최적화하는 모델군.</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> 영어 LLM이 위키피디아 전체로 사전학습 후 감정분류로 파인튜닝되듯, gLM은 <b>인간 유전체 30억 bp(라벨 없음)</b>로 사전학습한 뒤 "이 부위가 enhancer인가" 같은 라벨 태스크로 파인튜닝된다. 생물학자는 라벨 데이터가 적어도(수천 개) 강력한 표현을 재사용할 수 있다.</div>
+          </div>
+          <div class="field"><span class="lbl">🔍 작동 원리 (학습 2단계)</span>Random gLM → (대량 unlabeled genomic data) <b>Pretraining</b> → Pretrained gLM → (task data) <b>Fine-tuning</b> → Task-adapted gLM. 데이터 원천: human / multi-species / regulatory / prokaryotic·viral genome.</div>
+          <div class="field"><span class="lbl">📊 표 인사이트</span><div class="callout">이후 모든 모델(DNABERT, NT, HyenaDNA, ProtBERT)은 이 2단계 틀의 변주 — "어떤 토큰 × 어떤 아키텍처 × MLM/CLM"의 조합 차이일 뿐.</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — "이 모델은 이 틀의 어디에 속하나" 분류 연습</span>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">문제</div>"DNABERT는 이 패러다임을 어떻게 채웠나?"</div>
+              <div class="step"><div class="step-head">1단계 · 토큰 선택</div>k-mer (C6)</div>
+              <div class="step"><div class="step-head">2단계 · 아키텍처</div>Transformer encoder (C13)</div>
+              <div class="step"><div class="step-head">3단계 · 사전학습</div>MLM (C11)</div>
+              <div class="step"><div class="step-head">4단계 · 파인튜닝</div>splice site 분류 head</div>
+              <div class="step"><div class="step-head">답</div>"k-mer × encoder × MLM × splice-head" = DNABERT. → 이 <b>4칸 채우기</b>가 모든 모델에 적용된다.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="scount"></span><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">"gLM=무조건 Transformer"가 아니다 — 아키텍처는 자유 변수(CNN/Transformer/Hyena 다 가능).</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐⭐</span>이 "pretrain→finetune" 2단계가 전 과목의 뼈대. <b>서술형 대비</b>: 임의의 모델을 주면 "토큰 × 아키텍처 × MLM/CLM × task-head" 4칸으로 분해해 <b>모든 모델이 이 틀의 변주임을 설명</b>할 수 있어야.<span class="src">출처: Notion Day 2</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>선행 ← <a onclick="goNode('C3')">C3</a> / 응용 → <a onclick="goNode('C5')">C5~C7(토크나이징)</a>, <a onclick="goNode('C10')">C10(사전학습)</a>, <a onclick="goNode('C21')">C21(실습)</a></div>
+        </div>
+      </details>
+    </section>
+    <!-- ============ 줄기 B2 ============ -->
+    <section class="stem-sec">
+      <h2>B2. 토크나이징 · 표현 (서열을 토큰으로)</h2>
+      <p class="stem-desc">서열을 어떻게 토큰·벡터로 바꾸는가. <b>세 방식(C5·C6·C7)의 trade-off 비교</b>가 핵심 — 함께 학습.</p>
+
+      <!-- C5 -->
+      <details class="node-card" id="C5" data-node-id="C5" data-title="토크나이징 single-nucleotide embedding">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C5" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C5</span> 토크나이징 ① Single-nucleotide embedding
+          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C4</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"글자(A/C/G/T) 하나하나를 토큰으로 — SNP 효과를 직접 모델링하지만 시퀀스가 길어진다."</div>
+          <div class="field"><span class="lbl">📖 정의</span>각 뉴클레오타이드를 vocabulary 토큰으로 보고 학습가능 dense vector로 임베딩. → base-level 정보 보존, SNP 효과 직접 모델링.</div>
+          <div class="field"><span class="lbl">📖 대비 (One-hot encoding)</span>각 염기를 distinct binary vector로(A=[1,0,0,0], C=[0,1,0,0]…). → bias·정보손실 없음, but <b>입력 시퀀스가 매우 길어짐</b>(학습 dense embedding이 아님).</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> 겸상적혈구의 A→T 변이(C2)를 모델이 포착하려면, 그 한 글자가 곧 <b>한 토큰의 변화</b>여야 한다. single-nt 토큰화는 이 1:1 대응 덕에 변이 효과 예측(Nucleotide GPT, HyenaDNA)에서 강하다.</div>
+          </div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — One-hot 행렬 만들기 (seq = "ACTACGACT")</span>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1단계</div>vocabulary 고정 → 행 순서 [A, C, G, T]</div>
+              <div class="step"><div class="step-head">2단계</div>각 위치를 열로. 위치1 'A' → [1,0,0,0]ᵀ</div>
+              <div class="step"><div class="step-head">3단계</div>위치2 'C' → [0,1,0,0]ᵀ, 위치3 'T' → [0,0,0,1]ᵀ …</div>
+              <div class="step"><div class="step-head">4단계</div>9개 위치를 이어 붙이면 <b>4×9 행렬</b> 완성</div>
+              <div class="step"><div class="step-head">5단계 · 관찰</div>길이 9 서열이 4×9=36 수. 길이 L이면 4×L → <b>L이 커지면 입력 폭발</b> → single-nt의 약점(긴 시퀀스).</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="scount"></span><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">📊 표 인사이트</span><div class="callout">Nucleotide GPT Table 3에서 single-nucleotide가 대체로 최고 성능(C14). 단 일부 태스크는 6-mer가 우세 → 태스크 의존.</div></div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">single-nt(학습 임베딩) ≠ one-hot(고정 binary). 둘 다 base-level이지만 전자는 dense·학습가능, 후자는 sparse·고정.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐</span>single-nt vs k-mer vs BPE <b>trade-off 비교</b>(C6·C7과 묶음)가 핵심. <b>서술형 대비</b>: "해상도(SNP 직접) vs 시퀀스 길이"의 교환관계를 설명.<span class="src">출처: Notion Day 2</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>선행 ← <a onclick="goNode('C4')">C4</a> / 대조 → <a onclick="goNode('C6')">C6</a>, <a onclick="goNode('C7')">C7</a> / 응용 → <a onclick="goNode('C14')">C14</a>, <a onclick="goNode('C16')">C16</a></div>
+        </div>
+      </details>
+
+      <!-- C6 -->
+      <details class="node-card" id="C6" data-node-id="C6" data-title="토크나이징 k-mer tokenization">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C6" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C6</span> 토크나이징 ② k-mer tokenization
+          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C5</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"연속한 k개 염기를 한 단어로 묶기 — non-overlapping은 꼬리가 잘리고, overlapping은 중복이 심하다."</div>
+          <div class="field"><span class="lbl">📖 정의</span>연속된 k개 뉴클레오타이드를 하나의 토큰으로.
+            <ul>
+              <li><b>Non-overlapping</b>: 겹치지 않게 자름 → trailing base(꼬리) 손실 가능. (3-mer: ACT|ACG|ACT)</li>
+              <li><b>Overlapping</b>: 한 칸씩 밀며 자름 → highly redundant. (6-mer: ACTACG / CTACGA / TACGAC / ACGACT)</li>
+            </ul>
+          </div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> DNABERT(C13)는 3~6-mer 토큰을 쓴다. "단어"가 생기면 코돈(3염기=1아미노산) 같은 생물학적 단위와 정렬되기 쉽지만, overlapping을 쓰면 인접 토큰이 5/6 글자를 공유해 중복 정보가 모델을 비효율적으로 만든다.</div>
+          </div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — "ACTACGACT"를 3-mer로</span>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1단계 · non-overlapping</div>3칸씩 끊기: pos1-3 ACT, pos4-6 ACG, pos7-9 ACT → [ACT, ACG, ACT], 토큰 3개, 꼬리 손실 없음(길이 9가 3의 배수라서).</div>
+              <div class="step"><div class="step-head">2단계</div>만약 길이 10(…ACTA)이면 마지막 'A' 1글자가 3-mer를 못 채워 <b>버려짐</b> → trailing base 손실.</div>
+              <div class="step"><div class="step-head">3단계 · overlapping 6-mer</div>한 칸씩: ACTACG, CTACGA, TACGAC, ACGACT → 토큰 4개.</div>
+              <div class="step"><div class="step-head">4단계 · 관찰</div>ACTACG와 CTACGA는 5글자 공유 → <b>highly redundant</b>. 토큰 수 ≈ L−k+1로 길이도 거의 안 줄음.</div>
+              <div class="step"><div class="step-head">답</div>non-overlap=정보 손실(꼬리)/짧음, overlap=중복/긺.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="scount"></span><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">📊 표 인사이트</span><div class="callout">HyenaDNA·NT 비교표에 k-mer 버전 등장(C16, C14). DNABERT는 k-mer 채택.</div></div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">"overlapping이 정보가 더 많다"는 오해 — 실제론 중복이라 모델 부담만 늘 수 있다.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐</span>"왜 overlapping이 중복인가 / non-overlapping은 무엇을 잃는가" 설명. <b>서술형 대비</b>: 같은 서열에 두 방식을 적용해 토큰 수·손실·중복을 대조.<span class="src">출처: Notion Day 2</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>선행 ← <a onclick="goNode('C5')">C5</a> / 대조 → <a onclick="goNode('C5')">C5</a>, <a onclick="goNode('C7')">C7</a> / 응용 → <a onclick="goNode('C13')">C13</a></div>
+        </div>
+      </details>
+
+      <!-- C7 -->
+      <details class="node-card" id="C7" data-node-id="C7" data-title="토크나이징 Byte Pair Encoding BPE">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C7" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C7</span> 토크나이징 ③ Byte Pair Encoding (BPE)
+          <span class="nbadge mid">⭐中</span><span class="nbadge">선행: C5, C6</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"자주 같이 나오는 글자쌍을 반복적으로 합쳐 새 토큰을 만든다 — 데이터가 vocabulary를 정한다."</div>
+          <div class="field"><span class="lbl">📖 정의/메커니즘</span>base vocabulary {A,C,T,G}에서 시작 → 가장 빈번한 인접 토큰 쌍을 새 토큰으로 반복 병합 → 목표 vocabulary 크기 도달까지.</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> DNABERT-2(현대 gLM 추세)가 BPE를 채택. genome마다 자주 등장하는 motif(예 프로모터의 TATA box)가 자동으로 하나의 토큰이 된다 — <b>데이터가 "의미 단위"를 스스로 발견</b>. Notion: "consecutive하게 의미 있는 단위로 길이를 넓혀가는 과정."</div>
+          </div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — BPE 병합 추적 (seq에 ACTAC… 반복 가정)</span>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">iter0</div>vocab = {A, C, T, G}. seq를 글자 단위로 토큰화.</div>
+              <div class="step"><div class="step-head">iter1</div>가장 빈번한 인접쌍이 (A,C)라 가정 → 병합 → vocab = {A,C,T,G, <b>AC</b>}. seq에서 모든 AC가 한 토큰으로.</div>
+              <div class="step"><div class="step-head">iter2</div>이제 가장 빈번한 인접쌍이 (AC, T) → 병합 → vocab += <b>ACT</b>.</div>
+              <div class="step"><div class="step-head">iter3</div>(ACT, AC) 빈번 → 병합 → vocab += <b>ACTAC</b>.</div>
+              <div class="step"><div class="step-head">답</div>반복마다 vocab이 확장되고 토큰 길이가 길어진다 — <b>빈도가 토큰 경계를 결정</b>. 목표 크기 도달 시 종료.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="scount"></span><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">📊 표 인사이트</span><div class="callout">반복마다 seq의 병합 위치와 vocabulary 확장을 추적하는 표 → 데이터 의존적 토큰화의 시각화.</div></div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">BPE는 빈도 기반이라 <b>도메인(genome)마다 토큰이 달라짐</b> — 한 vocab을 다른 종에 그대로 쓰면 최적이 아닐 수 있음.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐</span>3가지 토크나이징(C5–C7) 장단 비교 = <b>가장 빈출 가능 modeling 질문</b>. <b>서술형 대비</b>: single-nt(고정·base) / k-mer(고정·창문) / BPE(데이터 학습)의 vocabulary 결정 방식과 장단을 한 표로.<span class="src">출처: Notion Day 2</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>선행 ← <a onclick="goNode('C5')">C5</a>, <a onclick="goNode('C6')">C6</a> / 응용 → DNABERT-2(현대 추세)</div>
+        </div>
+      </details>
+    </section>
+    <!-- ============ 줄기 B3 ============ -->
+    <section class="stem-sec">
+      <h2>B3. 아키텍처 (CNN · Transformer · Hyena)</h2>
+      <p class="stem-desc">토큰 시퀀스를 어떤 신경망으로 처리하는가. C8·C15·(C11 attention)이 모두 모이는 <b>수렴 노드 = C19</b>.</p>
+
+      <!-- C8 -->
+      <details class="node-card" id="C8" data-node-id="C8" data-title="모델 아키텍처 CNN 변이 탐지">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C8" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C8</span> 모델 아키텍처 ① CNN (변이 탐지)
+          <span class="nbadge mid">⭐中</span><span class="nbadge">선행: C3</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"정렬된 read를 이미지(pileup)로 바꿔 CNN으로 보면 국소 패턴(motif)을 잘 잡지만, 먼 거리 의존성은 놓친다."</div>
+          <div class="field"><span class="lbl">📖 정의/메커니즘 (pileup 이미지화)</span>환자 N명 vs 건강인 M명 → 시퀀싱(WGS/Exome, FASTQ) → reads를 레퍼런스에 정렬(BWA-MEM) → 미스매치 패턴 → <b>매핑 결과를 이미지(픽셀, 위치×read depth, 예 221bp×depth100)로 변환</b> → 환자=라벨1/건강인=라벨0으로 CNN 학습(손실 Binary Cross Entropy, 역전파).</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> DeepVariant/NeuSomatic 계열은 정렬된 read 더미(pileup)를 <b>사진처럼</b> 만들어, 변이 자리에 생기는 색·정렬 패턴을 CNN이 "이미지 분류"하듯 본다. 작은 필터가 지역을 슬라이딩하므로 <b>local motif</b>(변이 주변 패턴)에 강하다.</div>
+          </div>
+          <div class="field"><span class="lbl">📊 표 인사이트 (CNN vs Transformer, p.20)</span><div class="callout">CNN = 작은 필터가 <b>지역 슬라이딩</b>(지역 합성곱)→지역 특징맵. Transformer = self-attention으로 <b>모든 위치↔모든 위치</b>.</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — "왜 CNN은 long-range를 놓치나" 추론</span>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1단계</div>필터 크기 k(예 3)인 1층 conv → 한 출력 뉴런은 입력 3칸만 본다(수용영역=3).</div>
+              <div class="step"><div class="step-head">2단계</div>2층 쌓으면 수용영역≈5, L층이면 ≈2L+1 — 선형으로만 커짐.</div>
+              <div class="step"><div class="step-head">3단계</div>1000bp 떨어진 두 위치를 연결하려면 수백 층 필요 → 비현실적.</div>
+              <div class="step"><div class="step-head">4단계</div>반면 self-attention(C11)은 1층에서 모든 위치쌍을 직접 연결.</div>
+              <div class="step"><div class="step-head">답</div>CNN의 수용영역이 <b>층수에 선형</b>이라 long-range가 약함 → Transformer/Hyena 동기.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="scount"></span><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">"CNN은 무조건 약하다"가 아니라, <b>local motif엔 강하고 long-range엔 약하다</b>는 trade-off.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐</span>"CNN은 왜 local에 강하고 long-range에 약한가" → attention과 대조(C19, Hyena 동기 C15). <b>서술형 대비</b>: 수용영역이 층수에 선형이라는 점을 근거로 설명.<span class="src">출처: Notion Day 2 "CNN: good for motif detection"</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>선행 ← <a onclick="goNode('C3')">C3</a> / 응용 → <a onclick="goNode('C9')">C9</a> / 대조 → <a onclick="goNode('C19')">C19</a></div>
+        </div>
+      </details>
+
+      <!-- C9 -->
+      <details class="node-card" id="C9" data-node-id="C9" data-title="NeuSomatic CNN 변이 탐지">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C9" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C9</span> NeuSomatic (CNN으로 변이 탐지)
+          <span class="nbadge mid">⭐中</span><span class="nbadge">선행: C8</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"후보 somatic 변이 주변을 매트릭스로 만들어 deep CNN으로 변이 유형·길이·위치를 분류."</div>
+          <div class="field"><span class="lbl">📖 정의/메커니즘</span>기존은 hand-crafted 통계모델. NeuSomatic은 low allele frequency·sequencing error·tumor heterogeneity를 고려. Tumor/Normal reads 정렬 → <b>Reference / Tumor count / Normal count matrix</b> 생성 → 입력 채널(Reference, Tumor·Normal freq·coverage, Position, Alignment feature: Base/Map Quality, Strand, Clip) → Conv 블록(1×3, 3×3, 5×5, BN+ReLU+Pool, residual) → <b>Mutation type classifier / Length classifier / Position regression</b> 멀티헤드 출력.</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> 종양 조직은 정상세포와 섞여 변이 비율(allele freq)이 낮고 시퀀싱 에러와 구분이 어렵다. NeuSomatic은 tumor·normal을 나란히 매트릭스로 만들어 CNN이 "진짜 somatic 변이 vs 에러"를 구별 — 암 정밀의료(C1)의 핵심 도구.</div>
+          </div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — figure b 입력/출력 해석(논문 해석 연습)</span>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1단계 · 입력</div>3종 매트릭스(Reference/Tumor/Normal) × 여러 채널(freq, coverage, quality, strand, clip).</div>
+              <div class="step"><div class="step-head">2단계</div>Conv 블록(다양한 커널 1×3/3×3/5×5 + residual)이 지역 패턴 추출.</div>
+              <div class="step"><div class="step-head">3단계 · 출력 헤드 3개</div>(a) 변이 type 분류, (b) 변이 length 분류, (c) position 회귀 = <b>멀티태스크</b>.</div>
+              <div class="step"><div class="step-head">답</div>"여러 채널 입력 → 공유 CNN backbone → 멀티헤드"가 figure b의 구조.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="scount"></span><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">⚠️ 함정 (강조)</span><div class="trap">NeuSomatic도 여전히 <b>predefined candidate variant를 타깃</b>(local 집중) → 전역 문맥은 제한적. CNN의 한계를 그대로 상속.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐ (논문 해석)</span>figure b의 <b>입력 채널 구성 + 멀티태스크 출력 헤드</b> 해석. <b>서술형 대비</b>: 각 입력 채널이 무엇을 담고, 세 출력 헤드가 각각 무엇을 예측하는지 서술. Day 1에도 NeuSomatic·DeepVariant 명시.<span class="src">출처: 2.gLM.pdf p.12, Nature Comm 2019 / Notion Day 1,2</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>선행 ← <a onclick="goNode('C8')">C8</a> / 대조 → <a onclick="goNode('C15')">C15(전역 문맥 해결)</a></div>
+        </div>
+      </details>
+
+      <!-- C15 -->
+      <details class="node-card" id="C15" data-node-id="C15" data-title="Hyena Hyena Hierarchy 연산자">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C15" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C15</span> Hyena (Hyena Hierarchy)
+          <span class="nbadge hot">⭐高</span><span class="nbadge gate">난개념</span><span class="nbadge">선행: C8, C19(attention quadratic)</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"Attention의 \(O(L^2)\) 비용을 피하면서 긴 서열을 다루는 subquadratic 대체 — 긴 합성곱 + 데이터 제어 게이팅."</div>
+          <div class="field"><span class="lbl">📖 정의 (Def 3.1, Order-N Hyena Operator)</span>입력 projection \((v, x^1,\dots,x^N)\)과 학습가능 필터 \(h^1,\dots,h^N\)에 대해 재귀
+            <div>\[ z_t^1 = v_t,\quad z_t^{n+1} = x_t^n\,(h^n * z^n)_t,\ n=1,\dots,N,\quad y_t = z_t^{N+1} \]</div>
+            — \(*\)는 (긴) convolution, \(x^n\)로 곱하는 것이 <b>data-controlled gating</b>.</div>
+          <div class="field"><span class="lbl">🧮 복잡도 (Remark 3.1) ⭐</span>Hyena recurrence는 \(O(N L \log_2 L)\). 입출력 맵 \(y = x^N\cdot(h^N * (x^{N-1}\cdot(h^{N-1} * (\cdots))))\), 각 convolution은 <b>Fourier 도메인에서 \(O(L\log_2 L)\)</b>(FFT). → attention의 \(O(L^2)\)보다 저렴.</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> 유전체는 수십만~수백만 bp(C16)라 self-attention의 \(O(L^2)\)면 메모리가 폭발한다. Hyena는 attention을 "긴 convolution+gating"으로 대체해 같은 전역 문맥을 \(O(L\log L)\)에 얻는다 → HyenaDNA가 1×A100·80분으로 학습 가능한 비결.</div>
+          </div>
+
+          <div class="field"><span class="lbl">🔍 STEP-BY-STEP: Hyena 복잡도 \(O(L\log L)\) 유도 (난개념 · 9단계)</span>
+            <div class="stepper big">
+              <div class="step show"><div class="step-head">1. 직관</div>attention은 모든 위치쌍(L×L) 점수를 계산해 \(O(L^2)\). 긴 유전체에선 감당 불가 → 더 싼 전역 연산이 필요.</div>
+              <div class="step"><div class="step-head">2. 셋업</div>핵심 연산을 "길이 L 필터 h와 길이 L 신호 z의 convolution \(h*z\)"로 둔다. 여기에 \(x\)로 elementwise 곱(gating)을 끼운다.</div>
+              <div class="step"><div class="step-head">3. 전개 1</div>직접(시간 도메인) convolution은 각 출력마다 L곱 → 전체 \(O(L^2)\). 이러면 attention과 다를 바 없음 → 다른 방법 필요.</div>
+              <div class="step"><div class="step-head">4. 전개 2</div><b>Convolution Theorem</b>: 시간 도메인 convolution = Fourier 도메인 elementwise 곱. 즉 \(h*z = \text{IFFT}(\text{FFT}(h)\cdot\text{FFT}(z))\).</div>
+              <div class="step"><div class="step-head">5. 전개 3</div>FFT/IFFT 각각 \(O(L\log_2 L)\), 중간 elementwise 곱은 \(O(L)\) → 한 convolution이 \(O(L\log_2 L)\).</div>
+              <div class="step"><div class="step-head">6. 전개 4</div>Order-N operator는 이 convolution을 N번 인터리빙(gating과 함께) → \(O(N\,L\log_2 L)\). N은 상수 → 사실상 \(O(L\log_2 L)\).</div>
+              <div class="step"><div class="step-head">7. 결론</div>attention \(O(L^2)\) → Hyena \(O(L\log_2 L)\) = <b>subquadratic</b>. L이 클수록 격차가 폭발적으로 벌어짐.</div>
+              <div class="step"><div class="step-head">8. 검산/예</div>L=64K: \(L^2\approx 4\times10^9\) vs \(L\log_2 L\approx 64\text{K}\times16\approx10^6\) → 약 <b>수천 배</b> 차이(논문 "64K에서 100배 빠름"과 정합).</div>
+              <div class="step"><div class="step-head">9. 시험 변형</div>"왜 FFT가 핵심인가"·"gating(\(x^n\) 곱)의 역할은"·"attention이 quadratic인 근본 이유는"을 단계별로 묻는다.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="scount"></span><span class="dots"></span></div>
+            </div>
+          </div>
+
+          <div class="field"><span class="lbl">📊 성능 인사이트</span><div class="callout">long convolution+gating 인터리빙. <b>2K에서 학습 compute 20% 절감하며 Transformer 품질 도달</b>, 8K에서 attention 대비 2배, <b>64K에서 100배 빠름</b>.</div></div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">\(O(L\log L)\)의 log는 <b>FFT 때문</b>이지 트리 구조가 아님. gating(\(x\) 곱)은 데이터 의존 비선형성을 주는 부분(단순 convolution과의 차이).</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐⭐</span>"왜 attention이 quadratic이고 Hyena가 subquadratic인가" = modeling 핵심. <b>서술형 대비</b>: \(O(L\log L)\) 근거(Convolution Theorem + FFT)를 단계별로 유도. Notion이 Hyena를 특히 자세히 받아 적음.<span class="src">출처: 2.gLM.pdf p.21, ICML 2023</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>선행 ← <a onclick="goNode('C8')">C8</a>, <a onclick="goNode('C19')">C19</a> / 응용 → <a onclick="goNode('C16')">C16(HyenaDNA)</a>, <a onclick="goNode('C17')">C17(Evo)</a></div>
+        </div>
+      </details>
+
+      <!-- C19 -->
+      <details class="node-card gate" id="C19" data-node-id="C19" data-title="아키텍처 비교 CNN vs Transformer vs Hyena">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C19" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C19</span> 아키텍처 비교: CNN vs Transformer vs Hyena
+          <span class="nbadge hot">⭐高</span><span class="nbadge gate">관문·수렴</span><span class="nbadge">선행: C8, C11, C15</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"local(CNN) ↔ global이나 \(O(L^2)\)(Transformer) ↔ global이면서 \(O(L\log L)\)(Hyena)."</div>
+          <div class="field"><span class="lbl">📊 비교 인사이트 ⭐⭐ (통합 — 시험 종합판)</span>
+            <div class="tbl-wrap"><table>
+              <tr><th>아키텍처</th><th>연결 방식</th><th>강점</th><th>약점</th><th>복잡도</th></tr>
+              <tr><td><b>CNN</b></td><td>작은 필터 지역 슬라이딩</td><td>local <b>motif</b> 탐지</td><td><b>long-range 의존성 놓침</b></td><td>선형</td></tr>
+              <tr><td><b>Transformer</b></td><td>self-attention, 모든 위치↔모든 위치</td><td>전역 문맥, 이해/생성</td><td>시퀀스 길이에 <b>quadratic \(O(L^2)\)</b></td><td>\(O(L^2)\)</td></tr>
+              <tr><td><b>Hyena</b></td><td>긴 convolution + data-controlled gating</td><td>전역 + <b>subquadratic</b>, 초장문</td><td>(상대적으로 신생)</td><td>\(O(L\log_2 L)\)</td></tr>
+            </table></div>
+          </div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> 모델 선택 의사결정. "변이 주변 짧은 motif 탐지"면 CNN(NeuSomatic), "수백 bp 전역 문맥 이해"면 Transformer(DNABERT), "수십만 bp 초장문"이면 Hyena(HyenaDNA). 서열 길이와 local/global 요구가 아키텍처를 정한다.</div>
+          </div>
+
+          <div class="field"><span class="lbl">🔍 STEP-BY-STEP: "어떤 모델을 왜 선택" 사고 흐름 (논문 해석형 대비 · 7단계)</span>
+            <div class="stepper big">
+              <div class="step show"><div class="step-head">1. 직관</div>시험은 종종 "이 태스크엔 어떤 아키텍처가 적합한가, 왜?"를 묻는다 → 3축으로 판단.</div>
+              <div class="step"><div class="step-head">2. 축1: 서열 길이</div>짧다(수백 bp)→Transformer 무난. 매우 길다(수만~수백만)→\(O(L^2)\)가 막힘→Hyena.</div>
+              <div class="step"><div class="step-head">3. 축2: local vs global</div>변이 주변 좁은 motif면 CNN으로 충분/효율적. 멀리 떨어진 regulatory 상호작용이면 global(Transformer/Hyena).</div>
+              <div class="step"><div class="step-head">4. 축3: 이해 vs 생성</div>분류·예측(이해)→encoder/MLM(DNABERT). 생성·likelihood→decoder/CLM(GPT, Evo).</div>
+              <div class="step"><div class="step-head">5. 결론</div>세 축을 조합해 모델 매핑: (긴+global+생성)→HyenaDNA/Evo, (짧은+global+이해)→DNABERT, (local+탐지)→CNN/NeuSomatic.</div>
+              <div class="step"><div class="step-head">6. 검산/예</div>"1Mbp 유전체에서 enhancer-promoter 장거리 상호작용 예측" → 길이 큼+global+이해 → Hyena 계열 + (필요시 attention 하이브리드 Evo).</div>
+              <div class="step"><div class="step-head">7. 시험 변형</div>비교표를 주고 "이 모델이 X를 택한 이유"·"\(O(L^2)\)의 의미"·"CNN을 안 쓴 이유"를 서술하게 한다.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="scount"></span><span class="dots"></span></div>
+            </div>
+          </div>
+
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">"Hyena가 무조건 최고"가 아님 — 짧은 서열·local 태스크엔 Transformer/CNN이 더 단순·충분. 복잡도는 trade-off지 우열이 아님.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐⭐</span>이 표가 "modeling 방법론" 출제 종합판. <b>서술형 대비</b>: 각 아키텍처를 <b>왜</b> 선택하는지(서열 길이·local vs global·이해 vs 생성 3축)로 설명. \(O(L^2)\)의 출처(self-attention)도 함께.<span class="src">출처: 2.gLM.pdf p.11·20·21</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>선행 ← <a onclick="goNode('C8')">C8</a>, <a onclick="goNode('C11')">C11</a>, <a onclick="goNode('C15')">C15</a> / 응용 → <a onclick="goNode('C13')">C13</a>~<a onclick="goNode('C17')">C17</a> 모델 선택</div>
+        </div>
+      </details>
+    </section>
+    <!-- ============ 줄기 B4 (1/2) ============ -->
+    <section class="stem-sec">
+      <h2>B4. 사전학습 · 모델 계보</h2>
+      <p class="stem-desc">라벨 없이 표현을 배우고(MLM/CLM), 대표 모델로 계보화. C11→C13→C20 · C12→C14 · C15/C12→C16→C17 · C10/C11→C18.</p>
+
+      <!-- C10 -->
+      <details class="node-card gate" id="C10" data-node-id="C10" data-title="사전학습 모델 Pretraining 개념">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C10" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C10</span> 사전학습 모델 (Pretraining) 개념
+          <span class="nbadge hot">⭐高</span><span class="nbadge gate">관문</span><span class="nbadge">선행: C4</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"라벨 없는 방대한 서열에서 스스로 의미 있는 표현을 뽑는다 — 데이터가 많으면 라벨 없이도 패턴을 배운다."</div>
+          <div class="field"><span class="lbl">📖 정의</span>unlabeled genomic sequence에서 meaningful representation 추출, DNA의 <b>구조·기능·진화적 특징</b>을 포착.</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> enhancer/promoter 라벨을 사람이 다 달려면 천문학적 비용. 대신 라벨 없는 유전체로 "가린 글자 맞히기"(MLM)만 시켜도 모델이 생물학적 문법을 배운다 → 이후 적은 라벨로 promoter 분류 같은 태스크를 빠르게 학습. Notion: <b>"label 없어도 데이터가 많으면 패턴 인식 가능."</b></div>
+          </div>
+          <div class="field"><span class="lbl">🔍 작동 원리 (2단계 도식)</span>
+            <ul>
+              <li><b>(A) Self-supervised Pretraining</b>: DNA 서열 토큰화→[CLS]…[SEP], 일부 [MASK] → gLM → Modeling Head → token probabilities (MLM/CLM).</li>
+              <li><b>(B) Supervised Fine-tuning</b>: labeled DNA → gLM(pretrained weights, <b>tunable 🔥 또는 frozen ❄️</b>) → Task Head → 다운스트림(DNA: enhancer/promoter/insulator/splice site; RNA: mRNA expression/degradation/half-life).</li>
+            </ul>
+          </div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — tunable vs frozen 선택 추론</span>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1단계</div>라벨 데이터가 매우 적다(수백 개) → backbone를 다 풀면(tunable) <b>과적합</b> 위험.</div>
+              <div class="step"><div class="step-head">2단계</div>이때 backbone를 <b>frozen ❄️</b> 하고 Task Head만 학습 → 적은 데이터로 안전.</div>
+              <div class="step"><div class="step-head">3단계</div>라벨이 충분하고 도메인이 사전학습과 다르면 → <b>tunable 🔥</b> 로 전체 미세조정 → 성능 ↑.</div>
+              <div class="step"><div class="step-head">답</div>데이터량·도메인 거리로 frozen/tunable을 고른다. (C21 실습은 인코더 tunable+분류기 학습.)</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="scount"></span><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">📊 표 인사이트</span><div class="callout">(B)의 다운스트림 예시들이 전부 "분류/회귀 head만 갈아끼우는" 구조 → 사전학습 표현의 재사용성.</div></div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">사전학습=비지도가 아니라 <b>자기지도(self-supervised)</b> — 라벨을 데이터 자체(가린 토큰)에서 만든다.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐⭐</span>자기지도학습이 "왜 라벨 없이 가능한가"(Notion 강조) + tunable vs frozen 차이. <b>서술형 대비</b>: (A) 자기지도 사전학습과 (B) 지도 파인튜닝 2단계를 도식으로 그리고, frozen/tunable 선택 기준을 데이터량·도메인 거리로 설명. ProtBERT 실습이 바로 (B) 단계(C21).<span class="src">출처: Notion Day 2</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>선행 ← <a onclick="goNode('C4')">C4</a> / 응용 → <a onclick="goNode('C11')">C11</a>, <a onclick="goNode('C12')">C12</a>, <a onclick="goNode('C18')">C18</a>, <a onclick="goNode('C21')">C21</a></div>
+        </div>
+      </details>
+
+      <!-- C11 -->
+      <details class="node-card" id="C11" data-node-id="C11" data-title="사전학습 Masked Language Modeling MLM">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C11" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C11</span> 사전학습 ① Masked Language Modeling (MLM)
+          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C10</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"문장 중간 글자를 가리고 좌우 문맥으로 맞히게 학습 — 양방향 이해에 강함."</div>
+          <div class="field"><span class="lbl">📖 정의</span>입력 토큰 일부를 무작위 [MASK] → 주변 문맥으로 마스크 토큰 예측. <b>Encoder-based (Bidirectional Self-Attention)</b>.</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> "ATG[MASK]CGT"에서 모델은 왼쪽(ATG)과 오른쪽(CGT)을 <b>동시에</b> 보고 빈칸을 추론한다. 양방향이라 promoter/enhancer 분류·splice site 예측처럼 <b>서열을 이해하는</b> 태스크에 강하다(DNABERT, C13).</div>
+          </div>
+          <div class="field"><span class="lbl">🔍 작동 원리/효과</span>upstream·downstream 양쪽 문맥에 의존하는 motif·signal 식별 → 임베딩 공간에서 <b>생물학적으로 유사한 서열이 함께 클러스터링</b>.</div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — MLM 마스킹 한 스텝 (seq = "A C T A C G")</span>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1단계</div>토큰화 → [CLS] A C T A C G [SEP].</div>
+              <div class="step"><div class="step-head">2단계</div>무작위로 ~15% 선택 → 예: 위치3 'T'를 고름.</div>
+              <div class="step"><div class="step-head">3단계</div>선택 토큰을 [MASK]로 치환 → [CLS] A C [MASK] A C G [SEP].</div>
+              <div class="step"><div class="step-head">4단계</div>인코더가 <b>양방향</b>으로 보고 [MASK] 자리 확률분포 출력 → 예 P(T)=0.7, P(A)=0.1….</div>
+              <div class="step"><div class="step-head">5단계</div>정답 'T'와의 cross-entropy로 손실 → 역전파. (정답은 원본에서 가져옴 = 자기지도)</div>
+              <div class="step"><div class="step-head">답</div>"가리고→양방향 문맥으로→맞히고→손실"의 한 사이클.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="scount"></span><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">📊 표 인사이트</span><div class="callout">슬라이드 요약 "See the entire sequence (left+right) → Strong at <b>understanding</b>."</div></div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">MLM의 [MASK]는 <b>사전학습 때만</b> 존재. 파인튜닝·추론 시엔 마스크 없음(train-test 불일치 이슈는 BERT 계열 공통).</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐</span>MLM=양방향=이해 ↔ CLM=단방향=생성 대비(C12). <b>서술형 대비</b>: 인코더·양방향 self-attention이 왜 "이해" 태스크에 유리한지 설명. DNABERT가 MLM 기반(C13).<span class="src">출처: Notion Day 2</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>선행 ← <a onclick="goNode('C10')">C10</a> / 대조 → <a onclick="goNode('C12')">C12</a> / 응용 → <a onclick="goNode('C13')">C13</a>, <a onclick="goNode('C18')">C18</a>, <a onclick="goNode('C20')">C20</a></div>
+        </div>
+      </details>
+
+      <!-- C12 -->
+      <details class="node-card" id="C12" data-node-id="C12" data-title="사전학습 Causal Language Modeling CLM">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C12" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C12</span> 사전학습 ② Causal Language Modeling (CLM)
+          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C10, C11</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"이전 토큰들로 다음 토큰을 맞히게 학습 — 서열 생성과 likelihood 계산에 강함."</div>
+          <div class="field"><span class="lbl">📖 정의</span>모든 이전 토큰이 주어졌을 때 다음 토큰 예측(autoregressive). <b>Decoder-based (Causal Self-Attention)</b>, 단방향.</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> Evo(C17)는 CLM으로 <b>새로운 CRISPR-Cas 단백질·유전체 서열을 생성</b>한다. 또 변이 서열의 <b>likelihood</b>를 계산해 "이 변이가 자연스러운가(=병원성 낮음)"를 점수화(variant scoring) — 생성·확률평가가 CLM의 두 강점.</div>
+          </div>
+          <div class="field"><span class="lbl">🔍 작동 원리/효과</span>토큰 단위 서열 생성, 서열에 대한 확률분포 학습.</div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — CLM 다음토큰 예측 + likelihood (seq = "A C T")</span>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1단계</div>위치1 입력 [CLS] → 다음 토큰 예측, 정답 A. P(A)=0.5.</div>
+              <div class="step"><div class="step-head">2단계</div>위치1~2 입력 [CLS]A → 다음 예측, 정답 C. P(C|A)=0.4. <b>오른쪽은 절대 못 봄(causal mask)</b>.</div>
+              <div class="step"><div class="step-head">3단계</div>위치1~3 입력 [CLS]A C → 다음 예측, 정답 T. P(T|AC)=0.6.</div>
+              <div class="step"><div class="step-head">4단계 · likelihood</div>서열 likelihood = P(A)·P(C|A)·P(T|AC) = 0.5·0.4·0.6 = 0.12 (또는 log합).</div>
+              <div class="step"><div class="step-head">답</div>autoregressive 곱으로 <b>서열 확률</b>을 얻음 → variant scoring의 원리.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="scount"></span><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">📊 표 인사이트</span><div class="callout">슬라이드 요약 "See only the past (left context) → Strong at <b>generation &amp; likelihood</b>."</div></div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">CLM은 미래 토큰을 <b>causal mask</b>로 가린다 — MLM처럼 양방향이 아님. "이해" 태스크엔 MLM이 보통 유리.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐</span>MLM vs CLM "양방향/단방향 → 이해/생성" 차이 핵심 비교. <b>서술형 대비</b>: 디코더·causal mask가 왜 생성·likelihood에 강한지, autoregressive 확률 곱으로 variant scoring 원리 설명. Nucleotide GPT·Evo가 CLM 계열(C14, C17).<span class="src">출처: Notion Day 2</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>선행 ← <a onclick="goNode('C10')">C10</a>, <a onclick="goNode('C11')">C11</a> / 대조 → <a onclick="goNode('C11')">C11</a> / 응용 → <a onclick="goNode('C14')">C14</a>, <a onclick="goNode('C16')">C16</a>, <a onclick="goNode('C17')">C17</a></div>
+        </div>
+      </details>
+
+      <!-- C13 -->
+      <details class="node-card" id="C13" data-node-id="C13" data-title="DNABERT">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C13" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C13</span> DNABERT
+          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C6(k-mer), C11(MLM)</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"BERT를 DNA에 — k-mer 토큰 + MLM 사전학습 + 태스크별 파인튜닝."</div>
+          <div class="field"><span class="lbl">📖 정의/구조</span><b>Encoder-based transformer</b> (12× 블록: Multi-Head Self-Attention → Add&amp;LayerNorm → Feed Forward → Add&amp;LayerNorm). 입력 = Token Embedding + Positional Embedding. 원서열을 k-mer로 tokenize([CLS] AGC GCA CAC … [SEP]), pretrain 시에만 [MASK].</div>
+          <div class="field"><span class="lbl">📖 출력 헤드</span>Sentence-level classifier(원 서열 분류) + Token-level classifier(각 마스크 토큰 분류).</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> 스플라이스 부위(intron 제거 경계, 5' donor GU/GC·3' acceptor AG)를 정확히 찾으면 alternative splicing으로 한 유전자가 만드는 여러 단백질을 예측할 수 있다. DNABERT는 양방향(MLM) 문맥으로 canonical·non-canonical splice 신호를 잡아 기존 도구를 능가.</div>
+          </div>
+          <div class="field"><span class="lbl">📊 표·그래프 인사이트 (Splice site, p.17) ⭐</span><div class="callout"><b>DNABERT-Splice가 Accuracy 0.92 / F1 0.91로 1위</b> (SpliceFinder 0.833/0.826 &gt; GBM &gt; LR &gt; LSTM &gt; GRU &gt; DBN &gt; RF &gt; tree &gt; SVM_RBF 순 하락). → 양방향 문맥으로 splice 신호를 더 잘 포착.</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — 막대그래프 해석(논문 해석 연습)</span>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1단계</div>x축=모델, y축=Accuracy/F1. DNABERT-Splice가 0.92로 최상단.</div>
+              <div class="step"><div class="step-head">2단계</div>딥러닝 baseline(LSTM/GRU 0.8대) vs DNABERT 격차 → "양방향 인코더 + 사전학습" 효과로 해석.</div>
+              <div class="step"><div class="step-head">3단계</div>전통 ML(RF, SVM)은 더 낮음 → feature engineering의 한계(C3와 연결).</div>
+              <div class="step"><div class="step-head">답</div>"DNABERT 우위 = MLM 양방향 문맥이 splice donor/acceptor 신호를 포착했기 때문."</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="scount"></span><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">DNABERT의 [MASK]는 사전학습 전용. 12× 블록은 BERT-base 구조와 동일.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐ (논문 해석)</span>막대그래프에서 DNABERT 우위 <b>이유</b> + 12× 인코더 블록 구조 설명. <b>서술형 대비</b>: "왜 DNABERT가 LSTM/GRU·전통 ML을 능가하는가"를 양방향 사전학습으로 논증.<span class="src">출처: 2.gLM.pdf p.16–17 / Notion Day 2</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>선행 ← <a onclick="goNode('C6')">C6</a>, <a onclick="goNode('C11')">C11</a> / 비교 → <a onclick="goNode('C14')">C14(GPT계열)</a>, <a onclick="goNode('C19')">C19</a> / 응용 → <a onclick="goNode('C20')">C20(VIBE)</a></div>
+        </div>
+      </details>
+
+      <!-- C14 -->
+      <details class="node-card" id="C14" data-node-id="C14" data-title="Nucleotide GPT">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C14" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C14</span> Nucleotide GPT
+          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C5, C12(CLM)</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"GPT를 DNA에 — single-nucleotide 토큰 + 디코더(CLM)로 사전학습, 사전학습이 표현에 기여하는지 probing."</div>
+          <div class="field"><span class="lbl">📖 구조 (p.18 B)</span>Single-nucleotide tokenization → Input Embedding → <b>RoPE Positional Embedding</b> → [RMS Norm → Multi-Head Attention(Heads×8, Key Dim=128) → RMS Norm → Feed-Forward(GeLU) → RMS Norm] 반복 → Output Layer → RMS Norm → Output Projection.</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> "사전학습이 정말 도움이 되나?"를 증명하려는 연구. 같은 구조를 (Linear/one-hot) vs (Random init) vs (Pretrained)로 비교해 → Pretrained가 압도적임을 Table로 보임 → C10의 "데이터 많으면 패턴 학습" 주장을 <b>정량 입증</b>.</div>
+          </div>
+          <div class="field"><span class="lbl">🧮 수식 (RE loss weighting)</span><div>\[ L = -\sum_{i=1}^{n} w_i \cdot y_i \log(\hat{y}_i) \]</div><div style="color:var(--muted);font-size:.88rem">\(w_i\)=클래스/태스크별 가중, \(y_i\)=정답(one-hot), \(\hat{y}_i\)=예측확률. <b>왜 weighting? → 태스크 불균형·보조신호 반영.</b></div></div>
+          <div class="field"><span class="lbl">📊 표 인사이트 (시험 빈출 ⭐⭐, 논문 해석)</span>
+            <ul>
+              <li><b>Table 1 (RE loss weight 0.0/0.1/0.5/1.0)</b>: 가중치별 ACC/F1/MCC. weight 0.5~1.0에서 대체로 최고(Human or worm ACC 96.5 @0.5).</li>
+              <li><b>Table 2 (Linear/one-hot vs Random vs Pretrained)</b>: <b>Pretrained가 전 데이터셋 압도적 1위</b>(Cohn enhancers Pretrained 73.2 vs Linear 64.6 vs Random 66.3) → 사전학습 효과 입증.</li>
+              <li><b>Table 3 (6-mer overlap / 6-mer non-overlap / single-nucleotide)</b>: <b>single-nucleotide 대체로 최고</b>(Coding vs intergenic 92.4). 일부(Ensembl regulatory)는 6-mer overlap 우세 → 태스크 의존.</li>
+            </ul>
+          </div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — Table 2 해석 "Pretrained &gt; Random &gt; Linear"</span>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1단계</div>세 열의 의미 정리 — Linear=고정 one-hot+선형, Random=구조는 같되 가중치 무작위(사전학습 X), Pretrained=사전학습 후.</div>
+              <div class="step"><div class="step-head">2단계</div>한 행(Cohn enhancers) 읽기 → 73.2 / 66.3 / 64.6.</div>
+              <div class="step"><div class="step-head">3단계</div>Random &gt; Linear → 아키텍처(attention) 자체의 표현력 기여.</div>
+              <div class="step"><div class="step-head">4단계</div>Pretrained &gt; Random → <b>순수 사전학습의 추가 이득</b>(같은 구조인데 가중치만 다름).</div>
+              <div class="step"><div class="step-head">답</div>격차를 "구조 기여(Random−Linear)"와 "사전학습 기여(Pretrained−Random)"로 분해해 설명.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="scount"></span><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">single-nt가 "항상" 최고는 아님(Table 3 일부 6-mer 우세) → "태스크 의존"이라 답해야 안전.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐⭐</span>지표 <b>ACC/F1/MCC</b> 정의 + Table 해석. <b>서술형 대비</b>: "Pretrained &gt; Random &gt; Linear" 메시지를 구조 기여/사전학습 기여로 분해, 토크나이징별 성능 비교(태스크 의존) 서술.<span class="src">출처: 2.gLM.pdf p.18–19, Briefings in Bioinformatics 2026 / Notion Day 2</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>선행 ← <a onclick="goNode('C5')">C5</a>, <a onclick="goNode('C12')">C12</a> / 비교 → <a onclick="goNode('C13')">C13</a>, <a onclick="goNode('C16')">C16</a> / 토대 → <a onclick="goNode('C10')">C10(사전학습 효과 입증)</a></div>
+        </div>
+      </details>
+    </section>
+    <!-- ============ 줄기 B4 (2/2) ============ -->
+    <section class="stem-sec">
+      <h2>B4. 사전학습 · 모델 계보 (계속)</h2>
+      <p class="stem-desc">HyenaDNA·Evo·ESM·VIBE — Hyena 계열, 단백질 LM, 응용.</p>
+
+      <!-- C16 -->
+      <details class="node-card" id="C16" data-node-id="C16" data-title="HyenaDNA">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C16" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C16</span> HyenaDNA
+          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C5, C12(next-token), C15</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"Hyena 연산자를 쌓아 single-nucleotide 해상도로 <b>초장문(1k–수백만 bp)</b> 유전체를 다음토큰예측으로 학습."</div>
+          <div class="field"><span class="lbl">📖 구조</span>Hyena operator × N 스택 + MLP, <b>next token prediction(CLM)</b>으로 학습. <b>Sequence length warm-up</b>(L → 2L → … → 2ⁿL, 최대 1M)로 학습 안정·속도. 새 태스크 적응 시 <b>frozen HyenaDNA + tunable soft prompt tokens</b>(파인튜닝 없이 컨텍스트 채우기).</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오 (동기, p.22)</span>
+            <div class="scenario"><span class="lbl">🌍</span> Natural language(~10k, word-level) / Proteins(hundreds, char-level) / <b>Genomics(1k–millions, character-level)</b>. 유전체는 ultralong + character-level이 중요 — sickle cell의 C→T 한 글자가 질병을 좌우하므로 single-nt를 포기할 수 없다. 그래서 "long-range를 싸게 처리하는 Hyena × single-nt"가 자연스러운 선택.</div>
+          </div>
+          <div class="field"><span class="lbl">📊 표·그래프 인사이트 ⭐ (논문 해석)</span>
+            <ul>
+              <li><b>t-SNE(biotype별)</b>: DNABERT/NT/HyenaDNA 중 HyenaDNA가 protein-coding·lncRNA·pseudogene을 더 잘 분리.</li>
+              <li><b>Table 4.1/A.4 (GenomicBenchmarks Top-1 acc)</b>: pretrained HyenaDNA 다수 1위(Mouse Enhancers 85.1, Human Enhancers Ensembl 89.2, Human Nontata Promoters 96.6, Human OCR 80.9). 단 Coding vs Intergenomic은 DNABERT 92.5 우위.</li>
+              <li><b>Table A.2 (효율) ⭐⭐</b>: DNABERT 110M·12,000 GPU-hrs, <b>NT 2.5B·215,000 GPU-hrs</b>, <b>HyenaDNA 436K~1.6M params·단 1.3 GPU-hrs(80분, 1-A100)</b>.</li>
+            </ul>
+          </div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — Table A.2 효율 해석(논문 해석 연습)</span>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1단계 · params</div>세 모델 params 비교 → NT 2.5B ≫ DNABERT 110M ≫ HyenaDNA ~1M (약 2000배 차이).</div>
+              <div class="step"><div class="step-head">2단계 · GPU-hrs</div>GPU-hrs 비교 → NT 215,000 vs HyenaDNA 1.3 (약 16만 배 차이).</div>
+              <div class="step"><div class="step-head">3단계</div>그런데 Table 4.1에서 HyenaDNA가 다수 태스크 1위 → "작고 빠른데 더 강함."</div>
+              <div class="step"><div class="step-head">4단계 · 비결 추론</div>single-nt × Hyena(\(O(L\log L)\), C15)로 long-range를 싸게 처리 + sequence warm-up.</div>
+              <div class="step"><div class="step-head">답</div>"파라미터·연산을 수만 배 줄이고도 경쟁력 = Hyena의 subquadratic 효율."</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="scount"></span><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">HyenaDNA가 "모든" 태스크 1위는 아님(Coding vs Intergenomic은 DNABERT). "대부분/효율 대비 우수"로 답할 것.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐⭐</span>"왜 유전체는 long-range·single-nucleotide가 중요한가" + HyenaDNA가 NT 대비 파라미터/연산을 극적으로 줄인 점(Table A.2 해석). <b>서술형 대비</b>: params·GPU-hrs 격차를 제시하고 그 비결을 Hyena의 \(O(L\log L)\) 효율로 설명.<span class="src">출처: 2.gLM.pdf p.22–25, NeurIPS 2023</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>선행 ← <a onclick="goNode('C5')">C5</a>, <a onclick="goNode('C12')">C12</a>, <a onclick="goNode('C15')">C15</a> / 비교 → <a onclick="goNode('C13')">C13</a>, <a onclick="goNode('C14')">C14</a> / 응용 → <a onclick="goNode('C17')">C17(Evo)</a></div>
+        </div>
+      </details>
+
+      <!-- C17 -->
+      <details class="node-card" id="C17" data-node-id="C17" data-title="Evo StripedHyena Hybrid">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C17" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C17</span> Evo (StripedHyena, Hybrid)
+          <span class="nbadge mid">⭐中</span><span class="nbadge">선행: C15, C16</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"Hyena 블록 사이에 Rotary Attention을 섞은 하이브리드(StripedHyena)로 분자~유전체 스케일을 통합 모델링·생성."</div>
+          <div class="field"><span class="lbl">📖 정의/구조 (p.27 B)</span><b>StripedHyena</b> = 다수 Hyena 블록 + 간헐적 <b>Rotary Attention</b> 블록 인터리빙. Hyena 블록 내부 = Dense → Convolution → Gate → Long Convolution → Gate → Convolution → GLU (Sequence Mix=파랑, Channel Mix=빨강). 출력 = next-base likelihood \(p(x_N)\).</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> Evo는 수백만 prokaryotic·phage genome을 학습해 <b>CRISPR-Cas·transposon을 새로 생성</b>(protein-RNA, protein-DNA codesign 첫 사례)하고, small mutation→fitness를 zero-shot 예측한다. Evo 2는 "all domains of life". 순수 Hyena의 효율 + 간헐적 attention의 정밀 문맥을 둘 다 취하려는 설계.</div>
+          </div>
+          <div class="field"><span class="lbl">🧮 수식 (LoRA 삽입)</span>Attention·FFN·Hyena long-convolution filter layer에 low-rank adapter 삽입.<div>\[ h = W_0 x + \Delta W x = W_0 x + BA x \]</div><div style="color:var(--muted);font-size:.88rem">\(W_0\in\mathbb{R}^{d\times d}\)(frozen pretrained), \(B=0\) 초기화, \(A\sim\mathcal{N}(0,\sigma^2)\), rank \(r\ll d\).</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — LoRA 식 해석 "왜 B=0 초기화?"</span>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1단계</div>파인튜닝 시작 시 \(\Delta W = BA\). \(B=0\)이면 \(\Delta W=0\).</div>
+              <div class="step"><div class="step-head">2단계</div>따라서 시작 시 \(h = W_0 x\) → <b>사전학습 모델과 완전히 동일</b>(망가뜨리지 않음).</div>
+              <div class="step"><div class="step-head">3단계</div>학습이 진행되며 \(B\)가 0에서 멀어져 점진적으로 적응.</div>
+              <div class="step"><div class="step-head">4단계</div>\(r\ll d\)라 추가 파라미터 \(2dr\)만 학습 → <b>적은 비용 파인튜닝</b>.</div>
+              <div class="step"><div class="step-head">답</div>"B=0은 안전한 출발점(사전학습 보존), low-rank는 효율"이 LoRA 핵심.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="scount"></span><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">LoRA는 \(W_0\)를 <b>freeze</b>하고 \(BA\)만 학습 — 원 가중치를 직접 바꾸지 않는다.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐</span>하이브리드(Hyena+attention) 동기 + LoRA 식 \(h=W_0x+BAx\) 해석(B=0 이유). <b>서술형 대비</b>: 왜 순수 Hyena가 아닌 하이브리드인지, B=0 초기화·\(r\ll d\)가 각각 무엇을 보장하는지.<span class="src">출처: 2.gLM.pdf p.26–28, Science 2024 / Evo2 Nature 2026</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>선행 ← <a onclick="goNode('C15')">C15</a>, <a onclick="goNode('C16')">C16</a> / 비교 → <a onclick="goNode('C19')">C19</a></div>
+        </div>
+      </details>
+
+      <!-- C18 -->
+      <details class="node-card" id="C18" data-node-id="C18" data-title="ESM Evolutionary Scale Modeling 단백질 LM">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C18" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C18</span> ESM (Evolutionary Scale Modeling, 단백질 LM)
+          <span class="nbadge mid">⭐中</span><span class="nbadge">선행: C10, C11</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"단백질 1차서열만으로 LM이 원자 수준 3D 구조를 직접 예측 — 모델을 키우면 구조가 표현에서 '창발'."</div>
+          <div class="field"><span class="lbl">📖 정의/결과</span>단백질 서열 LM을 15B 파라미터까지 키우면 표현에서 <b>atomic-resolution 구조</b>가 emerge. &gt;617M metagenomic 단백질 구조 예측(ESM Metagenomic Atlas), <b>MSA 없이 1차서열만으로</b> 직접 추론 → 고해상도 구조예측을 order-of-magnitude 가속.</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> AlphaFold는 MSA(다중서열정렬)가 필요해 느리다. ESM은 서열 하나만 넣어도 구조를 추론 → 신약 타깃의 막관통 영역·결합 포켓을 빠르게 예측. 본 과목 실습(C21, 단백질 막관통 분류)이 바로 이 "단백질 LM" 계열.</div>
+          </div>
+          <div class="field"><span class="lbl">🧮 수식 (RMSD)</span><div>\[ RMSD = \sqrt{\dfrac{1}{N}\sum_{i=1}^{N}\lVert x_i^{pred} - x_i^{true}\rVert^2} \]</div><div style="color:var(--muted);font-size:.88rem">예측·실제 원자좌표 차의 RMS, <b>작을수록 정확</b>(주석 "2–5: 상당히 유사함").</div></div>
+          <div class="field"><span class="lbl">📊 그래프 인사이트</span><div class="callout">ESM-2를 8M→15B로 키울수록 RMSD↓(7.7→2.6), pLDDT↑(신뢰도), Perplexity↓ → <b>스케일↑ = 구조예측 품질↑</b>.</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — RMSD 계산 (3개 원자)</span>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1단계</div>예측-실제 좌표 차 벡터 노름² 구하기 → 원자1 차²=4, 원자2=1, 원자3=9 (예시값).</div>
+              <div class="step"><div class="step-head">2단계</div>평균 → (4+1+9)/3 = 4.67.</div>
+              <div class="step"><div class="step-head">3단계</div>제곱근 → √4.67 ≈ 2.16 Å.</div>
+              <div class="step"><div class="step-head">4단계</div>주석 기준 "2–5 상당히 유사" → 꽤 정확한 예측으로 해석.</div>
+              <div class="step"><div class="step-head">답</div>RMSD≈2.16 Å. 스케일 큰 ESM일수록 이 값이 작아짐.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="scount"></span><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">"창발(emerge)"은 명시 학습 목표가 아니라 <b>스케일의 부산물</b> — 구조 라벨로 학습한 게 아니라 서열 LM만 했는데 구조가 표현에 잡힘.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐</span>"왜 LM 스케일↑이면 구조가 나오나"(표현학습), RMSD·pLDDT·perplexity 지표 해석. <b>서술형 대비</b>: 세 지표가 각각 무엇을 측정하는지, 스케일과의 단조 관계를 그래프로 설명. 실습 ProtBERT와 같은 단백질 LM 계열(C21).<span class="src">출처: 2.gLM.pdf p.29</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>선행 ← <a onclick="goNode('C10')">C10</a>, <a onclick="goNode('C11')">C11</a> / 응용 → <a onclick="goNode('C21')">C21(실습)</a></div>
+        </div>
+      </details>
+
+      <!-- C20 -->
+      <details class="node-card" id="C20" data-node-id="C20" data-title="VIBE 바이러스 분류 응용">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C20" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C20</span> VIBE &amp; 바이러스 분류 (응용)
+          <span class="nbadge">⭐低</span><span class="nbadge">선행: C13(BERT 인코더)</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"메타게놈 샷건 reads를 Transformer로 바이러스 분류 — 미지 바이러스에도 높은 recall."</div>
+          <div class="field"><span class="lbl">📖 메커니즘</span>marker 기반·homology 검색은 known virus엔 좋지만 unknown엔 recall 낮음 → 일반화 모델로 recall↑. VIBE = forward/backward read를 [CLS]…[SEP](max 512)로, MLM 사전학습, 12× Transformer encoder + classification(softmax, confidence). 계층적: Domain(BPDR) → Bacteria/Phage/DNA·RNA virus → Order → lower-level.</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> 임상 메타게놈 샘플에서 정체불명 바이러스 reads를 분류해야 하는데, homology 검색은 DB에 없는 신종을 놓친다. VIBE는 학습 기반 일반화로 미지 종도 잡아 → HVP 환자에서 co-infection(HPV=Alphapapillomavirus, Herpesvirales) 탐지.</div>
+          </div>
+          <div class="field"><span class="lbl">📊 그래프 인사이트</span><div class="callout">genome-level validation(테스트 종 전부 학습 제외)에서 VIBE가 CHEER/Kraken2 대비 <b>recall 우위</b>. fine-tuned 임베딩(C)이 4-mer frequency(A)보다 코로나바이러스 속을 명확히 분리.</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — "왜 homology보다 recall이 높나" 추론</span>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1단계</div>homology 검색 = 쿼리를 DB 서열과 정렬해 유사도로 판정.</div>
+              <div class="step"><div class="step-head">2단계</div>DB에 없는 신종은 정렬 실패 → <b>놓침(낮은 recall)</b>.</div>
+              <div class="step"><div class="step-head">3단계</div>VIBE는 사전학습으로 "바이러스다움"의 일반 패턴을 학습 → 정확한 종 매칭 없이도 분류.</div>
+              <div class="step"><div class="step-head">4단계</div>test 종을 학습에서 전부 제외해도 recall 유지 → <b>일반화 입증</b>.</div>
+              <div class="step"><div class="step-head">답</div>"정렬 매칭(DB 의존) vs 학습 일반화"의 차이가 recall 격차를 만든다.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="scount"></span><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">VIBE의 강점은 정확도 전반이 아니라 특히 <b>unknown에 대한 recall</b>.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐</span>"homology 검색 한계 vs 학습 기반 일반화"의 recall 개선 논리. <b>서술형 대비</b>: 정렬 기반 방법이 신종에서 왜 recall이 낮은지, 학습 기반이 어떻게 이를 극복하는지 서술. 응용 예시 출제 가능.<span class="src">출처: 2.gLM.pdf p.33–35</span></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>선행 ← <a onclick="goNode('C13')">C13</a> / 동기 → <a onclick="goNode('C2')">C2(변이/서열 다양성)</a></div>
+        </div>
+      </details>
+    </section>
+    <!-- ============ 줄기 B5 ============ -->
+    <section class="stem-sec">
+      <h2>B5. 전이학습 실습 · 평가</h2>
+      <p class="stem-desc">사전학습 모델을 가져와 분류기만 붙여 파인튜닝·평가. C4 + C10 + C18의 실체화.</p>
+
+      <!-- C21 -->
+      <details class="node-card gate" id="C21" data-node-id="C21" data-title="실습 단백질 시퀀스 이진분류 ProtBERT 전이학습">
+        <summary>
+          <input type="checkbox" class="nodechk" data-id="C21" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
+          <span class="nid-tag">C21</span> 【실습】 단백질 시퀀스 이진분류 (ProtBERT 전이학습)
+          <span class="nbadge hot">⭐高</span><span class="nbadge gate">종착</span><span class="nbadge">선행: C4, C10, C18</span>
+          <span class="chev">▶</span>
+        </summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 직관</span>"사전학습된 단백질 LM(ProtBERT)을 가져와, 마지막에 분류기만 붙여 '막관통 단백질인지'를 맞히는 파인튜닝."</div>
+          <div class="field"><span class="lbl">📖 태스크 정의</span>입력=아미노산 서열, 출력=이진분류 <b>0(non-membrane)/1(membrane)</b>. 데이터=<b>DeepLoc 2.0</b>의 membrane 라벨(10개 위치 다중분류 중 membrane 여부만 이진화).</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><span class="lbl">🌍</span> 막관통 단백질은 신약 타깃의 약 절반(GPCR 등). 어떤 단백질이 세포막을 관통하는지 서열만으로 예측하면 신약 타깃 발굴이 빨라진다. 라벨 데이터(2,700개)는 적지만, 거대 사전학습 ProtBERT를 재사용해 적은 데이터로 학습 — C10(B) 파인튜닝의 실체.</div>
+          </div>
+          <div class="field"><span class="lbl">📖 데이터 스키마 (CSV, 직접 확인) ⭐</span>
+            <ul>
+              <li>컬럼: <code>index, acc, sequence, labels</code>. <code>acc</code>=UniProt accession(예 P63086), <code>sequence</code>=20-letter 아미노산(M 시작 다수), <code>labels</code>=0/1.</li>
+              <li><b>train=2,700행</b>(0:1350/1:1350, <b>완전 균형 50:50</b>), <b>valid=300행</b>(0:150/1:150, 균형).</li>
+              <li>길이: train min 40/max 8,886/중앙값 440/평균≈562 aa → 가변·일부 매우 긺 → <b>max_length=512 truncation</b>.</li>
+            </ul>
+          </div>
+          <div class="field"><span class="lbl">🔍 작동 원리 (딥러닝 4단계)</span>Step1 데이터 → Step2 모델 → Step3 학습 → Step4 평가(AUROC).</div>
+
+          <div class="field"><span class="lbl">🔍 STEP-BY-STEP: 서열 → 토크나이징 → 임베딩 → pooling → 분류 파이프라인 (실습 핵심 · 10단계)</span>
+            <div class="stepper big">
+              <div class="step show"><div class="step-head">1. 직관</div>"가변 길이 단백질 서열 1개"를 "고정 길이 벡터 1개 → 0/1 라벨"로 바꾸는 전 과정.</div>
+              <div class="step"><div class="step-head">2. Step1 전처리</div><code>re.sub(r"[UZOB]","X",seq)</code>로 희귀/모호 아미노산(U,Z,O,B)→X 치환 후 글자 사이 공백 join(ProtBERT 입력 형식). <code>Dataset</code>/<code>DataLoader(shuffle=True for train)</code>.</div>
+              <div class="step"><div class="step-head">3. Step2 토크나이즈</div><code>BertTokenizer.batch_encode_plus(add_special_tokens=False, max_length=512, padding=True, truncation=True)</code> → 길이 512로 통일(긴 건 자르고 짧은 건 패딩).</div>
+              <div class="step"><div class="step-head">4. Step2 임베딩</div><code>BertModel.from_pretrained("Rostlab/prot_bert")</code>(인코더)에 통과 → 각 아미노산 위치마다 임베딩 벡터 → shape (batch, 512, hidden).</div>
+              <div class="step"><div class="step-head">5. Step2 pooling</div><code>pooled = torch.mean(embeddings[0], dim=1)</code> — 512개 위치 임베딩을 <b>평균(mean pooling)</b> → protein-level 단일 벡터 (batch, hidden).</div>
+              <div class="step"><div class="step-head">6. Step2 분류기</div>Dense classifier(<code>Linear→ReLU→Dropout</code>×num_layers, 마지막 <code>Linear(hidden, 2)</code>) → logits (batch, 2).</div>
+              <div class="step"><div class="step-head">7. Step3 학습</div><code>CrossEntropyLoss</code> + <code>Adam(lr=0.001)</code>. Loop: forward→<code>loss.backward()</code>→<code>optimizer.step()</code>→<code>zero_grad()</code>. (하이퍼: hidden 64, layers 3, batch 64, epochs 1, dropout 0.0)</div>
+              <div class="step"><div class="step-head">8. Step4 평가</div><code>model.eval()</code>+<code>torch.no_grad()</code>(gradient 비활성→메모리·속도)로 valid forward, loss·accuracy(가중치 업데이트 없음), AUROC.</div>
+              <div class="step"><div class="step-head">9. 검산/예</div>입력 서열 "M A K … L"(길이 600) → X치환·공백join → encode(512로 truncation) → 임베딩(512×hidden) → mean → (hidden,) → Linear → logits [−0.3, 1.2] → softmax → P(membrane)=0.82 → 라벨 1.</div>
+              <div class="step"><div class="step-head">10. 시험 변형</div>"mean을 max/attention으로 바꾸면?"(아래 Pooling), "CrossEntropy를 BCE로?"(아래 Loss), "왜 max_length=512인가"(길이 분포·메모리).</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="scount"></span><span class="dots"></span></div>
+            </div>
+          </div>
+
+          <div class="field"><span class="lbl">📊 표·그래프 인사이트 ⭐</span><div class="callout">학습곡선 — <b>Train loss 계속 하강·Train acc↑</b>이지만 <b>Validation loss ~10epoch 이후 다시 상승(U자)</b> → <b>과적합(overfitting)</b> 신호. Valid acc는 0.78~0.82 정체. (dropout=0.0, lr=0.001로 정규화 약함이 원인 후보.)</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — Pooling 전략 비교 (Notion 질문, 시험 직결)</span>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1단계 · mean pooling (현재)</div>512위치 임베딩 평균. 전체를 고루 반영하나 신호가 희석될 수 있음.</div>
+              <div class="step"><div class="step-head">2단계 · max pooling</div>위치별 최댓값만. 가장 강한 motif 강조 ↔ 노이즈에 취약.</div>
+              <div class="step"><div class="step-head">3단계 · attention pooling</div>위치별 학습 가중합. 막관통 신호가 있는 잔기를 자동 강조.</div>
+              <div class="step"><div class="step-head">4단계 · 판단</div>membrane 신호가 특정 막관통 helix 잔기에 국소화되면 attention/max가 mean보다 유리할 수 있음.</div>
+              <div class="step"><div class="step-head">답</div>"어떤 잔기가 membrane 신호인지"에 따라 pooling 선택이 성능을 가른다.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="scount"></span><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">(1) 데이터는 균형(50:50)이라 accuracy가 유효 지표지만, 실무 불균형이면 AUROC/F1 필요. (2) epochs=1·dropout=0 설정은 과적합 관찰용 — 정규화(dropout↑, lr↓)로 완화 가능.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험·실습 포인트 ⭐⭐</span>
+            <ul>
+              <li><b>Pooling(Notion 질문)</b>: mean vs max vs attention 차이 → 위 예제. <b>서술형 대비</b>: 각 pooling이 어떤 신호를 강조/희석하는지.</li>
+              <li><b>Loss 변경(Notion Tip)</b>: 2-class softmax+CrossEntropy ↔ 단일 logit+<b>sigmoid+BCE</b>. 이진분류에서 거의 등가지만 출력 헤드·임계값 처리가 다름.</li>
+              <li><b>전이학습 핵심</b>: pretrained 인코더(frozen/tunable)+가벼운 분류기 → 적은 라벨로 학습 = C10(B)의 실체.</li>
+            </ul>
+            <span class="src">출처: Notion Day 2 (실습 Colab)</span>
+          </div>
+          <div class="field"><span class="lbl">⚠️ 자료 없음</span><div class="nodata">최종 AUROC/F1 등 <b>구체 평가 수치는 슬라이드에 없음</b>(Colab 실행 의존) → 빈칸 처리. (추측 금지)</div></div>
+          <div class="field links"><span class="lbl">🔗 연결</span>선행 ← <a onclick="goNode('C4')">C4</a>, <a onclick="goNode('C10')">C10</a>, <a onclick="goNode('C18')">C18</a> / 개념대응 → C10(B) 파인튜닝, <a onclick="goNode('C16')">C16(pooling 전략)</a></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ============ ⚠️ 자료 없음 종합 ============ -->
+    <section class="stem-sec">
+      <h2>⚠️ 자료 없음 (추측 금지 · 빈칸 유지)</h2>
+      <div class="nodata">
+        <ul>
+          <li><b>Day 1 본문 대부분</b>: DeepVariant 상세, central dogma(복제/전사/번역) 본문, Node Classification 맥락 → PDF 대응 없음.</li>
+          <li><b>Nucleotide Transformer 단독 상세</b>: 비교표(C16 Table A.2)에만 등장, 전용 슬라이드 없음.</li>
+          <li><b>실습 최종 평가 수치</b>: AUROC/F1 등 구체 수치 미명시(C21).</li>
+          <li><b>기출 문항 원문</b>: 범위("주관식, 모델링 방법론·논문 해석")만 존재, 문제·정답 없음.</li>
+          <li><b>Evaluation 벤치마크(p.36)</b>: abstract만 — "mean token embedding이 sequence classification에 일관 최선; 범용 DNA foundation model은 pathogenic variant엔 경쟁력이나 gene expression·causal QTL엔 특화모델만 못함". 표/그림 미수록.</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  생성: 의생명과학을 위한 AI (노미나 교수) · 시험대비 학습자료 하네스 · 1차 자료(2.gLM.pdf + Notion Day 1/2) 기반.<br>
+  5줄기 · 21노드(C1~C21) · 🌍 시나리오 21 · ✏️ 풀이예제 19 · 🔍 난개념 STEP 3(C15·C19·C21) · 추천 학습경로 18단계. 단일 HTML · 오프라인 동작 · KaTeX CDN+폴백.
+</footer>
+
+<!-- KaTeX (있으면 렌더, 없으면 폴백) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" onerror="window.__noKatex=true">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"
+  onerror="katexFallback()"></script>
+<script>
+  // KaTeX 폴백: CDN 실패 시 원본 LaTeX를 monospace로 노출(읽기 가능)
+  function katexFallback(){ document.body.classList.add('katex-fallback'); }
+  // 다크/라이트
+  function toggleTheme(){
+    const b=document.body, t=b.getAttribute('data-theme')==='dark'?'light':'dark';
+    b.setAttribute('data-theme',t); localStorage.setItem('theme',t);
+  }
+  (function(){const t=localStorage.getItem('theme'); if(t)document.body.setAttribute('data-theme',t);})();
+  // 로드맵 → 노드 항해
+  function goNode(id){
+    const card=document.getElementById(id); if(!card)return;
+    card.open=true; card.classList.remove('hidden');
+    card.scrollIntoView({behavior:'smooth',block:'start'});
+    document.querySelectorAll('.rm-node').forEach(n=>n.classList.remove('active'));
+    const rn=document.querySelector('.rm-node[data-target="'+id+'"]'); if(rn)rn.classList.add('active');
+  }
+  // step navigator
+  function stepMove(btn,dir){
+    const sp=btn.closest('.stepper'), steps=[...sp.querySelectorAll('.step')];
+    let i=steps.findIndex(s=>s.classList.contains('show'));
+    i=Math.max(0,Math.min(steps.length-1,i+dir));
+    steps.forEach((s,k)=>s.classList.toggle('show',k===i));
+    syncDots(sp,i,steps.length);
+  }
+  function syncDots(sp,i,n){
+    const d=sp.querySelector('.dots'); if(d) d.innerHTML=Array.from({length:n},(_,k)=>'<i class="'+(k===i?'on':'')+'"></i>').join('');
+    const c=sp.querySelector('.scount'); if(c) c.textContent=(i+1)+' / '+n;
+  }
+  document.querySelectorAll('.stepper').forEach(sp=>{
+    const n=sp.querySelectorAll('.step').length; syncDots(sp,0,n);
+  });
+  // 진도 체크 (localStorage) — 노드 카드 체크박스와 학습경로 체크박스 동기화
+  const PKEY='studyprog:biomed-ai';
+  function loadProg(){try{return JSON.parse(localStorage.getItem(PKEY)||'{}')}catch(e){return {}}}
+  function saveProg(p){localStorage.setItem(PKEY,JSON.stringify(p))}
+  function markDone(chk){
+    const id=chk.dataset.id, p=loadProg(); p[id]=chk.checked; saveProg(p);
+    document.querySelectorAll('.nodechk[data-id="'+id+'"],.pathchk[data-id="'+id+'"]').forEach(c=>c.checked=chk.checked);
+    const rn=document.querySelector('.rm-node[data-target="'+id+'"]'); if(rn)rn.classList.toggle('done',chk.checked);
+    updateProg();
+  }
+  function updateProg(){
+    const all=document.querySelectorAll('.nodechk'), done=[...all].filter(c=>c.checked).length;
+    const pct=all.length?Math.round(done/all.length*100):0;
+    document.getElementById('progfill').style.width=pct+'%';
+    document.getElementById('progtxt').textContent=pct+'%';
+  }
+  (function(){const p=loadProg();
+    document.querySelectorAll('.nodechk,.pathchk').forEach(c=>{c.checked=!!p[c.dataset.id];});
+    document.querySelectorAll('.nodechk').forEach(c=>{
+      if(c.checked){const rn=document.querySelector('.rm-node[data-target="'+c.dataset.id+'"]');if(rn)rn.classList.add('done');}
+    });
+    updateProg();})();
+  // 검색 필터
+  function filterNodes(q){
+    q=q.trim().toLowerCase();
+    document.querySelectorAll('.node-card').forEach(card=>{
+      const hit=!q||card.dataset.title.toLowerCase().includes(q)||card.textContent.toLowerCase().includes(q);
+      card.classList.toggle('hidden',!hit);
+      if(q&&hit)card.open=true;
+    });
+  }
+</script>
+</body>
+</html>
