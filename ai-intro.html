@@ -3,7 +3,8 @@
 <!--
   인공지능개론 (최용석 교수) — 시험대비 인터랙티브 학습자료
   self-contained 단일 HTML · 인라인 CSS/JS · KaTeX CDN + 폴백 · 오프라인 동작
-  노드 24개(C1~C23 + C5b) · 시나리오 18 · STEP 12 · 학습경로 24단계
+  노드 24개(C1~C23 + C5b) · MECE 트리맵 · STEP-BY-STEP 12 · 🌍시나리오 18 · 예상문제 10
+  재빌드: 2026-06-04 (MECE 트리맵 + 예상문제 섹션 신규)
 -->
 <html lang="ko">
 <head>
@@ -14,7 +15,7 @@
   :root{
     --bg:#0f1218; --panel:#161b24; --panel2:#1d2531; --ink:#e7ecf3; --muted:#9aa7b8;
     --line:#2a3340; --accent:#5b9dff; --accent2:#7c5cff; --hot:#ff6b6b; --ok:#3ecf8e;
-    --warn:#ffcf5c; --radius:14px; --maxw:1320px;
+    --warn:#ffcf5c; --radius:14px; --maxw:1280px;
   }
   [data-theme="light"]{
     --bg:#f6f8fb; --panel:#ffffff; --panel2:#eef2f7; --ink:#16202c; --muted:#5a6675;
@@ -24,10 +25,9 @@
   body{margin:0;background:var(--bg);color:var(--ink);
     font-family:"Pretendard",-apple-system,"Segoe UI",Roboto,"Malgun Gothic",sans-serif;line-height:1.7}
   a{color:var(--accent)}
-  /* header */
-  header{position:sticky;top:0;z-index:20;background:rgba(15,18,24,.88);
+  header{position:sticky;top:0;z-index:20;background:rgba(15,18,24,.85);
     backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-  [data-theme="light"] header{background:rgba(255,255,255,.88)}
+  [data-theme="light"] header{background:rgba(255,255,255,.85)}
   .hwrap{max-width:var(--maxw);margin:0 auto;padding:10px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
   .htitle{font-weight:800;font-size:1.05rem}
   .htitle small{color:var(--muted);font-weight:500}
@@ -36,551 +36,512 @@
     padding:8px 12px;border-radius:10px;min-width:180px}
   .btn{background:var(--panel2);border:1px solid var(--line);color:var(--ink);
     padding:8px 12px;border-radius:10px;cursor:pointer}
-  .btn:hover{border-color:var(--accent)}
   .progwrap{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.85rem}
   .progbar{width:120px;height:8px;border-radius:6px;background:var(--panel2);overflow:hidden;border:1px solid var(--line)}
   .progfill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--ok));transition:width .3s}
-  /* layout */
   .layout{max-width:var(--maxw);margin:0 auto;padding:20px;display:grid;
-    grid-template-columns:320px 1fr;gap:24px;align-items:start}
-  @media(max-width:980px){.layout{grid-template-columns:1fr}.sidebar{position:static!important;max-height:none!important}}
-  /* sidebar (roadmap + learning path) */
-  .sidebar{position:sticky;top:72px;max-height:calc(100vh - 92px);overflow:auto;display:flex;flex-direction:column;gap:16px}
-  .roadmap,.pathpanel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
-  .roadmap h2,.pathpanel h2{margin:.2em 0 .6em;font-size:.9rem;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+    grid-template-columns:300px 1fr;gap:24px;align-items:start}
+  @media(max-width:900px){.layout{grid-template-columns:1fr}.roadmap{position:static!important}}
+  .roadmap{position:sticky;top:72px;background:var(--panel);border:1px solid var(--line);
+    border-radius:var(--radius);padding:16px;max-height:calc(100vh - 96px);overflow:auto}
+  .roadmap h2{margin:.2em 0 .6em;font-size:.95rem;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
   .rm-stem{margin:0 0 14px}
-  .rm-stem>.rm-stem-name{font-weight:700;margin-bottom:6px;font-size:.88rem;color:var(--accent)}
-  .rm-node{display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:9px;
-    cursor:pointer;font-size:.84rem;color:var(--ink);border:1px solid transparent}
+  .rm-stem>.rm-stem-name{font-weight:700;margin-bottom:6px;font-size:.92rem}
+  .rm-node{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:9px;
+    cursor:pointer;font-size:.88rem;color:var(--ink);border:1px solid transparent}
   .rm-node:hover{background:var(--panel2)}
   .rm-node.active{border-color:var(--accent);background:var(--panel2)}
   .rm-node .dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex:none}
   .rm-node.hot .dot{background:var(--hot)}
   .rm-node.done .dot{background:var(--ok)}
-  .rm-node .badge-hot{margin-left:auto;font-size:.62rem;color:var(--hot);border:1px solid var(--hot);border-radius:6px;padding:0 5px;white-space:nowrap}
-  .rm-node .badge-mid{margin-left:auto;font-size:.62rem;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:0 5px;white-space:nowrap}
-  /* ⭐⭐ pulse badge for C16 */
-  .rm-node.top{border-color:var(--hot);background:rgba(255,107,107,.10)}
-  .rm-node .badge-top{margin-left:auto;font-size:.62rem;color:#fff;background:var(--hot);border-radius:6px;padding:1px 6px;white-space:nowrap;
-    animation:pulse 1.4s infinite;box-shadow:0 0 0 0 rgba(255,107,107,.6)}
-  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,107,107,.55)}70%{box-shadow:0 0 0 8px rgba(255,107,107,0)}100%{box-shadow:0 0 0 0 rgba(255,107,107,0)}}
-  /* learning path */
-  .pathstep{display:flex;align-items:flex-start;gap:8px;padding:5px 6px;border-radius:8px;cursor:pointer;font-size:.82rem;border:1px solid transparent}
-  .pathstep:hover{background:var(--panel2)}
-  .pathstep .num{flex:none;width:20px;height:20px;border-radius:50%;background:var(--panel2);border:1px solid var(--line);
-    display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--muted)}
-  .pathstep.gate .num{background:var(--accent);color:#fff;border-color:var(--accent)}
-  .pathstep.top .num{background:var(--hot);color:#fff;border-color:var(--hot)}
-  .pathstep .ptxt{flex:1}
-  .pathstep .pchk{flex:none;margin-top:2px}
-  .pathstep .ptag{font-size:.66rem;color:var(--muted)}
-  .pathstep .ptag.gatetag{color:var(--accent)}
-  .pathstep .ptag.indtag{color:var(--ok)}
-  .pathstep .ptag.toptag{color:var(--hot);font-weight:700}
-  .legend{font-size:.72rem;color:var(--muted);margin-top:8px;line-height:1.5}
-  .legend b{color:var(--accent)}
-  /* content */
+  .rm-node .badge-hot{margin-left:auto;font-size:.66rem;color:var(--hot);border:1px solid var(--hot);
+    border-radius:6px;padding:0 5px}
+  .rm-node .badge-star{margin-left:auto;font-size:.66rem;color:var(--warn);border:1px solid var(--warn);
+    border-radius:6px;padding:0 5px}
+  .rmlink{display:block;padding:5px 8px;border-radius:8px;color:var(--accent);font-size:.84rem;cursor:pointer}
+  .rmlink:hover{background:var(--panel2)}
   .content{min-width:0}
-  .intro{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-bottom:22px}
+  .intro{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:22px}
   .intro h1{margin:.1em 0 .3em;font-size:1.5rem}
-  .intro .lead{font-size:1.05rem}
-  .intro .examnote{border-left:4px solid var(--warn);background:rgba(255,207,92,.08);padding:10px 14px;border-radius:8px;margin-top:14px;font-size:.92rem}
-  .paradigm{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
-  .paradigm>div{flex:1;min-width:240px;border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--panel2)}
-  .paradigm h4{margin:.2em 0 .3em;font-size:.95rem}
+  .pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .pill{font-size:.78rem;background:var(--panel2);border:1px solid var(--line);border-radius:20px;padding:4px 12px;color:var(--muted)}
+  .pill b{color:var(--ink)}
   .stem-sec{margin:0 0 28px}
   .stem-sec>h2{font-size:1.2rem;padding-bottom:6px;border-bottom:2px solid var(--line)}
-  .stem-sec>.stemdesc{color:var(--muted);font-size:.92rem;margin:.4em 0 .2em}
   .node-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
     margin:14px 0;overflow:hidden;scroll-margin-top:84px}
-  .node-card.topcard{border:2px solid var(--hot);box-shadow:0 0 18px rgba(255,107,107,.18)}
-  .node-card>summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;align-items:center;gap:10px;font-weight:700;flex-wrap:wrap}
+  .node-card.hot2{border-color:var(--hot);box-shadow:0 0 0 1px var(--hot) inset}
+  .node-card>summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;align-items:center;gap:10px;font-weight:700}
   .node-card>summary::-webkit-details-marker{display:none}
   .node-card>summary .chev{margin-left:auto;color:var(--muted);transition:transform .2s}
   .node-card[open]>summary .chev{transform:rotate(90deg)}
   .node-card[open]>summary{border-bottom:1px solid var(--line)}
   .nbadge{font-size:.66rem;padding:1px 7px;border-radius:6px;border:1px solid var(--line);color:var(--muted)}
   .nbadge.hot{color:var(--hot);border-color:var(--hot)}
-  .nbadge.top{color:#fff;background:var(--hot);border-color:var(--hot);animation:pulse 1.4s infinite}
-  .nbadge.warn{color:var(--warn);border-color:var(--warn)}
-  .nbadge.gate{color:var(--accent);border-color:var(--accent)}
-  .nbadge.ind{color:var(--ok);border-color:var(--ok)}
+  .nbadge.star{color:var(--warn);border-color:var(--warn)}
+  .nbadge.warn{color:var(--warn);border-color:var(--warn);background:rgba(255,207,92,.08)}
   .nbody{padding:16px 18px}
-  /* C16 top banner */
-  .topbanner{background:linear-gradient(90deg,rgba(255,107,107,.18),rgba(124,92,255,.12));
-    border:1px solid var(--hot);border-radius:10px;padding:12px 16px;margin:0 0 14px;font-weight:700}
-  .topbanner .big{color:var(--hot);font-size:1.02rem}
-  .topbanner small{display:block;font-weight:500;color:var(--muted);margin-top:3px}
   .field{margin:0 0 14px}
   .field .lbl{font-weight:700;color:var(--accent);font-size:.92rem;display:block;margin-bottom:3px}
   .callout{border-left:4px solid var(--accent2);background:var(--panel2);padding:10px 14px;border-radius:8px;margin:8px 0}
   .scenario{border-left:4px solid var(--ok);background:rgba(62,207,142,.07);padding:10px 14px;border-radius:8px;margin:8px 0}
-  .scenario .lbl{color:var(--ok)}
   .exam-box{border:1px solid var(--warn);background:rgba(255,207,92,.08);border-radius:10px;padding:12px 14px;margin:10px 0}
   .exam-box .lbl{color:var(--warn)}
-  .exam-box.top{border-color:var(--hot);background:rgba(255,107,107,.10)}
-  .exam-box.top .lbl{color:var(--hot)}
   .trap{border-left:4px solid var(--hot);background:rgba(255,107,107,.07);padding:10px 14px;border-radius:8px}
-  .correction{border-left:4px solid var(--warn);background:rgba(255,207,92,.10);padding:8px 12px;border-radius:8px;margin:6px 0;font-size:.9rem}
-  .correction b{color:var(--warn)}
-  .missing{border:1px dashed var(--muted);background:rgba(154,167,184,.06);color:var(--muted);padding:8px 12px;border-radius:8px;font-size:.9rem;font-style:italic}
+  .banner{background:linear-gradient(120deg,rgba(255,107,107,.18),rgba(124,92,255,.12));
+    border:1px solid var(--hot);border-radius:10px;padding:10px 14px;margin:0 0 12px;font-weight:700;color:var(--hot)}
+  .warnstrip{border:1px dashed var(--warn);background:rgba(255,207,92,.06);border-radius:8px;padding:8px 12px;margin:0 0 12px;font-size:.86rem;color:var(--muted)}
   table{border-collapse:collapse;width:100%;margin:8px 0;font-size:.9rem}
-  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left}
+  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
   th{background:var(--panel2)}
-  .hl{color:var(--hot);font-weight:700}
-  .hlok{color:var(--ok);font-weight:700}
   code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-size:.88em}
   .katex-fallback{color:var(--muted);font-family:ui-monospace,monospace}
-  /* stepper */
   .stepper{border:1px solid var(--line);border-radius:10px;padding:12px;margin:10px 0;background:var(--panel2)}
-  .stepper.topstep{border-color:var(--hot)}
+  .stepper.star{border-color:var(--hot)}
   .stepper .step{display:none}
   .stepper .step.show{display:block}
   .stepper .step-head{font-weight:700;color:var(--accent2);margin-bottom:4px}
   .stepper-nav{display:flex;align-items:center;gap:10px;margin-top:10px}
-  .dots{display:flex;gap:5px;margin-left:auto;flex-wrap:wrap}
+  .stepper-title{font-weight:700;font-size:.9rem;margin-bottom:6px;color:var(--ink)}
+  .dots{display:flex;gap:5px;margin-left:auto}
   .dots i{width:8px;height:8px;border-radius:50%;background:var(--line);display:inline-block}
   .dots i.on{background:var(--accent)}
-  .stepcount{font-size:.78rem;color:var(--muted)}
   .ncheck{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.85rem;cursor:pointer}
   .hidden{display:none!important}
+  .scrollx{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .treemap{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:22px}
+  .treemap h2{margin:.1em 0 .2em;font-size:1.15rem}
+  .treemap .tm-sub{color:var(--muted);font-size:.88rem;margin-bottom:12px}
+  .tree, .tree ul{list-style:none;margin:0;padding-left:18px}
+  .tree>li{margin:4px 0}
+  .tm-root{font-weight:800;font-size:1rem}
+  .tm-branch{cursor:pointer;font-weight:700;padding:4px 8px;border-radius:8px;display:inline-flex;align-items:center;gap:6px;border:1px solid transparent}
+  .tm-branch:hover{background:var(--panel2)}
+  .tm-branch .tw{color:var(--muted);transition:transform .2s;font-size:.8rem}
+  .tm-branch.collapsed .tw{transform:rotate(-90deg)}
+  .tm-branch.collapsed + ul{display:none}
+  .tm-desc{color:var(--muted);font-weight:400;font-size:.85rem}
+  .tm-leaf{cursor:pointer;padding:3px 8px;border-radius:7px;border:1px solid var(--line);display:inline-block;margin:2px 0;font-size:.86rem}
+  .tm-leaf:hover{background:var(--panel2);border-color:var(--accent)}
+  .tm-leaf.hot{border-color:var(--hot);color:var(--hot)}
+  .tm-leaf.star{border-color:var(--warn);color:var(--warn);font-weight:700}
+  .tree li{position:relative}
+  .tree ul{border-left:1px dashed var(--line);margin-left:6px}
+  .qa-item{border:1px solid var(--line);border-radius:10px;margin:10px 0;overflow:hidden}
+  .qa-item.star{border-color:var(--hot)}
+  .qa-q{padding:12px 14px;font-weight:700;display:flex;gap:10px;align-items:flex-start}
+  .qa-type{font-size:.66rem;padding:2px 7px;border-radius:6px;border:1px solid var(--accent);color:var(--accent);flex:none;margin-top:2px}
+  .qa-type.star{border-color:var(--hot);color:var(--hot)}
+  .qa-a{padding:0 14px;max-height:0;overflow:hidden;transition:max-height .35s;background:var(--panel2)}
+  .qa-a.open{max-height:3000px;padding:12px 14px}
+  .qa-toggle{margin-left:auto;flex:none}
+  .navtoggle{display:none}
+  .scrim{display:none}
+  @media(max-width:900px){
+    .navtoggle{display:inline-block}
+    .roadmap{position:fixed;top:0;left:0;bottom:0;width:84%;max-width:320px;z-index:40;border-radius:0;
+      transform:translateX(-105%);transition:transform .25s;max-height:100vh}
+    .roadmap.open{transform:translateX(0)}
+    .scrim.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:35}
+  }
+  @media(max-width:600px){
+    body{line-height:1.6}
+    .hwrap{padding:8px 12px;gap:8px}
+    .htitle{font-size:.95rem}
+    .search{min-width:120px;flex:1}
+    .layout{padding:12px}
+    .intro h1{font-size:1.25rem}
+    .node-card>summary{padding:12px 14px;flex-wrap:wrap}
+    .nbody{padding:12px 14px}
+  }
   footer{max-width:var(--maxw);margin:0 auto;padding:30px 20px;color:var(--muted);font-size:.85rem}
 </style>
 </head>
 <body data-theme="dark">
 <a href="index.html" class="__homebtn" style="position:fixed;left:12px;bottom:12px;z-index:9999;background:#5b9dff;color:#04122e;font-weight:800;padding:8px 14px;border-radius:999px;text-decoration:none;font-family:sans-serif;font-size:.82rem;box-shadow:0 4px 14px rgba(0,0,0,.45)">🏠 통합 홈</a>
-
 <header>
   <div class="hwrap">
+    <button class="btn navtoggle" onclick="toggleNav()" title="로드맵/목차" aria-label="로드맵 열기">☰</button>
     <div class="htitle">인공지능개론 <small>· 최용석 교수 · 시험대비 학습자료</small></div>
     <div class="grow"></div>
-    <input class="search" id="search" placeholder="개념 검색… (예: A*, min-conflicts)" oninput="filterNodes(this.value)">
+    <input class="search" id="search" placeholder="개념 검색… (예: A*, min-conflicts, kNN)" oninput="filterNodes(this.value)">
     <div class="progwrap"><span id="progtxt">0%</span><div class="progbar"><div class="progfill" id="progfill"></div></div></div>
     <button class="btn" onclick="toggleTheme()">🌓</button>
   </div>
 </header>
 
+<div class="scrim" id="scrim" onclick="toggleNav()"></div>
 <div class="layout">
-  <!-- ===== 사이드바: 로드맵 + 추천 학습경로 ===== -->
-  <div class="sidebar">
-    <nav class="roadmap" aria-label="로드맵">
-      <h2>🗺️ 로드맵 (구조)</h2>
+  <nav class="roadmap" id="roadmap" aria-label="로드맵">
+    <h2>🗺️ 로드맵 · 학습경로</h2>
 
-      <div class="rm-stem">
-        <div class="rm-stem-name">B1. 탐색 — Uninformed</div>
-        <div class="rm-node hot" data-target="C1" onclick="goNode('C1')"><span class="dot"></span>C1 탐색 정식화·4지표<span class="badge-hot">⭐高·관문</span></div>
-        <div class="rm-node hot" data-target="C2" onclick="goNode('C2')"><span class="dot"></span>C2 BFS<span class="badge-hot">⭐高</span></div>
-        <div class="rm-node hot" data-target="C3" onclick="goNode('C3')"><span class="dot"></span>C3 DFS<span class="badge-hot">⭐高</span></div>
-        <div class="rm-node hot" data-target="C4" onclick="goNode('C4')"><span class="dot"></span>C4 IDS / Depth-Limited<span class="badge-hot">⭐高</span></div>
-        <div class="rm-node hot" data-target="C5" onclick="goNode('C5')"><span class="dot"></span>C5 UCS<span class="badge-hot">⭐高</span></div>
-        <div class="rm-node hot" data-target="C5b" onclick="goNode('C5b')"><span class="dot"></span>C5b 종합 비교표<span class="badge-hot">⭐高</span></div>
-      </div>
+    <div class="rm-stem">
+      <div class="rm-stem-name">B1. 탐색 — Uninformed</div>
+      <div class="rm-node hot" data-target="C1" onclick="goNode('C1')"><span class="dot"></span>C1 탐색 정식화·4지표<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C2" onclick="goNode('C2')"><span class="dot"></span>C2 BFS<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C3" onclick="goNode('C3')"><span class="dot"></span>C3 DFS<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C4" onclick="goNode('C4')"><span class="dot"></span>C4 IDS<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C5" onclick="goNode('C5')"><span class="dot"></span>C5 UCS<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C5b" onclick="goNode('C5b')"><span class="dot"></span>C5b 종합 비교표<span class="badge-hot">⭐高</span></div>
+    </div>
 
-      <div class="rm-stem">
-        <div class="rm-stem-name">B2. 탐색 — Informed & Local</div>
-        <div class="rm-node hot" data-target="C6" onclick="goNode('C6')"><span class="dot"></span>C6 휴리스틱<span class="badge-hot">⭐高·관문</span></div>
-        <div class="rm-node" data-target="C7" onclick="goNode('C7')"><span class="dot"></span>C7 Greedy<span class="badge-mid">⭐中</span></div>
-        <div class="rm-node hot" data-target="C8" onclick="goNode('C8')"><span class="dot"></span>C8 A*<span class="badge-hot">⭐高</span></div>
-        <div class="rm-node hot" data-target="C9" onclick="goNode('C9')"><span class="dot"></span>C9 Admissible·Dominance<span class="badge-hot">⭐高</span></div>
-        <div class="rm-node hot" data-target="C10" onclick="goNode('C10')"><span class="dot"></span>C10 Local·Hill-Climbing<span class="badge-hot">⭐高</span></div>
-      </div>
+    <div class="rm-stem">
+      <div class="rm-stem-name">B2. 탐색 — Informed &amp; Local</div>
+      <div class="rm-node hot" data-target="C6" onclick="goNode('C6')"><span class="dot"></span>C6 휴리스틱<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node" data-target="C7" onclick="goNode('C7')"><span class="dot"></span>C7 Greedy<span class="badge-star">⭐中</span></div>
+      <div class="rm-node hot" data-target="C8" onclick="goNode('C8')"><span class="dot"></span>C8 A*<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C9" onclick="goNode('C9')"><span class="dot"></span>C9 Admissible·Dominance<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C10" onclick="goNode('C10')"><span class="dot"></span>C10 Local·Hill-Climbing<span class="badge-hot">⭐高</span></div>
+    </div>
 
-      <div class="rm-stem">
-        <div class="rm-stem-name">B3. 탐색 — Adversarial</div>
-        <div class="rm-node hot" data-target="C11" onclick="goNode('C11')"><span class="dot"></span>C11 Minimax<span class="badge-hot">⭐高·관문</span></div>
-        <div class="rm-node hot" data-target="C12" onclick="goNode('C12')"><span class="dot"></span>C12 Alpha-Beta<span class="badge-hot">⭐高</span></div>
-        <div class="rm-node" data-target="C13" onclick="goNode('C13')"><span class="dot"></span>C13 Evaluation Fn<span class="badge-mid">⭐中</span></div>
-      </div>
+    <div class="rm-stem">
+      <div class="rm-stem-name">B3. 탐색 — Adversarial</div>
+      <div class="rm-node hot" data-target="C11" onclick="goNode('C11')"><span class="dot"></span>C11 게임·Minimax<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C12" onclick="goNode('C12')"><span class="dot"></span>C12 Alpha-Beta<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node" data-target="C13" onclick="goNode('C13')"><span class="dot"></span>C13 Evaluation Fn<span class="badge-star">⭐中</span></div>
+    </div>
 
-      <div class="rm-stem">
-        <div class="rm-stem-name">B4. 탐색 — CSP</div>
-        <div class="rm-node hot" data-target="C14" onclick="goNode('C14')"><span class="dot"></span>C14 CSP 정식화<span class="badge-hot">⭐高·관문</span></div>
-        <div class="rm-node hot" data-target="C15" onclick="goNode('C15')"><span class="dot"></span>C15 Backtracking<span class="badge-hot">⭐高</span></div>
-        <div class="rm-node top" data-target="C16" onclick="goNode('C16')"><span class="dot"></span>C16 min-conflicts<span class="badge-top">⭐⭐졸업단골</span></div>
-      </div>
+    <div class="rm-stem">
+      <div class="rm-stem-name">B4. 탐색 — CSP</div>
+      <div class="rm-node hot" data-target="C14" onclick="goNode('C14')"><span class="dot"></span>C14 CSP 정식화<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C15" onclick="goNode('C15')"><span class="dot"></span>C15 Backtracking+휴리스틱<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C16" onclick="goNode('C16')"><span class="dot"></span>C16 min-conflicts<span class="badge-hot">⭐⭐</span></div>
+    </div>
 
-      <div class="rm-stem">
-        <div class="rm-stem-name">B5. 학습 (Learning) — 탐색→학습 대전환</div>
-        <div class="rm-node hot" data-target="C17" onclick="goNode('C17')"><span class="dot"></span>C17 kNN<span class="badge-hot">⭐高·독립</span></div>
-        <div class="rm-node hot" data-target="C18" onclick="goNode('C18')"><span class="dot"></span>C18 Decision Tree<span class="badge-hot">⭐高·독립</span></div>
-        <div class="rm-node hot" data-target="C19" onclick="goNode('C19')"><span class="dot"></span>C19 k-means<span class="badge-hot">⭐高</span></div>
-        <div class="rm-node hot" data-target="C20" onclick="goNode('C20')"><span class="dot"></span>C20 계층군집<span class="badge-hot">⭐高</span></div>
-        <div class="rm-node hot" data-target="C21" onclick="goNode('C21')"><span class="dot"></span>C21 Q-Learning<span class="badge-hot">⭐高</span></div>
-        <div class="rm-node hot" data-target="C22" onclick="goNode('C22')"><span class="dot"></span>C22 Perceptron·XOR<span class="badge-hot">⭐高</span></div>
-        <div class="rm-node hot" data-target="C23" onclick="goNode('C23')"><span class="dot"></span>C23 Backpropagation<span class="badge-hot">⭐高</span></div>
-      </div>
-    </nav>
+    <div class="rm-stem">
+      <div class="rm-stem-name">B5. 학습 (Learning)</div>
+      <div class="rm-node hot" data-target="C17" onclick="goNode('C17')"><span class="dot"></span>C17 kNN<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C18" onclick="goNode('C18')"><span class="dot"></span>C18 Decision Tree<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C19" onclick="goNode('C19')"><span class="dot"></span>C19 k-means<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C20" onclick="goNode('C20')"><span class="dot"></span>C20 계층군집<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C21" onclick="goNode('C21')"><span class="dot"></span>C21 Q-Learning<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C22" onclick="goNode('C22')"><span class="dot"></span>C22 Perceptron·XOR<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C23" onclick="goNode('C23')"><span class="dot"></span>C23 Backpropagation<span class="badge-hot">⭐高</span></div>
+    </div>
 
-    <!-- ===== 추천 학습 경로 (동선) ===== -->
-    <nav class="pathpanel" aria-label="추천 학습 경로">
-      <h2>🧭 추천 학습 경로 (동선·24단계)</h2>
-      <div class="pathstep top" data-target="C16" onclick="goNode('C16')"><span class="num">17</span><span class="ptxt"><b>C16 min-conflicts</b> <span class="ptag toptag">⭐⭐ 여기에 가장 많은 시간</span></span><input type="checkbox" class="pathchk" data-id="P-C16" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep gate" data-target="C1" onclick="goNode('C1')"><span class="num">1</span><span class="ptxt">C1 탐색 정식화·4지표 <span class="ptag gatetag">관문 · 中 · ⭐高</span></span><input type="checkbox" class="pathchk" data-id="P1" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep" data-target="C2" onclick="goNode('C2')"><span class="num">2</span><span class="ptxt">C2 BFS <span class="ptag">中 · ⭐高</span></span><input type="checkbox" class="pathchk" data-id="P2" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep" data-target="C3" onclick="goNode('C3')"><span class="num">3</span><span class="ptxt">C3 DFS <span class="ptag">中 · ⭐高 · C2와 대조</span></span><input type="checkbox" class="pathchk" data-id="P3" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep" data-target="C4" onclick="goNode('C4')"><span class="num">4</span><span class="ptxt">C4 IDS <span class="ptag">中 · ⭐高</span></span><input type="checkbox" class="pathchk" data-id="P4" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep" data-target="C5" onclick="goNode('C5')"><span class="num">5</span><span class="ptxt">C5 UCS <span class="ptag">中上 · ⭐高</span></span><input type="checkbox" class="pathchk" data-id="P5" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep" data-target="C5b" onclick="goNode('C5b')"><span class="num">6</span><span class="ptxt">C5b 종합 비교표 <span class="ptag">中 · ⭐高 · C2~C5 복습</span></span><input type="checkbox" class="pathchk" data-id="P6" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep gate" data-target="C6" onclick="goNode('C6')"><span class="num">7</span><span class="ptxt">C6 휴리스틱 <span class="ptag gatetag">관문 · 中 · ⭐高</span></span><input type="checkbox" class="pathchk" data-id="P7" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep" data-target="C7" onclick="goNode('C7')"><span class="num">8</span><span class="ptxt">C7 Greedy <span class="ptag">中 · ⭐中</span></span><input type="checkbox" class="pathchk" data-id="P8" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep" data-target="C8" onclick="goNode('C8')"><span class="num">9</span><span class="ptxt">C8 A* <span class="ptag">中上 · ⭐高</span></span><input type="checkbox" class="pathchk" data-id="P9" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep" data-target="C9" onclick="goNode('C9')"><span class="num">10</span><span class="ptxt">C9 Admissible·Dominance <span class="ptag">上 · ⭐高</span></span><input type="checkbox" class="pathchk" data-id="P10" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep" data-target="C10" onclick="goNode('C10')"><span class="num">11</span><span class="ptxt">C10 Hill-Climbing <span class="ptag">中上 · ⭐高 · C16의 토대</span></span><input type="checkbox" class="pathchk" data-id="P11" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep gate" data-target="C11" onclick="goNode('C11')"><span class="num">12</span><span class="ptxt">C11 Minimax <span class="ptag gatetag">관문 · 中上 · ⭐高</span></span><input type="checkbox" class="pathchk" data-id="P12" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep" data-target="C12" onclick="goNode('C12')"><span class="num">13</span><span class="ptxt">C12 Alpha-Beta <span class="ptag">上 · ⭐高</span></span><input type="checkbox" class="pathchk" data-id="P13" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep" data-target="C13" onclick="goNode('C13')"><span class="num">14</span><span class="ptxt">C13 Evaluation Fn <span class="ptag">中 · ⭐中</span></span><input type="checkbox" class="pathchk" data-id="P14" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep gate" data-target="C14" onclick="goNode('C14')"><span class="num">15</span><span class="ptxt">C14 CSP 정식화 <span class="ptag gatetag">관문 · 中上 · ⭐高</span></span><input type="checkbox" class="pathchk" data-id="P15" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep" data-target="C15" onclick="goNode('C15')"><span class="num">16</span><span class="ptxt">C15 Backtracking <span class="ptag">上 · ⭐高</span></span><input type="checkbox" class="pathchk" data-id="P16" onclick="event.stopPropagation();markPath(this)"></div>
-      <!-- 17 = C16 위에 고정 표시 -->
-      <div class="pathstep ind" data-target="C17" onclick="goNode('C17')"><span class="num">18</span><span class="ptxt">C17 kNN <span class="ptag indtag">독립 · 中 · ⭐高</span></span><input type="checkbox" class="pathchk" data-id="P18" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep ind" data-target="C18" onclick="goNode('C18')"><span class="num">19</span><span class="ptxt">C18 Decision Tree <span class="ptag indtag">독립 · 中上 · ⭐高</span></span><input type="checkbox" class="pathchk" data-id="P19" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep" data-target="C19" onclick="goNode('C19')"><span class="num">20</span><span class="ptxt">C19 k-means <span class="ptag">中上 · ⭐高</span></span><input type="checkbox" class="pathchk" data-id="P20" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep" data-target="C20" onclick="goNode('C20')"><span class="num">21</span><span class="ptxt">C20 계층군집 <span class="ptag">中上 · ⭐高 · C19와 묶어</span></span><input type="checkbox" class="pathchk" data-id="P21" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep" data-target="C21" onclick="goNode('C21')"><span class="num">22</span><span class="ptxt">C21 Q-Learning <span class="ptag">上 · ⭐高 · ⚠️범위 미확인</span></span><input type="checkbox" class="pathchk" data-id="P22" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep" data-target="C22" onclick="goNode('C22')"><span class="num">23</span><span class="ptxt">C22 Perceptron·XOR <span class="ptag">中上 · ⭐高 · ⚠️범위 미확인</span></span><input type="checkbox" class="pathchk" data-id="P23" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="pathstep" data-target="C23" onclick="goNode('C23')"><span class="num">24</span><span class="ptxt">C23 Backpropagation <span class="ptag">上 · ⭐高 · ⚠️범위 미확인</span></span><input type="checkbox" class="pathchk" data-id="P24" onclick="event.stopPropagation();markPath(this)"></div>
-      <div class="legend">
-        <b>관문(gateway)</b> = 먼저 끝내야 뒤가 풀림: C1·C6·C11·C14.<br>
-        <span style="color:var(--ok)">독립</span> = 아무 때나 가능: C17·C18.<br>
-        <span style="color:var(--hot)">⭐⭐ C16</span> = 졸업시험 단골, 최우선(맨 위 고정).
-      </div>
-    </nav>
-  </div>
+    <div class="rm-stem">
+      <div class="rm-stem-name">📝 마무리</div>
+      <div class="rmlink" onclick="goNode('examqs')">→ 예상 문제 &amp; 모범답변 (10)</div>
+      <div class="rmlink" onclick="goNode('treemap')">→ 첫 화면 MECE 트리맵</div>
+    </div>
+  </nav>
 
-  <!-- ===== 콘텐츠 ===== -->
   <main class="content">
     <section class="intro">
-      <h1>인공지능개론</h1>
-      <p class="lead">이 과목은 결국 <b>딥러닝 이전의 고전 AI/ML로 두 가지를 푼다 — (A) 탐색으로 문제 풀기, (B) 데이터로 학습하기.</b></p>
-      <div class="paradigm">
-        <div><h4>A. 탐색으로 "정답 경로를 <span class="hl">찾는다</span>" (B1~B4)</h4>
-          Uninformed → Informed/Local → Adversarial(게임) → CSP. 모든 전략을 <b>완전성·최적성·시간·공간</b> 4지표로 평가.</div>
-        <div><h4>B. 데이터로 "패턴을 <span class="hlok">배운다</span>" (B5)</h4>
-          지도(kNN·DT·ANN) / 비지도(군집) / 강화(Q-learning). 정답 경로가 아니라 일반화 규칙을 학습.</div>
-      </div>
-      <div class="examnote">
-        📝 <b>시험 특성</b>: 기말 = <b>토픽당 1문제 · 8~10문제 · 객관식 없음 · 증명/유도 없음 · 개념·절차·"왜"를 서술형으로.</b>
-        모든 <b>시험 포인트</b>는 "이 토픽이 나오면 무엇을 어떻게 <b>말로 설명</b>해야 하는가"로 작성됐다. 손계산보다 절차·이유 서술이 핵심.
-        <br>⭐⭐ <b>최우선</b>: <b>C16 (CSP Local Search — min-conflicts, Hill-Climbing vs Simulated Annealing) = 졸업시험 단골</b>. 맨 위에 고정 강조.
+      <h1>인공지능개론 <small style="font-size:.7em;color:var(--muted)">시험대비 학습자료</small></h1>
+      <p><b>이 과목은 결국 — 딥러닝 이전의 고전 AI/ML로 두 가지를 푼다: (A) 탐색으로 문제 풀기, (B) 데이터로 학습하기.</b></p>
+      <p style="color:var(--muted)">상단 <b>MECE 트리맵</b>으로 전체 구조를 잡고, 좌측 로드맵의 노드를 클릭해 드릴다운하세요. 각 노드는 <b>직관 → 정의 → 🌍실세계 시나리오 → 단계별 풀이(STEP) → 시험 포인트</b> 순. 맨 끝 <b>예상 문제</b>로 셀프테스트.</p>
+      <div class="pillrow">
+        <span class="pill">기말 형식: <b>객관식·증명 없음</b></span>
+        <span class="pill"><b>토픽당 1문제 · 8~10문제</b> 서술형</span>
+        <span class="pill">최우선 ⭐⭐ <b>CSP Local Search (min-conflicts)</b> — 졸업단골</span>
+        <span class="pill">노드 <b>24</b> · STEP <b>12</b> · 시나리오 <b>18</b> · 예상문제 <b>10</b></span>
       </div>
     </section>
 
-    <!-- ============================================================ -->
-    <!-- ===== 줄기 B1: Uninformed ===== -->
-    <!-- ============================================================ -->
-    <section class="stem-sec">
-      <h2>B1. 탐색 — Uninformed (정보 없는 탐색)</h2>
-      <div class="stemdesc">휴리스틱 없이 상태공간을 맹목적으로 펼쳐 목표를 찾는다. "완전성·최적성·시간·공간" 4지표로 모든 전략을 평가.</div>
+    <section class="treemap" id="treemap">
+      <h2>🧭 한눈에 보는 전체 구조 (MECE 트리맵)</h2>
+      <div class="tm-sub">큰 가지를 먼저 본 뒤, 잎(개념)을 클릭하면 해당 카드로 드릴다운합니다. ⭐⭐는 졸업시험 단골.</div>
+      <ul class="tree">
+        <li><span class="tm-root">인공지능개론 — 고전 AI/ML: (A) 탐색으로 풀기 + (B) 데이터로 배우기</span>
+          <ul>
+            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">▾</span>가지 1. 탐색 — Uninformed <span class="tm-desc">— 휴리스틱 없이 맹목 전개, 4지표로 평가</span></span>
+              <ul>
+                <li><span class="tm-leaf hot" data-target="C1" onclick="goNode('C1')">C1 탐색 정식화·4지표 ⭐</span>
+                <span class="tm-leaf hot" data-target="C2" onclick="goNode('C2')">C2 BFS ⭐</span>
+                <span class="tm-leaf hot" data-target="C3" onclick="goNode('C3')">C3 DFS ⭐</span>
+                <span class="tm-leaf hot" data-target="C4" onclick="goNode('C4')">C4 IDS ⭐</span>
+                <span class="tm-leaf hot" data-target="C5" onclick="goNode('C5')">C5 UCS ⭐</span>
+                <span class="tm-leaf hot" data-target="C5b" onclick="goNode('C5b')">C5b 비교표 ⭐</span></li>
+              </ul>
+            </li>
+            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">▾</span>가지 2. 탐색 — Informed &amp; Local <span class="tm-desc">— h(n)으로 목표 쪽 우선, 경로 무의미 문제는 Local</span></span>
+              <ul>
+                <li><span class="tm-leaf hot" data-target="C6" onclick="goNode('C6')">C6 휴리스틱 ⭐</span>
+                <span class="tm-leaf" data-target="C7" onclick="goNode('C7')">C7 Greedy</span>
+                <span class="tm-leaf hot" data-target="C8" onclick="goNode('C8')">C8 A* ⭐</span>
+                <span class="tm-leaf hot" data-target="C9" onclick="goNode('C9')">C9 Admissible·Dominance ⭐</span>
+                <span class="tm-leaf hot" data-target="C10" onclick="goNode('C10')">C10 Hill-Climbing ⭐</span></li>
+              </ul>
+            </li>
+            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">▾</span>가지 3. 탐색 — Adversarial <span class="tm-desc">— 상대가 내 이익을 깎는다 가정, 최악을 최대화</span></span>
+              <ul>
+                <li><span class="tm-leaf hot" data-target="C11" onclick="goNode('C11')">C11 게임·Minimax ⭐</span>
+                <span class="tm-leaf hot" data-target="C12" onclick="goNode('C12')">C12 Alpha-Beta ⭐</span>
+                <span class="tm-leaf" data-target="C13" onclick="goNode('C13')">C13 Evaluation Fn</span></li>
+              </ul>
+            </li>
+            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">▾</span>가지 4. 탐색 — CSP <span class="tm-desc">— 변수+도메인+제약으로 구조화, ⭐⭐졸업단골 min-conflicts</span></span>
+              <ul>
+                <li><span class="tm-leaf hot" data-target="C14" onclick="goNode('C14')">C14 CSP 정식화 ⭐</span>
+                <span class="tm-leaf hot" data-target="C15" onclick="goNode('C15')">C15 Backtracking+휴리스틱 ⭐</span>
+                <span class="tm-leaf star" data-target="C16" onclick="goNode('C16')">C16 min-conflicts ⭐⭐ 졸업단골</span></li>
+              </ul>
+            </li>
+            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">▾</span>가지 5. 학습 (Learning) <span class="tm-desc">— 데이터로 배운다: 지도/비지도/강화</span></span>
+              <ul>
+                <li><span class="tm-leaf hot" data-target="C17" onclick="goNode('C17')">C17 kNN ⭐</span>
+                <span class="tm-leaf hot" data-target="C18" onclick="goNode('C18')">C18 Decision Tree ⭐</span>
+                <span class="tm-leaf hot" data-target="C19" onclick="goNode('C19')">C19 k-means ⭐</span>
+                <span class="tm-leaf hot" data-target="C20" onclick="goNode('C20')">C20 계층군집 ⭐</span>
+                <span class="tm-leaf hot" data-target="C21" onclick="goNode('C21')">C21 Q-Learning ⭐</span>
+                <span class="tm-leaf hot" data-target="C22" onclick="goNode('C22')">C22 Perceptron·XOR ⭐</span>
+                <span class="tm-leaf hot" data-target="C23" onclick="goNode('C23')">C23 Backpropagation ⭐</span></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <div class="tm-sub" style="margin-top:10px"><b>MECE 점검:</b> 5개 가지는 서로 다른 문제틀(맹목 / 휴리스틱·지역 / 적대 / 제약 / 학습)로 상호배타이며, C1~C23 전 개념을 빠짐없이 덮는다(전체포괄). 탐색(가지1~4)↔학습(가지5)이 과목의 두 대전환 축.</div>
+    </section>
 
-      <!-- C1 -->
-      <details class="node-card" id="C1" data-node-id="C1" data-title="C1 탐색 문제 정식화 & 평가 4지표">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C1" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C1 · 탐색 문제 정식화 &amp; 평가 4지표
-          <span class="nbadge hot">⭐高</span><span class="nbadge gate">관문</span><span class="nbadge">선행: 없음(시작점)</span>
-          <span class="chev">▶</span>
-        </summary>
+    <!-- ===================== B1 ===================== -->
+    <section class="stem-sec" id="B1">
+      <h2>B1. 탐색 — Uninformed (정보 없는 탐색)</h2>
+
+      <details class="node-card" id="C1" data-node-id="C1" data-title="탐색 문제 정식화 평가 4지표">
+        <summary><input type="checkbox" class="nodechk" data-id="C1" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C1 · 탐색 문제 정식화 &amp; 평가 4지표 <span class="nbadge hot">⭐高</span><span class="nbadge">선행: 없음(시작점)</span><span class="nbadge">관문</span><span class="chev">▶</span></summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>상태=노드, 연산자=엣지인 그래프를 탐색트리로 펼쳐 목표를 찾는다.</div>
-          <div class="field"><span class="lbl">📖 정의</span>search space = states + operators (그래프). search tree = 그 그래프의 한 탐색 전개. search strategy = <b>노드 확장 순서</b>의 선택.</div>
-          <div class="field"><span class="lbl">🔍 작동 원리 / 평가 4지표</span>
+          <div class="field"><span class="lbl">📖 정의</span>search space = states + operators(그래프). search tree = 그 그래프의 한 탐색 전개. search strategy = <b>노드 확장 순서</b>의 선택.</div>
+          <div class="field"><span class="lbl">🔍 평가 4지표 + 3대 파라미터</span>
             <ul>
               <li><b>Completeness</b>: 해가 존재하면 반드시 찾는가?</li>
               <li><b>Optimality</b>: 항상 최소비용(또는 최소깊이) 해를 찾는가?</li>
-              <li><b>Time complexity</b>: 생성된 노드 수 (worst case)</li>
+              <li><b>Time complexity</b>: 생성된 노드 수(worst case)</li>
               <li><b>Space complexity</b>: 메모리에 동시에 올라가는 최대 노드 수</li>
             </ul>
-            <div class="callout"><b>3대 파라미터</b>: \(b\)=최대 분기수(branching factor), \(d\)=최소비용해의 깊이, \(m\)=상태공간 최대 깊이(\(\infty\) 가능).</div>
+            <div class="callout"><b>b</b>=최대 분기수(branching factor), <b>d</b>=최소비용해의 깊이, <b>m</b>=상태공간 최대 깊이(∞ 가능).</div>
           </div>
-          <div class="field"><span class="lbl">📊 인사이트</span><div class="callout">복잡도는 <b>"생성된 노드 수"</b> 기준으로 본다 → Min-Heap 정렬 같은 부가비용은 평가에서 무시(Day1 교수 강조 질문). \(b\)가 커지면 지수 폭발이 본질.</div></div>
+          <div class="field"><span class="lbl">📊 인사이트</span>복잡도는 <b>"생성된 노드 수"</b> 기준 → Min-Heap 정렬 같은 부가비용은 평가에서 무시(Day1 교수 강조 질문). b가 커지면 지수 폭발이 본질.</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">time과 space를 혼동. space는 "동시에 메모리에 올라가는 <b>최대</b>" — 뒤의 BFS 지수공간/DFS 선형공간 논쟁의 기준.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"4지표(완전·최적·시간·공간)를 각각 정의하고, \(b/d/m\)이 무엇을 뜻하는지 설명하라." → 네 단어 정의 + 세 파라미터 의미를 <b>자기 말로</b>. 서술형 단골.</div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"4지표(완전·최적·시간·공간)를 각각 정의하고, b/d/m이 무엇을 뜻하는지 설명하라." → 네 단어 정의 + 세 파라미터 의미를 <b>자기 말로</b>. 서술형 단골.</div>
           <div class="field"><span class="lbl">🔗 연결</span>응용 → C2·C3·C6·C11·C14 (모든 탐색 줄기의 뿌리)</div>
         </div>
       </details>
 
-      <!-- C2 -->
-      <details class="node-card" id="C2" data-node-id="C2" data-title="C2 BFS Breadth-First Search">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C2" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C2 · BFS (Breadth-First Search)
-          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C1</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C2" data-node-id="C2" data-title="BFS Breadth-First Search">
+        <summary><input type="checkbox" class="nodechk" data-id="C2" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C2 · BFS (Breadth-First Search) <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C1</span><span class="chev">▶</span></summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>가장 얕은 미확장 노드 먼저 = 레벨 순서로 펼친다.</div>
-          <div class="field"><span class="lbl">📖 정의 / 자료구조</span><b>FIFO Queue</b> (새 successor를 큐 <b>끝</b>에 추가).
-            <div class="correction">⚠️ <b>학생 노트 정정</b>: Notion Day1은 이를 <b>Stack으로 잘못 표기</b> — 정답은 <b>FIFO Queue</b>(먼저 들어온 얕은 노드를 먼저 꺼냄).</div>
-          </div>
+          <div class="field"><span class="lbl">📖 정의 / 자료구조</span><b>FIFO Queue</b>(새 successor를 큐 <b>끝</b>에 추가). <span class="nbadge warn">⚠️ 정정</span> 학생 노트(Notion Day1)는 이를 Stack으로 잘못 표기 — 정답은 <b>FIFO Queue</b>.</div>
           <div class="field"><span class="lbl">📊 표·그래프 인사이트</span>
-            <table>
+            <div class="scrollx"><table>
               <tr><th>지표</th><th>값</th><th>왜</th></tr>
-              <tr><td>Complete</td><td class="hlok">Yes</td><td>유한 \(b\)면 결국 모든 레벨 도달</td></tr>
-              <tr><td>Optimal</td><td class="hlok">Yes (단계비용 동일 가정)</td><td>얕은 해 먼저</td></tr>
-              <tr><td>Time</td><td>\(O(b^d)\) (정밀히 \(O(b^{d+1})\))</td><td>깊이 \(d\)까지 노드 누적</td></tr>
-              <tr><td>Space</td><td class="hl">\(O(b^d)\)</td><td><b>지수 메모리 = 치명적 약점</b></td></tr>
-            </table>
-            <div class="callout"><b>정량 예</b> (\(b=10\), \(10^4\) node/s, 1KB/node): \(d=8\) → ≈\(10^9\)노드/≈31시간/<b>1TB</b>; \(d=12\) → ≈\(10^{13}\)노드/≈35년/<b>10PB</b>. → BFS의 실질 한계는 <b>시간보다 메모리(지수 공간)</b>.</div>
+              <tr><td>Complete</td><td>Yes</td><td>유한 b면 결국 모든 레벨 도달</td></tr>
+              <tr><td>Optimal</td><td>Yes (단계비용 동일 가정)</td><td>얕은 해 먼저</td></tr>
+              <tr><td>Time</td><td>O(b^d) (정밀히 O(b^{d+1}))</td><td>깊이 d까지 노드 누적</td></tr>
+              <tr><td>Space</td><td>O(b^d)</td><td><b>지수 메모리 = 치명적 약점</b></td></tr>
+            </table></div>
+            <div class="callout"><b>정량 예</b>(b=10, 10⁴ node/s, 1KB/node): d=8 → ≈10⁹노드/≈31시간/<b>1TB</b>; d=12 → ≈10¹³노드/≈35년/<b>10PB</b>. → BFS의 실질 한계는 <b>시간보다 메모리(지수 공간)</b>.</div>
           </div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">"Time이 약점"이라 답하기 쉬우나 슬라이드 강조는 <b>exponential SPACE</b>(메모리).</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"BFS의 자료구조와 4지표를 말하고, <b>왜 실무에서 못 쓰는지</b> 설명하라." → 답: FIFO Queue · 완전·최적 · <b>지수 공간(메모리)</b> 때문. 정량 예(10PB)를 근거로 들면 강함.</div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"BFS의 자료구조와 4지표를 말하고, <b>왜 실무에서 못 쓰는지</b> 설명하라." → FIFO Queue · 완전·최적 · <b>지수 공간(메모리)</b> 때문. 정량 예(10PB)를 근거로 들면 강함.</div>
           <div class="field"><span class="lbl">🔗 연결</span>선행 C1 / 대조 C3(DFS, 메모리 정반대) / 일반화 C5(UCS)</div>
         </div>
       </details>
 
-      <!-- C3 -->
-      <details class="node-card" id="C3" data-node-id="C3" data-title="C3 DFS Depth-First Search">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C3" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C3 · DFS (Depth-First Search)
-          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C1</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C3" data-node-id="C3" data-title="DFS Depth-First Search">
+        <summary><input type="checkbox" class="nodechk" data-id="C3" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C3 · DFS (Depth-First Search) <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C1</span><span class="chev">▶</span></summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>가장 깊은 미확장 노드 먼저, 막히면 backtrack.</div>
-          <div class="field"><span class="lbl">📖 정의 / 자료구조</span><b>LIFO Stack</b> (새 successor를 스택 <b>앞</b>에 추가).
-            <div class="correction">⚠️ <b>학생 노트 정정</b>: 학생 노트가 BFS와 <b>뒤바뀜</b> — DFS의 정답은 <b>LIFO Stack</b>(나중에 넣은 깊은 노드를 먼저 꺼냄).</div>
-          </div>
+          <div class="field"><span class="lbl">📖 정의 / 자료구조</span><b>LIFO Stack</b>(새 successor를 스택 <b>앞</b>에 추가). <span class="nbadge warn">⚠️ 정정</span> 학생 노트 뒤바뀜 — 정답은 <b>LIFO Stack</b>.</div>
           <div class="field"><span class="lbl">📊 표·그래프 인사이트</span>
-            <table>
+            <div class="scrollx"><table>
               <tr><th>지표</th><th>값</th><th>왜</th></tr>
-              <tr><td>Complete</td><td class="hl">No (트리 깊이 무한이면)</td><td>무한 경로에 빠질 수 있음</td></tr>
-              <tr><td>Optimal</td><td class="hl">No</td><td>먼저 찾은 해가 최소가 아닐 수 있음</td></tr>
-              <tr><td>Time</td><td>\(O(b^m)\)</td><td>최악 전체 깊이 탐색</td></tr>
-              <tr><td>Space</td><td class="hlok">\(O(bm)\) = Linear</td><td>깊이 깊어져도 메모리 일정 = <b>최대 장점</b></td></tr>
-            </table>
-            <div class="callout"><b>BFS vs DFS 인사이트</b>: Time은 같은 꼴이나 — BFS는 무한경로/많은 loop/얕은 해에 유리; DFS는 <b>메모리 선형(압도적 우위)</b>, 해가 많고 loop 적고 무한경로 없을 때 유리.</div>
+              <tr><td>Complete</td><td>No (트리 깊이 무한이면)</td><td>무한 경로에 빠질 수 있음</td></tr>
+              <tr><td>Optimal</td><td>No</td><td>먼저 찾은 해가 최소가 아닐 수 있음</td></tr>
+              <tr><td>Time</td><td>O(b^m)</td><td>최악 전체 깊이 탐색</td></tr>
+              <tr><td>Space</td><td><b>O(bm) = Linear</b></td><td>깊이 깊어져도 메모리 일정 = <b>최대 장점</b></td></tr>
+            </table></div>
+            <div class="callout"><b>BFS vs DFS</b>: Time은 같은 꼴이나 — BFS는 무한경로/많은 loop/얕은 해에 유리; DFS는 <b>메모리 선형(압도적 우위)</b>, 해가 많고 loop 적고 무한경로 없을 때 유리.</div>
           </div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">DFS의 핵심 가치는 "빠름"이 아니라 <b>선형 공간</b>. 비완전성은 "무한 깊이"라는 조건에서만.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"DFS의 자료구조와 <b>가장 큰 장점</b>, 그리고 <b>언제 불완전한지</b>를 설명하라." → LIFO Stack · 장점=선형 공간 \(O(bm)\) · 무한 깊이 트리에서 불완전.</div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"DFS의 자료구조와 <b>가장 큰 장점</b>, 그리고 <b>언제 불완전한지</b>를 설명하라." → LIFO Stack · 장점=선형 공간 O(bm) · 무한 깊이 트리에서 불완전.</div>
           <div class="field"><span class="lbl">🔗 연결</span>선행 C1 / 대조 C2(BFS) / 응용 C4(IDS), C14·C15(backtracking=DFS)</div>
         </div>
       </details>
 
-      <!-- C4 -->
-      <details class="node-card" id="C4" data-node-id="C4" data-title="C4 Depth-Limited IDS Iterative Deepening">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C4" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C4 · Depth-Limited &amp; IDS (Iterative Deepening Search)
-          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C2, C3</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C4" data-node-id="C4" data-title="Depth-Limited IDS Iterative Deepening">
+        <summary><input type="checkbox" class="nodechk" data-id="C4" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C4 · Depth-Limited &amp; IDS <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C2, C3</span><span class="chev">▶</span></summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span>DFS를 depth-limit \(L\)을 1씩 키우며 반복 → <b>DFS의 선형 메모리 + BFS의 완전성·최적성</b>.</div>
-          <div class="field"><span class="lbl">📖 정의</span>
-            <ul>
-              <li><b>Depth-Limited(\(L\))</b>: 무한경로 문제는 해결하나, 해가 \(L\)보다 깊으면 불완전. \(L\)은 문제 지식(예: state-space 지름)으로 선택.</li>
-              <li><b>IDS 의사코드</b>: <code>L=1; while no solution: DFS(initial, cutoff=L); if found return; else L++</code></li>
-            </ul>
-          </div>
-          <div class="field"><span class="lbl">📊 인사이트 ("낭비 아닌가?")</span><div class="callout">반복 탐색이지만 대부분 시간은 가장 깊은 레벨 \(d\)에서 소모 → BFS 대비 <b>약 11%만</b> 더 듦 (\(b=10, d=5\): \(N_{IDS}\approx 123{,}450\) vs \(N_{BFS}\approx 111{,}110\), 비율 ≈ \(b/(b-1)\)). 성질: Space <b>\(O(bd)\)</b>, Time \(O(b^d)\), Complete Yes, Optimal Yes(경로비용이 깊이의 비감소 함수일 때).</div></div>
-
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — IDS가 "낭비 아님"을 수로 보이기</span>
+          <div class="field"><span class="lbl">🎯 한 줄 직관</span>DFS를 depth-limit L을 1씩 키우며 반복 → <b>DFS의 선형 메모리 + BFS의 완전성·최적성</b>.</div>
+          <div class="field"><span class="lbl">📖 정의</span><b>Depth-Limited(L)</b>: 무한경로 문제는 해결하나, 해가 L보다 깊으면 불완전. L은 문제 지식(예: state-space 지름)으로 선택. <br><b>IDS 의사코드</b>: <code>L=1; while no solution: DFS(initial, cutoff=L); if found return; else L++</code></div>
+          <div class="field"><span class="lbl">📊 인사이트 ("낭비 아닌가?")</span><div class="callout">반복 탐색이지만 대부분 시간은 가장 깊은 레벨 d에서 소모 → BFS 대비 <b>약 11%만</b> 더 듦 (b=10,d=5: N(IDS)≈123,450 vs N(BFS)≈111,110, 비율 ≈ b/(b−1)). 성질: Space <b>O(bd)</b>, Time O(b^d), Complete Yes, Optimal Yes(경로비용이 깊이의 비감소 함수일 때).</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>
             <div class="stepper">
-              <div class="step show"><div class="step-head">1. [직관]</div>IDS는 \(L=1,2,3...\)로 DFS를 반복하니 윗 레벨을 여러 번 본다 — 손해 같다.</div>
-              <div class="step"><div class="step-head">2. [셋업]</div>\(b=10\)(분기), 해 깊이 \(d=5\). 노드 수는 레벨이 깊을수록 \(b\)배씩 폭증.</div>
-              <div class="step"><div class="step-head">3. [전개1·왜]</div>레벨 0 노드는 \(d+1\)번, 레벨1은 \(d\)번... 가장 깊은 레벨 \(d\)는 1번만 생성. 즉 <b>많이 반복되는 건 노드가 적은 윗레벨</b>.</div>
-              <div class="step"><div class="step-head">4. [전개2]</div>계산: \(N_{IDS}\approx 123{,}450\), \(N_{BFS}\approx 111{,}110\).</div>
-              <div class="step"><div class="step-head">5. [결론]</div>비율 ≈ \(b/(b-1) = 10/9 \approx 1.11\) → <b>11%만 더 듦</b>. 메모리는 \(O(bd)\)로 선형.</div>
-              <div class="step"><div class="step-head">6. [검산]</div>\(b\)가 클수록 \(b/(b-1)\to 1\) → 분기 클수록 낭비 더 적음.</div>
-              <div class="step"><div class="step-head">7. [시험 변형]</div>"IDS의 시간이 BFS보다 약간 더 드는데도 표준으로 쓰는 이유?" → 메모리 선형 + 완전·최적, 추가 시간은 상수배(약 11%)에 불과.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-title">IDS가 "낭비 아님"을 수로 보이기</div>
+              <div class="step show"><div class="step-head">1. 직관</div>IDS는 L=1,2,3…로 DFS를 반복하니 윗 레벨을 여러 번 본다 — 손해 같다.</div>
+              <div class="step"><div class="step-head">2. 셋업</div>b=10(분기), 해 깊이 d=5. 노드 수는 레벨이 깊을수록 b배씩 폭증.</div>
+              <div class="step"><div class="step-head">3. 전개1·왜</div>레벨 0 노드는 d+1번, 레벨1은 d번… 가장 깊은 레벨 d는 1번만 생성. 즉 <b>많이 반복되는 건 노드가 적은 윗레벨</b>.</div>
+              <div class="step"><div class="step-head">4. 전개2</div>계산: N(IDS)≈123,450, N(BFS)≈111,110.</div>
+              <div class="step"><div class="step-head">5. 결론</div>비율 ≈ b/(b−1) = 10/9 ≈ 1.11 → <b>11%만 더 듦</b>. 메모리는 O(bd)로 선형.</div>
+              <div class="step"><div class="step-head">6. 검산</div>b가 클수록 b/(b−1)→1 → 분기 클수록 낭비 더 적음.</div>
+              <div class="step"><div class="step-head">7. 시험 변형</div>"IDS의 시간이 BFS보다 약간 더 드는데도 표준으로 쓰는 이유?" → 메모리 선형 + 완전·최적, 추가 시간은 상수배(약 11%)에 불과.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">"재탐색하니 훨씬 느리다"는 오해 — 지수 트리에서 <b>마지막 레벨이 노드 수를 지배</b>하므로 재방문 비용은 작다.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"IDS는 왜 좋은가? 반복하는데 왜 낭비가 아닌가?" → 답: DFS 메모리(선형) + BFS 완전·최적 결합, 그리고 <b>상위 레벨 재탐색 비용은 마지막 레벨에 비해 미미(약 11%)</b>. <b>큰 공간 + 미지의 해 깊이일 때 uninformed 표준</b>.</div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"IDS는 왜 좋은가? 반복하는데 왜 낭비가 아닌가?" → DFS 메모리(선형) + BFS 완전·최적 결합, <b>상위 레벨 재탐색 비용은 마지막 레벨에 비해 미미(약 11%)</b>. 큰 공간 + 미지의 해 깊이일 때 uninformed 표준.</div>
           <div class="field"><span class="lbl">🔗 연결</span>선행 C2·C3 / 종합 C5b</div>
         </div>
       </details>
 
-      <!-- C5 -->
-      <details class="node-card" id="C5" data-node-id="C5" data-title="C5 UCS Uniform Cost Search">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C5" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C5 · UCS (Uniform Cost Search)
-          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C2</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C5" data-node-id="C5" data-title="UCS Uniform Cost Search">
+        <summary><input type="checkbox" class="nodechk" data-id="C5" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C5 · UCS (Uniform Cost Search) <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C2</span><span class="chev">▶</span></summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span>\(g(n)\)=시작~\(n\) 경로비용이 최소인 fringe 노드를 항상 확장 (BFS의 <b>비용 일반화</b>).</div>
-          <div class="field"><span class="lbl">📖 정의 / 자료구조</span><b>Min-Heap (priority queue)</b>. <span style="color:var(--muted)">(학생 노트도 여기는 Min-Heap으로 맞게 표기.)</span></div>
-          <div class="field"><span class="lbl">🧮 수식</span>\[ g(n) = \text{시작 상태 S에서 노드 n까지의 누적 경로비용} \]항상 <b>min \(g(n)\)</b> 노드를 확장.</div>
+          <div class="field"><span class="lbl">🎯 한 줄 직관</span>g(n)=시작~n 경로비용이 최소인 fringe 노드를 항상 확장 (BFS의 <b>비용 일반화</b>).</div>
+          <div class="field"><span class="lbl">📖 정의 / 자료구조</span><b>Min-Heap (priority queue)</b>. (학생 노트도 여기는 Min-Heap으로 맞게 표기.)</div>
+          <div class="field"><span class="lbl">🧮 수식</span>\( g(n) \) = 시작 상태 S에서 노드 n까지의 누적 경로비용. 항상 <b>min g(n)</b> 노드를 확장.</div>
           <div class="field"><span class="lbl">🔍 작동 원리 / 최적성·완전성 (PDF 명시)</span>
             <ul>
-              <li>가정: 모든 step 비용 \(\geq \varepsilon &gt; 0\).</li>
-              <li><b>Completeness</b>: \(\varepsilon&gt;0\) + 유한 \(b\) ⇒ 목표 비용 도달까지 유한 확장 ⇒ 유한 단계 내 도달.</li>
+              <li>가정: 모든 step 비용 ≥ ε &gt; 0.</li>
+              <li><b>Completeness</b>: ε&gt;0 + 유한 b ⇒ 목표 비용 도달까지 유한 확장 ⇒ 유한 단계 내 도달.</li>
               <li><b>Optimality(모순법)</b>: UCS가 비최적이라 가정 → 더 작은 비용의 목표 존재 → 그러나 UCS는 정의상 그 노드를 <b>먼저</b> 확장했을 것 → 모순.</li>
             </ul>
           </div>
-          <div class="field"><span class="lbl">📊 인사이트</span><div class="callout">복잡도 시간·공간 <b>\(O(b^{1+\lfloor C^*/\varepsilon \rfloor})\)</b> (\(C^*\)=최적해 비용). 모든 비용이 같으면 BFS와 동일 동작.</div></div>
+          <div class="field"><span class="lbl">📊 인사이트</span><div class="callout">복잡도 시간·공간 \( O(b^{1+\lfloor C^*/\varepsilon \rfloor}) \) (C*=최적해 비용). 모든 비용이 같으면 BFS와 동일 동작.</div></div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">"UCS는 항상 BFS와 다르다"는 오해 — 비용이 균일하면 BFS와 같다.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"UCS는 무엇을 우선 확장하며, 왜 최적인가?" → 답: min \(g(n)\) 확장, <b>모순법</b>(더 싼 목표가 있었다면 먼저 확장됐어야 함). 조건 = \(\varepsilon&gt;0\)·비음수 비용. <i>증명 손계산은 안 나오나 <b>모순법 골자를 말로</b> 설명할 수 있어야.</i></div>
-          <div class="field"><span class="lbl">🔗 연결</span>선행 C2(BFS) / 일반화로 C8(A*)의 \(g\)항 / 종합 C5b</div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"UCS는 무엇을 우선 확장하며, 왜 최적인가?" → min g(n) 확장, <b>모순법</b>(더 싼 목표가 있었다면 먼저 확장됐어야 함). 조건 = ε&gt;0·비음수 비용. 증명 손계산은 안 나오나 <b>모순법 골자를 말로</b> 설명할 수 있어야.</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 C2(BFS) / 일반화로 C8(A*)의 g항 / 종합 C5b</div>
         </div>
       </details>
 
-      <!-- C5b -->
-      <details class="node-card" id="C5b" data-node-id="C5b" data-title="C5b Uninformed 종합 비교표">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C5b" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C5b · Uninformed 종합 비교표
-          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C2,C3,C4,C5</span><span class="nbadge">매칭형 단골</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C5b" data-node-id="C5b" data-title="Uninformed 종합 비교표">
+        <summary><input type="checkbox" class="nodechk" data-id="C5b" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C5b · Uninformed 종합 비교표 <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C2,C3,C4,C5</span><span class="chev">▶</span></summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>다섯 전략을 한 표로 보면 "누가 무엇을 보장하는가"가 한눈에.</div>
           <div class="field"><span class="lbl">📊 표 (시험 단골 매칭형)</span>
-            <table>
+            <div class="scrollx"><table>
               <tr><th>Criterion</th><th>BFS</th><th>UCS</th><th>DFS</th><th>Depth-Limited</th><th>IDS</th></tr>
-              <tr><td>Complete?</td><td>Yes</td><td>Yes</td><td class="hl">No</td><td class="hl">No</td><td class="hlok">Yes</td></tr>
-              <tr><td>Time</td><td>\(O(b^{d+1})\)</td><td>\(O(b^{\lceil C^*/\varepsilon \rceil})\)</td><td>\(O(b^m)\)</td><td>\(O(b^L)\)</td><td>\(O(b^d)\)</td></tr>
-              <tr><td>Space</td><td>\(O(b^{d+1})\)</td><td>\(O(b^{\lceil C^*/\varepsilon \rceil})\)</td><td class="hlok">\(O(bm)\)</td><td>\(O(bL)\)</td><td class="hlok">\(O(bd)\)</td></tr>
-              <tr><td>Optimal?</td><td>Yes</td><td>Yes</td><td class="hl">No</td><td class="hl">No</td><td class="hlok">Yes</td></tr>
-            </table>
+              <tr><td>Complete?</td><td>Yes</td><td>Yes</td><td>No</td><td>No</td><td><b>Yes</b></td></tr>
+              <tr><td>Time</td><td>O(b^{d+1})</td><td>O(b^{⌈C*/ε⌉})</td><td>O(b^m)</td><td>O(b^L)</td><td>O(b^d)</td></tr>
+              <tr><td>Space</td><td>O(b^{d+1})</td><td>O(b^{⌈C*/ε⌉})</td><td><b>O(bm)</b></td><td>O(bL)</td><td><b>O(bd)</b></td></tr>
+              <tr><td>Optimal?</td><td>Yes</td><td>Yes</td><td>No</td><td>No</td><td><b>Yes</b></td></tr>
+            </table></div>
             <div class="callout"><b>"선형공간 &amp; 완전 &amp; 최적" = IDS가 유일.</b> DFS만 선형공간이나 불완전·비최적. BFS/UCS는 최적이나 지수공간.</div>
           </div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"다섯 전략 중 메모리는 선형이면서 완전·최적인 것은? 왜?" → IDS. "DFS와 IDS의 차이는?" → IDS는 \(L\)을 키우며 반복해 완전·최적을 추가로 확보.</div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"다섯 전략 중 메모리는 선형이면서 완전·최적인 것은? 왜?" → IDS. "DFS와 IDS의 차이는?" → IDS는 L을 키우며 반복해 완전·최적을 추가로 확보.</div>
           <div class="field"><span class="lbl">🔗 연결</span>선행 C2~C5 / 대비 C8(informed가 이 표를 어떻게 깨는가)</div>
         </div>
       </details>
     </section>
 
-    <!-- ============================================================ -->
-    <!-- ===== 줄기 B2: Informed & Local ===== -->
-    <!-- ============================================================ -->
-    <section class="stem-sec">
-      <h2>B2. 탐색 — Informed &amp; Local (정보 있는 탐색·지역 탐색)</h2>
-      <div class="stemdesc">휴리스틱 \(h(n)\)으로 "목표에 가까운" 노드를 우선. A*가 핵심. 경로가 무의미한 문제는 Local Search로.</div>
+    <!-- ===================== B2 ===================== -->
+    <section class="stem-sec" id="B2">
+      <h2>B2. 탐색 — Informed &amp; Local (정보·지역 탐색)</h2>
 
-      <!-- C6 -->
-      <details class="node-card" id="C6" data-node-id="C6" data-title="C6 Informed Search Heuristic Function 휴리스틱">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C6" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C6 · Informed Search &amp; Heuristic Function
-          <span class="nbadge hot">⭐高</span><span class="nbadge gate">관문</span><span class="nbadge">선행: C1</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C6" data-node-id="C6" data-title="Informed Search Heuristic Function 휴리스틱">
+        <summary><input type="checkbox" class="nodechk" data-id="C6" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C6 · Informed Search &amp; Heuristic Function <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C1</span><span class="nbadge">관문</span><span class="chev">▶</span></summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span>문제별 휴리스틱 \(h(n)\)으로 "목표에 가까워 <b>보이는</b>" 노드를 우선 → 평균 속도 대폭 향상.</div>
-          <div class="field"><span class="lbl">📖 정의</span>Best-first search = 평가함수 \(f(n)\)("desirability")이 낮은 노드 우선 확장. \(h(n)\)=\(n\)→goal 추정비용("rule of thumb"), <b>\(h(goal)=0\)</b>. 예: 직선거리(SLD).</div>
-          <div class="field"><span class="lbl">🧮 수식 / 8-puzzle 두 휴리스틱</span><b>\(h_1\)</b>=잘못 놓인 타일 수(misplaced tiles), <b>\(h_2\)</b>=타일들의 맨해튼 거리 합. 예시 상태 \(h_1=8, h_2=18\).</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오 — 내비게이션</span>목표 도시까지의 직선거리(SLD)를 \(h\)로 쓰면 실제 도로를 다 펼치지 않고 "목표 방향" 도로를 먼저 탐색 → 8-puzzle처럼 평균 탐색량이 수십~수백 배 준다.</div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">\(h\)는 "보이는" 추정일 뿐 실제비용이 아님 → 그래서 다음 노드(Greedy)가 함정에 빠질 수 있음.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"휴리스틱 함수란? best-first의 일반형 \(f(n)\)은? 8-puzzle \(h_1·h_2\)는 어떻게 계산하나?" → 정의(목표까지 추정비용, \(h(goal)=0\)) + \(h_1\)=오배치 타일 수, \(h_2\)=맨해튼 합.</div>
+          <div class="field"><span class="lbl">🎯 한 줄 직관</span>문제별 휴리스틱 h(n)으로 "목표에 가까워 <b>보이는</b>" 노드를 우선 → 평균 속도 대폭 향상.</div>
+          <div class="field"><span class="lbl">📖 정의</span>Best-first search = 평가함수 f(n)("desirability")이 낮은 노드 우선 확장. h(n)=n→goal 추정비용("rule of thumb"), <b>h(goal)=0</b>. 예: 직선거리(SLD).</div>
+          <div class="field"><span class="lbl">🧮 8-puzzle 두 휴리스틱</span><b>h₁</b>=잘못 놓인 타일 수(misplaced tiles), <b>h₂</b>=타일들의 맨해튼 거리 합. 예시 상태 h₁=8, h₂=18.</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario"><b>내비게이션</b> — 목표 도시까지의 직선거리(SLD)를 h로 쓰면 실제 도로를 다 펼치지 않고 "목표 방향" 도로를 먼저 탐색 → 8-puzzle처럼 평균 탐색량이 수십~수백 배 준다.</div></div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">h는 "보이는" 추정일 뿐 실제비용이 아님 → 그래서 다음 노드(Greedy)가 함정에 빠질 수 있음.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"휴리스틱 함수란? best-first의 일반형 f(n)은? 8-puzzle h₁·h₂는 어떻게 계산하나?" → 정의(목표까지 추정비용, h(goal)=0) + h₁=오배치 타일 수, h₂=맨해튼 합.</div>
           <div class="field"><span class="lbl">🔗 연결</span>선행 C1 / 응용 C7·C8·C10</div>
         </div>
       </details>
 
-      <!-- C7 -->
-      <details class="node-card" id="C7" data-node-id="C7" data-title="C7 Greedy Best-First Search">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C7" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C7 · Greedy Best-First Search
-          <span class="nbadge">⭐中</span><span class="nbadge">선행: C6</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C7" data-node-id="C7" data-title="Greedy Best-First Search">
+        <summary><input type="checkbox" class="nodechk" data-id="C7" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C7 · Greedy Best-First Search <span class="nbadge star">⭐中</span><span class="nbadge">선행: C6</span><span class="chev">▶</span></summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span>\(f(n)=h(n)\)만 사용 — "목표에 가장 가까워 <b>보이는</b>" 노드만 확장.</div>
-          <div class="field"><span class="lbl">📖 성질</span><b>Complete? No</b>(상태 추적 안 하면 loop, DFS처럼 막힘) / <b>Optimal? No</b> / Time·Space \(O(b^m)\).</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오 — 루마니아 Arad→Bucharest</span>Greedy는 매번 직선거리가 짧아 보이는 도시로만 가다 <b>Fagaras 경유</b>의 비최적 경로를 택한다 — "가까워 보이는 것"이 "총 거리가 짧은 것"은 아니기 때문.</div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">\(g(n)\)(지나온 비용)을 무시 → 가까워 보여도 실제 비용 큰 경로 선택.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"Greedy가 비최적인 이유를 한 문장으로." → <b>누적비용 \(g(n)\)을 무시하고 \(h\)만 보기 때문.</b> (A*와의 대조로 묻기 좋음.)</div>
-          <div class="field"><span class="lbl">🔗 연결</span>선행 C6 / 대조 C8(A*는 \(g+h\))</div>
-        </div>
-      </details>
-
-      <!-- C8 -->
-      <details class="node-card" id="C8" data-node-id="C8" data-title="C8 A* Search">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C8" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C8 · A* Search
-          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C6, C7</span>
-          <span class="chev">▶</span>
-        </summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span>\(f(n)=g(n)+h(n)\) — <b>지나온 비용 + 남은 추정비용</b>을 합쳐 균형.</div>
-          <div class="field"><span class="lbl">🧮 수식</span>\[ f(n)=g(n)+h(n) \]\(g(n)\)=시작~\(n\) 실제비용, \(h(n)\)=\(n\)~goal 추정비용.</div>
-          <div class="field"><span class="lbl">📖 성질</span>Complete Yes / <b>Optimal Yes (admissible \(h\), TREE-SEARCH)</b> / <b>optimally efficient</b>(같은 \(h\)에서 어떤 최적 알고리즘도 A*보다 적게 확장 못함) / 최악 지수.</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오 — 내비 경로탐색</span>\(g\)=이미 달린 거리, \(h\)=목적지까지 직선거리. 둘을 더해 "지금까지+앞으로"가 최소인 도로를 확장 → Greedy의 Fagaras 함정을 피하고 <b>실제 최단경로</b>를 보장.</div>
-          <div class="field"><span class="lbl">📖 A 알고리즘 vs A*</span>차이 = <b>admissible heuristic</b> 사용 여부. 최적성 보장에 <b>엣지 비용 ≥ 0(음수 불가)</b> 필요.</div>
-
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — 8-puzzle을 A*로 한 수 전개</span>
+          <div class="field"><span class="lbl">🎯 한 줄 직관</span>f(n)=h(n)만 사용 — "목표에 가장 가까워 <b>보이는</b>" 노드만 확장.</div>
+          <div class="field"><span class="lbl">📖 성질</span><b>Complete? No</b>(상태 추적 안 하면 loop, DFS처럼 막힘) / <b>Optimal? No</b> / Time·Space O(b^m).</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario">루마니아 Arad→Bucharest. Greedy는 매번 직선거리가 짧아 보이는 도시로만 가다 <b>Fagaras 경유</b>의 비최적 경로를 택한다 — "가까워 보이는 것"이 "총 거리가 짧은 것"은 아니기 때문.</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 (Arad→Bucharest, h만 보기)</span>
             <div class="stepper">
-              <div class="step show"><div class="step-head">1. [직관]</div>빈 칸으로 인접 타일을 밀어 목표 배치를 만든다. 각 후보 수를 \(f=g+h\)로 점수 매겨 가장 낮은 것을 먼저.</div>
-              <div class="step"><div class="step-head">2. [셋업]</div>\(g\)=지금까지 민 횟수, \(h=h_2\)(각 타일의 맨해튼 거리 합). 시작상태 예: \(h_2=18\).</div>
-              <div class="step"><div class="step-head">3. [전개1]</div>시작 노드 확장 → 빈 칸이 만드는 합법수(예 3개) 각각의 자식 생성. 각 자식 \(g=1\).</div>
-              <div class="step"><div class="step-head">4. [전개2·왜]</div>자식마다 \(h_2\) 재계산(타일 하나만 움직였으니 그 타일 거리만 \(\pm 1\)). \(f=1+h_2\).</div>
-              <div class="step"><div class="step-head">5. [전개3]</div>세 자식 중 \(f\)가 가장 작은 노드를 fringe(min-heap)에서 꺼내 다음 확장. (\(h_2=16\)이면 \(f=17\)이 최저.)</div>
-              <div class="step"><div class="step-head">6. [결론]</div>이 과정을 반복하면 A*는 <b>목표까지 \(f\) 최소 경로</b>를 따라가며, admissible \(h_2\) 덕에 첫 목표 도달이 곧 최적해.</div>
-              <div class="step"><div class="step-head">7. [검산]</div>\(h_2\)는 절대 실제 이동수를 넘지 않음(타일당 최소 이동만 셈) → admissible → 최적 보장.</div>
-              <div class="step"><div class="step-head">8. [시험 변형]</div>"왜 \(h_2\)(맨해튼)가 \(h_1\)(오배치 수)보다 노드를 적게 확장하나?" → C9 dominance로 연결.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-title">Greedy가 Fagaras 함정에 빠지는 과정</div>
+              <div class="step show"><div class="step-head">1. 직관</div>f(n)=h(n)만 사용 — 목표(Bucharest)까지 <b>직선거리(SLD)</b>가 가장 짧아 보이는 도시로만 전진. 지나온 비용 g는 안 본다.</div>
+              <div class="step"><div class="step-head">2. 셋업</div>h=직선거리: Arad 366, Sibiu 253, Timisoara 329, Zerind 374, Fagaras 176, Rimnicu Vilcea(RV) 193, Pitesti 100, Bucharest 0. 실제 도로비용 g는 따로(예: Sibiu–Fagaras 99, Sibiu–RV 80…).</div>
+              <div class="step"><div class="step-head">3. 전개1</div>Arad 확장 → 이웃 Sibiu(253)·Timisoara(329)·Zerind(374). h 최소 <b>Sibiu(253)</b> 선택.</div>
+              <div class="step"><div class="step-head">4. 전개2 · 함정 발생</div>Sibiu 확장 → 이웃 Fagaras(176)·RV(193)·Arad(366)·Oradea(380). h 최소라 <b>Fagaras(176)</b> 선택 — RV(193)가 17 크다고 버린다(여기가 함정).</div>
+              <div class="step"><div class="step-head">5. 전개3</div>Fagaras 확장 → Bucharest(0) 도달, 종료. 경로 = <b>Arad→Sibiu→Fagaras→Bucharest</b>.</div>
+              <div class="step"><div class="step-head">6. 결과(실제비용)</div>g 합 = 140(A–S) + 99(S–F) + 211(F–B) = <b>450</b>.</div>
+              <div class="step"><div class="step-head">7. 검산 · 왜 비최적</div>최적해는 Arad→Sibiu→<b>RV→Pitesti</b>→Bucharest = 140+80+97+101 = <b>418</b>. Greedy는 g를 무시하고 h만 봐 Fagaras(176&lt;193)를 택했지만, 총거리는 RV 경로가 <b>32 짧다</b>.</div>
+              <div class="step"><div class="step-head">8. 시험 변형</div>같은 그래프를 A*(f=g+h)로 풀면 RV–Pitesti 경로(418)를 찾는다 → C8과 대조해 "왜 h만으론 안 되나"를 설명.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">\(h\)만(Greedy)도 \(g\)만(UCS)도 아닌 <b>합</b>이 핵심. \(h\)가 과대평가하면 최적성 깨짐(→C9).</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"\(f=g+h\)의 각 항 의미와, A*가 최적이 되는 조건은?" → \(g\)=실제 누적, \(h\)=추정 잔여, 조건=<b>admissible</b>. "A*가 optimally efficient라는 말의 뜻?"도 단골.</div>
-          <div class="field"><span class="lbl">🔗 연결</span>선행 C6·C7 / 심화 C9(admissible·dominance) / 대조 C5(UCS=\(h\equiv 0\)인 A*)</div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">g(n)(지나온 비용)을 무시 → 가까워 보여도 실제 비용 큰 경로 선택.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"Greedy가 비최적인 이유를 한 문장으로." → <b>누적비용 g(n)을 무시하고 h만 보기 때문.</b> (A*와의 대조로 묻기 좋음.)</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 C6 / 대조 C8(A*는 g+h)</div>
         </div>
       </details>
 
-      <!-- C9 -->
-      <details class="node-card" id="C9" data-node-id="C9" data-title="C9 Admissibility Consistency Dominance Relaxed Problems">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C9" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C9 · Admissibility &amp; Consistency, Dominance, Relaxed Problems
-          <span class="nbadge hot">⭐高</span><span class="nbadge warn">⚠️ consistency 자료없음</span><span class="nbadge">선행: C8</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C8" data-node-id="C8" data-title="A* Search">
+        <summary><input type="checkbox" class="nodechk" data-id="C8" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C8 · A* Search <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C6, C7</span><span class="chev">▶</span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">🎯 한 줄 직관</span>f(n)=g(n)+h(n) — <b>지나온 비용 + 남은 추정비용</b>을 합쳐 균형.</div>
+          <div class="field"><span class="lbl">🧮 수식</span>\( f(n)=g(n)+h(n) \). g(n)=시작~n 실제비용, h(n)=n~goal 추정비용.</div>
+          <div class="field"><span class="lbl">📖 성질</span>Complete Yes / <b>Optimal Yes (admissible h, TREE-SEARCH)</b> / <b>optimally efficient</b>(같은 h에서 어떤 최적 알고리즘도 A*보다 적게 확장 못함) / 최악 지수. <br><b>A 알고리즘 vs A*</b>: 차이 = <b>admissible heuristic</b> 사용 여부. 최적성 보장에 <b>엣지 비용 ≥ 0(음수 불가)</b> 필요.</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario"><b>내비 경로탐색</b> — g=이미 달린 거리, h=목적지까지 직선거리. 둘을 더해 "지금까지+앞으로"가 최소인 도로를 확장 → Greedy의 Fagaras 함정을 피하고 <b>실제 최단경로</b>를 보장.</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>
+            <div class="stepper">
+              <div class="stepper-title">8-puzzle을 A*로 한 수 전개</div>
+              <div class="step show"><div class="step-head">1. 직관</div>빈 칸으로 인접 타일을 밀어 목표 배치를 만든다. 각 후보 수를 f=g+h로 점수 매겨 가장 낮은 것을 먼저.</div>
+              <div class="step"><div class="step-head">2. 셋업</div>g=지금까지 민 횟수, h=h₂(각 타일의 맨해튼 거리 합). 시작상태 예: h₂=18.</div>
+              <div class="step"><div class="step-head">3. 전개1</div>시작 노드 확장 → 빈 칸이 만드는 합법수(예 3개) 각각의 자식 생성. 각 자식 g=1.</div>
+              <div class="step"><div class="step-head">4. 전개2·왜</div>자식마다 h₂ 재계산(타일 하나만 움직였으니 그 타일 거리만 ±1). f=1+h₂.</div>
+              <div class="step"><div class="step-head">5. 전개3</div>세 자식 중 f가 가장 작은 노드를 fringe(min-heap)에서 꺼내 다음 확장. (h₂가 16이면 f=17이 최저.)</div>
+              <div class="step"><div class="step-head">6. 결론</div>이 과정을 반복하면 A*는 <b>목표까지 f 최소 경로</b>를 따라가며, admissible h₂ 덕에 첫 목표 도달이 곧 최적해.</div>
+              <div class="step"><div class="step-head">7. 검산</div>h₂는 절대 실제 이동수를 넘지 않음(타일당 최소 이동만 셈) → admissible → 최적 보장.</div>
+              <div class="step"><div class="step-head">8. 시험 변형</div>"왜 h₂(맨해튼)가 h₁(오배치 수)보다 노드를 적게 확장하나?" → C9 dominance로 연결.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">h만(Greedy)도 g만(UCS)도 아닌 <b>합</b>이 핵심. h가 과대평가하면 최적성 깨짐(→C9).</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"f=g+h의 각 항 의미와, A*가 최적이 되는 조건은?" → g=실제 누적, h=추정 잔여, 조건=<b>admissible</b>. "A*가 optimally efficient라는 말의 뜻?"도 단골.</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 C6·C7 / 심화 C9(admissible·dominance) / 대조 C5(UCS=h≡0인 A*)</div>
+        </div>
+      </details>
+
+      <details class="node-card" id="C9" data-node-id="C9" data-title="Admissibility Consistency Dominance Relaxed Problems">
+        <summary><input type="checkbox" class="nodechk" data-id="C9" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C9 · Admissibility · Dominance · Relaxed Problems <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C8</span><span class="chev">▶</span></summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>"좋은 휴리스틱"이란 <b>절대 과대평가하지 않으면서(admissible) 실제값에 최대한 가까운(dominant)</b> 것.</div>
           <div class="field"><span class="lbl">📖 정의</span>
             <ul>
-              <li><b>Admissible(허용성)</b>: 모든 \(n\)에서 <b>\(h(n) \leq h^*(n)\)</b> (\(h^*\)=실제 최적비용). = <b>과대평가 안 함 = optimistic</b>. 예: SLD는 실제 도로거리를 절대 초과 안 함. <b>정리</b>: \(h\) admissible ⇒ A*(TREE-SEARCH) optimal.</li>
-              <li><b>Dominance(우월)</b>: admissible \(h_1, h_2\)에서 모든 \(n\)에 <b>\(h_2(n) \geq h_1(n)\)이면 \(h_2\)가 \(h_1\)을 dominate</b> → \(h_2\)가 더 효율적(실제값에 가까울수록 좋음).</li>
+              <li><b>Admissible(허용성)</b>: 모든 n에서 \( h(n) \le h^*(n) \) (h*=실제 최적비용). = <b>과대평가 안 함 = optimistic</b>. 예: SLD는 실제 도로거리를 절대 초과 안 함. <b>정리</b>: h admissible ⇒ A*(TREE-SEARCH) optimal.</li>
+              <li><b>Dominance(우월)</b>: admissible h₁,h₂에서 모든 n에 \( h_2(n) \ge h_1(n) \)이면 h₂가 h₁을 dominate → h₂가 더 효율적(실제값에 가까울수록 좋음).</li>
               <li><b>Relaxed Problem(완화 문제)</b>: 제약을 푼 문제의 최적해 비용 = 원문제의 admissible heuristic.</li>
             </ul>
           </div>
           <div class="field"><span class="lbl">📊 표·그래프 인사이트 (8-puzzle 평균 확장 노드)</span>
-            <table>
-              <tr><th>깊이</th><th>IDS</th><th>A*(\(h_1\))</th><th>A*(\(h_2\))</th></tr>
-              <tr><td>\(d=12\)</td><td>3,644,035</td><td>227</td><td class="hlok">73</td></tr>
-              <tr><td>\(d=24\)</td><td>—</td><td>39,135</td><td class="hlok">1,641</td></tr>
-            </table>
-            <div class="callout">더 강한(dominant) \(h_2\)가 <b>수십~수백 배</b> 적게 확장.</div>
+            <div class="scrollx"><table>
+              <tr><th>깊이</th><th>IDS</th><th>A*(h₁)</th><th>A*(h₂)</th></tr>
+              <tr><td>d=12</td><td>3,644,035</td><td>227</td><td><b>73</b></td></tr>
+              <tr><td>d=24</td><td>—</td><td>39,135</td><td><b>1,641</b></td></tr>
+            </table></div>
+            <div class="callout">더 강한(dominant) h₂가 <b>수십~수백 배</b> 적게 확장.</div>
           </div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오 — 완화로 \(h\) 발명</span>8-puzzle에서 "타일이 <b>아무 데나</b> 순간이동 가능"으로 규칙을 풀면 그 최적해=\(h_1\)(오배치 수). "타일이 <b>인접칸</b>으로만 이동 가능"으로 풀면 그 최적해=\(h_2\)(맨해튼). → 규칙을 느슨히 한 쉬운 문제의 정답이 곧 원문제의 admissible 추정.</div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">admissible은 "과소추정"이 아니라 <b>"과대추정 안 함(\(\leq\))"</b>. (같은 값도 허용.)</div></div>
-          <div class="missing">⚠️ Consistency(일관성)는 PDF 미수록 — consistency/monotonicity·GRAPH-SEARCH 최적성 조건은 자료 없음. 시험은 admissible 위주로 충분할 가능성. (추측 금지)</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오 / 완화로 h 발명</span><div class="scenario">8-puzzle에서 "타일이 <b>아무 데나</b> 순간이동 가능"으로 규칙을 풀면 그 최적해=h₁(오배치 수). "타일이 <b>인접칸</b>으로만 이동 가능"으로 풀면 그 최적해=h₂(맨해튼). → 규칙을 느슨히 한 쉬운 문제의 정답이 곧 원문제의 admissible 추정.</div></div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">admissible은 "과소추정"이 아니라 <b>"과대추정 안 함(≤)"</b>. (같은 값도 허용.) Consistency(일관성)는 <span class="nbadge warn">⚠️ PDF 미수록</span> — 시험은 admissible 위주로 충분할 가능성.</div></div>
           <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"admissible의 정의(부등식·optimistic)와, dominance가 효율에 주는 영향, relaxed problem으로 휴리스틱 만드는 법을 설명하라." → 세 개념을 8-puzzle로 묶어 서술.</div>
-          <div class="field"><span class="lbl">🔗 연결</span>선행 C8 / <span style="color:var(--muted)">자료 없음: consistency 상세</span></div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 C8 / <span class="nbadge warn">⚠️ 자료 없음</span>: consistency 상세</div>
         </div>
       </details>
 
-      <!-- C10 -->
-      <details class="node-card" id="C10" data-node-id="C10" data-title="C10 Local Search Hill-Climbing">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C10" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C10 · Local Search &amp; Hill-Climbing
-          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C6</span><span class="nbadge">→ C16 토대</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C10" data-node-id="C10" data-title="Local Search Hill-Climbing">
+        <summary><input type="checkbox" class="nodechk" data-id="C10" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C10 · Local Search &amp; Hill-Climbing <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C6</span><span class="chev">▶</span></summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>경로를 기억하지 않고 <b>현재 한 상태</b>만 들고 이웃으로 이동, 목적함수 개선만 추구. ("안개 속 에베레스트 정상 찾기.")</div>
           <div class="field"><span class="lbl">📖 정의 / 언제 쓰나</span>경로가 무의미하고 <b>최종 상태만</b> 중요한 문제(8-queens, n-queens). 장점: <b>메모리 거의 안 씀</b>, 크거나 무한(연속) 공간에서 합리적 해. Pure optimization: 모든 상태에 목적함수, 목표=max/min 상태, path-cost 틀에 안 맞음.</div>
           <div class="field"><span class="lbl">🔍 작동 원리</span><b>Hill-Climbing</b> = 값이 증가하는 방향으로 계속 이동, peak에서 종료("greedy local best search"). 즉각 이웃만 보고 <b>lookahead 없음</b>.</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오 — n-queens 자동 배치</span>퀸들을 일단 아무렇게나 놓고, "서로 공격하는 쌍 수(\(h\))"가 줄도록 한 퀸씩 옮긴다. 경로(어떻게 옮겼나)는 아무도 안 궁금하고 <b>최종 충돌 0 배치</b>만 필요 → local search가 적격.</div>
-          <div class="field"><span class="lbl">📊 표·그래프 인사이트 (8-queens 정량)</span><div class="callout">\(h\)=서로 공격하는 queen 쌍 수(최소화). 무작위 시작 시 <b>14%만 해결, 86%는 local minimum</b>. 성공 시 평균 4 step, 실패 시 평균 3 step(상태공간 ~17M). Random restart: \(p=0.14\), 99% 성공에 \((0.86)^n &lt; 0.01\) → <b>\(n\approx 31\)회</b>, 최대 step ≈ \(4\times 31 = 124\).</div></div>
-
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — 8-queens Hill-Climbing + Restart 계산</span>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario"><b>n-queens 자동 배치</b> — 퀸들을 일단 아무렇게나 놓고, "서로 공격하는 쌍 수(h)"가 줄도록 한 퀸씩 옮긴다. 경로(어떻게 옮겼나)는 아무도 안 궁금하고 <b>최종 충돌 0 배치</b>만 필요 → local search가 적격.</div></div>
+          <div class="field"><span class="lbl">📊 표·그래프 인사이트 (8-queens 정량)</span><div class="callout">h=서로 공격하는 queen 쌍 수(최소화). 무작위 시작 시 <b>14%만 해결, 86%는 local minimum</b>. 성공 시 평균 4 step, 실패 시 평균 3 step(상태공간 ~17M). Random restart: p=0.14, 99% 성공에 (0.86)ⁿ&lt;0.01 → <b>n≈31회</b>, 최대 step ≈4×31=124.</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>
             <div class="stepper">
-              <div class="step show"><div class="step-head">1. [직관]</div>충돌(공격하는 쌍)을 점수 \(h\)로 보고, 그 점수를 깎는 방향으로 퀸을 옮긴다.</div>
-              <div class="step"><div class="step-head">2. [셋업]</div>보드에 퀸 8개를 한 열에 하나씩 무작위 배치. \(h\)=서로 공격하는 퀸 쌍 수.</div>
-              <div class="step"><div class="step-head">3. [전개1·무엇을]</div>각 퀸을 같은 열의 다른 행으로 옮기는 모든 이웃을 평가 → \(h\)가 가장 작아지는 이동을 채택.</div>
-              <div class="step"><div class="step-head">4. [전개2·왜]</div>\(h\)가 더 못 줄면(이웃 모두 \(\geq\) 현재) <b>local minimum</b> — 멈춤. 성공 평균 4 step, 실패 평균 3 step.</div>
-              <div class="step"><div class="step-head">5. [결론]</div>단발 성공률 \(p=0.14\)(=14%). 86%는 갇힘.</div>
-              <div class="step"><div class="step-head">6. [검산·restart]</div>99% 성공: \((0.86)^n &lt; 0.01\) → \(n &gt; 30.5\) → <b>약 31회 재시작</b>. 총 비용 ≈ \(4\times 31 = 124\) step.</div>
-              <div class="step"><div class="step-head">7. [시험 변형]</div>"왜 hill-climbing은 종종 실패하고, 어떻게 구제하나?" → local minimum + multiple random restarts. <b>이 구조가 C16(min-conflicts)·C19(k-means seed)·C21로 재등장.</b></div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-title">8-queens Hill-Climbing + Restart 계산</div>
+              <div class="step show"><div class="step-head">1. 직관</div>충돌(공격하는 쌍)을 점수 h로 보고, 그 점수를 깎는 방향으로 퀸을 옮긴다.</div>
+              <div class="step"><div class="step-head">2. 셋업</div>보드에 퀸 8개를 한 열에 하나씩 무작위 배치. h=서로 공격하는 퀸 쌍 수.</div>
+              <div class="step"><div class="step-head">3. 전개1·무엇을</div>각 퀸을 같은 열의 다른 행으로 옮기는 모든 이웃을 평가 → h가 가장 작아지는 이동을 채택.</div>
+              <div class="step"><div class="step-head">4. 전개2·왜</div>h가 더 못 줄면(이웃 모두 ≥ 현재) <b>local minimum</b> — 멈춤. 성공 평균 4 step, 실패 평균 3 step.</div>
+              <div class="step"><div class="step-head">5. 결론</div>단발 성공률 p=0.14(=14%). 86%는 갇힘.</div>
+              <div class="step"><div class="step-head">6. 검산·restart</div>99% 성공: (0.86)ⁿ &lt; 0.01 → n &gt; 30.5 → <b>약 31회 재시작</b>. 총 비용 ≈ 4×31 = 124 step.</div>
+              <div class="step"><div class="step-head">7. 시험 변형</div>"왜 hill-climbing은 종종 실패하고, 어떻게 구제하나?" → local minimum + multiple random restarts. <b>이 구조가 C16(min-conflicts)·C19(k-means seed)·C21로 재등장.</b></div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap"><b>local maxima/minima</b>에서 suboptimal로 멈춤. 해법=<b>Multiple Random Restarts</b>. (Day3 "but how many times?" / Day5: greedy local로는 shortest path 못 찾고 끊김, restart하면 state는 찾음.)</div></div>
@@ -590,21 +551,12 @@
       </details>
     </section>
 
-    <!-- ============================================================ -->
-    <!-- ===== 줄기 B3: Adversarial ===== -->
-    <!-- ============================================================ -->
-    <section class="stem-sec">
+    <!-- ===================== B3 ===================== -->
+    <section class="stem-sec" id="B3">
       <h2>B3. 탐색 — Adversarial (게임 탐색)</h2>
-      <div class="stemdesc">상대가 내 이익을 깎는다고 가정하고 최악을 최대화(minimax), 쓸모없는 가지는 잘라낸다(α-β).</div>
 
-      <!-- C11 -->
-      <details class="node-card" id="C11" data-node-id="C11" data-title="C11 Adversarial Search 게임 설정 Minimax">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C11" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C11 · Adversarial Search — 게임 설정 &amp; Minimax
-          <span class="nbadge hot">⭐高</span><span class="nbadge gate">관문</span><span class="nbadge">선행: C1</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C11" data-node-id="C11" data-title="Adversarial Search 게임 설정 Minimax">
+        <summary><input type="checkbox" class="nodechk" data-id="C11" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C11 · 게임 설정 &amp; Minimax <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C1</span><span class="nbadge">관문</span><span class="chev">▶</span></summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>적이 내 이익을 깎으려 둔다고 가정하고, <b>최악의 경우를 최대화(maximin)</b> 하는 수를 둔다.</div>
           <div class="field"><span class="lbl">📖 정의 / 게임 가정 4가지</span><b>Deterministic, Turn-taking, Zero-sum, Perfect information.</b> 두 플레이어 MAX·MIN, MAX 먼저, 교대.
@@ -613,20 +565,20 @@
               <li>게임 4요소: Initial state, Successor(합법수), Terminal test, Utility function(tic-tac-toe +1/−1/0).</li>
             </ul>
           </div>
-          <div class="field"><span class="lbl">🧮 수식 (Minimax 값)</span>\[ \text{MINIMAX}(n)=\begin{cases}\text{UTILITY}(n) &amp; \text{terminal}\\ \max_{s\in succ}\text{MINIMAX}(s) &amp; \text{MAX}\\ \min_{s\in succ}\text{MINIMAX}(s) &amp; \text{MIN}\end{cases} \]</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오 — 체스/틱택토 AI</span>내 차례엔 점수를 최대화(MAX), 상대 차례엔 상대가 내 점수를 최소화(MIN)한다고 가정하고 트리를 끝까지(혹은 깊이 \(d\)까지) 평가해, 상대가 완벽히 둬도 보장되는 최선의 수를 둔다.</div>
-          <div class="field"><span class="lbl">📊 인사이트</span><div class="callout">트리 크기 \(O(b^d)\), \(b\)=분기, \(d\)=양 플레이어 합산 수. 체스 \(b\sim 35, d\sim 100\) → ≈\(10^{154}\)(탐색 불가). 복잡도 Time <b>\(O(b^d)\)</b>, Space <b>\(O(bd)\)</b>(DFS 방식). <b>MIN이 비최적이면 MAX는 오히려 더 좋아짐(손해 없음).</b> Multiplayer는 minimax 값이 벡터, 비zero-sum이면 동맹(alliance) 유효.</div></div>
-
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — Minimax 값 backup</span>
+          <div class="field"><span class="lbl">🧮 수식 (Minimax 값)</span>MINIMAX(n) = UTILITY(n) [terminal]; \( \max_{s \in succ} \) MINIMAX(s) [MAX]; \( \min_{s \in succ} \) MINIMAX(s) [MIN].</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario"><b>체스/틱택토 AI</b> — 내 차례엔 점수를 최대화(MAX), 상대 차례엔 상대가 내 점수를 최소화(MIN)한다고 가정하고 트리를 끝까지(혹은 깊이 d까지) 평가해, 상대가 완벽히 둬도 보장되는 최선의 수를 둔다.</div></div>
+          <div class="field"><span class="lbl">📊 인사이트</span><div class="callout">트리 크기 O(b^d), b=분기, d=양 플레이어 합산 수. 체스 b~35,d~100 → ≈10¹⁵⁴(탐색 불가). 복잡도 Time <b>O(b^d)</b>, Space <b>O(bd)</b>(DFS 방식). <b>MIN이 비최적이면 MAX는 오히려 더 좋아짐(손해 없음).</b> Multiplayer는 minimax 값이 벡터, 비zero-sum이면 동맹(alliance) 유효.</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>
             <div class="stepper">
-              <div class="step show"><div class="step-head">1. [직관]</div>잎(끝난 게임)의 점수를 알고, 그 위로 한 칸씩 "내 차례면 최대, 상대 차례면 최소"를 골라 올린다.</div>
-              <div class="step"><div class="step-head">2. [셋업]</div>깊이 2 트리: 루트=MAX, 그 아래 MIN 노드들, 그 아래 잎의 utility.</div>
-              <div class="step"><div class="step-head">3. [전개1]</div>각 MIN 노드: 자식 잎들 중 <b>최소값</b>을 그 노드 값으로. (상대는 내 점수를 깎으려 함.)</div>
-              <div class="step"><div class="step-head">4. [전개2]</div>루트 MAX: 방금 구한 MIN 값들 중 <b>최대값</b>을 선택 → 그 방향이 MAX의 최선수.</div>
-              <div class="step"><div class="step-head">5. [결론]</div>루트 값 = 양쪽 최적 플레이 시 MAX가 보장받는 결과.</div>
-              <div class="step"><div class="step-head">6. [검산]</div>한 MIN 노드의 자식 하나를 더 나쁘게 바꿔도, MIN이 이미 더 작은 값을 골랐다면 루트 불변.</div>
-              <div class="step"><div class="step-head">7. [시험 변형]</div>"이 트리를 α-β로 풀면 어디가 잘리나?" → C12로 연결.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-title">Minimax 값 backup (잎→뿌리)</div>
+              <div class="step show"><div class="step-head">1. 직관</div>잎(끝난 게임)의 점수를 알고, 그 위로 한 칸씩 "내 차례면 최대, 상대 차례면 최소"를 골라 올린다.</div>
+              <div class="step"><div class="step-head">2. 셋업</div>깊이 2 트리: 루트=MAX, 그 아래 MIN 노드들, 그 아래 잎의 utility.</div>
+              <div class="step"><div class="step-head">3. 전개1</div>각 MIN 노드: 자식 잎들 중 <b>최소값</b>을 그 노드 값으로. (상대는 내 점수를 깎으려 함.)</div>
+              <div class="step"><div class="step-head">4. 전개2</div>루트 MAX: 방금 구한 MIN 값들 중 <b>최대값</b>을 선택 → 그 방향이 MAX의 최선수.</div>
+              <div class="step"><div class="step-head">5. 결론</div>루트 값 = 양쪽 최적 플레이 시 MAX가 보장받는 결과.</div>
+              <div class="step"><div class="step-head">6. 검산</div>한 MIN 노드의 자식 하나를 더 나쁘게 바꿔도, MIN이 이미 더 작은 값을 골랐다면 루트 불변.</div>
+              <div class="step"><div class="step-head">7. 시험 변형</div>"이 트리를 α-β로 풀면 어디가 잘리나?" → C12로 연결.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">minimax는 "양쪽 모두 최적 플레이" 가정. 상대 실수 시 손해 없음(이득만).</div></div>
@@ -635,106 +587,79 @@
         </div>
       </details>
 
-      <!-- C12 -->
-      <details class="node-card" id="C12" data-node-id="C12" data-title="C12 Alpha-Beta Pruning">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C12" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C12 · Alpha-Beta Pruning
-          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C11</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C12" data-node-id="C12" data-title="Alpha-Beta Pruning 알파베타 가지치기">
+        <summary><input type="checkbox" class="nodechk" data-id="C12" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C12 · Alpha-Beta Pruning <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C11</span><span class="chev">▶</span></summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span><b>최종 결정에 영향 없는 가지를 잘라</b> minimax와 <b>똑같은 결과</b>를 더 빨리.</div>
           <div class="field"><span class="lbl">📖 메커니즘</span>DFS로 단일 경로만 보며 — <b>α</b>=MAX 경로에서 지금까지 찾은 최고값(하한), <b>β</b>=MIN 경로에서 지금까지 찾은 최저값(상한). 노드 값이 조상의 α(MAX)/β(MIN)보다 나빠지는 순간 나머지 가지 prune.</div>
           <div class="field"><span class="lbl">📊 표·그래프 인사이트 (복잡도)</span>
-            <table>
+            <div class="scrollx"><table>
               <tr><th>경우</th><th>복잡도</th><th>조건</th></tr>
-              <tr><td><b>Worst</b></td><td>\(O(b^d)\)</td><td>최악 ordering, prune 전혀 안 됨(=minimax)</td></tr>
-              <tr><td><b>Best</b></td><td class="hlok">\(O(b^{d/2})\)</td><td>완벽한 ordering(최선수가 항상 leftmost)</td></tr>
-            </table>
-            <div class="callout">실무 평균은 best에 가까움 → 유효 분기수 <b>\(\sqrt{b}\)</b>. 체스 \(b\sim 35\) → ~6 → <b>같은 시간에 약 2배 깊이</b> 탐색.</div>
+              <tr><td><b>Worst</b></td><td>O(b^d)</td><td>최악 ordering, prune 전혀 안 됨(=minimax)</td></tr>
+              <tr><td><b>Best</b></td><td><b>O(b^{d/2})</b></td><td>완벽한 ordering(최선수가 항상 leftmost)</td></tr>
+            </table></div>
+            <div class="callout">실무 평균은 best에 가까움 → 유효 분기수 <b>√b</b>. 체스 b~35 → ~6 → <b>같은 시간에 약 2배 깊이</b> 탐색.</div>
           </div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오 — Deep Blue(체스)</span>α-β로 분기를 절반으로 줄여 같은 시간에 더 깊이 읽었다. ordering(좋아 보이는 수를 먼저 탐색)이 prune 효율을 좌우.</div>
-
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — α-β 가지치기 트리 전개</span>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario"><b>Deep Blue(체스)</b> — α-β로 분기를 절반으로 줄여 같은 시간에 더 깊이 읽었다. ordering(좋아 보이는 수를 먼저 탐색)이 prune 효율을 좌우.</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>
             <div class="stepper">
-              <div class="step show"><div class="step-head">1. [직관]</div>"이 가지를 더 봐도 내 결정이 안 바뀐다"가 보이면 즉시 멈춘다.</div>
-              <div class="step"><div class="step-head">2. [셋업]</div>루트 MAX, 두 MIN 자식 L·R. \(\alpha=-\infty, \beta=+\infty\)로 시작.</div>
-              <div class="step"><div class="step-head">3. [전개1]</div>MIN-L의 자식들을 보고 L=3으로 확정 → 루트의 <b>\(\alpha=3\)</b>(MAX는 적어도 3 보장).</div>
-              <div class="step"><div class="step-head">4. [전개2·왜]</div>MIN-R의 첫 자식이 <b>2</b>로 나옴 → R은 min이라 \(\leq 2\)가 확정. \(R(\leq 2) &lt; \alpha(3)\)이므로 MAX는 절대 R을 안 고름.</div>
-              <div class="step"><div class="step-head">5. [결론]</div>→ <b>R의 나머지 자식들은 볼 필요 없음 = prune.</b> 결과(루트=3)는 minimax와 동일.</div>
-              <div class="step"><div class="step-head">6. [검산]</div>prune된 자식이 100이든 −100이든 \(R\leq 2\)는 안 바뀌고 루트는 여전히 3.</div>
-              <div class="step"><div class="step-head">7. [시험 변형]</div>"child utility가 모두 같으면 prune이 일어나나?"(Day4 질문) → ordering 효과가 없어 worst에 가까워짐.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-title">α-β 가지치기 트리 전개</div>
+              <div class="step show"><div class="step-head">1. 직관</div>"이 가지를 더 봐도 내 결정이 안 바뀐다"가 보이면 즉시 멈춘다.</div>
+              <div class="step"><div class="step-head">2. 셋업</div>루트 MAX, 두 MIN 자식 L·R. α=−∞, β=+∞로 시작.</div>
+              <div class="step"><div class="step-head">3. 전개1</div>MIN-L의 자식들을 보고 L=3으로 확정 → 루트의 <b>α=3</b>(MAX는 적어도 3 보장).</div>
+              <div class="step"><div class="step-head">4. 전개2·왜</div>MIN-R의 첫 자식이 <b>2</b>로 나옴 → R은 min이라 ≤2가 확정. R(≤2) &lt; α(3)이므로 MAX는 절대 R을 안 고름.</div>
+              <div class="step"><div class="step-head">5. 결론</div>→ <b>R의 나머지 자식들은 볼 필요 없음 = prune.</b> 결과(루트=3)는 minimax와 동일.</div>
+              <div class="step"><div class="step-head">6. 검산</div>prune된 자식이 100이든 −100이든 R≤2는 안 바뀌고 루트는 여전히 3.</div>
+              <div class="step"><div class="step-head">7. 시험 변형</div>"child utility가 모두 같으면 prune이 일어나나?"(Day4 질문) → ordering 효과가 없어 worst에 가까워짐.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">prune해도 결과는 minimax와 <b>항상 동일</b>(근사 아님). 효과는 <b>move ordering</b>에 크게 좌우(Day4 교수 질문: ordering 효율화? / 모든 child가 같으면 depth 확장? / alliance 상황 적용?).</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"α와 β가 각각 무엇이고, 언제 가지를 자르며, best/worst 복잡도와 ordering의 관계를 설명하라." → α=MAX 하한, β=MIN 상한, "조상 한계를 넘으면 cut", best \(O(b^{d/2})\)/worst \(O(b^d)\), ordering 의존.</div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"α와 β가 각각 무엇이고, 언제 가지를 자르며, best/worst 복잡도와 ordering의 관계를 설명하라." → α=MAX 하한, β=MIN 상한, "조상 한계를 넘으면 cut", best O(b^{d/2})/worst O(b^d), ordering 의존.</div>
           <div class="field"><span class="lbl">🔗 연결</span>선행 C11 / 같은 결과·더 빠름(근사 아님 강조)</div>
         </div>
       </details>
 
-      <!-- C13 -->
-      <details class="node-card" id="C13" data-node-id="C13" data-title="C13 Utility Evaluation Function">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C13" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C13 · Utility / Evaluation Function
-          <span class="nbadge">⭐中</span><span class="nbadge">선행: C11</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C13" data-node-id="C13" data-title="Utility Evaluation Function">
+        <summary><input type="checkbox" class="nodechk" data-id="C13" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C13 · Utility / Evaluation Function <span class="nbadge star">⭐中</span><span class="nbadge">선행: C11</span><span class="chev">▶</span></summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>게임을 끝까지 못 읽을 때, <b>비terminal 보드의 좋음 정도</b>를 점수로 추정.</div>
-          <div class="field"><span class="lbl">🧮 수식</span>보통 (내 점수)−(상대 점수). 체스: <b>선형 가중합</b> \[ Eval(s)=w_1 f_1(s)+\cdots+w_n f_n(s) \](예 \(w_1=9\), \(f_1\)=흰퀸수−검은퀸수). 범위 \([-\infty,+\infty]\) 또는 \([-1,+1]\).</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오 — Deep Blue / Chinook / Othello</span>Chinook(체커, 1994 인간챔피언 격파), Deep Blue(1997 Kasparov 격파, α-β 기반). Go는 \(b&gt;300, d&gt;&gt;150\)로 당시 탐색 불가. Othello eval=흰돌 수−검은돌 수.</div>
+          <div class="field"><span class="lbl">🧮 수식</span>보통 (내 점수)−(상대 점수). 체스: <b>선형 가중합</b> \( Eval(s)=w_1 f_1(s)+\dots+w_n f_n(s) \) (예 w₁=9, f₁=흰퀸수−검은퀸수). 범위 [−∞,+∞] 또는 [−1,+1].</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario"><b>Deep Blue / Chinook / Othello</b> — Chinook(체커, 1994 인간챔피언 격파), Deep Blue(1997 Kasparov 격파, α-β 기반). Go는 b&gt;300·d&gt;&gt;150로 당시 탐색 불가. Othello eval=흰돌 수−검은돌 수.</div></div>
           <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"evaluation function이 왜 필요하고 어떤 형태인가?" → 깊이 한계로 terminal까지 못 가니 중간 보드를 <b>선형 가중합</b>으로 평가.</div>
           <div class="field"><span class="lbl">🔗 연결</span>선행 C11 / 함께 C12(깊이 제한 탐색의 잎 평가)</div>
         </div>
       </details>
     </section>
 
-    <!-- ============================================================ -->
-    <!-- ===== 줄기 B4: CSP ===== -->
-    <!-- ============================================================ -->
-    <section class="stem-sec">
+    <!-- ===================== B4 ===================== -->
+    <section class="stem-sec" id="B4">
       <h2>B4. 탐색 — CSP (제약 충족 문제)</h2>
-      <div class="stemdesc">상태를 변수+도메인+제약으로 구조화. Backtracking + 휴리스틱, 그리고 <b style="color:var(--hot)">⭐⭐졸업단골 Local Search(min-conflicts)</b>.</div>
 
-      <!-- C14 -->
-      <details class="node-card" id="C14" data-node-id="C14" data-title="C14 CSP 정식화 종류 Constraint Satisfaction">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C14" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C14 · CSP 정식화 &amp; 종류
-          <span class="nbadge hot">⭐高</span><span class="nbadge gate">관문</span><span class="nbadge">선행: C1, C3</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C14" data-node-id="C14" data-title="CSP 정식화 종류 Constraint Satisfaction">
+        <summary><input type="checkbox" class="nodechk" data-id="C14" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C14 · CSP 정식화 &amp; 종류 <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C1</span><span class="nbadge">관문</span><span class="chev">▶</span></summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span>상태를 <b>변수 \(X_i\) + 도메인 \(D_i\) + 제약(constraints)</b> 으로 정의 → 일반목적 알고리즘 사용 가능.</div>
+          <div class="field"><span class="lbl">🎯 한 줄 직관</span>상태를 <b>변수 Xᵢ + 도메인 Dᵢ + 제약(constraints)</b> 으로 정의 → 일반목적 알고리즘 사용 가능.</div>
           <div class="field"><span class="lbl">📖 정의</span>상태=지금까지의 변수 할당, goal test=모든 제약 만족하는 <b>complete &amp; consistent</b> 할당. (black box 상태보다 구조화 → 더 강력.)</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오 — 시간표 짜기·스도쿠·지도 색칠</span>호주 Map-Coloring(인접 지역 다른 색; WA,NT,Q,NSW,V,SA,T / D={red,green,blue}). <b>Constraint graph</b>: 노드=변수, 아크=제약(binary CSP). 스도쿠=81변수·도메인 1~9·행/열/박스 alldifferent 제약.</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario"><b>시간표 짜기·스도쿠·지도 색칠</b> — 호주 Map-Coloring(인접 지역 다른 색; WA,NT,Q,NSW,V,SA,T / D={red,green,blue}). <b>Constraint graph</b>: 노드=변수, 아크=제약(binary CSP). 스도쿠=81변수·도메인1~9·행/열/박스 alldifferent 제약.</div></div>
           <div class="field"><span class="lbl">📊 인사이트 (종류·복잡도)</span>
             <ul>
-              <li>변수: Discrete-finite(도메인 \(d\), \(n\)변수 → <b>\(O(d^n)\)</b>), Discrete-infinite(제약언어 필요, 예 StartJob₁+5≤StartJob₃), Continuous(선형제약은 LP로 다항시간).</li>
+              <li>변수: Discrete-finite(도메인 d, n변수 → <b>O(dⁿ)</b>), Discrete-infinite(제약언어 필요, 예 StartJob₁+5≤StartJob₃), Continuous(선형제약은 LP로 다항시간).</li>
               <li>제약: <b>Unary</b>(SA≠green), <b>Binary</b>(SA≠WA), <b>Higher-order</b>(cryptarithmetic TWO+TWO=FOUR, alldifferent+자리올림).</li>
-              <li>복잡도: 할당이 <b>commutative</b>("WA=red then NT=green"="그 반대")이므로 한 노드에서 <b>한 변수만</b> 고려 → \(b=d\) → <b>\(d^n\) leaf</b> (순진한 \(n! \cdot d^n\)가 아님).</li>
+              <li>복잡도: 할당이 <b>commutative</b>("WA=red then NT=green"="그 반대")이므로 한 노드에서 <b>한 변수만</b> 고려 → b=d → <b>dⁿ leaf</b> (순진한 n!·dⁿ가 아님).</li>
             </ul>
           </div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">leaf가 \(n!\cdot d^n\)로 보이지만 commutativity로 \(d^n\). 이 통찰이 backtracking(C15)의 근거.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"CSP의 세 요소와 goal test(complete&amp;consistent), 그리고 왜 complete 할당 수가 \(d^n\)인지 설명하라." + constraint graph 정의.</div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">leaf가 n!·dⁿ로 보이지만 commutativity로 dⁿ. 이 통찰이 backtracking(C15)의 근거.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"CSP의 세 요소와 goal test(complete&amp;consistent), 그리고 왜 complete 할당 수가 dⁿ인지 설명하라." + constraint graph 정의.</div>
           <div class="field"><span class="lbl">🔗 연결</span>선행 C1·C3(DFS) / 응용 C15·C16</div>
         </div>
       </details>
 
-      <!-- C15 -->
-      <details class="node-card" id="C15" data-node-id="C15" data-title="C15 Backtracking Search 효율 휴리스틱 MRV LCV Forward Checking">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C15" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C15 · Backtracking Search + 효율 향상 휴리스틱
-          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C3, C14</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C15" data-node-id="C15" data-title="Backtracking Search 효율 향상 휴리스틱 MRV LCV">
+        <summary><input type="checkbox" class="nodechk" data-id="C15" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C15 · Backtracking + 효율 향상 휴리스틱 <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C3, C14</span><span class="chev">▶</span></summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>한 노드에 <b>한 변수만</b> 할당하는 DFS(=backtracking). 막히면 되돌아감.</div>
-          <div class="field"><span class="lbl">📖 의사코드 골자</span><code>RECURSIVE-BACKTRACKING(assignment, csp)</code>: 완전하면 반환 → 미할당 변수 선택 → 각 값에 consistent하면 추가·재귀, 실패 시 제거 후 다음 값. 모두 실패면 failure. (n-queens \(n\approx 25\)까지.)</div>
+          <div class="field"><span class="lbl">📖 의사코드 골자</span><code>RECURSIVE-BACKTRACKING(assignment, csp)</code>: 완전하면 반환 → 미할당 변수 선택 → 각 값에 consistent하면 추가·재귀, 실패 시 제거 후 다음 값. 모두 실패면 failure. (n-queens n≈25까지.)</div>
           <div class="field"><span class="lbl">🔍 작동 원리 / 효율 향상 4종 (큰 속도 향상)</span>
             <ul>
               <li><b>MRV (Minimum Remaining Values / Most Constrained Variable)</b>: 남은 합법값이 가장 적은 변수 먼저 → 바로 다음 child 탐색공간 최소화.</li>
@@ -743,19 +668,19 @@
               <li><b>Forward Checking</b>: 미할당 변수의 남은 합법값 추적, 0이 되면 즉시 종료(조기 실패 감지).</li>
             </ul>
           </div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오 — 스도쿠 풀이기</span>MRV로 "후보 숫자가 가장 적은 칸"을 먼저 채우고, forward checking으로 한 칸이 채워질 때마다 같은 행/열/박스 후보를 지운다. 후보가 0인 칸이 생기면 즉시 되돌아간다.</div>
-
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — 4-Queens를 Forward Checking으로</span>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario"><b>스도쿠 풀이기</b> — MRV로 "후보 숫자가 가장 적은 칸"을 먼저 채우고, forward checking으로 한 칸이 채워질 때마다 같은 행/열/박스 후보를 지운다. 후보가 0인 칸이 생기면 즉시 되돌아간다.</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>
             <div class="stepper">
-              <div class="step show"><div class="step-head">1. [직관]</div>열마다 퀸 하나(X1~X4, 값=행 1~4). 한 열 정할 때마다 충돌 행을 다른 열 후보에서 지운다.</div>
-              <div class="step"><div class="step-head">2. [셋업]</div>도메인 모두 {1,2,3,4}. X1부터 할당, 같은 행·대각선 공격 제약.</div>
-              <div class="step"><div class="step-head">3. [전개1]</div>X1=1 시도 → forward checking이 X2,X3,X4에서 충돌 행 제거. 진행하다 X3·X4 후보가 0이 되면 막힘.</div>
-              <div class="step"><div class="step-head">4. [전개2·왜]</div>backtrack → <b>X1=2</b> 채택. X2 후보에서 2와 대각 제거 → X2=4 가능.</div>
-              <div class="step"><div class="step-head">5. [전개3]</div>X2=4 → forward checking으로 X3,X4 좁힘 → <b>X3=1</b> 가능.</div>
-              <div class="step"><div class="step-head">6. [결론]</div>X4 후보에 <b>3</b>만 남음 → <b>해 X1=2, X2=4, X3=1, X4=3</b>.</div>
-              <div class="step"><div class="step-head">7. [검산]</div>네 퀸이 같은 행·대각선에 없음 확인.</div>
-              <div class="step"><div class="step-head">8. [시험 변형]</div>"MRV를 쓰면 어느 변수를 먼저 고르나?" + "forward checking이 막힘을 언제 감지하나?(후보 0)".</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-title">4-Queens를 Forward Checking으로</div>
+              <div class="step show"><div class="step-head">1. 직관</div>열마다 퀸 하나(X1~X4, 값=행 1~4). 한 열 정할 때마다 충돌 행을 다른 열 후보에서 지운다.</div>
+              <div class="step"><div class="step-head">2. 셋업</div>도메인 모두 {1,2,3,4}. X1부터 할당, 같은 행·대각선 공격 제약.</div>
+              <div class="step"><div class="step-head">3. 전개1</div>X1=1 시도 → forward checking이 X2,X3,X4에서 충돌 행 제거. 진행하다 X3·X4 후보가 0이 되면 막힘.</div>
+              <div class="step"><div class="step-head">4. 전개2·왜</div>backtrack → <b>X1=2</b> 채택. X2 후보에서 2와 대각 제거 → X2=4 가능.</div>
+              <div class="step"><div class="step-head">5. 전개3</div>X2=4 → forward checking으로 X3,X4 좁힘 → <b>X3=1</b> 가능.</div>
+              <div class="step"><div class="step-head">6. 결론</div>X4 후보에 <b>3</b>만 남음 → <b>해 X1=2, X2=4, X3=1, X4=3</b>.</div>
+              <div class="step"><div class="step-head">7. 검산</div>네 퀸이 같은 행·대각선에 없음 확인.</div>
+              <div class="step"><div class="step-head">8. 시험 변형</div>"MRV를 쓰면 어느 변수를 먼저 고르나?" + "forward checking이 막힘을 언제 감지하나?(후보 0)".</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap"><b>MRV(변수 선택)와 LCV(값 선택)는 방향이 반대</b> — 변수는 가장 제약 많은 것, 값은 가장 제약 적은 것.</div></div>
@@ -764,346 +689,382 @@
         </div>
       </details>
 
-      <!-- C16 ⭐⭐ -->
-      <details class="node-card topcard" id="C16" data-node-id="C16" data-title="C16 Local Search for CSP min-conflicts Simulated Annealing 졸업시험 단골" open>
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C16" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C16 · Local Search for CSP — min-conflicts
-          <span class="nbadge top">⭐⭐ 졸업시험 단골</span><span class="nbadge warn">⚠️ SA 상세 자료없음</span><span class="nbadge">선행: C10, C15</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card hot2" id="C16" data-node-id="C16" data-title="Local Search for CSP min-conflicts 졸업시험 단골">
+        <summary><input type="checkbox" class="nodechk" data-id="C16" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C16 · Local Search for CSP — min-conflicts <span class="nbadge hot">⭐⭐ 졸업단골</span><span class="nbadge">선행: C10, C15</span><span class="nbadge">최우선</span><span class="chev">▶</span></summary>
         <div class="nbody">
-          <div class="topbanner">
-            <span class="big">🔥 졸업시험 단골 — 최우선 암기</span>
-            <small>min-conflicts 절차 + 왜 빠른가 + Hill-Climbing vs Simulated Annealing, 이 세 가지를 묶어 한 문단으로 서술할 수 있게. 이 노드에 가장 많은 시간을 투자하라.</small>
-          </div>
+          <div class="banner">🎓 졸업시험 단골 — 최우선 암기. "min-conflicts 절차 + Hill-Climbing vs Simulated Annealing"을 한 문단으로.</div>
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>모든 변수를 <b>일단 다 할당</b>(complete state, 제약 위반 허용)한 뒤, <b>충돌을 줄이는 방향</b>으로 값을 재배정하는 hill-climbing.</div>
           <div class="field"><span class="lbl">📖 메커니즘</span>
             <ul>
               <li>변수 선택 = 무작위로 <b>충돌하는(conflicted) 변수</b> 하나 선택.</li>
-              <li>값 선택 = <b>min-conflicts 휴리스틱</b> = 위반 제약 수가 최소가 되는 값. (= \(h(n)\)=총 위반 제약 수로 hill-climbing.)</li>
+              <li>값 선택 = <b>min-conflicts 휴리스틱</b> = 위반 제약 수가 최소가 되는 값. (= h(n)=총 위반 제약 수로 hill-climbing.)</li>
             </ul>
           </div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오 — 대규모 시간표/N-queens</span>퀸을 다 깔아 놓고(충돌 있어도 OK) 충돌하는 퀸을 골라 그 열에서 공격을 가장 적게 받는 행으로 옮긴다. 백트래킹보다 훨씬 큰 규모에서 빠름.</div>
-          <div class="field"><span class="lbl">📊 인사이트</span><div class="callout">4-queens는 \(4^4=256\) 상태, \(h\)=공격 수. 무작위 초기에서 <b>임의 \(n\)에 대해 거의 상수 시간</b>에 해결 — <b>\(n=10{,}000{,}000\)도</b> 높은 확률로 푼다.</div></div>
-
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 ⭐⭐ — min-conflicts로 N-Queens 해결</span>
-            <div class="stepper topstep">
-              <div class="step show"><div class="step-head">1. [직관]</div>백트래킹은 빈 보드에서 하나씩 놓지만, min-conflicts는 <b>다 놓고 고친다</b>.</div>
-              <div class="step"><div class="step-head">2. [셋업]</div>각 열에 퀸 하나를 <b>무작위 행</b>에 배치(complete state). \(h\)=서로 공격하는 쌍 수(\(&gt;0\) 가능).</div>
-              <div class="step"><div class="step-head">3. [전개1·변수 선택]</div>현재 <b>충돌에 연루된</b> 퀸(conflicted variable) 하나를 무작위로 고른다.</div>
-              <div class="step"><div class="step-head">4. [전개2·값 선택]</div>그 퀸을 같은 열의 어느 행으로 옮겨야 <b>공격받는 수가 최소(min-conflicts)</b>가 되는지 계산해 그 행으로 이동.</div>
-              <div class="step"><div class="step-head">5. [전개3]</div>\(h\)가 0이 될 때까지 3~4 반복. (충돌 0 = 해.)</div>
-              <div class="step"><div class="step-head">6. [결론]</div>매우 큰 \(n\)(수백만)에서도 거의 상수 시간에 수렴 → CSP local search의 위력.</div>
-              <div class="step"><div class="step-head">7. [검산·한계]</div>만약 \(h\)가 안 줄고 멈추면 <b>local optimum</b> → 무작위 재시작 또는 <b>SA(확률적 악수 허용)</b>로 탈출.</div>
-              <div class="step"><div class="step-head">8. [시험 변형 ⭐⭐]</div>"min-conflicts 절차를 설명하고, hill-climbing과 simulated annealing을 비교하라" — <b>졸업시험 단골 그대로.</b> 답: 절차 4단계 + HC는 local optimum에 갇힘/SA는 나쁜 수 확률 허용으로 탈출.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario"><b>대규모 시간표/N-queens</b> — 퀸을 다 깔아 놓고(충돌 있어도 OK) 충돌하는 퀸을 골라 그 열에서 공격을 가장 적게 받는 행으로 옮긴다. 백트래킹보다 훨씬 큰 규모에서 빠름.</div></div>
+          <div class="field"><span class="lbl">📊 인사이트</span><div class="callout">4-queens는 4⁴=256 상태, h=공격 수. 무작위 초기에서 <b>임의 n에 대해 거의 상수 시간</b>에 해결 — <b>n=10,000,000도</b> 높은 확률로 푼다.</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 ⭐⭐</span>
+            <div class="stepper star">
+              <div class="stepper-title">min-conflicts로 N-Queens 해결</div>
+              <div class="step show"><div class="step-head">1. 직관</div>백트래킹은 빈 보드에서 하나씩 놓지만, min-conflicts는 <b>다 놓고 고친다</b>.</div>
+              <div class="step"><div class="step-head">2. 셋업</div>각 열에 퀸 하나를 <b>무작위 행</b>에 배치(complete state). h=서로 공격하는 쌍 수(&gt;0 가능).</div>
+              <div class="step"><div class="step-head">3. 전개1·변수 선택</div>현재 <b>충돌에 연루된</b> 퀸(conflicted variable) 하나를 무작위로 고른다.</div>
+              <div class="step"><div class="step-head">4. 전개2·값 선택</div>그 퀸을 같은 열의 어느 행으로 옮겨야 <b>공격받는 수가 최소(min-conflicts)</b>가 되는지 계산해 그 행으로 이동.</div>
+              <div class="step"><div class="step-head">5. 전개3</div>h가 0이 될 때까지 3~4 반복. (충돌 0 = 해.)</div>
+              <div class="step"><div class="step-head">6. 결론</div>매우 큰 n(수백만)에서도 거의 상수 시간에 수렴 → CSP local search의 위력.</div>
+              <div class="step"><div class="step-head">7. 검산·한계</div>만약 h가 안 줄고 멈추면 <b>local optimum</b> → 무작위 재시작 또는 <b>SA(확률적 악수 허용)</b>로 탈출.</div>
+              <div class="step"><div class="step-head">8. 시험 변형 ⭐⭐</div>"min-conflicts 절차를 설명하고, hill-climbing과 simulated annealing을 비교하라" — <b>졸업시험 단골 그대로.</b> 답: 절차 4단계 + HC는 local optimum에 갇힘/SA는 나쁜 수 확률 허용으로 탈출.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">hill-climbing이라 <b>local optimum에 갇힐 수 있음</b> → <b>Simulated Annealing(SA)</b>은 확률적으로 나쁜 수도 허용해 탈출.</div></div>
-          <div class="missing">⚠️ Simulated Annealing 상세(온도 스케줄·수용확률 수식)는 PDF 미수록 — 개념만: "나쁜 수를 확률적으로 허용해 local optimum 탈출". (수식 추측 금지)</div>
-          <div class="exam-box top"><span class="lbl">📝 시험 포인트 (⭐⭐ 졸업 단골, 서술형)</span>
-            <ol>
-              <li><b>min-conflicts 절차</b>를 말로: complete state로 시작 → conflicted 변수 선택 → 위반 최소 값으로 재배정 → 반복.</li>
-              <li><b>왜 빠른가</b>: 큰 \(n\)에서도 거의 상수 시간(backtracking과 대비).</li>
-              <li><b>Hill-Climbing vs Simulated Annealing</b>: HC는 local optimum에 갇힘 / SA는 확률적 악수 허용으로 탈출.</li>
-            </ol>
-            → <b>이 세 가지를 묶어 한 문단으로 서술할 수 있게 최우선 암기.</b></div>
-          <div class="field"><span class="lbl">🔗 연결</span>선행 <b>C10(hill-climbing)</b> + <b>C15(backtracking과 대조: complete vs partial)</b> / <span style="color:var(--muted)">자료 없음: SA 상세 수식</span></div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">hill-climbing이라 <b>local optimum에 갇힐 수 있음</b> → <b>Simulated Annealing(SA)</b> 은 확률적으로 나쁜 수도 허용해 탈출. (<span class="nbadge warn">⚠️ SA 온도스케줄·수용확률 수식은 PDF 미수록</span> — 개념만: "나쁜 수 확률적 허용으로 local optimum 탈출".)</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 (⭐⭐ 졸업 단골, 서술형)</span>
+            <b>(1) min-conflicts 절차</b>를 말로: complete state로 시작 → conflicted 변수 선택 → 위반 최소 값으로 재배정 → 반복.<br>
+            <b>(2) 왜 빠른가</b>: 큰 n에서도 거의 상수 시간(backtracking과 대비).<br>
+            <b>(3) Hill-Climbing vs Simulated Annealing</b>: HC는 local optimum에 갇힘 / SA는 확률적 악수 허용으로 탈출.<br>
+            → <b>이 세 가지를 묶어 한 문단으로 서술할 수 있게 최우선 암기.</b>
+          </div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 <b>C10(hill-climbing)</b> + <b>C15(backtracking과 대조: complete vs partial)</b> / <span class="nbadge warn">⚠️ 자료 없음</span>: SA 상세 수식</div>
         </div>
       </details>
     </section>
 
-    <!-- ============================================================ -->
-    <!-- ===== 줄기 B5: Learning ===== -->
-    <!-- ============================================================ -->
-    <section class="stem-sec">
-      <h2>B5. 학습 (Learning) — 탐색→학습 대전환</h2>
-      <div class="stemdesc">B1~B4는 "정답 경로를 <b>찾는다</b>", B5는 패턴을 <b>배운다</b>. 지도(kNN·DT·ANN) / 비지도(군집) / 강화(Q-learning).</div>
+    <!-- ===================== B5 ===================== -->
+    <section class="stem-sec" id="B5">
+      <h2>B5. 학습 (Learning)</h2>
 
-      <!-- C17 -->
-      <details class="node-card" id="C17" data-node-id="C17" data-title="C17 kNN k-Nearest Neighbor Classifier">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C17" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C17 · kNN (k-Nearest Neighbor) Classifier
-          <span class="nbadge hot">⭐高</span><span class="nbadge ind">독립</span><span class="nbadge">선행: 없음(거리)</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C17" data-node-id="C17" data-title="kNN k-Nearest Neighbor Classifier lazy learning">
+        <summary><input type="checkbox" class="nodechk" data-id="C17" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C17 · kNN (k-Nearest Neighbor) Classifier <span class="nbadge hot">⭐高</span><span class="nbadge">선행: 없음(거리 개념)</span><span class="nbadge">독립</span><span class="chev">▶</span></summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span>새 인스턴스를 <b>가장 가까운 k개 이웃의 다수결(majority vote)</b>로 분류. 모델을 학습하지 않음.</div>
-          <div class="field"><span class="lbl">📖 정의</span>instance-based / <b>lazy learning</b> — 분류함수를 국소적으로만 근사, <b>모든 계산을 질의 시점으로 미룸</b>(pre-training 없음, 데이터만 보유). \(k=1\)이면 최근접 1개 클래스.</div>
-          <div class="field"><span class="lbl">🧮 거리 수식</span>
-            \[ d_E(x,y)=\sqrt{\sum_{i=1}^{N}(x_i-y_i)^2} \quad\text{(Euclidean)} \]
-            \[ d_A(x,y)=\sum_{i=1}^{N}|x_i-y_i| \quad\text{(Manhattan)} \]
-            인스턴스=\(n\)차원 벡터 \(\langle a_1,\dots,a_n\rangle\). 정규화 \(x'=\frac{x-\bar{x}}{\sigma(x)}\).</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오 — 추천/진단</span>"이 사용자와 가장 비슷한 \(k\)명이 좋아한 영화"로 추천, "증상이 가장 비슷한 과거 환자 \(k\)명의 진단"으로 분류. 미리 모델을 안 만들고 질의 때 비교만 하므로 데이터가 바뀌어도 재학습 불필요(대신 질의가 느림).</div>
-
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — kNN 분류 (PlayTennis, 시험 단골)</span>
+          <div class="field"><span class="lbl">🎯 한 줄 직관</span>새 인스턴스를 <b>가장 가까운 k개 이웃의 다수결(majority vote)</b> 로 분류. 모델을 학습하지 않음.</div>
+          <div class="field"><span class="lbl">📖 정의</span>instance-based / <b>lazy learning</b> — 분류함수를 국소적으로만 근사, <b>모든 계산을 질의 시점으로 미룸</b>(pre-training 없음, 데이터만 보유). k=1이면 최근접 1개 클래스.</div>
+          <div class="field"><span class="lbl">🧮 거리 수식</span><b>Euclidean</b> \( d_E(x,y)=\sqrt{\sum_{i=1}^{N}(x_i-y_i)^2} \) / <b>Manhattan</b> \( d_A(x,y)=\sum_{i=1}^{N}|x_i-y_i| \). 인스턴스=n차원 벡터 ⟨a₁,…,aₙ⟩. 정규화 \( x'=\frac{x-\bar{x}}{\sigma(x)} \).</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario"><b>추천/진단</b> — "이 사용자와 가장 비슷한 k명이 좋아한 영화"로 추천, "증상이 가장 비슷한 과거 환자 k명의 진단"으로 분류. 미리 모델을 안 만들고 질의 때 비교만 하므로 데이터가 바뀌어도 재학습 불필요(대신 질의가 느림).</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 (PlayTennis, 시험 단골)</span>
             <div class="stepper">
-              <div class="step show"><div class="step-head">1. [직관]</div>새 날씨가 과거 어느 날들과 가장 닮았는지 보고, 그날들의 정답(Play?)을 다수결.</div>
-              <div class="step"><div class="step-head">2. [셋업·범주형→수치]</div>Outlook{Rain=0,Overcast=1,Sunny=2}, Temp{Cool=0,Mild=1,Hot=2}, Humidity{Normal=0,High=1}, Wind{Weak=0,Strong=1}. 예 ⟨Sunny,Hot,High,Weak⟩→⟨2,2,1,0⟩.</div>
-              <div class="step"><div class="step-head">3. [전개1·정규화]</div>각 열을 \(x'=(x-\bar x)/\sigma\)로 스케일 — 차원 크기 차로 인한 거리 왜곡 제거. (정규화 안 하면 큰 축이 지배해 오분류.)</div>
-              <div class="step"><div class="step-head">4. [전개2·거리]</div>query=⟨Sunny,Cool,High,Strong⟩→정규화 ⟨1.18,−1.18,1,1⟩. 모든 학습일과 거리 계산.</div>
-              <div class="step"><div class="step-head">5. [전개3·k=3]</div>최근접 3일 = Day2(No), Day7(Yes), Day11(Yes).</div>
-              <div class="step"><div class="step-head">6. [결론·투표]</div>\(t_q=(0+1+1)/3 = 2/3 \geq 1/2\) → <b>PlayTennis = YES</b>.</div>
-              <div class="step"><div class="step-head">7. [검산]</div>\(k\)를 1로 줄이면? 가장 가까운 1일의 라벨만 따름 → \(k\)가 결과를 바꿀 수 있음(노이즈 민감도).</div>
-              <div class="step"><div class="step-head">8. [시험 변형]</div>"정규화를 빼면 결과가 어떻게 달라지나?" / "거리식을 맨해튼으로 바꾸면?"</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-title">kNN 분류 — PlayTennis</div>
+              <div class="step show"><div class="step-head">1. 직관</div>새 날씨가 과거 어느 날들과 가장 닮았는지 보고, 그날들의 정답(Play?)을 다수결.</div>
+              <div class="step"><div class="step-head">2. 셋업·범주형→수치</div>Outlook{Rain=0,Overcast=1,Sunny=2}, Temp{Cool=0,Mild=1,Hot=2}, Humidity{Normal=0,High=1}, Wind{Weak=0,Strong=1}. 예 ⟨Sunny,Hot,High,Weak⟩→⟨2,2,1,0⟩.</div>
+              <div class="step"><div class="step-head">3. 전개1·정규화</div>각 열을 \( x'=(x-\bar x)/\sigma \)로 스케일 — 차원 크기 차로 인한 거리 왜곡 제거. (정규화 안 하면 큰 축이 지배해 오분류.)</div>
+              <div class="step"><div class="step-head">4. 전개2·거리</div>query=⟨Sunny,Cool,High,Strong⟩→정규화 ⟨1.18,−1.18,1,1⟩. 모든 학습일과 거리 계산.</div>
+              <div class="step"><div class="step-head">5. 전개3·k=3</div>최근접 3일 = Day2(No), Day7(Yes), Day11(Yes).</div>
+              <div class="step"><div class="step-head">6. 결론·투표</div>t_q=(0+1+1)/3 = 2/3 ≥ 1/2 → <b>PlayTennis = YES</b>.</div>
+              <div class="step"><div class="step-head">7. 검산</div>k를 1로 줄이면? 가장 가까운 1일의 라벨만 따름 → k가 결과를 바꿀 수 있음(노이즈 민감도).</div>
+              <div class="step"><div class="step-head">8. 시험 변형</div>"정규화를 빼면 결과가 어떻게 달라지나?" / "거리식을 맨해튼으로 바꾸면?"</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
-          <div class="field"><span class="lbl">📊 표·그래프 인사이트</span><div class="callout">차원이 크면 <b>정규화 전엔 오분류(white)</b>, <b>정규화 후 정분류(black)</b>. 개선: <b>Distance-Weighted NN</b>(가중치 \(1/d\) 또는 \(1/d^2\); \(k\)=전체면 <b>Shepard's method</b>). <b>Voronoi diagram</b>=1-NN 결정경계. 장단점: Pros=단순·노이즈/복잡 타깃에 효과적·학습 거의 없음; Cons=<b>분류 시간 비용 큼</b>(매 질의마다 전 데이터와 거리계산) → k-d tree로 완화.</div></div>
+          <div class="field"><span class="lbl">📊 표·그래프 인사이트</span><div class="callout">그림 — X차원이 크면 <b>정규화 전엔 오분류(white)</b>, <b>정규화 후 정분류(black)</b>. 개선: <b>Distance-Weighted NN</b>(가중치 1/d 또는 1/d²; k=전체면 <b>Shepard's method</b>). <b>Voronoi diagram</b>=1-NN 결정경계. 장단점: Pros=단순·노이즈/복잡 타깃에 효과적·학습 거의 없음; Cons=<b>분류 시간 비용 큼</b>(매 질의마다 전 데이터와 거리계산) → k-d tree로 완화.</div></div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">"학습"이 아니라 <b>lazy(질의 시 계산)</b>. scaling 안 하면 큰 스케일 축이 거리를 지배.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"kNN이 lazy learning인 이유, majority voting, <b>정규화가 왜 필요한지</b>, \(k\) 선택의 영향, Voronoi를 설명하라." → 특히 <b>정규화 필요성</b>(차원 스케일 차이로 거리 왜곡)이 단골.</div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"kNN이 lazy learning인 이유, majority voting, <b>정규화가 왜 필요한지</b>, k 선택의 영향, Voronoi를 설명하라." → 특히 <b>정규화 필요성</b>(차원 스케일 차이로 거리 왜곡)이 단골.</div>
           <div class="field"><span class="lbl">🔗 연결</span>거리개념 → 응용 C19(k-means)</div>
         </div>
       </details>
 
-      <!-- C18 -->
-      <details class="node-card" id="C18" data-node-id="C18" data-title="C18 Decision Tree 결정트리 entropy information gain gini">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C18" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C18 · Decision Tree
-          <span class="nbadge hot">⭐高</span><span class="nbadge ind">독립</span><span class="nbadge">선행: 없음</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C18" data-node-id="C18" data-title="Decision Tree 결정트리 entropy information gain gini">
+        <summary><input type="checkbox" class="nodechk" data-id="C18" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C18 · Decision Tree <span class="nbadge hot">⭐高</span><span class="nbadge">선행: 없음</span><span class="nbadge">독립</span><span class="chev">▶</span></summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>내부노드=속성 테스트, 가지=속성값, 잎=분류값 → 데이터를 <b>순도 높은(homogeneous) 그룹</b>으로 재귀 분할.</div>
           <div class="field"><span class="lbl">📖 정의 / 종류</span>큰 이질 집단을 더 작고 동질적인 그룹으로 나누는 split rule 집합. Binary(2분기) / N-way(3분기↑).</div>
           <div class="field"><span class="lbl">🔍 작동 원리 / Best Split = Purity</span>잎이 한 클래스만 = pure. <b>순도를 가장 많이 증가</b>시키는 split이 best(+ 비슷한 크기 노드 선호). 불순도 측도 4종 중 강의는 <b>Information Gain(entropy) &amp; Gini만</b>.</div>
           <div class="field"><span class="lbl">🧮 수식</span>
-            <div><b>Entropy</b>: \[ E(p)=\sum_j -p_j\log_2 p_j \] <b>균등분포에서 최대</b>(가장 무질서). (Day6: \(-\log\)=놀람의 정도, 압축에서 빈출=짧은 코드.)</div>
-            <div><b>Information Gain</b>: \[ Gain(S,A)=E(S)-\sum_{v\in Values(A)}\frac{|S_v|}{|S|}E(S_v) \] = 분할 전후 불순도 차. <b>Gain 최대 속성이 root</b>.</div>
-            <div><b>Gini</b>: \[ Gini=\sum_j p_j^2 \] (root \(0.5^2+0.5^2=0.5\)=impure, 잎 \(0.1^2+0.9^2=0.82\)=거의 pure.)</div>
+            <ul>
+              <li><b>Entropy</b>: \( E(p)=\sum_j -p_j\log_2 p_j \). <b>균등분포에서 최대</b>(가장 무질서). (Day6: −log=놀람의 정도, 압축에서 빈출=짧은 코드.)</li>
+              <li><b>Information Gain</b>: \( Gain(S,A)=E(S)-\sum_{v\in Values(A)}\frac{|S_v|}{|S|}E(S_v) \) = 분할 전후 불순도 차. <b>Gain 최대 속성이 root</b>.</li>
+              <li><b>Gini</b>: \( Gini=\sum_j p_j^2 \). (root 0.5²+0.5²=0.5=impure, 잎 0.1²+0.9²=0.82=거의 pure.)</li>
+            </ul>
           </div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오 — 신용 승인/이탈 예측</span>"소득→대출이력→나이" 식으로 질문을 분기해 승인/거절을 결정. 규칙이 사람이 읽는 if-then(business rule)로 그대로 매핑돼 해석이 쉽다.</div>
-
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — Decision Tree root 선택 (Transportation, PDF)</span>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario"><b>신용 승인/이탈 예측</b> — "소득→대출이력→나이" 식으로 질문을 분기해 승인/거절을 결정. 규칙이 사람이 읽는 if-then(business rule)로 그대로 매핑돼 해석이 쉽다.</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 (Transportation, PDF)</span>
             <div class="stepper">
-              <div class="step show"><div class="step-head">1. [직관]</div>"어느 질문(속성)으로 나눠야 그룹이 가장 깔끔하게(순도↑) 갈리나?"를 정보이득으로 고른다.</div>
-              <div class="step"><div class="step-head">2. [셋업]</div>전체 데이터 entropy = <b>1.571</b>(여러 클래스 섞여 무질서 큼).</div>
-              <div class="step"><div class="step-head">3. [전개1·속성별 Gain]</div>Gender 0.125, Car Ownership 0.534, <b>Travel Cost 1.210</b>, Income 0.695.</div>
-              <div class="step"><div class="step-head">4. [전개2·root 결정]</div>Gain 최대 = <b>Travel Cost → root</b>. (불순도를 가장 많이 줄임.)</div>
-              <div class="step"><div class="step-head">5. [전개3·분할]</div>Travel Cost로 split → Expensive=Car, <b>Standard=Train(pure)</b>, Cheap=추가 분할 필요.</div>
-              <div class="step"><div class="step-head">6. [전개4·재귀]</div>pure 잎(Standard)은 고정. 나머지에서 2차 반복 → root=Gender(Gain 0.322), 3차 반복 → Car Ownership로 마무리.</div>
-              <div class="step"><div class="step-head">7. [검산·Gini로 교체]</div>Entropy 대신 Gini를 넣어도 동일하게 best split을 고른다(측도만 교체).</div>
-              <div class="step"><div class="step-head">8. [시험 변형 ⭐]</div>"Decision Tree에서 가장 중요한 게 뭐냐?" → <b>best split=순도를 가장 높이는(=information gain 최대) 속성 선택.</b> 절차를 말로 설명.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-title">Decision Tree root 선택 — Transportation</div>
+              <div class="step show"><div class="step-head">1. 직관</div>"어느 질문(속성)으로 나눠야 그룹이 가장 깔끔하게(순도↑) 갈리나?"를 정보이득으로 고른다.</div>
+              <div class="step"><div class="step-head">2. 셋업</div>전체 데이터 entropy = <b>1.571</b>(여러 클래스 섞여 무질서 큼).</div>
+              <div class="step"><div class="step-head">3. 전개1·속성별 Gain</div>Gender 0.125, Car Ownership 0.534, <b>Travel Cost 1.210</b>, Income 0.695.</div>
+              <div class="step"><div class="step-head">4. 전개2·root 결정</div>Gain 최대 = <b>Travel Cost → root</b>. (불순도를 가장 많이 줄임.)</div>
+              <div class="step"><div class="step-head">5. 전개3·분할</div>Travel Cost로 split → Expensive=Car, <b>Standard=Train(pure)</b>, Cheap=추가 분할 필요.</div>
+              <div class="step"><div class="step-head">6. 전개4·재귀</div>pure 잎(Standard)은 고정. 나머지에서 2차 반복 → root=Gender(Gain 0.322), 3차 반복 → Car Ownership로 마무리.</div>
+              <div class="step"><div class="step-head">7. 검산·Gini로 교체</div>Entropy 대신 Gini를 넣어도 동일하게 best split을 고른다(측도만 교체).</div>
+              <div class="step"><div class="step-head">8. 시험 변형 ⭐</div>"Decision Tree에서 가장 중요한 게 뭐냐?" → <b>best split=순도를 가장 높이는(=information gain 최대) 속성 선택.</b> 절차를 말로 설명.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
           <div class="field"><span class="lbl">📖 장단점</span>장점=이해 쉬움·business rule 매핑·선험 가정 없음·수치/범주 모두. 단점=타깃이 <b>범주형</b>이어야·<b>단일 타깃</b>·<b>때때로 불안정</b>(local search 유사, Day6 "왜?")·수치속성은 트리 복잡.</div>
-          <div class="field"><span class="lbl">⚠️ 함정 (학생 노트 정정)</span>
-            <div class="correction">⚠️ <b>학생 노트 정정 — Gini 해석</b>: "Gini는 높을수록 좋다"는 <b>순도 측면</b>(한 클래스만 있으면 \(\sum p_j^2=1\)) — 경제학 Gini(불평등)와 혼동 금지. 본 강의 정의에선 <b>분할 후 자식 Gini가 높을수록 pure(좋은 split)</b>. (엔트로피와 방향 반대.)</div>
-          </div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 (⭐ Day7 교수 예시 "Decision Tree에서 가장 중요한 게?", 서술형)</span>답 = <b>best split / purity / information gain</b>. + entropy·gain·gini 수식과 <b>root 선택 절차</b>, 장단점. <i>증명 X, 개념·절차 O.</i></div>
+          <div class="field"><span class="lbl">⚠️ 함정 (학생 노트 정정)</span><div class="trap">"Gini는 높을수록 좋다"는 <b>순도 측면</b>(한 클래스만 있으면 Σpⱼ²=1) — 경제학 Gini(불평등)와 혼동 금지. 본 강의 정의에선 <b>분할 후 자식 Gini가 높을수록 pure(좋은 split)</b>. (엔트로피와 방향 반대.)</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 (⭐ Day7 교수 예시 "Decision Tree에서 가장 중요한 게?", 서술형)</span>답 = <b>best split / purity / information gain</b>. + entropy·gain·gini 수식과 <b>root 선택 절차</b>, 장단점. 증명 X, 개념·절차 O.</div>
           <div class="field"><span class="lbl">🔗 연결</span>독립 / 응용 C22(지도학습 신경망으로 확장)</div>
         </div>
       </details>
 
-      <!-- C19 -->
-      <details class="node-card" id="C19" data-node-id="C19" data-title="C19 Clustering k-means 군집 비지도">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C19" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C19 · Clustering 개요 &amp; k-means
-          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C17(거리)</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C19" data-node-id="C19" data-title="Clustering k-means 군집 centroid">
+        <summary><input type="checkbox" class="nodechk" data-id="C19" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C19 · Clustering 개요 &amp; k-means <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C17(거리)</span><span class="chev">▶</span></summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>라벨 없는 데이터를 유사한 것끼리 묶는 <b>비지도학습</b>(cluster 내 유사·간 상이).</div>
           <div class="field"><span class="lbl">📖 정의 / 분류</span>unsupervised의 가장 흔한 형태(IR 문서군집, Google News). 유사도=cosine 또는 Euclidean. <b>Flat(k-means)</b> vs <b>Hierarchical</b>(agglomerative/divisive). 원칙: trivial 클러스터(너무 크거나 작음) 회피.</div>
           <div class="field"><span class="lbl">🧮 수식 / 알고리즘</span>
-            <div>centroid: \[ \vec{\mu}(c)=\frac{1}{|c|}\sum_{\vec{x}\in c}\vec{x} \] (무게중심).</div>
-            <div>의사코드: \(K\)개 random seed → {각 doc를 가장 가까운 centroid에 배정 → 각 cluster centroid 재계산} 수렴까지.</div>
-            <div>종료조건 3종: ①고정 반복수 ②모든 cluster 불변 ③모든 centroid 불변. (②와 ③은 보통 같으나 특수 상황 다름.)</div>
+            <ul>
+              <li>centroid: \( \vec{\mu}(c)=\frac{1}{|c|}\sum_{\vec{x}\in c}\vec{x} \) (무게중심).</li>
+              <li>의사코드: K개 random seed → {각 doc를 가장 가까운 centroid에 배정 → 각 cluster centroid 재계산} 수렴까지.</li>
+              <li>종료조건 3종: ①고정 반복수 ②모든 cluster 불변 ③모든 centroid 불변. (②와 ③은 보통 같으나 특수 상황 다름.)</li>
+            </ul>
           </div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오 — 고객 세분화(customer segmentation)</span>구매 패턴 벡터를 \(k\)개 그룹으로 묶어 마케팅 타깃을 나눈다. 라벨(정답 세그먼트)이 없으니 비지도, centroid=각 세그먼트의 "평균 고객".</div>
-
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — k-means 반복</span>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario"><b>고객 세분화(customer segmentation)</b> — 구매 패턴 벡터를 k개 그룹으로 묶어 마케팅 타깃을 나눈다. 라벨(정답 세그먼트)이 없으니 비지도, centroid=각 세그먼트의 "평균 고객".</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>
             <div class="stepper">
-              <div class="step show"><div class="step-head">1. [직관]</div>"중심을 정하고→가까운 점을 모으고→중심을 다시 계산"을 반복하면 자연히 덩어리로 갈린다.</div>
-              <div class="step"><div class="step-head">2. [셋업]</div>\(K=2\), 데이터 {A,B,C,D,E,F}. 초기 seed 무작위로 2개(예 B,E).</div>
-              <div class="step"><div class="step-head">3. [전개1·배정]</div>각 점을 더 가까운 seed의 클러스터에 배정 → {A,B,C} / {D,E,F}.</div>
-              <div class="step"><div class="step-head">4. [전개2·갱신]</div>각 클러스터의 centroid를 멤버 평균 \(\vec\mu=\frac1{|c|}\sum \vec x\)로 재계산.</div>
-              <div class="step"><div class="step-head">5. [전개3·반복]</div>새 centroid로 재배정 → 변화 없으면 종료(종료조건 ②/③).</div>
-              <div class="step"><div class="step-head">6. [검산·seed 민감]</div>seed를 D,F로 바꾸면 → {A,B,D,E}/{C,F}로 <b>다른 결과</b> → local optimum/seed 민감성 입증.</div>
-              <div class="step"><div class="step-head">7. [결론]</div>그래서 다중 시도(restart) 또는 먼 벡터 seed 휴리스틱을 쓴다. 복잡도는 \(O(IKnm)\) 선형.</div>
-              <div class="step"><div class="step-head">8. [시험 변형]</div>"seed가 결과를 바꾸는 이유와 대처법?" / "종료조건 ②와 ③이 다를 수 있는 경우?"</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-title">k-means 반복</div>
+              <div class="step show"><div class="step-head">1. 직관</div>"중심을 정하고→가까운 점을 모으고→중심을 다시 계산"을 반복하면 자연히 덩어리로 갈린다.</div>
+              <div class="step"><div class="step-head">2. 셋업</div>K=2, 데이터 {A,B,C,D,E,F}. 초기 seed 무작위로 2개(예 B,E).</div>
+              <div class="step"><div class="step-head">3. 전개1·배정</div>각 점을 더 가까운 seed의 클러스터에 배정 → {A,B,C} / {D,E,F}.</div>
+              <div class="step"><div class="step-head">4. 전개2·갱신</div>각 클러스터의 centroid를 멤버 평균 \( \vec\mu=\frac1{|c|}\sum \vec x \)로 재계산.</div>
+              <div class="step"><div class="step-head">5. 전개3·반복</div>새 centroid로 재배정 → 변화 없으면 종료(종료조건 ②/③).</div>
+              <div class="step"><div class="step-head">6. 검산·seed 민감</div>seed를 D,F로 바꾸면 → {A,B,D,E}/{C,F}로 <b>다른 결과</b> → local optimum/seed 민감성 입증.</div>
+              <div class="step"><div class="step-head">7. 결론</div>그래서 다중 시도(restart) 또는 먼 벡터 seed 휴리스틱을 쓴다. 복잡도는 O(IKnm) 선형.</div>
+              <div class="step"><div class="step-head">8. 시험 변형</div>"seed가 결과를 바꾸는 이유와 대처법?" / "종료조건 ②와 ③이 다를 수 있는 경우?"</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
-          <div class="field"><span class="lbl">📊 인사이트</span><div class="callout">시간복잡도 <b>\(O(IKnm)\) = 선형</b>(\(m\)=차원, \(n\)=문서, \(K\)=클러스터, \(I\)=반복). 수렴: 항상 fixed point 존재, <b>k-means=EM의 특수경우</b>(수렴 증명됨). <b>초기 seed 민감</b> → 다른 seed면 다른 결과(예 {A..F}에서 B,E시작→{A,B,C}{D,E,F} vs D,F시작→{A,B,D,E}{C,F}). 해법=먼 벡터 seed 휴리스틱/다중 시도.</div></div>
+          <div class="field"><span class="lbl">📊 인사이트</span><div class="callout">시간복잡도 <b>O(IKnm) = 선형</b>(m=차원,n=문서,K=클러스터,I=반복). 수렴: 항상 fixed point 존재, <b>k-means=EM의 특수경우</b>(수렴 증명됨). <b>초기 seed 민감</b> → 다른 seed면 다른 결과(예 {A..F}에서 B,E시작→{A,B,C}{D,E,F} vs D,F시작→{A,B,D,E}{C,F}). 해법=먼 벡터 seed 휴리스틱/다중 시도.</div></div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">local optimum·seed 민감 → 다중 restart. 종료조건 ②≠③(특수 경우).</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"centroid 수식과 4단계 절차, 종료조건 3종, <b>\(O(IKnm)\) 선형 복잡도</b>, seed 민감성과 EM 수렴을 설명하라."</div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"centroid 수식과 4단계 절차, 종료조건 3종, <b>O(IKnm) 선형 복잡도</b>, seed 민감성과 EM 수렴을 설명하라."</div>
           <div class="field"><span class="lbl">🔗 연결</span>선행 C17(거리) / 대조 C20(hierarchical) / 연결 C10(seed 민감=hill-climbing 성질)</div>
         </div>
       </details>
 
-      <!-- C20 -->
-      <details class="node-card" id="C20" data-node-id="C20" data-title="C20 Hierarchical Clustering single complete group-average 계층군집">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C20" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C20 · Hierarchical Clustering (single/complete/group-average)
-          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C19</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C20" data-node-id="C20" data-title="Hierarchical Clustering single complete group-average link 계층군집">
+        <summary><input type="checkbox" class="nodechk" data-id="C20" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C20 · Hierarchical Clustering (single/complete/group-average) <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C19</span><span class="chev">▶</span></summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>데이터를 트리(덴드로그램)로 묶는다 — bottom-up(병합) 또는 top-down(분할).</div>
           <div class="field"><span class="lbl">📖 두 방식 / 절차</span><b>Divisive(Top-Down)</b>=전체를 하나로 보고 재귀 분할(예 k-means). <b>Agglomerative(Bottom-Up)</b>=개별에서 시작해 유사한 것 병합. HAC: ①각 문서를 자기 클러스터로 ②모든 쌍 유사도 계산 ③가장 유사한 쌍 병합 ④클러스터&gt;1이면 ②로.</div>
           <div class="field"><span class="lbl">📊 표·그래프 인사이트 (cluster-cluster 유사도 3종, 시험 핵심)</span>
-            <table>
+            <div class="scrollx"><table>
               <tr><th>방식</th><th>sim 정의</th><th>성향</th></tr>
-              <tr><td><b>Single-link</b></td><td class="hlok">max (가장 가까운 쌍)</td><td>적고 크고 느슨, <b>chaining 효과</b></td></tr>
-              <tr><td><b>Complete-link</b></td><td class="hl">min (가장 먼 쌍)</td><td>많고 작고 단단, IR 적합·비용 큼</td></tr>
+              <tr><td><b>Single-link</b></td><td><b>max</b>(가장 가까운 쌍)</td><td>적고 크고 느슨, <b>chaining 효과</b></td></tr>
+              <tr><td><b>Complete-link</b></td><td><b>min</b>(가장 먼 쌍)</td><td>많고 작고 단단, IR 적합·비용 큼</td></tr>
               <tr><td><b>Group-average</b></td><td>모든 쌍 평균</td><td>중간(intermediate)</td></tr>
-            </table>
+            </table></div>
           </div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오 — 문서/뉴스 계층 분류</span>기사를 한 개씩 클러스터로 시작해 가장 비슷한 둘을 계속 합치면, 임계값으로 자르는 위치에 따라 "정치&gt;국내정치&gt;선거"처럼 <b>세분/대분류를 한 트리에서</b> 얻는다.</div>
-
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — Single-link HAC 병합 (A~F, 6개)</span>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario"><b>문서/뉴스 계층 분류</b> — 기사를 한 개씩 클러스터로 시작해 가장 비슷한 둘을 계속 합치면, 임계값으로 자르는 위치에 따라 "정치&gt;국내정치&gt;선거"처럼 <b>세분/대분류를 한 트리에서</b> 얻는다.</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 (A~F, 6개)</span>
             <div class="stepper">
-              <div class="step show"><div class="step-head">1. [직관]</div>가장 닮은 둘을 계속 합쳐 트리를 키운다. "닮음"의 정의(max/min/avg)가 결과 모양을 바꾼다.</div>
-              <div class="step"><div class="step-head">2. [셋업]</div>A~F 6개, 15쌍 유사도 표. single-link: 두 클러스터 유사도=<b>멤버 쌍 중 max</b>.</div>
-              <div class="step"><div class="step-head">3. [전개1]</div>가장 유사한 쌍 A–F(0.9) 병합 → 클러스터 AF. 갱신: sim(AF,X)=max(sim(A,X),sim(F,X)).</div>
-              <div class="step"><div class="step-head">4. [전개2]</div>다음 최댓값으로 AEF(0.8) → ABEF(0.8) → ABEFD(0.6) → ABCDEF(0.5)까지 병합.</div>
-              <div class="step"><div class="step-head">5. [전개3·임계값 자르기]</div>0.85에서 자르면 {AF,E,B,D,C}, 0.65 → {AFEB,D,C}, 0.55 → {AFEBD,C}.</div>
-              <div class="step"><div class="step-head">6. [대조·complete-link]</div>같은 데이터에 <b>min</b> 기준이면 병합 순서·결과가 달라짐(0.85→{AF,B,E,C,D}, 0.65→{AF,BE,C,D}, 0.35→{AF,BCE,D}). "checked list" 필요.</div>
-              <div class="step"><div class="step-head">7. [결론]</div>single-link는 chaining으로 크고 느슨, complete-link는 작고 단단.</div>
-              <div class="step"><div class="step-head">8. [시험 변형 ⭐]</div>"single/complete의 sim 정의 차이와 성향(chaining vs tight)을 덴드로그램으로 설명하라."</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-title">Single-link HAC 병합</div>
+              <div class="step show"><div class="step-head">1. 직관</div>가장 닮은 둘을 계속 합쳐 트리를 키운다. "닮음"의 정의(max/min/avg)가 결과 모양을 바꾼다.</div>
+              <div class="step"><div class="step-head">2. 셋업</div>A~F 6개, 15쌍 유사도 표. single-link: 두 클러스터 유사도=<b>멤버 쌍 중 max</b>.</div>
+              <div class="step"><div class="step-head">3. 전개1</div>가장 유사한 쌍 A–F(0.9) 병합 → 클러스터 AF. 갱신: sim(AF,X)=max(sim(A,X),sim(F,X)).</div>
+              <div class="step"><div class="step-head">4. 전개2</div>다음 최댓값으로 AEF(0.8) → ABEF(0.8) → ABEFD(0.6) → ABCDEF(0.5)까지 병합.</div>
+              <div class="step"><div class="step-head">5. 전개3·임계값 자르기</div>0.85에서 자르면 {AF,E,B,D,C}, 0.65 → {AFEB,D,C}, 0.55 → {AFEBD,C}.</div>
+              <div class="step"><div class="step-head">6. 대조·complete-link</div>같은 데이터에 <b>min</b> 기준이면 병합 순서·결과가 달라짐(0.85→{AF,B,E,C,D}, 0.65→{AF,BE,C,D}, 0.35→{AF,BCE,D}). "checked list" 필요.</div>
+              <div class="step"><div class="step-head">7. 결론</div>single-link는 chaining으로 크고 느슨, complete-link는 작고 단단.</div>
+              <div class="step"><div class="step-head">8. 시험 변형 ⭐</div>"single/complete의 sim 정의 차이와 성향(chaining vs tight)을 덴드로그램으로 설명하라."</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
-          <div class="field"><span class="lbl">⚠️ 함정 (학생 노트 정정)</span>
-            <div class="correction">⚠️ <b>학생 노트 정정 — single/complete-link</b>: single-link=<b>max</b> sim(가장 가까운 쌍), complete-link=<b>min</b> sim(가장 먼 쌍) — "Best/Worst"보다 <b>max/min 정의로</b> 외울 것. single-link는 chaining으로 불공정 성장.</div>
-          </div>
+          <div class="field"><span class="lbl">⚠️ 함정 (학생 노트 정정)</span><div class="trap">single-link=<b>max</b> sim(가장 가까운 쌍), complete-link=<b>min</b> sim(가장 먼 쌍) — "Best/Worst"보다 <b>max/min 정의로</b> 외울 것. single-link는 chaining으로 불공정 성장.</div></div>
           <div class="exam-box"><span class="lbl">📝 시험 포인트 (⭐ 서술형)</span>"single vs complete vs group-average의 <b>sim 정의(max/min/avg)와 성향(chaining vs tight)</b>, agglomerative 절차, 덴드로그램을 임계값으로 자르는 법을 설명하라."</div>
           <div class="field"><span class="lbl">🔗 연결</span>선행 C19 / 대조 C19(flat vs hierarchical)</div>
         </div>
       </details>
 
-      <!-- C21 -->
-      <details class="node-card" id="C21" data-node-id="C21" data-title="C21 Reinforcement Learning Q-Learning 강화학습">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C21" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C21 · Reinforcement Learning &amp; Q-Learning
-          <span class="nbadge hot">⭐高</span><span class="nbadge warn">⚠️ 기말 범위 미확인</span><span class="nbadge">선행: C10</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C21" data-node-id="C21" data-title="Reinforcement Learning Q-Learning 강화학습">
+        <summary><input type="checkbox" class="nodechk" data-id="C21" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C21 · Reinforcement Learning &amp; Q-Learning <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C10</span><span class="nbadge warn">⚠️ 기말 범위 미확인</span><span class="chev">▶</span></summary>
         <div class="nbody">
-          <div class="missing">⚠️ Notion Day 노트에 Q-learning 강조/시험가이드 없음(PDF 단독 근거). 기말 범위 포함은 진도상 추정이나 명시 확인 불가. (추측 금지)</div>
+          <div class="warnstrip">⚠️ Notion Day 노트에 Q-learning 강조/시험가이드 없음(PDF 단독 근거). 기말 범위 포함은 진도상 추정이나 명시 확인 불가.</div>
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>에이전트가 <b>시행착오로 reward를 받아</b> 점차 최적 행동을 강화. Q값으로 "각 상태에서 어떤 행동이 유리한지"를 테이블로 학습.</div>
           <div class="field"><span class="lbl">📖 정의</span>ML 3분류 = Supervised/Unsupervised/<b>Reinforcement</b>(행동에 reward로 강화). RL 특징: <b>delayed reward</b>(지금 행동의 적절성을 당장 모름), life-long learning. 구조: Agent ↔ Environment (state,reward / action). Q-Learning=RL 중 최다 사용, <b>reward를 전파(propagate)</b>.</div>
-          <div class="field"><span class="lbl">🧮 갱신 수식 (핵심)</span>
-            \[ Q(s,a) = r(s,a) + \gamma \max_{a'} Q(s',a') \]
-            \(r\)=즉각 reward, <b>\(\gamma\)</b>=전파 계수\([0,1]\)(delayed reward 할인), \(s'\)=\(a\) 후 새 상태, \(a'\)=\(s'\)의 가능 action. 최적 정책 \(\pi(s)=\arg\max_a Q(s,a)\).
-            <div style="color:var(--muted)">의미: \(Q(s,a)\)= <b>즉각 reward + (\(a\)로 간 \(s'\)에서 받을 미래 최대 \(Q\))의 할인합</b>.</div>
+          <div class="field"><span class="lbl">🧮 갱신 수식 (핵심)</span>\[ Q(s,a) = r(s,a) + \gamma \max_{a'} Q(s',a') \]
+            <div style="color:var(--muted);font-size:.88rem">r=즉각 reward, <b>γ</b>=전파 계수[0,1](delayed reward 할인), s'=a 후 새 상태, a'=s'의 가능 action. 최적 정책 \( \pi(s)=\arg\max_a Q(s,a) \). 의미: Q(s,a)= <b>즉각 reward + (a로 간 s'에서 받을 미래 최대 Q)의 할인합</b>.</div>
           </div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오 — 게임 에이전트/미로 탈출 로봇</span>로봇이 미로에서 무작위로 움직이며 출구에서만 reward 100을 받는다. 여러 번 시도하면 출구에 가까운 칸일수록 \(Q\)가 커져(100→50→25...) <b>\(Q\) 그래디언트가 최단 경로를 가리킨다</b>.</div>
-
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 — Q-learning 업데이트 (3×2 그리드)</span>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario"><b>게임 에이전트/미로 탈출 로봇</b> — 로봇이 미로에서 무작위로 움직이며 출구에서만 reward 100을 받는다. 여러 번 시도하면 출구에 가까운 칸일수록 Q가 커져(100→50→25…) <b>Q 그래디언트가 최단 경로를 가리킨다</b>.</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 (3×2 그리드)</span>
             <div class="stepper">
-              <div class="step show"><div class="step-head">1. [직관]</div>출구에서만 reward를 받지만, 갱신식이 그 보상을 <b>출구→입구 방향으로 한 칸씩 뒤로</b> 퍼뜨린다.</div>
-              <div class="step"><div class="step-head">2. [셋업]</div>S1~S6, S6=END, \(\gamma=0.5\), 목표 reward=100. 모든 \(Q=0\)으로 시작.</div>
-              <div class="step"><div class="step-head">3. [전개1]</div>S3→S6(a36) 도달 → \(Q(S3,a36)=r=100\).</div>
-              <div class="step"><div class="step-head">4. [전개2·전파]</div>다음 게임에서 \(Q(S2,a23)=0+0.5\cdot\max Q(S3,*)=0.5\cdot100=\) <b>50</b>.</div>
-              <div class="step"><div class="step-head">5. [전개3]</div>\(Q(S1,a12)=0+0.5\cdot\max Q(S2,*)=0.5\cdot50=\) <b>25</b>. → 보상이 목표에서 뒤로 전파.</div>
-              <div class="step"><div class="step-head">6. [결론·수렴 table]</div>S3,a36=100 / S2,a23=50, S5,a56=100 / S1,a12=25, S5,a54=25 / S2,a21=12.5... 목표에 가까울수록 큼.</div>
-              <div class="step"><div class="step-head">7. [검산]</div>\(\gamma=0.5\)라 한 칸 멀어질 때마다 절반 감쇠(100→50→25→12.5) → \(Q\) 그래디언트 = 최단 경로.</div>
-              <div class="step"><div class="step-head">8. [시험 변형]</div>"\(\gamma\)를 0.9로 바꾸면 전파 값이 어떻게 변하나?" / "\(Q\)값에서 정책은 어떻게 뽑나?(argmax)".</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-title">Q-learning 업데이트 — 3×2 그리드</div>
+              <div class="step show"><div class="step-head">1. 직관</div>출구에서만 reward를 받지만, 갱신식이 그 보상을 <b>출구→입구 방향으로 한 칸씩 뒤로</b> 퍼뜨린다.</div>
+              <div class="step"><div class="step-head">2. 셋업</div>S1~S6, S6=END, γ=0.5, 목표 reward=100. 모든 Q=0으로 시작.</div>
+              <div class="step"><div class="step-head">3. 전개1</div>S3→S6(a36) 도달 → \( Q(S3,a36)=r=100 \).</div>
+              <div class="step"><div class="step-head">4. 전개2·전파</div>다음 게임에서 \( Q(S2,a23)=0+0.5\cdot\max Q(S3,*)=0.5\cdot100= \) <b>50</b>.</div>
+              <div class="step"><div class="step-head">5. 전개3</div>\( Q(S1,a12)=0+0.5\cdot\max Q(S2,*)=0.5\cdot50= \) <b>25</b>. → 보상이 목표에서 뒤로 전파.</div>
+              <div class="step"><div class="step-head">6. 결론·수렴 table</div>S3,a36=100 / S2,a23=50,S5,a56=100 / S1,a12=25,S5,a54=25 / S2,a21=12.5… 목표에 가까울수록 큼.</div>
+              <div class="step"><div class="step-head">7. 검산</div>γ=0.5라 한 칸 멀어질 때마다 절반 감쇠(100→50→25→12.5) → Q 그래디언트 = 최단 경로.</div>
+              <div class="step"><div class="step-head">8. 시험 변형</div>"γ를 0.9로 바꾸면 전파 값이 어떻게 변하나?" / "Q값에서 정책은 어떻게 뽑나?(argmax)".</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
-          <div class="field"><span class="lbl">📊 그래프 인사이트</span><div class="callout">목표(S6)에 가까울수록 \(Q\) 큼(100→50→25→12.5, \(\gamma=0.5\)씩 감쇠) → <b>\(Q\)값의 공간 그래디언트가 최적 경로</b>.</div></div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">\(Q\)는 "즉각 reward"가 아니라 <b>"즉각 + 미래 최대 \(Q\)의 할인합"</b>. 학습 중엔 임의(탐험) action도 선택.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"\(Q(s,a)\) 갱신식의 <b>각 기호(\(r, \gamma, \max Q(s',a')\))</b>와, reward가 목표에서 <b>뒤로 전파(propagation)</b>되는 개념, 수렴 후 정책 argmax, \(\gamma\)의 역할을 설명하라."</div>
+          <div class="field"><span class="lbl">📊 그래프 인사이트</span><div class="callout">목표(S6)에 가까울수록 Q 큼(100→50→25→12.5, γ=0.5씩 감쇠) → <b>Q값의 공간 그래디언트가 최적 경로</b>.</div></div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">Q는 "즉각 reward"가 아니라 <b>"즉각 + 미래 최대 Q의 할인합"</b>. 학습 중엔 임의(탐험) action도 선택.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 (서술형)</span>"Q(s,a) 갱신식의 <b>각 기호(r, γ, max Q(s',a'))</b> 와, reward가 목표에서 <b>뒤로 전파(propagation)</b> 되는 개념, 수렴 후 정책 argmax, γ의 역할을 설명하라."</div>
           <div class="field"><span class="lbl">🔗 연결</span>선행 C10(탐험/greedy)</div>
         </div>
       </details>
 
-      <!-- C22 -->
-      <details class="node-card" id="C22" data-node-id="C22" data-title="C22 ANN Perceptron XOR 한계 신경망">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C22" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C22 · ANN — Perceptron &amp; XOR 한계
-          <span class="nbadge hot">⭐高</span><span class="nbadge warn">⚠️ 기말 범위 미확인</span><span class="nbadge">선행: C18</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C22" data-node-id="C22" data-title="ANN Perceptron XOR 한계 delta rule">
+        <summary><input type="checkbox" class="nodechk" data-id="C22" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C22 · ANN — Perceptron &amp; XOR 한계 <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C18</span><span class="nbadge warn">⚠️ 기말 범위 미확인</span><span class="chev">▶</span></summary>
         <div class="nbody">
-          <div class="missing">⚠️ Notion Day 노트 없음(PDF 단독). 기말 범위 명시 미확인. (추측 금지)</div>
+          <div class="warnstrip">⚠️ Notion Day 노트 없음(PDF 단독). 기말 범위 명시 미확인.</div>
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>뉴런(Dendrites·Nucleus·Axon)을 모방한 단위 <b>perceptron</b>. 입력·가중치 곱의 합이 임계치를 넘으면 발화.</div>
-          <div class="field"><span class="lbl">📖 구조 / 학습</span>입력 \(p_i\)×가중치 \(w_i\)의 합 \(\Sigma\) → <b>activation function</b> \(f_n\) → 출력 \(y\). activation 종류: <b>hard limiter, linear, sigmoid</b>. 뇌(\(10^{10}\)뉴런·병렬·비선형) vs 컴퓨터(빠르나 순차·선형).</div>
-          <div class="field"><span class="lbl">🧮 학습 = Widrow-Hoff (delta) rule</span>출력 \(y(t)\)와 목표 \(d(t)\)의 차이를 최소화. \[ W_i(t+1) = W_i(t) + \alpha[d(t)-y(t)]\,X_i(t) \] (\(\alpha\)=학습률). 차이 없으면 가중치 불변, 있으면 줄이는 방향.</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오 — 스팸 필터/단순 분류기</span>단어 빈도(입력)에 가중치를 곱해 합이 임계치를 넘으면 스팸. 단, <b>선형으로 가를 수 있는 문제만</b> 가능.</div>
-          <div class="field"><span class="lbl">🔍 작동 원리 / AND 가능, XOR 불가</span>AND는 단일 perceptron 가능(\(W_0,W_1\)=0.3~0.4, \(\theta\)=0.5). <b>XOR은 만족하는 \(W_0,W_1\)이 없음 = linearly non-separable</b> → 단일 perceptron 불가. 해결: <b>multi-layer(2~3층)</b> → <b>3층으로 어떤 문제도 근사 가능</b>.</div>
+          <div class="field"><span class="lbl">📖 구조 / 학습</span>입력 pᵢ×가중치 wᵢ의 합 Σ → <b>activation function</b> fₙ → 출력 y. activation 종류: <b>hard limiter, linear, sigmoid</b>. 뇌(10¹⁰뉴런·병렬·비선형) vs 컴퓨터(빠르나 순차·선형).</div>
+          <div class="field"><span class="lbl">🧮 학습 = Widrow-Hoff (delta) rule</span>출력 y(t)와 목표 d(t)의 차이를 최소화. \[ W_i(t+1) = W_i(t) + \alpha[d(t)-y(t)]\,X_i(t) \] (α=학습률). 차이 없으면 가중치 불변, 있으면 줄이는 방향.</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario"><b>스팸 필터/단순 분류기</b> — 단어 빈도(입력)에 가중치를 곱해 합이 임계치를 넘으면 스팸. 단, <b>선형으로 가를 수 있는 문제만</b> 가능.</div></div>
+          <div class="field"><span class="lbl">🔍 작동 원리 / AND 가능, XOR 불가</span>AND는 단일 perceptron 가능(W0,W1=0.3~0.4, θ=0.5). <b>XOR은 만족하는 W0,W1이 없음 = linearly non-separable</b> → 단일 perceptron 불가. 해결: <b>multi-layer(2~3층)</b> → <b>3층으로 어떤 문제도 근사 가능</b>.</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">단일 perceptron의 한계는 <b>선형 분리 가능 문제로 제한</b>. XOR이 대표 반례.</div></div>
           <div class="exam-box"><span class="lbl">📝 시험 포인트 (⭐ 서술형)</span>"perceptron 구조와, <b>XOR이 안 되는 이유(linearly non-separable)</b> 및 multi-layer 해결, delta rule을 설명하라."</div>
           <div class="field"><span class="lbl">🔗 연결</span>선행 C18(지도학습) / 응용 C23(backprop)</div>
         </div>
       </details>
 
-      <!-- C23 -->
-      <details class="node-card" id="C23" data-node-id="C23" data-title="C23 Backpropagation Neural Network 역전파">
-        <summary>
-          <input type="checkbox" class="nodechk" data-id="C23" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
-          C23 · Backpropagation Neural Network
-          <span class="nbadge hot">⭐高</span><span class="nbadge warn">⚠️ 기말 범위 미확인</span><span class="nbadge">선행: C22</span>
-          <span class="chev">▶</span>
-        </summary>
+      <details class="node-card" id="C23" data-node-id="C23" data-title="Backpropagation Neural Network 역전파 gradient descent">
+        <summary><input type="checkbox" class="nodechk" data-id="C23" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C23 · Backpropagation Neural Network <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C22</span><span class="nbadge warn">⚠️ 기말 범위 미확인</span><span class="chev">▶</span></summary>
         <div class="nbody">
-          <div class="missing">⚠️ Notion Day 노트 없음(PDF 단독). 기말 범위 명시 미확인. (추측 금지)</div>
+          <div class="warnstrip">⚠️ Notion Day 노트 없음(PDF 단독). 기말 범위 명시 미확인.</div>
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>input–hidden–output 다층망에서 출력 오차를 <b>gradient descent로 뒤로 전파</b>해 가중치를 갱신 → 단층의 선형분리 한계 극복, 연속함수 근사.</div>
-          <div class="field"><span class="lbl">📖 정의</span>input·output 사이 1개↑ hidden layer를 갖는 단방향 신경망. 80년대 중반 <b>Error Backpropagation = generalized delta rule</b>. 학습=목표 \(d\)와 출력 \(o\)의 <b>오차제곱합 최소화</b>. Gradient Descent: 오차 기울기 반대방향으로 가중치 이동. \(\eta\)(학습률) 너무 작으면 정체, 너무 크면 진동(0.005 vs 0.05 곡선).</div>
+          <div class="field"><span class="lbl">📖 정의</span>input·output 사이 1개↑ hidden layer를 갖는 단방향 신경망. 80년대 중반 <b>Error Backpropagation = generalized delta rule</b>. 학습=목표 d와 출력 o의 <b>오차제곱합 최소화</b>. Gradient Descent: 오차 기울기 반대방향으로 가중치 이동. η(학습률) 너무 작으면 정체, 너무 크면 진동(0.005 vs 0.05 곡선).</div>
           <div class="field"><span class="lbl">🧮 수식</span>
-            <div>Forward: hidden \(Input_{pj}=\sum X_{pi}W_{ij}-\theta_j\), \(O_{pj}=f(Input_{pj})\) ; output 동형.</div>
-            <div>Error: \[ E_p=\frac{1}{2}\sum_k (d_{pk}-O_{pk})^2 \] Sigmoid 도함수 \(\frac{\partial y}{\partial x}=y(1-y)\).</div>
-            <div><b>Output δ</b>: \[ \delta_{pk}=(d_{pk}-O_{pk})\,O_{pk}(1-O_{pk}) \]</div>
-            <div><b>Hidden δ</b>: \[ \delta_{pj}=\left(\sum_k \delta_{pk}W_{jk}\right)O_{pj}(1-O_{pj}) \] — 출력층 δ를 <b>가중합해 뒤로 전파</b>.</div>
-            <div>갱신: Hidden→Output \(W_{jk}\mathrel{+}=\eta\,\delta_{pk}\,O_{pj}\) ; Input→Hidden \(W_{ij}\mathrel{+}=\eta\,\delta_{pj}\,X_{pi}\).</div>
+            <ul>
+              <li>Forward: hidden \( Input_{pj}=\sum X_{pi}W_{ij}-\theta_j \), \( O_{pj}=f(Input_{pj}) \) ; output 동형.</li>
+              <li>Error: \( E_p=\frac{1}{2}\sum_k (d_{pk}-O_{pk})^2 \). Sigmoid 도함수 \( \frac{\partial y}{\partial x}=y(1-y) \).</li>
+              <li><b>Output δ</b>: \( \delta_{pk}=(d_{pk}-O_{pk})\,O_{pk}(1-O_{pk}) \).</li>
+              <li><b>Hidden δ</b>: \( \delta_{pj}=\left(\sum_k \delta_{pk}W_{jk}\right)O_{pj}(1-O_{pj}) \) — 출력층 δ를 <b>가중합해 뒤로 전파</b>.</li>
+              <li>갱신: Hidden→Output \( W_{jk} \mathrel{+}= \eta\,\delta_{pk}\,O_{pj} \) ; Input→Hidden \( W_{ij} \mathrel{+}= \eta\,\delta_{pj}\,X_{pi} \).</li>
+            </ul>
           </div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오 — 함수 근사/패턴 인식</span>\(y=0.5(\cos 8x+\sin 4x-x+0.8)\)를 1-6-1 망으로 1,000→10,000→20,000회 학습하면 점점 정확히 근사. 손글씨·음성처럼 선형으로 못 가르는 패턴을 다층+역전파로 학습.</div>
-          <div class="field"><span class="lbl">🔍 작동 원리 (PDF 12단계 요약)</span>①가중치·\(\theta\) 초기화 ②입력·목표 제시 ③④hidden 입출력 ⑤⑥output 입출력 ⑦gradient 계산 ⑧Hidden→Output 갱신 ⑨Input→Hidden 갱신 ⑩학습쌍 반복 ⑫출력층 오차합 \(E\)가 허용치↓ 또는 최대반복 초과면 종료.</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario"><b>함수 근사/패턴 인식</b> — y=0.5(cos8x+sin4x−x+0.8)를 1-6-1 망으로 1,000→10,000→20,000회 학습하면 점점 정확히 근사. 손글씨·음성처럼 선형으로 못 가르는 패턴을 다층+역전파로 학습.</div></div>
+          <div class="field"><span class="lbl">🔍 작동 원리 (PDF 12단계 요약)</span>①가중치·θ 초기화 ②입력·목표 제시 ③④hidden 입출력 ⑤⑥output 입출력 ⑦gradient 계산 ⑧Hidden→Output 갱신 ⑨Input→Hidden 갱신 ⑩학습쌍 반복 ⑫출력층 오차합 E가 허용치↓ 또는 최대반복 초과면 종료.</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">hidden δ는 output δ의 <b>가중합 × sigmoid'</b>. 상위→하위 역전파는 생물학적으로 비현실적(실제 뉴런은 상위 목표 모름)이나 가장 널리 쓰임. <b>Day7 시험형식상 유도 손계산은 안 나옴</b> → <b>개념·절차</b> 서술이면 충분.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 (⭐ 서술형, 증명 X·개념 O)</span>"역전파의 개념(출력오차→gradient descent→가중치 갱신, <b>뒤로 전파</b>)과 절차, sigmoid 도함수 \(y(1-y)\), output/hidden δ의 형태, 단층 한계 극복을 설명하라." → <b>말로 흐름을 설명</b>할 수 있으면 됨.</div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 (⭐ 서술형, 증명 X·개념 O)</span>"역전파의 개념(출력오차→gradient descent→가중치 갱신, <b>뒤로 전파</b>)과 절차, sigmoid 도함수 y(1−y), output/hidden δ의 형태, 단층 한계 극복을 설명하라." → <b>말로 흐름을 설명</b>할 수 있으면 됨.</div>
           <div class="field"><span class="lbl">🔗 연결</span>선행 C22 / 줄기 종착(고전 backprop)</div>
         </div>
       </details>
     </section>
 
-    <!-- ===== 누락·확인 필요 ===== -->
-    <section class="stem-sec">
-      <h2>⚠️ 누락·확인 필요 (추측 금지, 회색 빈칸 유지)</h2>
-      <div class="missing">⚠️ <b>Consistency(일관성) 휴리스틱</b> (C9): A* 슬라이드는 admissibility 중심, consistency/monotonicity·GRAPH-SEARCH 최적성 조건은 PDF 미수록 → 자료 없음. 시험은 admissible 위주로 충분할 가능성.</div>
-      <div class="missing">⚠️ <b>Simulated Annealing 상세</b> (C16): 온도 스케줄·수용확률 수식 PDF 미수록. 개념("나쁜 수 확률적 허용으로 local optimum 탈출")만 수록.</div>
-      <div class="missing">⚠️ <b>Q-learning(C21)·ANN(C22·C23) 기말 범위</b>: Notion Day 노트가 Day8(계층군집)까지만 존재 → 두 토픽은 PDF 단독 근거, 기말 범위 포함 여부 명시 확인 불가(진도상 포함 추정).</div>
-      <div class="missing">⚠️ <b>중간고사 기출 부재</b>: Notion에 중간 기출 없음. 출제 경향 근거는 Day7 형식(객관식X·증명X·토픽당 1문제·8~10문제) + Day5 "졸업 단골=CSP local search"뿐. 그 이상 예측은 추측이므로 하지 않음.</div>
-      <div class="callout"><b>학생 노트 정정 3건 (본문 반영 완료)</b>: ① BFS=FIFO Queue / DFS=LIFO Stack (C2·C3) · ② Gini=순도 측도, 자식 Gini 높을수록 pure (C18) · ③ single-link=max sim / complete-link=min sim (C20).</div>
+    <!-- ===================== 예상 문제 ===================== -->
+    <section class="stem-sec" id="examqs">
+      <h2>📝 예상 문제 &amp; 모범 답변 (시험 가이드 기반)</h2>
+      <p style="color:var(--muted)">기말 형식: <b>객관식·증명 없음 · 토픽당 1문제 · 총 8~10문제 · 서술형</b>. 먼저 스스로 답해보고 <b>"답 보기"</b>로 확인하세요. ⭐⭐ Q4(CSP Local Search)는 졸업시험 단골 — 최우선.</p>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">서술형</span><span>Q1. 정보 없는 탐색 5종(BFS·DFS·UCS·Depth-Limited·IDS) 중 <b>메모리는 선형이면서 완전하고 최적인 전략</b>은 무엇이며 그 이유는? <span style="color:var(--muted);font-weight:400">(출처: Notion Day1 / C5b)</span></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span><b>IDS(Iterative Deepening Search)</b>. DFS는 깊이를 따라가므로 공간이 <b>O(bd) 선형</b>이고, IDS는 depth-limit L을 1씩 키우며 DFS를 반복하므로 BFS의 <b>완전성·최적성</b>(얕은 해 먼저)을 함께 얻는다. 반복 탐색처럼 보이지만 지수 트리에서 노드 수는 가장 깊은 레벨이 지배하므로 재방문 비용은 BFS 대비 약 11%(≈b/(b−1))에 불과하다. 반면 BFS·UCS는 최적이나 <b>지수 공간</b>, DFS는 선형 공간이나 <b>불완전·비최적</b>.</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>"IDS" 지목(+), 선형 공간 O(bd) 언급(+), 완전·최적 확보 이유(L 증가 반복)(+), 11% 낭비/마지막 레벨 지배 논리(+가산).</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: C4, C5b</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">서술형</span><span>Q2. <b>A*</b>의 평가함수 f(n)=g(n)+h(n)에서 각 항의 의미를 쓰고, A*가 <b>최적</b>이 되는 조건과 그 직관을 설명하라. <span style="color:var(--muted);font-weight:400">(출처: Notion Day2 / C8·C9)</span></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span>g(n)=시작~n까지의 <b>실제 누적비용</b>, h(n)=n~목표까지의 <b>추정 잔여비용</b>. 둘을 더해 "지나온 비용+앞으로의 추정"이 최소인 노드를 확장 → Greedy(h만)의 함정과 UCS(g만)의 느림을 모두 피한다. 최적 조건은 <b>h가 admissible</b>(모든 n에서 h(n)≤h*(n), 즉 절대 과대평가하지 않음=optimistic)일 때(TREE-SEARCH). 과대평가하면 더 싼 경로를 너무 비싸 보이게 해 건너뛸 수 있어 최적성이 깨진다. 또 엣지 비용 ≥ 0이어야 한다.</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>g·h 정의 각각(+), admissible 부등식 h≤h*(+), "과대평가 안 함=optimistic"(+), 음수 비용 불가(+가산), optimally efficient 언급(+가산).</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: C8, C9</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">서술형</span><span>Q3. <b>Minimax</b>에서 MIN이 <b>최적이 아닌(실수하는) 수</b>를 두면 MAX의 결과는 어떻게 되는가? 그 이유를 게임 가정과 함께 설명하라. <span style="color:var(--muted);font-weight:400">(출처: Notion Day4 / C11)</span></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span>MAX는 <b>손해 보지 않고 오히려 더 좋아질 수 있다</b>. Minimax는 양쪽 모두 최적(infallible) 플레이를 가정하고 MAX의 <b>worst-case를 최대화</b>하도록 수를 고른다 — 즉 MAX의 minimax 값은 "상대가 완벽히 둬도 보장되는 하한"이다. 따라서 MIN이 그 최선의 방어를 못 하면 실제 결과는 그 보장값 이상으로만 갈 수 있다. (게임 4가정: Deterministic, Turn-taking, Zero-sum, Perfect information.)</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>"손해 없음/더 좋아짐"(+), worst-case 최대화=보장 하한 논리(+), 4가정 언급(+가산).</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: C11, C12</div>
+        </div>
+      </div>
+
+      <div class="qa-item star">
+        <div class="qa-q"><span class="qa-type star">⭐⭐ 졸업단골</span><span>Q4. <b>CSP의 Local Search(min-conflicts)</b> 절차를 설명하고, <b>Hill-Climbing과 Simulated Annealing</b>을 비교하라. <span style="color:var(--muted);font-weight:400">(출처: Notion Day5 — "졸업 시험 단골!" / C16)</span></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span><b>min-conflicts 절차</b> — ① 모든 변수를 일단 다 할당해 <b>complete state</b>로 시작(제약 위반 허용), ② 충돌에 연루된(conflicted) 변수를 하나 무작위로 선택, ③ 그 변수를 <b>위반 제약 수가 최소가 되는 값(min-conflicts 휴리스틱)</b> 으로 재배정, ④ 충돌(h=총 위반 수)이 0이 될 때까지 반복. 이는 h=위반 제약 수에 대한 <b>hill-climbing</b>이다. 매우 큰 n(수백만 queens)에서도 거의 상수 시간에 수렴해 backtracking보다 강력하다. <b>비교</b> — <b>Hill-Climbing</b>은 더 나은 이웃이 없으면 멈춰 <b>local optimum에 갇힌다</b>. <b>Simulated Annealing</b>은 확률적으로 <b>나쁜 수도 허용</b>해(초기엔 높은 확률, 점차 감소) local optimum을 탈출한다.</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>complete state 시작(+), conflicted 변수 선택(+), min-conflicts(위반 최소 값)(+), hill-climbing임 명시(+), 큰 n 상수시간(+가산), HC=local optimum 갇힘 / SA=나쁜 수 확률 허용 탈출 비교(+필수). <i>졸업단골 — 절차+비교를 한 문단으로.</i></div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: C16, C10, C15</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">서술형</span><span>Q5. <b>kNN</b>에서 <b>정규화(scaling)</b> 가 왜 필요한가? PlayTennis 같은 예로 설명하라. <span style="color:var(--muted);font-weight:400">(출처: Notion Day6 / C17)</span></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span>kNN은 거리(Euclidean/Manhattan)로 최근접 이웃을 찾는데, <b>차원마다 값의 스케일이 다르면 스케일이 큰 축이 거리를 지배</b>해 작은 축의 정보가 묻히고 오분류가 생긴다. 그래서 각 특성을 \( x'=(x-\bar{x})/\sigma \)로 표준화해 축들을 동등하게 만든다(그림: 정규화 전 white로 오분류 → 정규화 후 black로 정분류). kNN은 <b>lazy learning</b>이라 미리 모델을 만들지 않고 질의 시점에 전 데이터와 거리 계산 후 <b>k개 이웃의 다수결</b>로 라벨을 정한다.</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>스케일 큰 축이 거리 지배→오분류(+필수), 표준화 식 또는 개념(+), lazy learning·majority voting 언급(+가산).</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: C17</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">서술형</span><span>Q6. <b>"Decision Tree에서 가장 중요한 것은 무엇인가?"</b> (Day7 교수 예시) — 답하고 root 속성 선택 절차를 설명하라. <span style="color:var(--muted);font-weight:400">(출처: Notion Day6·Day7 / C18)</span></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span>가장 중요한 것은 <b>best split = 순도(purity)를 가장 많이 높이는 분할</b>이며, 이를 정량화하는 것이 <b>Information Gain</b>이다. 각 속성으로 나눴을 때 분할 전후 불순도 차 \( Gain(S,A)=E(S)-\sum_v \frac{|S_v|}{|S|}E(S_v) \)를 계산해 <b>Gain이 최대인 속성을 root</b>로 삼고, 순수(pure)해진 잎은 고정한 뒤 나머지에서 재귀한다(예: Transportation에서 Travel Cost가 Gain 1.210으로 root). Entropy 대신 Gini(\( \sum_j p_j^2 \))를 써도 동일하게 best split을 고른다.</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>best split/purity가 핵심(+필수), information gain으로 측정(+), root=Gain 최대(+), 재귀·pure 잎 고정(+가산), Gini 대체 가능(+가산).</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: C18</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">서술형</span><span>Q7. <b>k-means</b>의 4단계 절차와 <b>시간복잡도</b>, <b>초기 seed 민감성</b>을 설명하라. <span style="color:var(--muted);font-weight:400">(출처: Notion Day7 / C19)</span></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span>① K개 random seed(centroid) 선택 → ② 각 점을 가장 가까운 centroid의 클러스터에 배정 → ③ 각 클러스터의 centroid를 멤버 평균 \( \vec\mu=\frac{1}{|c|}\sum \vec x \)로 재계산 → ④ 변화 없을 때까지 ②③ 반복(종료조건: 고정 반복수 / 클러스터 불변 / centroid 불변). 시간복잡도는 <b>O(IKnm)로 선형</b>(I=반복, K=클러스터, n=점, m=차원). <b>seed 민감성</b>: 초기 seed에 따라 결과가 달라져 local optimum에 빠질 수 있어(예 {A..F}에서 B,E 시작 vs D,F 시작이 다른 군집) <b>다중 restart 또는 먼 벡터 seed 휴리스틱</b>으로 완화한다(k-means=EM의 특수경우, fixed point 수렴).</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>배정↔centroid 재계산 반복 절차(+), centroid=평균 식(+), O(IKnm) 선형(+), seed 민감→다중 restart(+필수).</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: C19, C20</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">서술형</span><span>Q8. 계층군집에서 <b>single-link / complete-link / group-average</b>의 cluster 유사도 정의와 성향 차이를 설명하라. <span style="color:var(--muted);font-weight:400">(출처: Notion Day8 / C20)</span></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span><b>Single-link</b> = 두 클러스터 멤버 쌍 중 <b>가장 가까운(max similarity) 쌍</b>으로 유사도 정의 → 적고 크고 느슨한 클러스터, <b>chaining 효과</b>. <b>Complete-link</b> = <b>가장 먼(min similarity) 쌍</b> 기준 → 많고 작고 단단한 클러스터, IR에 더 적합하나 비용 큼. <b>Group-average</b> = 모든 멤버 쌍 유사도의 평균 → 둘의 중간. (Agglomerative HAC: 각 점을 클러스터로 시작 → 가장 유사한 쌍을 반복 병합 → 덴드로그램을 임계값에서 잘라 군집 수 결정.) ⚠️ 라벨이 헷갈리므로 single=<b>max</b>, complete=<b>min</b>으로 외울 것.</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>single=max/가장 가까운 쌍(+), complete=min/가장 먼 쌍(+), group-avg=평균(+), chaining vs tight 성향(+가산), 덴드로그램 임계값 자르기(+가산).</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: C20, C19</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">서술형</span><span>Q9. <b>Q-learning</b>의 갱신식 \( Q(s,a)=r(s,a)+\gamma\max_{a'}Q(s',a') \)에서 각 기호의 의미와, reward가 <b>목표에서 뒤로 전파(propagation)</b> 되는 과정을 설명하라. <span style="color:var(--muted);font-weight:400">(출처: 7번 PDF / C21 · ⚠️ 기말 범위 미확인)</span></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span>r(s,a)=상태 s에서 행동 a로 받는 <b>즉각 reward</b>, <b>γ</b>∈[0,1]=미래 보상 <b>할인(전파) 계수</b>, s'=a 후의 새 상태, \( \max_{a'}Q(s',a') \)=s'에서 가능한 최선 행동의 가치. 즉 Q(s,a)=<b>즉각 reward + 미래 최대 Q의 할인합</b>. 학습은 모든 Q=0에서 시작해 시행착오로 행동하며 이 식으로 갱신한다. 목표에 닿은 상태가 먼저 큰 Q를 얻고(예 Q=100), 그 인접 상태가 다음 게임에서 γ·100=50, 그 다음이 25…로 <b>보상이 목표→출발 방향으로 한 칸씩 뒤로 전파</b>된다. 수렴 후 정책은 \( \pi(s)=\arg\max_a Q(s,a) \).</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>r·γ·max Q(s',a') 각 의미(+), "즉각+미래 최대 Q 할인합"(+), 100→50→25 역전파 예(+필수), argmax 정책(+가산).</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: C21</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">서술형</span><span>Q10. <b>단일 perceptron으로 XOR을 풀 수 없는 이유</b>는 무엇이며, 어떻게 해결하는가? <span style="color:var(--muted);font-weight:400">(출처: 8번 PDF / C22·C23 · ⚠️ 기말 범위 미확인)</span></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span>단일 perceptron은 입력의 가중합이 임계치를 넘는지로 분류하므로 <b>하나의 직선(초평면)으로 가를 수 있는 문제(linearly separable)</b> 만 풀 수 있다. AND는 가능하지만 <b>XOR은 (0,0)·(1,1)→0과 (0,1)·(1,0)→1을 한 직선으로 나눌 수 없어 = linearly non-separable</b> → 만족하는 가중치 W0,W1이 존재하지 않는다. 해결은 <b>multi-layer(2~3층)</b>: hidden layer를 두면 비선형 결정경계를 만들 수 있고, <b>3층 perceptron으로 어떤 문제도 근사</b>할 수 있다. 다층망의 학습은 <b>backpropagation</b>(출력 오차를 gradient descent로 뒤로 전파해 가중치 갱신)으로 한다. <i>(Day7 형식상 유도 손계산은 안 나오고 개념·절차 서술이면 충분.)</i></div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>linearly non-separable이 이유(+필수), AND 가능/XOR 불가 대비(+), multi-layer/hidden layer 해결(+), 3층 근사·backprop 연결(+가산).</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: C22, C23</div>
+        </div>
+      </div>
     </section>
   </main>
 </div>
 
-<footer>생성: 시험대비 학습자료 하네스 · 인공지능개론(최용석 교수) · 1차 자료(강의 PDF + Notion 노트) 기반 · 노드 24개(C1~C23 + C5b) · 단일 HTML, 오프라인 동작</footer>
+<footer>생성: 시험대비 학습자료 하네스 · 인공지능개론(최용석 교수) · 1차 자료(강의 PDF 10 + Notion Day 노트) 기반 · 단일 HTML, 오프라인 동작 · 재빌드 2026-06-04</footer>
 
-<!-- KaTeX (있으면 렌더, 없으면 폴백) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" onerror="window.__noKatex=true">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
   onload="renderMathInElement(document.body,{delimiters:[{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"
   onerror="katexFallback()"></script>
 <script>
-  // KaTeX 폴백: CDN 실패 시 원본 LaTeX를 monospace로 노출(읽기 가능)
   function katexFallback(){ document.body.classList.add('katex-fallback'); }
-  // 다크/라이트
   function toggleTheme(){
     const b=document.body, t=b.getAttribute('data-theme')==='dark'?'light':'dark';
     b.setAttribute('data-theme',t); localStorage.setItem('theme',t);
   }
   (function(){const t=localStorage.getItem('theme'); if(t)document.body.setAttribute('data-theme',t);})();
-  // 로드맵/학습경로 → 노드 항해
+  function toggleNav(){
+    const rm=document.getElementById('roadmap'), sc=document.getElementById('scrim');
+    const open=rm.classList.toggle('open'); sc.classList.toggle('show',open);
+  }
+  function closeNav(){
+    const rm=document.getElementById('roadmap'), sc=document.getElementById('scrim');
+    if(rm)rm.classList.remove('open'); if(sc)sc.classList.remove('show');
+  }
   function goNode(id){
     const card=document.getElementById(id); if(!card)return;
-    card.open=true; card.scrollIntoView({behavior:'smooth',block:'start'});
+    if(card.tagName==='DETAILS')card.open=true; card.scrollIntoView({behavior:'smooth',block:'start'});
     document.querySelectorAll('.rm-node').forEach(n=>n.classList.remove('active'));
     const rn=document.querySelector('.rm-node[data-target="'+id+'"]'); if(rn)rn.classList.add('active');
+    if(window.matchMedia('(max-width:900px)').matches)closeNav();
   }
-  // step navigator
+  function toggleBranch(el){ el.classList.toggle('collapsed'); }
+  function toggleQA(btn){
+    const a=btn.closest('.qa-item').querySelector('.qa-a');
+    const open=a.classList.toggle('open'); btn.textContent=open?'답 숨기기':'답 보기';
+  }
   function stepMove(btn,dir){
     const sp=btn.closest('.stepper'), steps=[...sp.querySelectorAll('.step')];
     let i=steps.findIndex(s=>s.classList.contains('show'));
@@ -1112,12 +1073,13 @@
     syncDots(sp,i,steps.length);
   }
   function syncDots(sp,i,n){
-    const d=sp.querySelector('.dots'); if(d) d.innerHTML=Array.from({length:n},(_,k)=>'<i class="'+(k===i?'on':'')+'"></i>').join('');
-    const c=sp.querySelector('.stepcount'); if(c) c.textContent=(i+1)+' / '+n;
+    const d=sp.querySelector('.dots'); if(!d)return;
+    d.innerHTML=Array.from({length:n},(_,k)=>'<i class="'+(k===i?'on':'')+'"></i>').join('');
   }
-  document.querySelectorAll('.stepper').forEach(sp=>{ syncDots(sp,0,sp.querySelectorAll('.step').length); });
-  // 진도 체크 (localStorage)
-  const PKEY='studyprog:인공지능개론';
+  document.querySelectorAll('.stepper').forEach(sp=>{
+    const n=sp.querySelectorAll('.step').length; syncDots(sp,0,n);
+  });
+  const PKEY='studyprog:'+document.title;
   function loadProg(){try{return JSON.parse(localStorage.getItem(PKEY)||'{}')}catch(e){return {}}}
   function saveProg(p){localStorage.setItem(PKEY,JSON.stringify(p))}
   function markDone(chk){
@@ -1132,19 +1094,10 @@
     document.getElementById('progfill').style.width=pct+'%';
     document.getElementById('progtxt').textContent=pct+'%';
   }
-  // 학습경로 체크 (별도 키, 노드 진도와 독립)
-  const LKEY='studypath:인공지능개론';
-  function loadPath(){try{return JSON.parse(localStorage.getItem(LKEY)||'{}')}catch(e){return {}}}
-  function markPath(chk){const p=loadPath(); p[chk.dataset.id]=chk.checked; localStorage.setItem(LKEY,JSON.stringify(p));}
-  (function(){
-    const p=loadProg();
+  (function(){const p=loadProg();
     document.querySelectorAll('.nodechk').forEach(c=>{c.checked=!!p[c.dataset.id];
       if(c.checked){const rn=document.querySelector('.rm-node[data-target="'+c.dataset.id+'"]');if(rn)rn.classList.add('done');}});
-    updateProg();
-    const lp=loadPath();
-    document.querySelectorAll('.pathchk').forEach(c=>{c.checked=!!lp[c.dataset.id];});
-  })();
-  // 검색 필터 (노드 카드 + 사이드바 항목)
+    updateProg();})();
   function filterNodes(q){
     q=q.trim().toLowerCase();
     document.querySelectorAll('.node-card').forEach(card=>{
@@ -1152,6 +1105,23 @@
       card.classList.toggle('hidden',!hit);
     });
   }
+  // 스크롤 스파이: 현재 보이는 노드를 로드맵에서 하이라이트
+  (function(){
+    const obs=new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          const id=e.target.id;
+          document.querySelectorAll('.rm-node').forEach(n=>n.classList.remove('active'));
+          const rn=document.querySelector('.rm-node[data-target="'+id+'"]'); if(rn)rn.classList.add('active');
+        }
+      });
+    },{rootMargin:'-40% 0px -55% 0px'});
+    document.querySelectorAll('.node-card').forEach(c=>obs.observe(c));
+  })();
+  // 키보드 항해: '/' 검색 포커스
+  document.addEventListener('keydown',(e)=>{
+    if(e.key==='/'&&document.activeElement.id!=='search'){e.preventDefault();document.getElementById('search').focus();}
+  });
 </script>
 </body>
 </html>

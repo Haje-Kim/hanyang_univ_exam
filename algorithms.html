@@ -9,7 +9,7 @@
   :root{
     --bg:#0f1218; --panel:#161b24; --panel2:#1d2531; --ink:#e7ecf3; --muted:#9aa7b8;
     --line:#2a3340; --accent:#5b9dff; --accent2:#7c5cff; --hot:#ff6b6b; --ok:#3ecf8e;
-    --warn:#ffcf5c; --radius:14px; --maxw:1320px; --gate:#ffb454; --indep:#3ecf8e;
+    --warn:#ffcf5c; --radius:14px; --maxw:1280px;
   }
   [data-theme="light"]{
     --bg:#f6f8fb; --panel:#ffffff; --panel2:#eef2f7; --ink:#16202c; --muted:#5a6675;
@@ -19,62 +19,55 @@
   body{margin:0;background:var(--bg);color:var(--ink);
     font-family:"Pretendard",-apple-system,"Segoe UI",Roboto,"Malgun Gothic",sans-serif;line-height:1.7}
   a{color:var(--accent)}
-  header{position:sticky;top:0;z-index:20;background:rgba(15,18,24,.88);
+  header{position:sticky;top:0;z-index:20;background:rgba(15,18,24,.85);
     backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-  [data-theme="light"] header{background:rgba(255,255,255,.88)}
+  [data-theme="light"] header{background:rgba(255,255,255,.85)}
   .hwrap{max-width:var(--maxw);margin:0 auto;padding:10px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
   .htitle{font-weight:800;font-size:1.05rem}
   .htitle small{color:var(--muted);font-weight:500}
   .grow{flex:1}
   .search{background:var(--panel2);border:1px solid var(--line);color:var(--ink);
-    padding:8px 12px;border-radius:10px;min-width:170px}
+    padding:8px 12px;border-radius:10px;min-width:180px}
   .btn{background:var(--panel2);border:1px solid var(--line);color:var(--ink);
-    padding:8px 12px;border-radius:10px;cursor:pointer;font-size:.85rem}
+    padding:8px 12px;border-radius:10px;cursor:pointer}
   .btn.on{border-color:var(--hot);color:var(--hot)}
   .progwrap{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.85rem}
-  .progbar{width:110px;height:8px;border-radius:6px;background:var(--panel2);overflow:hidden;border:1px solid var(--line)}
+  .progbar{width:120px;height:8px;border-radius:6px;background:var(--panel2);overflow:hidden;border:1px solid var(--line)}
   .progfill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--ok));transition:width .3s}
   .layout{max-width:var(--maxw);margin:0 auto;padding:20px;display:grid;
-    grid-template-columns:320px 1fr;gap:24px;align-items:start}
-  @media(max-width:980px){.layout{grid-template-columns:1fr}.side{position:static!important;max-height:none!important}}
-  .side{position:sticky;top:72px;max-height:calc(100vh - 92px);overflow:auto;display:flex;flex-direction:column;gap:18px}
-  .roadmap,.lpath{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
-  .roadmap h2,.lpath h2{margin:.2em 0 .6em;font-size:.92rem;letter-spacing:.03em;color:var(--muted);text-transform:uppercase}
-  .rm-stem{margin:0 0 12px}
-  .rm-stem>.rm-stem-name{font-weight:700;margin-bottom:5px;font-size:.9rem;color:var(--accent2)}
-  .rm-node{display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:9px;
-    cursor:pointer;font-size:.85rem;color:var(--ink);border:1px solid transparent}
+    grid-template-columns:300px 1fr;gap:24px;align-items:start}
+  @media(max-width:900px){.layout{grid-template-columns:1fr}.roadmap{position:static!important}}
+  .roadmap{position:sticky;top:72px;background:var(--panel);border:1px solid var(--line);
+    border-radius:var(--radius);padding:16px;max-height:calc(100vh - 96px);overflow:auto}
+  .roadmap h2{margin:.2em 0 .6em;font-size:.95rem;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+  .rm-stem{margin:0 0 14px}
+  .rm-stem>.rm-stem-name{font-weight:700;margin-bottom:6px;font-size:.92rem}
+  .rm-node{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:9px;
+    cursor:pointer;font-size:.88rem;color:var(--ink);border:1px solid transparent}
   .rm-node:hover{background:var(--panel2)}
   .rm-node.active{border-color:var(--accent);background:var(--panel2)}
   .rm-node .dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex:none}
   .rm-node.hot .dot{background:var(--hot)}
   .rm-node.done .dot{background:var(--ok)}
-  .rm-node.dim{opacity:.5}
-  .rm-node .badge-hot{margin-left:auto;font-size:.62rem;color:var(--hot);border:1px solid var(--hot);border-radius:6px;padding:0 5px}
-  .rm-node .badge-mid{margin-left:auto;font-size:.62rem;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:0 5px}
-  .rm-arrow{color:var(--muted);font-size:.72rem;text-align:center;margin:-2px 0 2px}
-  .lp-hint{font-size:.78rem;color:var(--muted);margin:0 0 8px;line-height:1.5}
-  .lp-legend{display:flex;gap:10px;flex-wrap:wrap;font-size:.72rem;color:var(--muted);margin:0 0 10px}
-  .lp-legend span{display:inline-flex;align-items:center;gap:4px}
-  .lp-step{display:flex;align-items:flex-start;gap:8px;padding:6px 7px;border-radius:9px;cursor:pointer;border:1px solid transparent;font-size:.82rem}
-  .lp-step:hover{background:var(--panel2)}
-  .lp-step .num{flex:none;width:22px;height:22px;border-radius:50%;background:var(--panel2);border:1px solid var(--line);
-    display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:var(--accent)}
-  .lp-step.lp-done .num{background:var(--ok);color:#06281c;border-color:var(--ok)}
-  .lp-step .lp-txt{flex:1;min-width:0}
-  .lp-step .lp-title{font-weight:600}
-  .lp-step .lp-why{font-size:.74rem;color:var(--muted);line-height:1.45}
-  .lp-tag{font-size:.62rem;border-radius:5px;padding:0 4px;margin-left:5px;white-space:nowrap}
-  .lp-tag.gate{color:var(--gate);border:1px solid var(--gate)}
-  .lp-tag.indep{color:var(--indep);border:1px solid var(--indep)}
-  .lp-tag.group{color:var(--accent2);border:1px solid var(--accent2)}
-  .lp-chk{margin-top:3px}
+  .rm-node .badge-hot{margin-left:auto;font-size:.66rem;color:var(--hot);border:1px solid var(--hot);
+    border-radius:6px;padding:0 5px}
+  .path-panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:22px}
+  .path-panel h2{margin:.1em 0 .5em;font-size:1.05rem}
+  .path-panel .ph-sub{color:var(--muted);font-size:.85rem;margin-bottom:10px}
+  .path-step{display:flex;gap:9px;align-items:flex-start;padding:6px 8px;border-radius:8px;cursor:pointer;border:1px solid transparent}
+  .path-step:hover{background:var(--panel2)}
+  .path-step .num{flex:none;width:24px;height:24px;border-radius:50%;background:var(--panel2);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700}
+  .path-step.done .num{background:var(--ok);color:#06231a;border-color:var(--ok)}
+  .path-step .pt{font-size:.88rem}
+  .path-step .pt .why{color:var(--muted);font-size:.82rem;display:block}
+  .gw{color:var(--warn);font-size:.78rem} .ind{color:var(--ok);font-size:.78rem}
   .content{min-width:0}
   .intro{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:22px}
   .intro h1{margin:.1em 0 .3em;font-size:1.5rem}
   .stem-sec{margin:0 0 28px}
   .stem-sec>h2{font-size:1.2rem;padding-bottom:6px;border-bottom:2px solid var(--line)}
-  .stem-desc{color:var(--muted);font-size:.9rem;margin:6px 0 4px}
+  .stem-lead{color:var(--muted);font-size:.9rem;margin:6px 0 4px}
   .node-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
     margin:14px 0;overflow:hidden;scroll-margin-top:84px}
   .node-card>summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;align-items:center;gap:10px;font-weight:700}
@@ -82,143 +75,265 @@
   .node-card>summary .chev{margin-left:auto;color:var(--muted);transition:transform .2s}
   .node-card[open]>summary .chev{transform:rotate(90deg)}
   .node-card[open]>summary{border-bottom:1px solid var(--line)}
-  .node-card.dimmed{opacity:.45}
-  .nbadge{font-size:.64rem;padding:1px 7px;border-radius:6px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+  .nbadge{font-size:.66rem;padding:1px 7px;border-radius:6px;border:1px solid var(--line);color:var(--muted)}
   .nbadge.hot{color:var(--hot);border-color:var(--hot)}
-  .nbadge.gate{color:var(--gate);border-color:var(--gate)}
-  .nbadge.indep{color:var(--indep);border-color:var(--indep)}
+  .nbadge.mid{color:var(--accent);border-color:var(--accent)}
+  .nbadge.low{color:var(--muted)}
   .nbody{padding:16px 18px}
   .field{margin:0 0 14px}
   .field .lbl{font-weight:700;color:var(--accent);font-size:.92rem;display:block;margin-bottom:3px}
   .callout{border-left:4px solid var(--accent2);background:var(--panel2);padding:10px 14px;border-radius:8px;margin:8px 0}
-  .scenario{border-left:4px solid var(--ok);background:rgba(62,207,142,.08);padding:11px 14px;border-radius:8px;margin:8px 0}
-  .scenario .lbl{color:var(--ok)}
+  .scenario{border-left:4px solid var(--ok);background:rgba(62,207,142,.07);padding:10px 14px;border-radius:8px;margin:8px 0}
   .exam-box{border:1px solid var(--warn);background:rgba(255,207,92,.08);border-radius:10px;padding:12px 14px;margin:10px 0}
   .exam-box .lbl{color:var(--warn)}
   .trap{border-left:4px solid var(--hot);background:rgba(255,107,107,.07);padding:10px 14px;border-radius:8px}
-  .scope-out{border:1px dashed var(--muted);background:rgba(154,167,184,.08);color:var(--muted);border-radius:10px;padding:10px 14px;margin:10px 0;font-size:.88rem}
-  .scope-badge{font-size:.62rem;border:1px solid var(--muted);color:var(--muted);border-radius:6px;padding:0 5px;margin-left:4px}
-  table{border-collapse:collapse;width:100%;margin:8px 0;font-size:.88rem}
+  .scope-out{border:1px dashed var(--muted);background:var(--panel2);color:var(--muted);border-radius:8px;padding:10px 14px;margin:8px 0;font-size:.9rem}
+  table{border-collapse:collapse;width:100%;margin:8px 0;font-size:.9rem}
   th,td{border:1px solid var(--line);padding:6px 10px;text-align:left}
   th{background:var(--panel2)}
   code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-size:.88em}
-  pre{background:var(--panel2);padding:10px 12px;border-radius:8px;overflow:auto;font-size:.84rem;line-height:1.5}
-  .links a{display:inline-block;margin:2px 6px 2px 0;padding:2px 9px;border:1px solid var(--line);border-radius:7px;
-    font-size:.8rem;text-decoration:none;cursor:pointer}
-  .katex-fallback .katex-src{color:var(--muted);font-family:ui-monospace,monospace}
-  .stepper{border:1px solid var(--line);border-radius:10px;padding:12px;margin:8px 0;background:var(--panel2)}
-  .stepper.solve{border-color:var(--accent2);background:rgba(124,92,255,.06)}
-  .stepper-title{font-size:.82rem;font-weight:700;margin-bottom:6px;color:var(--muted)}
-  .stepper.solve .stepper-title{color:var(--accent2)}
+  pre{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;overflow-x:auto;font-size:.85rem;margin:8px 0}
+  .katex-fallback{color:var(--muted);font-family:ui-monospace,monospace}
+  .stepper{border:1px solid var(--line);border-radius:10px;padding:12px;margin:10px 0;background:var(--panel2)}
+  .stepper .stp-title{font-weight:700;color:var(--accent2);font-size:.9rem;margin-bottom:6px}
+  .stepper.worked .stp-title::before{content:"✏️ 풀이 예제 · ";color:var(--ok)}
   .stepper .step{display:none}
   .stepper .step.show{display:block}
-  .stepper .step-head{font-weight:700;color:var(--accent2);margin-bottom:4px;font-size:.9rem}
+  .stepper .step-head{font-weight:700;color:var(--accent2);margin-bottom:4px}
   .stepper-nav{display:flex;align-items:center;gap:10px;margin-top:10px}
   .dots{display:flex;gap:5px;margin-left:auto;flex-wrap:wrap}
   .dots i{width:8px;height:8px;border-radius:50%;background:var(--line);display:inline-block}
   .dots i.on{background:var(--accent)}
-  .stepper.solve .dots i.on{background:var(--accent2)}
-  .stepcount{font-size:.78rem;color:var(--muted)}
   .hidden{display:none!important}
+  .dim{opacity:.35}
+  .scrollx{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .treemap{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:22px}
+  .treemap h2{margin:.1em 0 .2em;font-size:1.15rem}
+  .treemap .tm-sub{color:var(--muted);font-size:.88rem;margin-bottom:12px}
+  .tree, .tree ul{list-style:none;margin:0;padding-left:18px}
+  .tree>li{margin:4px 0}
+  .tm-root{font-weight:800;font-size:1rem}
+  .tm-branch{cursor:pointer;font-weight:700;padding:4px 8px;border-radius:8px;display:inline-flex;align-items:center;gap:6px;border:1px solid transparent}
+  .tm-branch:hover{background:var(--panel2)}
+  .tm-branch .tw{color:var(--muted);transition:transform .2s;font-size:.8rem}
+  .tm-branch.collapsed .tw{transform:rotate(-90deg)}
+  .tm-branch.collapsed + ul{display:none}
+  .tm-desc{color:var(--muted);font-weight:400;font-size:.85rem}
+  .tm-leaf{cursor:pointer;padding:3px 8px;border-radius:7px;border:1px solid var(--line);display:inline-block;margin:2px 0;font-size:.86rem}
+  .tm-leaf:hover{background:var(--panel2);border-color:var(--accent)}
+  .tm-leaf.hot{border-color:var(--hot);color:var(--hot)}
+  .tree li{position:relative}
+  .tree ul{border-left:1px dashed var(--line);margin-left:6px}
+  .mece-note{margin-top:12px;color:var(--muted);font-size:.83rem;border-top:1px solid var(--line);padding-top:8px}
+  .roadmap-graph{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin-bottom:22px}
+  .roadmap-graph h2{margin:.1em 0 .2em;font-size:1.15rem}
+  .roadmap-graph pre{font-family:ui-monospace,"Cascadia Code",monospace;line-height:1.5}
+  .qa-item{border:1px solid var(--line);border-radius:10px;margin:10px 0;overflow:hidden}
+  .qa-q{padding:12px 14px;font-weight:700;display:flex;gap:10px;align-items:flex-start}
+  .qa-type{font-size:.66rem;padding:2px 7px;border-radius:6px;border:1px solid var(--accent);color:var(--accent);flex:none;margin-top:2px}
+  .qa-a{padding:0 14px;max-height:0;overflow:hidden;transition:max-height .35s;background:var(--panel2)}
+  .qa-a.open{max-height:6000px;padding:12px 14px}
+  .qa-toggle{margin-left:auto;flex:none}
+  .navtoggle{display:none}
+  .scrim{display:none}
+  @media(max-width:900px){
+    .navtoggle{display:inline-block}
+    .roadmap{position:fixed;top:0;left:0;bottom:0;width:84%;max-width:320px;z-index:40;border-radius:0;
+      transform:translateX(-105%);transition:transform .25s;max-height:100vh}
+    .roadmap.open{transform:translateX(0)}
+    .scrim.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:35}
+  }
+  @media(max-width:600px){
+    body{line-height:1.6}
+    .hwrap{padding:8px 12px;gap:8px}
+    .htitle{font-size:.95rem}
+    .search{min-width:120px;flex:1}
+    .layout{padding:12px}
+    .intro h1{font-size:1.25rem}
+    .node-card>summary{padding:12px 14px;flex-wrap:wrap}
+    .nbody{padding:12px 14px}
+  }
   footer{max-width:var(--maxw);margin:0 auto;padding:30px 20px;color:var(--muted);font-size:.85rem}
 </style>
 </head>
 <body data-theme="dark">
 <a href="index.html" class="__homebtn" style="position:fixed;left:12px;bottom:12px;z-index:9999;background:#5b9dff;color:#04122e;font-weight:800;padding:8px 14px;border-radius:999px;text-decoration:none;font-family:sans-serif;font-size:.82rem;box-shadow:0 4px 14px rgba(0,0,0,.45)">🏠 통합 홈</a>
-
 <header>
   <div class="hwrap">
-    <div class="htitle">컴퓨터 알고리즘 <small>· 시험대비 학습자료 (임을규)</small></div>
+    <button class="btn navtoggle" onclick="toggleNav()" title="로드맵/목차" aria-label="로드맵 열기">☰</button>
+    <div class="htitle">컴퓨터 알고리즘 <small>· 시험대비 학습자료</small></div>
     <div class="grow"></div>
     <input class="search" id="search" placeholder="개념 검색 (C번호·키워드)…" oninput="filterNodes(this.value)">
-    <button class="btn" id="hotbtn" onclick="toggleHot()">⭐高만</button>
+    <button class="btn" id="hotbtn" onclick="toggleHot()" title="⭐高만 보기">⭐高</button>
     <div class="progwrap"><span id="progtxt">0%</span><div class="progbar"><div class="progfill" id="progfill"></div></div></div>
     <button class="btn" onclick="toggleTheme()">🌓</button>
   </div>
 </header>
 
+<div class="scrim" id="scrim" onclick="toggleNav()"></div>
 <div class="layout">
-  <div class="side">
-  <nav class="roadmap" aria-label="로드맵">
-    <h2>🗺️ 로드맵 (구조)</h2>
+  <nav class="roadmap" id="roadmap" aria-label="로드맵">
+    <h2>🗺️ 로드맵 · 목차</h2>
     <div class="rm-stem">
       <div class="rm-stem-name">B1. 분석 기초</div>
       <div class="rm-node hot" data-target="C1" onclick="goNode('C1')"><span class="dot"></span>C1 점근 표기<span class="badge-hot">⭐高</span></div>
-      <div class="rm-arrow">↓</div>
-      <div class="rm-node hot" data-target="C2" onclick="goNode('C2')"><span class="dot"></span>C2 점화식<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C2" onclick="goNode('C2')"><span class="dot"></span>C2 점화식 풀이<span class="badge-hot">⭐高</span></div>
     </div>
     <div class="rm-stem">
       <div class="rm-stem-name">B2. 정렬</div>
-      <div class="rm-node" data-target="C3" onclick="goNode('C3')"><span class="dot"></span>C3 삽입·병합<span class="badge-mid">中</span></div>
-      <div class="rm-arrow">↓</div>
+      <div class="rm-node" data-target="C3" onclick="goNode('C3')"><span class="dot"></span>C3 삽입·병합</div>
       <div class="rm-node hot" data-target="C4" onclick="goNode('C4')"><span class="dot"></span>C4 힙·힙정렬<span class="badge-hot">⭐高</span></div>
-      <div class="rm-arrow">↓</div>
       <div class="rm-node hot" data-target="C5" onclick="goNode('C5')"><span class="dot"></span>C5 퀵정렬<span class="badge-hot">⭐高</span></div>
-      <div class="rm-arrow">↓</div>
       <div class="rm-node hot" data-target="C6" onclick="goNode('C6')"><span class="dot"></span>C6 선형정렬·하한<span class="badge-hot">⭐高</span></div>
     </div>
     <div class="rm-stem">
       <div class="rm-stem-name">B3. 설계기법</div>
       <div class="rm-node hot" data-target="C7" onclick="goNode('C7')"><span class="dot"></span>C7 DP·LCS<span class="badge-hot">⭐高</span></div>
-      <div class="rm-arrow">↓ (C7 ↔ C8 대비)</div>
       <div class="rm-node hot" data-target="C8" onclick="goNode('C8')"><span class="dot"></span>C8 그리디·Huffman<span class="badge-hot">⭐高</span></div>
-      <div class="rm-arrow">·</div>
       <div class="rm-node hot" data-target="C9" onclick="goNode('C9')"><span class="dot"></span>C9 분할상환<span class="badge-hot">⭐高</span></div>
     </div>
     <div class="rm-stem">
       <div class="rm-stem-name">B4. 그래프</div>
-      <div class="rm-node" data-target="C10" onclick="goNode('C10')"><span class="dot"></span>C10 그래프 기초<span class="badge-mid">中</span></div>
-      <div class="rm-arrow">↓</div>
-      <div class="rm-node" data-target="C11" onclick="goNode('C11')"><span class="dot"></span>C11 BFS<span class="badge-mid">中</span></div>
-      <div class="rm-arrow">↓</div>
-      <div class="rm-node" data-target="C12" onclick="goNode('C12')"><span class="dot"></span>C12 DFS<span class="badge-mid">中</span></div>
-      <div class="rm-arrow">↓</div>
+      <div class="rm-node" data-target="C10" onclick="goNode('C10')"><span class="dot"></span>C10 그래프 기초</div>
+      <div class="rm-node" data-target="C11" onclick="goNode('C11')"><span class="dot"></span>C11 BFS</div>
+      <div class="rm-node" data-target="C12" onclick="goNode('C12')"><span class="dot"></span>C12 DFS·간선분류</div>
       <div class="rm-node hot" data-target="C13" onclick="goNode('C13')"><span class="dot"></span>C13 위상정렬<span class="badge-hot">⭐高</span></div>
-      <div class="rm-arrow">↓</div>
       <div class="rm-node hot" data-target="C14" onclick="goNode('C14')"><span class="dot"></span>C14 MST<span class="badge-hot">⭐高</span></div>
-      <div class="rm-arrow">↓</div>
       <div class="rm-node hot" data-target="C15" onclick="goNode('C15')"><span class="dot"></span>C15 SSSP<span class="badge-hot">⭐高</span></div>
-      <div class="rm-arrow">↓</div>
-      <div class="rm-node hot" data-target="C16" onclick="goNode('C16')"><span class="dot"></span>C16 Floyd (DP)<span class="badge-hot">⭐高</span></div>
+      <div class="rm-node hot" data-target="C16" onclick="goNode('C16')"><span class="dot"></span>C16 APSP·Floyd<span class="badge-hot">⭐高</span></div>
     </div>
     <div class="rm-stem">
       <div class="rm-stem-name">B5. 정수론·암호</div>
       <div class="rm-node hot" data-target="C17" onclick="goNode('C17')"><span class="dot"></span>C17 정수론<span class="badge-hot">⭐高</span></div>
-      <div class="rm-arrow">↓</div>
-      <div class="rm-node" data-target="C18" onclick="goNode('C18')"><span class="dot"></span>C18 Diffie-Hellman<span class="badge-mid">中</span></div>
-      <div class="rm-arrow">↓</div>
+      <div class="rm-node" data-target="C18" onclick="goNode('C18')"><span class="dot"></span>C18 Diffie-Hellman</div>
       <div class="rm-node hot" data-target="C19" onclick="goNode('C19')"><span class="dot"></span>C19 RSA<span class="badge-hot">⭐高</span></div>
-      <div class="rm-arrow">↓</div>
-      <div class="rm-node" data-target="C20" onclick="goNode('C20')"><span class="dot"></span>C20 서명·PKI<span class="badge-mid">低</span></div>
+      <div class="rm-node" data-target="C20" onclick="goNode('C20')"><span class="dot"></span>C20 서명·PKI</div>
+    </div>
+    <div class="rm-stem">
+      <div class="rm-stem-name">📝 마무리</div>
+      <div class="rm-node" data-target="examqs" onclick="goNode('examqs')"><span class="dot"></span>예상 문제 (12)</div>
     </div>
   </nav>
-
-  <nav class="lpath" aria-label="추천 학습 경로">
-    <h2>🧭 추천 학습 경로 (동선)</h2>
-    <p class="lp-hint">로드맵이 "공간 지도"라면 이 패널은 "공부 순서". 의존도 위상정렬 17단계. 클릭→해당 노드 점프, 체크→완료 표시(저장됨).</p>
-    <div class="lp-legend">
-      <span><b class="lp-tag gate">🚪관문</b> 먼저</span>
-      <span><b class="lp-tag indep">🟢독립</b> 아무때나</span>
-      <span><b class="lp-tag group">▸묶음</b> 함께</span>
-    </div>
-    <div id="lpathlist"></div>
-  </nav>
-  </div>
 
   <main class="content">
     <section class="intro">
-      <h1>컴퓨터 알고리즘</h1>
-      <p><b>과목 한 줄 요약</b>: 주어진 계산 문제를 <b>어떤 절차로 얼마나 효율적으로(시간·공간)</b> 푸는가를 점근 복잡도로 분석하고, 정렬·DP·그리디·그래프·암호의 표준 알고리즘과 그 <b>정당성(증명)</b>을 익힌다.</p>
-      <p style="color:var(--muted)">5개 대줄기: <b>B1 분석기초</b> → <b>B2 정렬</b> → <b>B3 설계기법</b> → <b>B4 그래프</b> → <b>B5 정수론·암호</b>. 좌측 로드맵 노드를 클릭하면 해당 카드로 이동·확장됩니다. ⭐高 14개에 시간을 더 배분하세요. <span class="scope-badge">⚠️ Master Method = 출제 범위 외</span></p>
+      <h1>컴퓨터 알고리즘 <small style="font-size:.7em;color:var(--muted)">(임을규)</small></h1>
+      <p>이 과목은 결국 <b>주어진 계산 문제를 어떤 절차로 얼마나 효율적으로(시간·공간) 푸는가</b>를 점근 복잡도로 분석하고, 정렬·DP·그리디·그래프·암호의 표준 알고리즘과 그 <b>정당성(증명)</b>을 익히는 것을 다룬다.</p>
+      <p style="color:var(--muted)">아래 <b>① MECE 트리맵</b>으로 전체 구조를 한눈에 잡고 → <b>② 로드맵·추천 학습 경로</b>로 공부 동선을 따라 → <b>③ 노드 카드(C1~C20)</b>를 드릴다운하고 → <b>④ 말미 예상 문제(12)</b>로 셀프테스트하세요. ⭐高 14개에 시간을 더 배분.</p>
     </section>
-    <section class="stem-sec" id="B1">
-      <h2>B1. 분석 기초 <span style="font-size:.8rem;color:var(--muted);font-weight:400">— 모든 알고리즘을 재는 자(尺): 성장률 표기와 재귀 점화식 풀이</span></h2>
 
-      <details class="node-card" id="C1" data-node-id="C1" data-hot="1" data-title="C1 점근 표기 O Omega Theta o omega 성장률">
+    <section class="treemap" id="treemap">
+      <h2>🧭 한눈에 보는 전체 구조 (MECE 트리맵)</h2>
+      <div class="tm-sub">큰 가지를 먼저 본 뒤, 잎(개념)을 클릭하면 해당 카드로 드릴다운합니다. ⭐ = 고빈도.</div>
+      <ul class="tree">
+        <li><span class="tm-root">컴퓨터 알고리즘 = 계산 문제를 푸는 효율적 절차 + 그 정당성(증명)·복잡도</span>
+          <ul>
+            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">▾</span>가지 1. 복잡도 분석 도구 <span class="tm-desc">— 알고리즘을 재는 자(尺)</span></span>
+              <ul>
+                <li><span class="tm-leaf hot" data-target="C1" onclick="goNode('C1')">1.1 점근 표기 O·Ω·Θ·o·ω (C1) ⭐</span></li>
+                <li><span class="tm-leaf hot" data-target="C2" onclick="goNode('C2')">1.2 점화식 풀이 — 치환·재귀트리 (C2) ⭐ <span class="tm-desc">(⚠️마스터정리=범위 외)</span></span></li>
+              </ul>
+            </li>
+            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">▾</span>가지 2. 정렬 <span class="tm-desc">— 비교·비비교·하한</span></span>
+              <ul>
+                <li><span class="tm-leaf" data-target="C3" onclick="goNode('C3')">2.1 삽입·병합 정렬 (C3)</span></li>
+                <li><span class="tm-leaf hot" data-target="C4" onclick="goNode('C4')">2.2 힙·힙정렬 (C4) ⭐</span></li>
+                <li><span class="tm-leaf hot" data-target="C5" onclick="goNode('C5')">2.3 퀵정렬 (C5) ⭐</span></li>
+                <li><span class="tm-leaf hot" data-target="C6" onclick="goNode('C6')">2.4 선형정렬 + 비교정렬 하한 Ω(n lg n) (C6) ⭐</span></li>
+              </ul>
+            </li>
+            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">▾</span>가지 3. 알고리즘 설계기법 <span class="tm-desc">— 부분문제 재사용·국소최적·비용 상환</span></span>
+              <ul>
+                <li><span class="tm-leaf hot" data-target="C7" onclick="goNode('C7')">3.1 동적 계획법(DP)·LCS (C7) ⭐</span></li>
+                <li><span class="tm-leaf hot" data-target="C8" onclick="goNode('C8')">3.2 그리디·Huffman (C8) ⭐</span></li>
+                <li><span class="tm-leaf hot" data-target="C9" onclick="goNode('C9')">3.3 분할상환 분석 (C9) ⭐</span></li>
+              </ul>
+            </li>
+            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">▾</span>가지 4. 그래프 <span class="tm-desc">— 탐색·순서·최소연결·최단경로</span></span>
+              <ul>
+                <li><span class="tm-leaf" data-target="C10" onclick="goNode('C10')">4.1 그래프 기초·표현 (C10)</span></li>
+                <li><span class="tm-leaf" data-target="C11" onclick="goNode('C11')">4.2 BFS (C11)</span></li>
+                <li><span class="tm-leaf" data-target="C12" onclick="goNode('C12')">4.3 DFS·간선분류 (C12)</span></li>
+                <li><span class="tm-leaf hot" data-target="C13" onclick="goNode('C13')">4.4 위상정렬 (C13) ⭐</span></li>
+                <li><span class="tm-leaf hot" data-target="C14" onclick="goNode('C14')">4.5 MST·cut property·Prim·Kruskal (C14) ⭐</span></li>
+                <li><span class="tm-leaf hot" data-target="C15" onclick="goNode('C15')">4.6 단일출발 최단경로·Dijkstra·Bellman-Ford·DAG·PERT (C15) ⭐</span></li>
+                <li><span class="tm-leaf hot" data-target="C16" onclick="goNode('C16')">4.7 모든쌍 최단경로·Floyd-Warshall (C16) ⭐</span></li>
+              </ul>
+            </li>
+            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">▾</span>가지 5. 정수론·공개키 암호(RSA) <span class="tm-desc">— 곱셈은 쉽고 인수분해는 어렵다</span></span>
+              <ul>
+                <li><span class="tm-leaf hot" data-target="C17" onclick="goNode('C17')">5.1 정수론·소수·Fermat·Euler φ·소수판정 (C17) ⭐</span></li>
+                <li><span class="tm-leaf" data-target="C18" onclick="goNode('C18')">5.2 Diffie-Hellman 키교환 (C18)</span></li>
+                <li><span class="tm-leaf hot" data-target="C19" onclick="goNode('C19')">5.3 공개키·RSA (C19) ⭐</span></li>
+                <li><span class="tm-leaf" data-target="C20" onclick="goNode('C20')">5.4 디지털 서명·PKI (C20)</span></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <div class="mece-note"><b>MECE 점검:</b> 5개 가지는 의존성 맵의 자연 절단면(분석→정렬→설계→그래프→암호)이며 <b>상호배타</b>(한 개념은 정확히 한 가지, C1~C20 중복 0)하고 <b>전체포괄</b>(20개 전부 잎으로 등장, 누락 0)한다.</div>
+    </section>
+
+    <section class="roadmap-graph" id="roadmapgraph">
+      <h2>🗺️ 학습 로드맵 (Top-down · 선행 흐름)</h2>
+      <div class="tm-sub">화살표 = 선행 순서. ⭐高는 강조. 노드를 클릭하면 해당 카드로 이동.</div>
+      <div class="scrollx"><pre>B1. 분석 기초          C1 ──&gt; C2
+   (점근표기·점화식)    ⭐高    ⭐高
+                        │       │
+                        ▼       ▼
+B2. 정렬               C3 ──&gt; C4 ──&gt; C5 ──&gt; C6
+   (비교·비비교+하한)   ⭐中   ⭐高   ⭐高   ⭐高
+                        ▲
+B3. 설계기법            C2 ──&gt; C7 ──┬─&gt; C8     (C7 DP ↔ C8 그리디 대비)
+   (DP·그리디·상환)     ⭐高   ⭐高  │  ⭐高
+                        C1 ──&gt; C9   └─&gt; C16 (Floyd, DP)
+                              ⭐高
+B4. 그래프             C10 ─&gt; C11 ─&gt; C12 ─&gt; C13
+   (탐색·MST·최단경로)  ⭐中   ⭐中   ⭐中   ⭐高
+                        └────&gt; C14 ──┐
+                              ⭐高    ▼
+                        C11,C13,C14 ─&gt; C15 ──&gt; C16
+                                       ⭐高     ⭐高
+B5. 정수론·암호         C17 ──┬─&gt; C18
+   (RSA)               ⭐高   │  ⭐中
+                              └─&gt; C19 ──&gt; C20
+                                  ⭐高    ⭐低</pre></div>
+      <p style="color:var(--muted);font-size:.85rem;margin-top:8px"><b>줄기간 연결:</b> C1·C2 → 전부의 복잡도 분석 공통 선수 · C2(점화식)→C7(DP)→C16(Floyd) · C4(힙)→C14(Prim) · C8(그리디)→C14(MST) · C11/C13/C14→C15(SSSP) · C17(정수론)→C19(RSA 정당성).</p>
+      <p style="color:var(--muted);font-size:.85rem"><b>⚠️ 범위 신호:</b> <span class="gw">Master Method(마스터 정리) = 출제 범위 외</span>(C2 내 회색 배지). BFS/DFS 본체·Kruskal·Dijkstra/Bellman-Ford·Floyd·RSA 수식 = "본강의 출제"(summary 가중치 낮음).</p>
+    </section>
+
+    <section class="path-panel" id="learnpath">
+      <h2>🧭 추천 학습 경로 (의존도 위상정렬, 17단계)</h2>
+      <div class="ph-sub">로드맵이 "구조(공간 지도)"라면 이 패널은 "동선(공부 순서)". 클릭 시 해당 카드로 점프. <span class="gw">🚪관문</span>=먼저 끝내야 뒤가 풀림 · <span class="ind">🟢독립</span>=아무 때나 시작 가능.</div>
+      <div class="path-step" onclick="goNode('C1')"><span class="num">1</span><span class="pt">C1 점근 표기 <span class="gw">🚪</span> ⭐高<span class="why">선행 없는 관문 / 모든 복잡도 분석·C2의 토대 · 난이도 中</span></span></div>
+      <div class="path-step" onclick="goNode('C2')"><span class="num">2</span><span class="pt">C2 점화식(치환·재귀트리) <span class="gw">🚪</span> ⭐高<span class="why">C1 알아야 닫힌형 이해 / 정렬·DP 점화식 토대 · 난이도 上</span></span></div>
+      <div class="path-step" onclick="goNode('C3')"><span class="num">3</span><span class="pt">C3 삽입·병합 정렬<span class="why">C1·C2로 복잡도 분석 가능 / C4·C5·C6 비교의 기준선 · 난이도 中</span></span></div>
+      <div class="path-step" onclick="goNode('C4')"><span class="num">4</span><span class="pt">C4 힙·힙정렬 ▸ C5 퀵정렬 <span class="tm-desc">(묶음: 보장 n lg n vs 평균 빠른 — 함께)</span> ⭐高<span class="why">C3 기준선 위 / C6 하한의 대상 · 난이도 上</span></span></div>
+      <div class="path-step" onclick="goNode('C6')"><span class="num">5</span><span class="pt">C6 선형정렬 + 비교정렬 하한 ⭐高<span class="why">C3~C5 비교정렬을 알아야 "하한 우회/못 넘음" 이해 / 정렬 줄기의 결론 · 난이도 上</span></span></div>
+      <div class="path-step" onclick="goNode('C9')"><span class="num">6</span><span class="pt">C9 분할상환 ⭐高<span class="why">C1만 있으면 됨, 정렬과 독립 / 동적배열·우선순위큐 비용 · 난이도 中上 (곁가지)</span></span></div>
+      <div class="path-step" onclick="goNode('C7')"><span class="num">7</span><span class="pt">C7 DP(LCS) ▸ C8 그리디(Huffman) <span class="tm-desc">(묶음: 다 풀기 vs 하나 골라 — 함께)</span> ⭐高<span class="why">C2 점화식 사고 필요 / C16 Floyd·C14 기법 원천 · 난이도 上</span></span></div>
+      <div class="path-step" onclick="goNode('C10')"><span class="num">8</span><span class="pt">C10 그래프 기초·표현 <span class="ind">🟢</span><span class="why">선행 없는 독립 진입점 / 모든 그래프 알고리즘 토대 · 난이도 中</span></span></div>
+      <div class="path-step" onclick="goNode('C11')"><span class="num">9</span><span class="pt">C11 BFS ▸ C12 DFS <span class="gw">🚪(C12)</span> <span class="tm-desc">(묶음: 큐 vs 스택 — 함께)</span><span class="why">C10 표현 위 / C12는 C13·acyclic 판정의 관문 · 난이도 中</span></span></div>
+      <div class="path-step" onclick="goNode('C13')"><span class="num">10</span><span class="pt">C13 위상정렬 ⭐高<span class="why">C12 DFS finishing time이 핵심 / C15 DAG 최단경로 전처리 · 난이도 中上</span></span></div>
+      <div class="path-step" onclick="goNode('C14')"><span class="num">11</span><span class="pt">C14 MST(cut property·Prim·Kruskal) ⭐高<span class="why">C10+C8+C4+disjoint-set 결합 / C15 Dijkstra 그리디 구조 예고 · 난이도 上</span></span></div>
+      <div class="path-step" onclick="goNode('C15')"><span class="num">12</span><span class="pt">C15 SSSP(Dijkstra·Bellman-Ford·DAG·PERT) ⭐高<span class="why">C11·C13·C14 토대 / C16 All-pairs로 확장 · 난이도 上</span></span></div>
+      <div class="path-step" onclick="goNode('C16')"><span class="num">13</span><span class="pt">C16 All-pairs(Floyd-Warshall) ⭐高<span class="why">C7 DP + C15 최단경로 필요 / 그래프 줄기 결론 · 난이도 上</span></span></div>
+      <div class="path-step" onclick="goNode('C17')"><span class="num">14</span><span class="pt">C17 정수론(Fermat·Euler φ·소수판정) <span class="gw">🚪</span><span class="ind">🟢</span> ⭐高<span class="why">선행 없는 독립 관문, 암호 줄기 전체 토대 / C18·C19 · 난이도 上</span></span></div>
+      <div class="path-step" onclick="goNode('C18')"><span class="num">15</span><span class="pt">C18 Diffie-Hellman<span class="why">C17 원시근·이산로그 필요 / C19와 형제 — 이산로그 vs 인수분해 · 난이도 中</span></span></div>
+      <div class="path-step" onclick="goNode('C19')"><span class="num">16</span><span class="pt">C19 RSA ⭐高<span class="why">C17 Euler 정리가 정당성 핵심 / C20 서명 · 난이도 上</span></span></div>
+      <div class="path-step" onclick="goNode('C20')"><span class="num">17</span><span class="pt">C20 서명·PKI ⭐低<span class="why">C19 RSA로 서명·검증 / 줄기 마무리, 출제빈도 낮음 · 난이도 中</span></span></div>
+      <p style="color:var(--muted);font-size:.83rem;margin-top:8px"><b>요령:</b> ①②(C1·C2) 무조건 먼저. 그다음 두 갈래 병렬 — 정렬·설계(③~⑦) 와 그래프(⑧~⑬)·암호(⑭~⑰). C9·C10·C17은 선행 가벼워 "막힐 때 갈아타는 곁가지". ⭐高 14개에 시간 더 배분.</p>
+    </section>
+
+    <section class="stem-sec" id="B1">
+      <h2>B1. 분석 기초 — 점근표기·점화식</h2>
+      <div class="stem-lead">모든 알고리즘을 재는 자(尺): 성장률 표기와 재귀 점화식 풀이.</div>
+
+      <details class="node-card" id="C1" data-node-id="C1" data-hot="1" data-title="점근 표기 O Omega Theta o omega">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C1" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C1 · 점근 표기 (O, Ω, Θ, o, ω)
-          <span class="nbadge hot">⭐高</span><span class="nbadge gate">🚪관문</span><span class="nbadge indep">🟢독립</span><span class="nbadge">선행: 없음</span>
+          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: 없음(기초)</span>
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
@@ -227,65 +342,71 @@
             <ul>
               <li>\(O(g)\) = 상계(worst): \(f\)가 \(g\)보다 빠르게 자라지 않음.</li>
               <li>\(\Omega(g)\) = 하계(best/lower): \(f\)가 \(g\)보다 느리게 자라지 않음.</li>
-              <li>\(\Theta(g)\) = tight(정확): \(O\)이면서 \(\Omega\). (Thm 3.1: \(f=\Theta(g)\iff f=O(g)\ \text{and}\ f=\Omega(g)\))</li>
+              <li>\(\Theta(g)\) = tight(정확): \(O\)이면서 \(\Omega\). (Theorem 3.1: \(f=\Theta(g) \iff f=O(g)\ \text{and}\ f=\Omega(g)\))</li>
               <li>\(o,\omega\) = non-tight(등호 불성립). 예: \(2n=o(n^2)\).</li>
             </ul>
           </div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span>두 정렬 라이브러리 중 무엇을 쓸지 고를 때, 벤치마크 절대 시간(ms)은 CPU·언어·상수에 휘둘린다. 그래서 엔지니어는 "이건 \(O(n\lg n)\), 저건 \(O(n^2)\)"처럼 <b>성장률</b>만으로 비교한다 — 입력이 100만 개로 커지면 상수배 차이는 무의미해지고 차수(order)가 승부를 가르기 때문. \(c,n_0\)를 허용하는 정의가 바로 "작은 입력·하드웨어 차이는 무시하고 큰 그림만 본다"는 실무 직관의 형식화다.</div>
           <div class="field"><span class="lbl">🧮 수식</span>
-            <div>\[ O(g(n)) = \{f(n): \exists c,n_0&gt;0,\ 0\le f(n)\le cg(n),\ \forall n\ge n_0\} \]</div>
-            <div>\[ \Omega(g(n)): 0\le cg(n)\le f(n) \qquad \Theta(g(n)): 0\le c_1 g(n)\le f(n)\le c_2 g(n) \]</div>
+            <div class="scrollx">
+              \[ O(g(n)) = \{f(n): \exists c,n_0&gt;0,\ 0\le f(n)\le cg(n),\ \forall n\ge n_0\} \]
+              \[ \Omega(g(n)):\ 0\le cg(n)\le f(n) \qquad \Theta(g(n)):\ 0\le c_1 g(n)\le f(n)\le c_2 g(n) \]
+            </div>
             <div style="color:var(--muted);font-size:.88rem">기호: \(c\) = 상수배 허용(기울기 무시), \(n_0\) = "충분히 큰 n"의 시작점 — \(n\ge n_0\)만 성립하면 됨(작은 n 무시).</div>
           </div>
-          <div class="field"><span class="lbl">🔍 작동 원리 (단계별)</span>
-            <div class="stepper">
-              <div class="stepper-title">🔍 작동 원리 — \(3n+1=O(n^2)\) 증명 (정의로 c·n₀ 찾기)</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario">두 정렬 라이브러리 중 무엇을 쓸지 고를 때, 벤치마크 절대 시간(ms)은 CPU·언어·상수에 휘둘린다. 그래서 엔지니어는 "이건 \(O(n\lg n)\), 저건 \(O(n^2)\)"처럼 <b>성장률</b>만으로 비교한다 — 입력이 100만 개로 커지면 상수배 차이는 무의미해지고 차수(order)가 승부를 가른다. \(c,n_0\)를 허용하는 정의가 바로 "작은 입력·하드웨어 차이는 무시하고 큰 그림만 본다"는 실무 직관의 형식화다.</div>
+          </div>
+          <div class="field"><span class="lbl">🔍 작동 원리 / 유도 (단계별)</span>
+            <div class="stepper worked">
+              <div class="stp-title">\(3n+1=O(n^2)\) 증명 (정의로 c·n₀ 찾기)</div>
               <div class="step show"><div class="step-head">1. 직관</div>"\(3n+1\)이 결국 \(n^2\) 안에 갇히는가?"를 보이려 한다 — 어떤 상수배 \(c\)와 출발점 \(n_0\)를 잡으면 \(3n+1\le cn^2\)가 쭉 성립함을 찾는 게임.</div>
               <div class="step"><div class="step-head">2. 셋업</div>\(O\)의 정의: \(\exists c,n_0&gt;0\) s.t. \(0\le 3n+1\le cn^2,\ \forall n\ge n_0\). 목표 = 그런 \(c,n_0\) 제시.</div>
               <div class="step"><div class="step-head">3. 전개 1</div>부등식 \(3n+1\le cn^2\)의 양변을 \(n^2(&gt;0)\)으로 나눈다 → \(\dfrac{3}{n}+\dfrac{1}{n^2}\le c\). (n에 대한 의존을 좌변에 몰아 c의 하한을 본다)</div>
               <div class="step"><div class="step-head">4. 전개 2</div>좌변 \(\frac{3}{n}+\frac{1}{n^2}\)은 n이 커질수록 감소. \(n\ge1\)이면 좌변 \(\le 3+1=4\). (n=1에서 최댓값 4)</div>
               <div class="step"><div class="step-head">5. 결론</div>\(c\ge4,\ n_0=1\)로 잡으면 \(\forall n\ge1\)에서 \(3n+1\le 4n^2\) 성립 ⇒ \(3n+1=O(n^2)\). ∎</div>
               <div class="step"><div class="step-head">6. 검산</div>n=1: \(4\le4\) ✓. n=2: \(7\le16\) ✓. n=3: \(10\le36\) ✓ (격차 점점 벌어짐).</div>
-              <div class="step"><div class="step-head">7. 시험 변형</div>같은 틀로 \(\Omega\) 증명(\(cn^2\le f\) 방향), 다른 함수(\(an+b=O(n)\) 등) 대입, "이 \(c,n_0\)가 유일한가?(아니오, 더 큰 값도 됨)" 질문으로 변형.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="step"><div class="step-head">7. 시험 변형</div>같은 틀로 \(\Omega\) 증명(\(cn^2\le f\) 방향), 다른 함수(\(an+b=O(n)\) 등) 대입, 또는 "이 \(c,n_0\)가 유일한가?(아니오, 더 큰 값도 됨)" 질문으로 변형.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
           <div class="field"><span class="lbl">📊 표·그래프 인사이트</span>
-            <div class="callout">성질 표 — <b>추이성</b>(O/Ω/Θ/o/ω 모두), <b>반사성</b>(O/Ω/Θ), <b>대칭성</b>(<b>Θ만</b>), <b>전치대칭</b>(\(f=O(g)\iff g=\Omega(f)\)). <b>삼분법(trichotomy) 불성립</b> — 비교 불가 예: \(n^{1+\sin n}\) vs \(n\) (sin이 진동해 대소가 안 정해짐).</div>
+            <div class="callout">성질 — 추이성(transitivity, O/Ω/Θ/o/ω 모두), 반사성(reflexivity, O/Ω/Θ), 대칭성(symmetry, <b>Θ만</b>), 전치대칭(transpose symmetry: \(f=O(g)\iff g=\Omega(f)\)). <b>삼분법(trichotomy) 불성립</b> — 비교 불가 예: \(n^{1+\sin n}\) vs \(n\) (sin이 진동해 대소가 안 정해짐).</div>
           </div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>위 STEP "\(3n+1=O(n^2)\) 증명"이 곧 풀이 예제(구체 입력 \(f=3n+1,g=n^2\) → \(c,n_0\) 도출). 추가 즉답: \(3n+1=O(n)\)도 참, \(3n+1=\Theta(n)\), 그러나 \(3n+1\ne\Theta(n^2)\)(하계 불성립). \(O\)는 느슨해도 참, \(\Theta\)만 정확.</div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>위 STEP "\(3n+1=O(n^2)\) 증명"이 곧 풀이 예제(구체 입력 \(f=3n+1, g=n^2\) → \(c,n_0\) 도출). 추가 즉답: \(3n+1=O(n)\)도 참, \(3n+1=\Theta(n)\), 그러나 \(3n+1\ne\Theta(n^2)\)(하계 불성립). (\(O\)는 느슨해도 참, \(\Theta\)만 정확).</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">\(O\)는 <b>상한</b>이지 "정확히 그 정도"가 아니다. \(3n+1=O(n^2)\)도 참(느슨함). <b>오직 \(\Theta\)만</b> 정확한 동급. 대칭성도 Θ에만 성립.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高</span> <span class="nbadge">출제 가이드</span></span> ① 정의로 \(c,n_0\) 찾아 증명(특히 \(3n+1=O(n^2)\), \(c\ge4,n\ge1\)), ② 표기 간 관계(transpose symmetry 등), ③ 함수 성장률 정렬, ④ 삼분법 불성립 반례.</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">응용 → <a onclick="goNode('C2')">C2 점화식</a> <a onclick="goNode('C9')">C9 분할상환</a> · 모든 알고리즘 복잡도 표기의 기반.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高 · 출제 가이드</span></span>① 정의로 \(c,n_0\) 찾아 증명(특히 \(3n+1=O(n^2)\), \(c\ge4,n\ge1\)), ② 표기 간 관계(transpose symmetry 등), ③ 함수 성장률 정렬, ④ 삼분법 불성립 반례.</div>
+          <div class="field"><span class="lbl">🔗 연결</span>응용 → <a onclick="goNode('C2')">C2(점화식 복잡도)</a>, <a onclick="goNode('C9')">C9(분할상환)</a>, 그리고 모든 알고리즘 복잡도 표기의 기반.</div>
         </div>
       </details>
 
-      <details class="node-card" id="C2" data-node-id="C2" data-hot="1" data-title="C2 재귀 점화식 치환법 재귀트리 substitution recursion tree">
+      <details class="node-card" id="C2" data-node-id="C2" data-hot="1" data-title="재귀 점화식 풀이 치환법 재귀트리">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C2" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C2 · 재귀 점화식 풀이 — 치환법·재귀트리
-          <span class="nbadge hot">⭐高</span><span class="nbadge gate">🚪관문</span><span class="nbadge">선행: C1</span>
+          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C1</span>
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>분할정복 알고리즘이 자기 자신을 부르며 만든 비용식 \(T(n)\)을, "결국 몇 급(n lg n? n²?)이냐"의 닫힌형으로 푸는 두 가지 손기술.</div>
           <div class="field"><span class="lbl">📖 정의</span>두 방법만 사용 — <b>Substitution(치환·귀납)</b>, <b>Recursion-tree(재귀 트리)</b>.</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span>병합정렬을 짜고 "이게 빠른가?"를 따질 때, 코드는 "절반으로 나눠(\(n/2\) 두 번) 합치는 데 \(n\)"이라는 재귀 구조다. 이 구조가 그대로 \(T(n)=2T(n/2)+n\)이라는 점화식이 되고, 이를 풀면 \(\Theta(n\lg n)\) — "데이터 두 배 되면 시간은 두 배 조금 넘게"라는 실측 곡선의 정체가 나온다. 즉 점화식 풀이는 "재귀 코드를 보고 성능 곡선을 예측"하는 도구다. <i>왜 치환·재귀트리만?</i> 이 강의는 마스터 정리를 안 다루므로(범위 외) 추측을 추가하지 않는다.</div>
-          <div class="field"><span class="lbl">🧮 수식</span><div>표본 점화식 \(T(n)=2T(\lfloor n/2\rfloor)+n\) (병합정렬형) → 답 \(\Theta(n\lg n)\).</div></div>
-          <div class="field"><span class="lbl">🔍 작동 원리 (단계별)</span>
-            <div class="stepper">
-              <div class="stepper-title">🔍 치환법으로 \(T(n)=2T(\lfloor n/2\rfloor)+n \le cn\lg n\) 증명</div>
+          <div class="field"><span class="lbl">🧮 수식</span>표본 점화식 \(T(n)=2T(\lfloor n/2\rfloor)+n\) (병합정렬형) → 답 \(\Theta(n\lg n)\).</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario">병합정렬을 짜고 "이게 빠른가?"를 따질 때, 코드는 "절반으로 나눠(\(n/2\) 두 번) 합치는 데 \(n\)"이라는 재귀 구조다. 이 구조가 그대로 \(T(n)=2T(n/2)+n\)이라는 점화식이 되고, 이를 풀면 \(\Theta(n\lg n)\) — "데이터 두 배 되면 시간은 두 배 조금 넘게"라는 실측 곡선의 정체. <b>왜 치환·재귀트리만?</b> 이 강의는 마스터 정리를 안 다루므로(범위 외) 추측을 추가하지 않는다.</div>
+          </div>
+          <div class="field"><span class="lbl">🔍 작동 원리 / 유도 (단계별 — 2개)</span>
+            <div class="stepper worked">
+              <div class="stp-title">치환법으로 \(T(n)=2T(\lfloor n/2\rfloor)+n \le cn\lg n\) 증명</div>
               <div class="step show"><div class="step-head">1. 직관</div>답을 먼저 <b>추측</b>(\(O(n\lg n)\))하고, 그게 맞다고 가정한 채 한 단계 위로 귀납하면 다시 같은 꼴이 나오는지 확인 — 수학적 귀납법.</div>
               <div class="step"><div class="step-head">2. 셋업</div>귀납가정: 더 작은 입력에 대해 \(T(\lfloor n/2\rfloor)\le c\lfloor n/2\rfloor\lg(\lfloor n/2\rfloor)\) 성립한다고 가정.</div>
               <div class="step"><div class="step-head">3. 전개 1</div>점화식에 대입: \(T(n)\le 2\big(c\lfloor n/2\rfloor\lg(\lfloor n/2\rfloor)\big)+n \le cn\lg(n/2)+n\).</div>
               <div class="step"><div class="step-head">4. 전개 2</div>\(\lg(n/2)=\lg n-\lg 2=\lg n-1\) 사용: \(=cn\lg n - cn\lg 2 + n = cn\lg n - cn + n\).</div>
               <div class="step"><div class="step-head">5. 결론</div>\(-cn+n\le0 \iff c\ge1\). 따라서 \(c\ge1\)이면 \(T(n)\le cn\lg n\). 귀납 성립 ⇒ \(T(n)=O(n\lg n)\). ∎</div>
               <div class="step"><div class="step-head">6. 경계조건 트릭</div>\(n=1\)은 \(cn\lg n=0&lt;T(1)=1\)이라 실패. → 점근 정의상 "큰 n만" 보이면 되므로 \(n_0=2\)로 이동. \(T(2)=4\), 필요조건 \(4\le c\cdot2\lg2=2c\) ⇒ \(c\ge2\). 최종 \(c\ge2,n_0=2\).</div>
-              <div class="step"><div class="step-head">7. 시험 변형</div>다른 점화식(\(T(n)=2T(n/2)+1\) 등)에 같은 절차, "왜 \(n=1\)에서 깨지나/어떻게 우회하나"를 직접 물음.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="step"><div class="step-head">7. 시험 변형</div>다른 점화식(\(T(n)=2T(n/2)+1\) 등)에 같은 절차, 또는 "왜 \(n=1\)에서 깨지나/어떻게 우회하나"를 직접 물음.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
             <div class="stepper">
-              <div class="stepper-title">🔍 재귀트리로 답 추측</div>
+              <div class="stp-title">재귀트리로 답 추측</div>
               <div class="step show"><div class="step-head">1. 직관</div>점화식이 만드는 호출 트리를 그려 "레벨마다 얼마, 레벨이 몇 층"을 합산해 답을 <b>눈으로 추측</b>(엄밀 증명은 치환법으로 마무리).</div>
               <div class="step"><div class="step-head">2. 셋업</div>\(T(n)=2T(n/2)+n\): 루트 비용 = n, 자식 2개 각 \(T(n/2)\).</div>
               <div class="step"><div class="step-head">3. 전개 1</div>레벨0 비용 = n. 레벨1 = 2개 × (n/2) = n. 레벨2 = 4개 × (n/4) = n. → <b>각 레벨 합 = n으로 일정</b>.</div>
@@ -293,42 +414,53 @@
               <div class="step"><div class="step-head">5. 결론</div>총비용 = (레벨당 n) × (높이 lg n) = \(n\lg n\) ⇒ \(\Theta(n\lg n)\) 추측.</div>
               <div class="step"><div class="step-head">6. 검산</div>n=8: 레벨 비용 8,8,8,8 (높이 lg8=3+루트) → ≈ n lg n 규모.</div>
               <div class="step"><div class="step-head">7. 시험 변형</div>불균등 점화식(레벨 비용이 변하는 경우)에서 등비합으로 추정하는 변형.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
           <div class="field"><span class="lbl">📊 표·그래프 인사이트</span><div class="callout">\(T(n)=2T(n/2)+n\)의 재귀트리 — 각 레벨 비용 합 = n(일정), 높이 = lg n ⇒ n × lg n = \(\Theta(n\lg n)\). "레벨당 비용 × 높이"가 직관 핵심.</div></div>
           <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>위 STEP 2개가 구체 입력 \(T(n)=2T(\lfloor n/2\rfloor)+n\)에 대한 풀이 예제. 치환법은 \(c,n_0\)까지 도출(\(c\ge2,n_0=2\)), 재귀트리는 \(n=8\)로 검산.</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap"><b>경계조건</b>에서 막힘 — \(n=1\)은 \(c\cdot1\lg1=0\)이라 \(T(1)=1\)을 못 덮음. ⇒ \(n_0=2\)로 옮겨 처리. "모든 n"이 아니라 "\(n\ge n_0\)"만 증명하면 된다는 점근의 본질을 이용.</div></div>
-          <div class="scope-out">⚠️ 자료 없음 <span class="scope-badge">출제 범위 외</span> — <b>Master Method(마스터 정리)는 다루지 않음</b> (Notion Day 2). 형태 \(aT(n/b)+f(n)\)만 언급, 3 case 미전개. 추측 보강 없음.</div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高</span></span> 주어진 점화식을 <b>치환법으로 증명</b>(귀납단계 전개 + <b>경계조건 트릭</b>이 채점 핵심). 재귀트리로 답 추측.</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">선행 <a onclick="goNode('C1')">C1</a> · 응용 → <a onclick="goNode('C3')">C3 병합정렬</a> <a onclick="goNode('C5')">C5 퀵</a> <a onclick="goNode('C7')">C7 DP 점화식</a></div></div>
+          <div class="field"><span class="lbl">🚫 자료 없음 (범위 외)</span><div class="scope-out"><b>Master Method(마스터 정리)는 다루지 않음</b> (Notion Day 2). 형태 \(aT(n/b)+f(n)\)만 언급, 3 case 미전개. <b>출제 범위 외</b> — 추측 보강 금지.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高 · substitution 강조</span></span>주어진 점화식을 <b>치환법으로 증명</b>(귀납단계 전개 + <b>경계조건 트릭</b>이 채점 핵심). 재귀트리로 답 추측.</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C1')">C1</a>. 응용 → <a onclick="goNode('C3')">C3(병합정렬)</a>, <a onclick="goNode('C5')">C5(퀵 balanced/unbalanced)</a>, 사고법이 <a onclick="goNode('C7')">C7(DP 점화식)</a>로 확장.</div>
         </div>
       </details>
     </section>
-    <section class="stem-sec" id="B2">
-      <h2>B2. 정렬 <span style="font-size:.8rem;color:var(--muted);font-weight:400">— 같은 문제를 여러 절차로 풀어 효율·안정성·in-place를 비교, "비교정렬은 Ω(n lg n)을 못 넘는다"까지</span></h2>
 
-      <details class="node-card" id="C3" data-node-id="C3" data-hot="0" data-title="C3 삽입 병합 정렬 insertion merge sort 안정성 불변식">
+    <section class="stem-sec" id="B2">
+      <h2>B2. 정렬 — 비교·비비교 + 하한</h2>
+      <div class="stem-lead">같은 문제를 여러 절차로 풀어 효율·안정성·in-place를 비교하고, "비교정렬은 Ω(n lg n)을 못 넘는다"는 하한까지.</div>
+
+      <details class="node-card" id="C3" data-node-id="C3" data-hot="0" data-title="정렬 삽입 병합 insertion merge sort">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C3" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C3 · 정렬 — 삽입/병합 정렬
-          <span class="nbadge">⭐中</span><span class="nbadge">선행: C1, C2</span>
+          <span class="nbadge mid">⭐中</span><span class="nbadge">선행: C1, C2</span>
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>가장 기본 두 정렬 — 손으로 카드 끼워넣기(삽입) vs 반씩 쪼개 합치기(병합). 같은 정렬도 절차에 따라 속도·안정성·공간이 다르다는 첫 비교.</div>
-          <div class="field"><span class="lbl">📖 정의</span><ul><li><b>삽입 정렬</b>: \(A[1..j-1]\)이 항상 정렬 상태라는 <b>불변식</b>을 유지하며 \(A[j]\)를 끼워넣음.</li><li><b>병합 정렬</b>: 분할정복 — 반으로 나눠 각각 정렬 후 merge.</li></ul></div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span>카드 게임에서 손패를 정렬할 때 사람은 자연히 <b>삽입정렬</b>을 한다 — 새 카드를 이미 정렬된 손패의 제자리에 끼운다. 거의 정렬된 패엔 한두 칸만 움직이니 빠르다(\(\Theta(n)\)). 반면 대용량 로그 파일을 정렬할 땐 <b>병합정렬</b>처럼 "반씩 나눠 정렬 후 합치기"가 안정적(\(\Theta(n\lg n)\) 보장)이라 외부정렬(external sort)·<code>merge</code> 기반 라이브러리의 근간이 된다. "안정성(stable)"이 중요한 이유도 실무적이다 — 이미 날짜순인 데이터를 이름순으로 재정렬할 때 같은 이름 안에서 날짜순이 보존돼야 하기 때문.</div>
-          <div class="field"><span class="lbl">🧮 수식</span><div>삽입: 최악 \(\Theta(n^2)\), 최선 \(\Theta(n)\)(이미 정렬). 병합: \(T(n)=2T(n/2)+\Theta(n)=\Theta(n\lg n)\) (최선=최악 동일).</div></div>
-          <div class="field"><span class="lbl">📊 표·그래프 인사이트</span>
-            <table><thead><tr><th>정렬</th><th>최악</th><th>최선</th><th>안정성</th><th>in-place</th><th>추가공간</th></tr></thead>
-            <tbody><tr><td>삽입</td><td>Θ(n²)</td><td>Θ(n)</td><td>stable</td><td>✔</td><td>O(1)</td></tr>
-            <tr><td>병합</td><td>Θ(n lg n)</td><td>Θ(n lg n)</td><td>stable</td><td>✘</td><td>Θ(n)</td></tr></tbody></table>
-            <div class="callout">삽입=in-place·안정·작거나 거의 정렬된 입력에 유리 ↔ 병합=항상 n lg n·안정이나 추가공간 n 필요.</div>
+          <div class="field"><span class="lbl">📖 정의</span>
+            <ul>
+              <li><b>삽입 정렬</b>: \(A[1..j-1]\)이 항상 정렬 상태라는 <b>불변식</b>을 유지하며 \(A[j]\)를 끼워넣음.</li>
+              <li><b>병합 정렬</b>: 분할정복 — 반으로 나눠 각각 정렬 후 merge.</li>
+            </ul>
           </div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>
-            <div class="stepper solve">
-              <div class="stepper-title">✏️ 풀이 예제 — 삽입정렬로 [5,2,4,6,1,3] 정렬 (불변식 추적)</div>
+          <div class="field"><span class="lbl">🧮 수식</span>삽입: 최악 \(\Theta(n^2)\), 최선 \(\Theta(n)\)(이미 정렬). 병합: \(T(n)=2T(n/2)+\Theta(n)=\Theta(n\lg n)\) (최선=최악 동일).</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario">카드 게임에서 손패를 정렬할 때 사람은 자연히 <b>삽입정렬</b>을 한다 — 새 카드를 이미 정렬된 손패의 제자리에 끼운다. 거의 정렬된 패엔 한두 칸만 움직이니 빠르다(\(\Theta(n)\)). 반면 대용량 로그 파일을 정렬할 땐 <b>병합정렬</b>처럼 "반씩 나눠 정렬 후 합치기"가 안정적(\(\Theta(n\lg n)\) 보장)이라 외부정렬(external sort)·<code>merge</code> 기반 라이브러리의 근간. "안정성(stable)"이 중요한 이유 — 이미 날짜순인 데이터를 이름순으로 재정렬할 때 같은 이름 안에서 날짜순이 보존돼야 하기 때문.</div>
+          </div>
+          <div class="field"><span class="lbl">📊 표·그래프 인사이트 (정렬 속성 비교)</span>
+            <div class="scrollx"><table>
+              <tr><th>정렬</th><th>최악</th><th>최선</th><th>안정성</th><th>in-place</th><th>추가공간</th></tr>
+              <tr><td>삽입</td><td>Θ(n²)</td><td>Θ(n)</td><td>stable</td><td>✔</td><td>O(1)</td></tr>
+              <tr><td>병합</td><td>Θ(n lg n)</td><td>Θ(n lg n)</td><td>stable</td><td>✘</td><td>Θ(n)</td></tr>
+            </table></div>
+            <div class="callout">통찰: 삽입=in-place·안정·작거나 거의 정렬된 입력에 유리 ↔ 병합=항상 n lg n·안정이나 추가공간 n 필요.</div>
+          </div>
+          <div class="field"><span class="lbl">✏️ 작동 원리 / 풀이 예제 (단계별)</span>
+            <div class="stepper worked">
+              <div class="stp-title">삽입정렬로 [5,2,4,6,1,3] 정렬 (불변식 추적)</div>
               <div class="step show"><div class="step-head">1. 직관</div>왼쪽이 항상 정렬됐다고 보고, 현재 키를 왼쪽 정렬구간의 제자리에 끼워넣는다. 매 단계 정렬된 부분이 한 칸씩 자란다.</div>
               <div class="step"><div class="step-head">2. 셋업</div>A=[5,2,4,6,1,3]. j=2부터 시작. 불변식: A[1..j−1] 정렬 유지.</div>
               <div class="step"><div class="step-head">3. 전개 j=2</div>key=2. 왼쪽 5&gt;2 → 5 뒤로 밀고 2 삽입 → <b>[2,5,|4,6,1,3]</b> (| = 정렬경계).</div>
@@ -338,16 +470,16 @@
               <div class="step"><div class="step-head">7. 전개 j=6</div>key=3. 6,5,4 밀고 2≤3 멈춤 → <b>[1,2,3,4,5,6]</b> 완성.</div>
               <div class="step"><div class="step-head">8. 답·분석</div>결과 [1,2,3,4,5,6]. 이 입력은 역순 다수라 비교가 많음 → 일반 최악 \(\Theta(n^2)\). 이미 정렬된 입력이면 각 j에서 1회 비교 → 최선 \(\Theta(n)\).</div>
               <div class="step"><div class="step-head">9. 시험 변형</div>특정 배열의 j번째 패스 직후 상태 쓰기, 비교/이동 횟수 세기, 안정성 확인.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">병합정렬은 안정이지만 <b>in-place 아님</b>(추가공간 Θ(n)). 삽입정렬 "최선 Θ(n)"은 입력이 이미 정렬됐을 때만.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span> 안정성/in-place/최악·최선을 알고리즘과 <b>매칭</b>하는 문제형.</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">선행 <a onclick="goNode('C1')">C1</a> <a onclick="goNode('C2')">C2</a> · 다음 → <a onclick="goNode('C4')">C4 힙</a> <a onclick="goNode('C5')">C5 퀵</a> <a onclick="goNode('C6')">C6 하한</a></div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>안정성/in-place/최악·최선을 알고리즘과 <b>매칭</b>하는 문제형.</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C1')">C1</a>,<a onclick="goNode('C2')">C2</a>. 다음 → <a onclick="goNode('C4')">C4(힙)</a>, <a onclick="goNode('C5')">C5(퀵)</a>, <a onclick="goNode('C6')">C6(하한 Ω(n lg n))</a>.</div>
         </div>
       </details>
 
-      <details class="node-card" id="C4" data-node-id="C4" data-hot="1" data-title="C4 힙 힙정렬 heap heapsort max-heap BUILD-MAX-HEAP EXTRACT-MAX 우선순위큐">
+      <details class="node-card" id="C4" data-node-id="C4" data-hot="1" data-title="힙 힙정렬 heap heapsort max-heapify build-max-heap">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C4" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C4 · 힙·힙 정렬 (Heaps, Heapsort)
@@ -357,32 +489,35 @@
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>배열을 "거의 꽉 찬 이진 트리"로 보고, 부모가 자식보다 큰 규칙(max-heap)을 유지하면 <b>최댓값을 항상 루트에서 O(log n)에 뽑을 수 있다</b>.</div>
           <div class="field"><span class="lbl">📖 정의</span>(binary) heap = nearly complete binary tree. <b>Max-heap property</b>: 부모 ≥ 자식. 배열 표현 — 노드 \(i\)의 자식은 \(2i, 2i+1\), 부모는 \(\lfloor i/2\rfloor\).</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span>운영체제 작업 스케줄러나 응급실 분류(triage)는 <b>우선순위 큐</b>가 필요하다 — "지금 가장 급한 것"을 매번 빠르게 꺼내고 새 작업을 계속 넣는다. 배열·연결리스트로는 최댓값 찾기가 \(O(n)\)이지만, 힙은 루트가 곧 최댓값이라 꺼내기 \(O(\lg n)\)·삽입 \(O(\lg n)\). 다익스트라(C15)·프림(C14)이 매 단계 "가장 가까운/싼 정점"을 뽑을 때 쓰는 EXTRACT-MIN도 바로 이 힙이다. <i>왜 배열로?</i> 거의 완전 이진 트리라 인덱스 산술(\(2i,2i+1\))로 포인터 없이 부모·자식을 찾아 캐시 친화적이다.</div>
-          <div class="field"><span class="lbl">🧮 수식</span><div>MAX-HEAPIFY \(O(\lg n)\); BUILD-MAX-HEAP <b>O(n)</b>; HEAPSORT 전체 <b>O(n lg n)</b> = BUILD O(n) + n·EXTRACT-MAX O(lg n).</div></div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 / 🔍 작동 원리</span>
-            <div class="stepper solve">
-              <div class="stepper-title">✏️ 풀이 예제 — BUILD-MAX-HEAP([4,1,3,2,16,9,10,14,8,7]) + 왜 O(n) + EXTRACT-MAX</div>
+          <div class="field"><span class="lbl">🧮 수식</span>MAX-HEAPIFY \(O(\lg n)\); BUILD-MAX-HEAP <b>O(n)</b>; HEAPSORT 전체 <b>O(n lg n)</b> = BUILD O(n) + n·EXTRACT-MAX O(lg n).</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario">운영체제 작업 스케줄러나 응급실 분류(triage)는 <b>우선순위 큐</b>가 필요하다 — "지금 가장 급한 것"을 매번 빠르게 꺼내고, 새 작업을 계속 넣는다. 배열·연결리스트로는 최댓값 찾기가 \(O(n)\)이지만, 힙은 루트가 곧 최댓값이라 꺼내기 \(O(\lg n)\)·삽입 \(O(\lg n)\). 다익스트라(C15)·프림(C14)이 매 단계 "가장 가까운/싼 정점"을 뽑을 때 쓰는 EXTRACT-MIN도 바로 이 힙. <b>왜 배열로?</b> 거의 완전 이진 트리라 인덱스 산술(\(2i,2i+1\))로 포인터 없이 부모·자식을 찾아 캐시 친화적.</div>
+          </div>
+          <div class="field"><span class="lbl">✏️ 작동 원리 / 풀이 예제 (단계별)</span>
+            <div class="stepper worked">
+              <div class="stp-title">BUILD-MAX-HEAP([4,1,3,2,16,9,10,14,8,7]) + 왜 O(n) + EXTRACT-MAX</div>
               <div class="step show"><div class="step-head">1. 직관</div>잎(leaf)들은 이미 크기 1짜리 힙이니 손댈 필요 없다. <b>마지막 내부노드(\(\lfloor n/2\rfloor\))부터 루트(1)까지</b> 거꾸로 MAX-HEAPIFY를 부르면 전체가 힙이 된다.</div>
               <div class="step"><div class="step-head">2. 셋업</div>A=[4,1,3,2,16,9,10,14,8,7], n=10. 내부노드는 인덱스 5,4,3,2,1 (\(\lfloor 10/2\rfloor=5\)부터 1까지 역순).</div>
               <div class="step"><div class="step-head">3. 전개 i=5</div>A[5]=16, 자식 A[10]=7 → 16≥7 변화 없음.</div>
               <div class="step"><div class="step-head">4. 전개 i=4</div>A[4]=2, 자식 14,8 → 14와 swap → A=[4,1,3,<b>14</b>,16,9,10,<b>2</b>,8,7].</div>
               <div class="step"><div class="step-head">5. 전개 i=3</div>A[3]=3, 자식 10,9 → 10과 swap → A=[4,1,<b>10</b>,14,16,9,<b>3</b>,2,8,7].</div>
-              <div class="step"><div class="step-head">6. 전개 i=2</div>A[2]=1, 자식 14,16 → 16과 swap(인덱스2↔5), 내려간 1은 자식 7과 또 swap → A=[4,<b>16</b>,10,14,<b>7</b>,9,3,2,8,<b>1</b>].</div>
+              <div class="step"><div class="step-head">6. 전개 i=2</div>A[2]=1, 자식 14,16 → 16과 swap, 내려간 1은 자식 7과 또 swap → A=[4,<b>16</b>,10,14,<b>7</b>,9,3,2,8,<b>1</b>].</div>
               <div class="step"><div class="step-head">7. 전개 i=1</div>A[1]=4, 자식 16,10 → 16과 swap, 내려가며 14, 8과 연쇄 swap → 최종 max-heap A=[<b>16</b>,14,10,8,7,9,3,2,4,1].</div>
               <div class="step"><div class="step-head">8. 왜 O(n)</div>높이 h 노드는 ≤\(\lceil n/2^{h+1}\rceil\)개, 각 비용 \(O(h)\) → 총 \(O\big(n\sum_{h\ge0} h/2^h\big)=O(n\cdot2)=O(n)\). (비싼 높은 노드는 극소수)</div>
               <div class="step"><div class="step-head">9. EXTRACT-MAX</div>루트 16 꺼냄 → 마지막 원소 1을 루트로 → 크기 9로 감소 → MAX-HEAPIFY로 14 올라옴. n번 반복 = 정렬, 각 \(O(\lg n)\) ⇒ \(O(n\lg n)\).</div>
               <div class="step"><div class="step-head">10. 시험 변형</div>특정 배열의 BUILD 후 힙 상태 쓰기, "전체 = O(n)+O(n lg n)=O(n lg n)" 합산 서술.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
-          <div class="field"><span class="lbl">📊 표·그래프 인사이트</span><div class="callout">BUILD의 <b>느슨한 분석은 O(n log n)</b> (n개 × O(log n))이나, <b>tight 분석은 O(n)</b> — 낮은 높이의 노드가 압도적으로 많아 높이별 비용 합이 등비급수로 수렴. 이 갭이 시험 단골.</div></div>
+          <div class="field"><span class="lbl">📊 표·그래프 인사이트</span><div class="callout">BUILD의 <b>느슨한 분석은 O(n log n)</b> (n개 노드 × O(log n))이나, <b>tight 분석은 O(n)</b> — 낮은 높이의 노드가 압도적으로 많아 높이별 비용 합이 등비급수로 수렴. 이 갭이 시험 단골.</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>위 STEP "BUILD-MAX-HEAP([4,1,3,2,16,9,10,14,8,7])"이 배열 상태변화 추적 풀이 예제.</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">힙정렬은 <b>in-place지만 not stable</b>(병합/삽입과 대조). BUILD를 O(n log n)으로 답하면 느슨함(tight는 O(n)).</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高</span></span> ① BUILD-MAX-HEAP가 <b>왜 O(n)</b>인지, ② EXTRACT-MAX 단계 추적, ③ in-place·불안정 속성.</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">선행 <a onclick="goNode('C3')">C3</a> · 대조 <a onclick="goNode('C3')">C3(병합)</a> · 응용 → <a onclick="goNode('C14')">C14 Prim</a> <a onclick="goNode('C15')">C15 Dijkstra</a></div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高</span></span>① BUILD-MAX-HEAP가 <b>왜 O(n)</b>인지, ② EXTRACT-MAX 단계 추적, ③ in-place·불안정 속성.</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C3')">C3</a>. 대조 → C3(병합: not in-place·stable). 응용 → <a onclick="goNode('C14')">C14(Prim의 min-priority queue)</a>, <a onclick="goNode('C15')">C15(Dijkstra의 EXTRACT-MIN)</a>.</div>
         </div>
       </details>
 
-      <details class="node-card" id="C5" data-node-id="C5" data-hot="1" data-title="C5 퀵 정렬 quicksort PARTITION pivot balanced unbalanced">
+      <details class="node-card" id="C5" data-node-id="C5" data-hot="1" data-title="퀵 정렬 quicksort partition pivot">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C5" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C5 · 퀵 정렬 (Quicksort)
@@ -392,37 +527,39 @@
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>pivot 하나를 골라 "작은 것 | pivot | 큰 것"으로 갈라(PARTITION) 양쪽을 재귀. 평균은 매우 빠르나, 분할이 한쪽으로 쏠리면 느려진다.</div>
           <div class="field"><span class="lbl">📖 정의 / 의사코드</span><pre>QUICKSORT(A,p,r):
-  if p&lt;r:
+  if p &lt; r:
     q = PARTITION(A,p,r)
-    QUICKSORT(A, p, q-1)
-    QUICKSORT(A, q+1, r)</pre></div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span>C·C++ 표준 라이브러리의 <code>qsort</code>/<code>std::sort</code>(introsort)가 퀵정렬을 핵심으로 쓴다 — <b>in-place</b>(추가 메모리 거의 0)라 대용량을 메모리 효율적으로 정렬하고, 평균 \(O(n\lg n)\) 상수가 작아 실측이 빠르기 때문. 단 실무 라이브러리는 "정렬된 입력+끝 pivot"의 \(O(n^2)\) 함정을 피하려 <b>랜덤/median-of-three pivot</b>을 쓰거나 깊이가 너무 깊어지면 힙정렬로 전환(introsort)한다 — 최악을 막는 방어. 이 시나리오가 "왜 pivot 선택이 중요한가"를 설명한다.</div>
-          <div class="field"><span class="lbl">🧮 수식</span><div>balanced \(\Theta(n\lg n)\), unbalanced(최악) \(O(n^2)\), 평균 \(O(n\lg n)\).</div></div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 / 🔍 작동 원리</span>
-            <div class="stepper solve">
-              <div class="stepper-title">✏️ 풀이 예제 — PARTITION([2,8,7,1,3,5,6,4], pivot=4) + balanced/unbalanced 재귀트리</div>
+    QUICKSORT(A,p,q-1)
+    QUICKSORT(A,q+1,r)</pre></div>
+          <div class="field"><span class="lbl">🧮 수식</span>balanced \(\Theta(n\lg n)\), unbalanced(최악) \(O(n^2)\), 평균 \(O(n\lg n)\).</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario">C·C++ 표준 라이브러리의 <code>qsort</code>/<code>std::sort</code>(introsort)가 퀵정렬을 핵심으로 쓴다 — <b>in-place</b>(추가 메모리 거의 0)라 대용량을 메모리 효율적으로 정렬하고, 평균 \(O(n\lg n)\) 상수가 작아 실측이 빠르기 때문. 단 실무 라이브러리는 "정렬된 입력+끝 pivot"의 \(O(n^2)\) 함정을 피하려 <b>랜덤/median-of-three pivot</b>을 쓰거나 깊이가 너무 깊어지면 힙정렬로 전환(introsort)한다. 이것이 "왜 pivot 선택이 중요한가"를 설명한다.</div>
+          </div>
+          <div class="field"><span class="lbl">✏️ 작동 원리 / 풀이 예제 (단계별)</span>
+            <div class="stepper worked">
+              <div class="stp-title">PARTITION([2,8,7,1,3,5,6,4], pivot=4) + balanced/unbalanced 재귀트리</div>
               <div class="step show"><div class="step-head">1. 직관</div>pivot보다 작거나 같은 것은 왼쪽, 큰 것은 오른쪽으로 몰아 pivot을 <b>제자리(최종 위치)</b>에 놓는다. 그 자리를 경계로 양쪽을 따로 정렬하면 끝.</div>
               <div class="step"><div class="step-head">2. 셋업</div>A=[2,8,7,1,3,5,6,4], pivot x=A[r]=4. i=경계(작은 구간 끝)=p−1=0, j=스캔 포인터.</div>
               <div class="step"><div class="step-head">3. 전개 j=1</div>A[1]=2≤4 → i=1, swap A[1]↔A[1] → [<b>2</b>|8,7,1,3,5,6,4].</div>
               <div class="step"><div class="step-head">4. 전개 j=2,3</div>8&gt;4, 7&gt;4 → 건너뜀(i 고정). 배열 그대로.</div>
               <div class="step"><div class="step-head">5. 전개 j=4</div>A[4]=1≤4 → i=2, swap A[2](8)↔A[4](1) → [2,<b>1</b>|7,8,3,5,6,4].</div>
-              <div class="step"><div class="step-head">6. 전개 j=5</div>A[5]=3≤4 → i=3, swap A[3](7)↔A[5](3) → [2,1,<b>3</b>,8,5,6,7,4] (7↔3 자리).</div>
+              <div class="step"><div class="step-head">6. 전개 j=5</div>A[5]=3≤4 → i=3, swap A[3](7)↔A[5](3) → [2,1,<b>3</b>,8,7,5,6,4].</div>
               <div class="step"><div class="step-head">7. 전개 j=6,7</div>5&gt;4, 6&gt;4 → 건너뜀.</div>
               <div class="step"><div class="step-head">8. 마무리</div>swap pivot A[8](4)↔A[i+1=4](8) → <b>[2,1,3,4,7,5,6,8]</b>. 반환 q=4 (pivot 위치).</div>
               <div class="step"><div class="step-head">9. 답</div>결과 [2,1,3,<b>4</b>,7,5,6,8] — 4 왼쪽은 모두 ≤4, 오른쪽은 모두 &gt;4. 이후 [2,1,3]과 [7,5,6,8] 재귀.</div>
-              <div class="step"><div class="step-head">10. balanced/unbalanced</div><b>balanced</b>: q가 매번 중앙 → 높이 lg n, 레벨당 합 n ⇒ \(\Theta(n\lg n)\). <b>unbalanced</b>: q가 매번 끝(정렬된 입력) → 높이 n, \(\sum_{1}^{n} = \Theta(n^2)\).</div>
+              <div class="step"><div class="step-head">10. balanced / unbalanced</div><b>balanced</b>: q 매번 중앙 → 높이 lg n, 레벨당 합 n ⇒ \(\Theta(n\lg n)\). <b>unbalanced</b>: q 매번 끝(정렬된 입력) → 높이 n, \(\sum_{1}^{n} = \Theta(n^2)\).</div>
               <div class="step"><div class="step-head">11. 시험 변형</div>특정 배열 PARTITION 1회 결과, "어떤 입력이 최악인가", balanced/unbalanced 트리 비교.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
           <div class="field"><span class="lbl">📊 표·그래프 인사이트</span><div class="callout">재귀트리 — <b>balanced</b>(매번 절반): 높이 lg n × 레벨당 n = \(\Theta(n\lg n)\). <b>unbalanced</b>(매번 1:n-1): 높이 n × 줄어드는 비용 = \(O(n^2)\). 최악은 <b>이미 정렬된 입력 + 끝 원소 pivot</b>일 때.</div></div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">"퀵정렬은 항상 빠르다"는 오해 — 정렬된 입력+나쁜 pivot이면 \(O(n^2)\). <b>in-place지만 not stable</b>.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高</span></span> ① balanced vs unbalanced 재귀트리 그리기, ② <b>최악 케이스가 언제인지</b>, ③ PARTITION 후 배열 상태 추적.</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">선행 <a onclick="goNode('C2')">C2 재귀트리</a> <a onclick="goNode('C3')">C3</a> · 대조 <a onclick="goNode('C4')">C4 힙</a> <a onclick="goNode('C3')">C3 병합</a></div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高</span></span>① balanced vs unbalanced 재귀트리 그리기, ② <b>최악 케이스가 언제인지</b>, ③ PARTITION 후 배열 상태 추적.</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C2')">C2(재귀트리)</a>,<a onclick="goNode('C3')">C3</a>. 대조 → C4(힙: 보장된 n lg n·in-place), C3(병합: 안정·추가공간).</div>
         </div>
       </details>
 
-      <details class="node-card" id="C6" data-node-id="C6" data-hot="1" data-title="C6 선형시간 정렬 counting sort radix sort 비교정렬 하한 decision tree lower bound">
+      <details class="node-card" id="C6" data-node-id="C6" data-hot="1" data-title="선형시간 정렬 counting radix 비교정렬 하한 decision tree">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C6" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C6 · 선형시간 정렬 + 비교정렬 하한
@@ -431,12 +568,20 @@
         </summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>키가 작은 정수면 비교 없이 세기(counting)·자릿수(radix)로 <b>선형 시간</b>에 정렬 가능. 단, <b>비교만으로는 누구도 Ω(n lg n)을 못 깬다</b>(결정트리 하한).</div>
-          <div class="field"><span class="lbl">📖 정의</span><ul><li><b>Counting sort</b>: 키 범위 [0,k]에서 각 값의 개수를 세어 위치 결정.</li><li><b>Radix sort</b>: 자릿수 d개를 LSD(최하위)부터 안정 정렬로 반복.</li><li><b>Decision-tree 모델</b>: 비교정렬을 full binary tree로 모델 — 잎=입력 순열, 내부노드 i:j=비교, 실행=루트→잎 경로, 최악 비교수=트리 높이 h.</li></ul></div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span>우편번호·주민번호·1억 개의 32비트 정수처럼 <b>키 범위가 제한된</b> 데이터를 정렬할 때 비교정렬의 \(n\lg n\) 벽을 깨고 싶다. Radix sort는 자릿수별로 counting sort를 돌려 <b>선형 시간</b>에 끝낸다 — 실제 데이터베이스의 정수 키 정렬·GPU 정렬 라이브러리가 이 방식이다. 반대로 결정트리 하한은 "왜 범용 비교정렬은 \(n\lg n\) 밑으로 못 가나"를 증명한다 — 정렬 결과가 \(n!\)가지인데 비교 한 번이 갈림길 하나뿐이라, 최소 \(\lg(n!)\approx n\lg n\)번 갈라야 답에 도달하기 때문. <i>그래서 counting/radix는 "비교를 안 해서"(키를 직접 인덱스로 써서) 이 하한 밖에 산다.</i></div>
-          <div class="field"><span class="lbl">🧮 수식</span><div>Counting \(\Theta(k+n)\) (k=O(n)이면 선형). Radix \(\Theta(d(n+k))\). 하한 \(\Omega(n\lg n)\).</div></div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>
-            <div class="stepper solve">
-              <div class="stepper-title">✏️ 풀이 예제 — Counting sort로 [2,5,3,0,2,3,0,3] (k=5) 정렬</div>
+          <div class="field"><span class="lbl">📖 정의</span>
+            <ul>
+              <li><b>Counting sort</b>: 키 범위 [0,k]에서 각 값의 개수를 세어 위치 결정.</li>
+              <li><b>Radix sort</b>: 자릿수 d개를 LSD(최하위)부터 안정 정렬로 반복.</li>
+              <li><b>Decision-tree 모델</b>: 비교정렬을 full binary tree로 모델 — 잎=입력 순열, 내부노드 i:j=비교, 실행=루트→잎 경로, 최악 비교수=트리 높이 h.</li>
+            </ul>
+          </div>
+          <div class="field"><span class="lbl">🧮 수식</span>Counting \(\Theta(k+n)\) (k=O(n)이면 선형). Radix \(\Theta(d(n+k))\). 하한 \(\Omega(n\lg n)\).</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario">우편번호·주민번호·1억 개의 32비트 정수처럼 <b>키 범위가 제한된</b> 데이터를 정렬할 때 비교정렬의 \(n\lg n\) 벽을 깨고 싶다. Radix sort는 자릿수별로 counting sort를 돌려 <b>선형 시간</b>에 끝낸다 — 실제 DB의 정수 키 정렬·GPU 정렬 라이브러리가 이 방식. 반대로 결정트리 하한은 "왜 범용 비교정렬은 \(n\lg n\) 밑으로 못 가나"를 증명한다 — 정렬 결과가 \(n!\)가지인데 비교 한 번이 갈림길 하나뿐이라, 최소 \(\lg(n!)\approx n\lg n\)번 갈라야 답에 도달. <b>그래서 counting/radix는 "비교를 안 해서"(키를 직접 인덱스로 써서) 이 하한 밖에 산다.</b></div>
+          </div>
+          <div class="field"><span class="lbl">🔍 작동 원리 / 유도 (단계별 — 2개)</span>
+            <div class="stepper worked">
+              <div class="stp-title">Counting sort로 [2,5,3,0,2,3,0,3] (k=5) 정렬</div>
               <div class="step show"><div class="step-head">1. 직관</div>각 값이 몇 번 나오는지 세고, 누적합으로 "그 값의 마지막 자리"를 알아내 뒤에서부터 안정하게 배치한다.</div>
               <div class="step"><div class="step-head">2. 셋업</div>A=[2,5,3,0,2,3,0,3], n=8, 키 범위 [0,5]. C[0..5]=0으로 초기화.</div>
               <div class="step"><div class="step-head">3. 전개 1 — 개수 세기</div>각 값 카운트 → C = [2, 0, 2, 3, 0, 1] (0이 2개, 2가 2개, 3이 3개, 5가 1개).</div>
@@ -444,38 +589,41 @@
               <div class="step"><div class="step-head">5. 전개 3 — 안정 배치</div>A를 <b>뒤에서부터</b> 읽어 B[C[A[j]]−1]에 놓고 C[A[j]]−−. 예: 마지막 3 → B[6]=3, C[3]=6. 안정성 유지.</div>
               <div class="step"><div class="step-head">6. 결론·답</div>B = [0,0,2,2,3,3,3,5]. 복잡도 = 세기 \(\Theta(n)\) + 누적 \(\Theta(k)\) + 배치 \(\Theta(n)\) = \(\Theta(n+k)\). k=5=O(n)이라 선형.</div>
               <div class="step"><div class="step-head">7. 시험 변형</div>누적합 배열 채우기, "왜 뒤에서부터 읽어야 안정인가" 서술, radix에서 이 counting을 자릿수별로 반복.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
-          </div>
-          <div class="field"><span class="lbl">🔍 작동 원리 (단계별)</span>
             <div class="stepper">
-              <div class="stepper-title">🔍 Theorem 8.1 — 비교정렬 하한 Ω(n lg n) 증명</div>
-              <div class="step show"><div class="step-head">1. 직관</div>어떤 비교정렬이든 "비교 한 번 = 갈림길"인 <b>결정 트리</b>다. n개 원소의 정렬 결과는 n!가지 순열 중 하나여야 하니, 트리는 적어도 n!개의 잎을 가져야 한다. 잎이 많으려면 트리가 깊을 수밖에 없다.</div>
+              <div class="stp-title">Theorem 8.1 — 비교정렬 하한 Ω(n lg n) 증명 (통째로 시험)</div>
+              <div class="step show"><div class="step-head">1. 직관</div>어떤 비교정렬이든 "비교 한 번 = 갈림길"인 <b>결정 트리</b>다. n개 원소의 정렬 결과는 n!가지 순열 중 하나여야 하니, 트리는 적어도 n!개의 잎(결말)을 가져야 한다. 잎이 많으려면 트리가 깊을 수밖에 없다.</div>
               <div class="step"><div class="step-head">2. 셋업</div>결정 트리 = full binary tree. 잎 = 가능한 출력 순열, 트리 높이 h = 최악 비교 횟수. 목표: \(h=\Omega(n\lg n)\).</div>
               <div class="step"><div class="step-head">3. 전개 1</div>정렬은 n개의 모든 순열을 구별해야 하므로 <b>잎 개수 ≥ n!</b>.</div>
               <div class="step"><div class="step-head">4. 전개 2</div>높이 h인 이진트리의 잎 수는 최대 \(2^h\) ⇒ \(n!\le 2^h\).</div>
               <div class="step"><div class="step-head">5. 전개 3</div>양변에 lg: \(\lg(n!)\le h\).</div>
               <div class="step"><div class="step-head">6. 결론</div>Stirling 근사(식 3.19): \(\lg(n!)=\Theta(n\lg n)\) ⇒ \(h\ge\lg(n!)=\Omega(n\lg n)\). ∴ 임의 비교정렬은 최악 \(\Omega(n\lg n)\) 비교 필요. ∎</div>
-              <div class="step"><div class="step-head">7. 시험 변형</div>각 부등식의 근거를 묻거나(왜 잎≥n!? 왜 잎≤2^h?), counting/radix가 이 하한을 어떻게 피하는지(비교 모델이 아니므로) 연결해 물음.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="step"><div class="step-head">7. 시험 변형</div>각 부등식의 근거(왜 잎≥n!? 왜 잎≤2^h?), counting/radix가 이 하한을 어떻게 피하는지(비교 모델이 아니므로) 연결.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
           <div class="field"><span class="lbl">📊 표·그래프 인사이트</span>
-            <table><thead><tr><th>정렬</th><th>복잡도</th><th>안정성</th><th>in-place</th><th>조건</th></tr></thead>
-            <tbody><tr><td>Counting</td><td>Θ(k+n)</td><td>stable</td><td>✘</td><td>키 범위 [0,k] 작을 때</td></tr>
-            <tr><td>Radix</td><td>Θ(d(n+k))</td><td>stable(내부정렬 안정 必)</td><td>✘</td><td>자릿수 d 고정</td></tr></tbody></table>
-            <div class="callout">둘 다 비교 안 하므로 Ω(n lg n) 하한을 <b>우회</b>(비교 모델 밖). 단 키 범위/자릿수 제약 필요.</div>
+            <div class="scrollx"><table>
+              <tr><th>정렬</th><th>복잡도</th><th>안정성</th><th>in-place</th><th>조건</th></tr>
+              <tr><td>Counting</td><td>Θ(k+n)</td><td>stable</td><td>✘</td><td>키 범위 [0,k] 작을 때</td></tr>
+              <tr><td>Radix</td><td>Θ(d(n+k))</td><td>stable(내부정렬 안정 必)</td><td>✘</td><td>자릿수 d 고정</td></tr>
+            </table></div>
+            <div class="callout">통찰: 둘 다 비교 안 하므로 Ω(n lg n) 하한을 <b>우회</b>(비교 모델 밖). 단 키 범위/자릿수 제약 필요.</div>
           </div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>위 첫 STEP "Counting sort로 [2,5,3,0,2,3,0,3]"이 count·prefix-sum 배열 상태변화 풀이 예제. 하한 증명은 두 번째 STEP.</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">radix가 안정이려면 <b>각 자릿수 내부 정렬이 안정</b>해야 함(보통 counting sort 사용). counting/radix는 <b>in-place 아님</b>.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高</span></span> ① counting/radix 안정성·복잡도, ② <b>decision-tree 하한 증명 재현</b>(잎 = n!, n!≤2^h, lg(n!)=Θ(n lg n) ⇒ h=Ω(n lg n)).</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">선행 <a onclick="goNode('C3')">C3</a> <a onclick="goNode('C4')">C4</a> <a onclick="goNode('C5')">C5</a> · "왜 비교정렬은 n lg n이 한계인가"의 답.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高 · decision-tree 하한 통째</span></span>① counting/radix 안정성·복잡도, ② <b>decision-tree 하한 증명 재현</b>(잎 = n!, n!≤2^h, lg(n!)=Θ(n lg n) ⇒ h=Ω(n lg n)).</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C3')">C3</a>,<a onclick="goNode('C4')">C4</a>,<a onclick="goNode('C5')">C5</a>(비교정렬들). 이 하한이 "왜 비교정렬은 n lg n이 한계인가"의 답.</div>
         </div>
       </details>
     </section>
-    <section class="stem-sec" id="B3">
-      <h2>B3. 설계기법 <span style="font-size:.8rem;color:var(--muted);font-weight:400">— 부분문제를 재사용(DP)하거나 국소최적을 골라(그리디) 풀고, 연산 시퀀스 전체로 비용을 상환</span></h2>
 
-      <details class="node-card" id="C7" data-node-id="C7" data-hot="1" data-title="C7 동적 계획법 DP LCS 최적 부분구조 겹치는 부분문제 memoization">
+    <section class="stem-sec" id="B3">
+      <h2>B3. 알고리즘 설계기법 — DP·그리디·상환</h2>
+      <div class="stem-lead">부분문제를 재사용(DP)하거나 국소최적을 골라(그리디) 풀고, 연산 시퀀스 전체로 비용을 상환.</div>
+
+      <details class="node-card" id="C7" data-node-id="C7" data-hot="1" data-title="동적 계획법 DP dynamic programming LCS">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C7" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C7 · 동적 계획법 (DP) — 기초 + LCS
@@ -484,40 +632,42 @@
         </summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>같은 부분문제를 여러 번 다시 푸는 낭비를, <b>한 번 풀어 표에 저장</b>해 지수 시간을 다항 시간으로 끌어내리는 기법.</div>
-          <div class="field"><span class="lbl">📖 정의 / 핵심 조건</span>두 성질이 <b>모두</b> 있어야 DP 적용 — ① <b>최적 부분구조</b>(최적해가 부분문제 최적해로 구성됨), ② <b>겹치는 부분문제</b>(overlapping subproblems). 방식: top-down memoization vs bottom-up table.</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span><code>git diff</code>·<code>diff</code> 명령·생물정보학의 DNA 서열 정렬이 LCS DP를 쓴다 — 두 파일(또는 두 유전자 서열)에서 <b>공통으로 순서 유지되는 최대 부분</b>을 찾아 "무엇이 추가·삭제됐는지"를 계산한다. brute force로 \(2^m\)개 부분수열을 다 비교하면 불가능하지만, DP는 \(c[i,j]\) 표를 \(\Theta(mn)\)에 채워 해결한다. <i>왜 DP가 통하나?</i> "끝 글자가 같으면 둘 다 떼고 +1, 다르면 한쪽 떼고 max"라는 <b>최적 부분구조</b>가 있고, 같은 \(c[i,j]\)가 여러 경로에서 <b>겹쳐</b> 재사용되기 때문 — DP의 두 조건이 정확히 충족된다.</div>
+          <div class="field"><span class="lbl">📖 정의 / 핵심 조건</span>두 성질이 <b>모두</b> 있어야 DP 적용 — ① <b>최적 부분구조</b>(optimal substructure: 최적해가 부분문제 최적해로 구성됨), ② <b>겹치는 부분문제</b>(overlapping subproblems). 방식: top-down memoization vs bottom-up table.</div>
           <div class="field"><span class="lbl">🧮 수식 (LCS 점화식)</span>
-            <div>\[ c[i,j]=\begin{cases}0 &amp; i=0\ \text{or}\ j=0\\ c[i-1,j-1]+1 &amp; x_i=y_j\\ \max(c[i,j-1],c[i-1,j]) &amp; x_i\ne y_j\end{cases} \]</div>
+            <div class="scrollx">\[ c[i,j]=\begin{cases}0 & i=0\ \text{or}\ j=0\\ c[i-1,j-1]+1 & x_i=y_j\\ \max(c[i,j-1],c[i-1,j]) & x_i\ne y_j\end{cases} \]</div>
             <div style="color:var(--muted);font-size:.88rem">\(c[i,j]\) = \(X\)의 앞 i글자와 \(Y\)의 앞 j글자의 LCS <b>길이</b>. 시간 \(\Theta(mn)\), 공간 \(\Theta(mn)\)(길이만 필요하면 \(\min(m,n)+1\)로 축소).</div>
           </div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 / 🔍 작동 원리</span>
-            <div class="stepper solve">
-              <div class="stepper-title">✏️ 풀이 예제 — LCS 점화식 유도 + 표 채우기·복원 (X=ABCB, Y=BDCAB)</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><code>git diff</code>·<code>diff</code> 명령·생물정보학의 DNA 서열 정렬이 LCS DP를 쓴다 — 두 파일(또는 두 유전자 서열)에서 <b>공통으로 순서 유지되는 최대 부분</b>을 찾아 "무엇이 추가·삭제됐는지"를 계산. brute force로 \(2^m\)개 부분수열을 다 비교하면 불가능하지만, DP는 \(c[i,j]\) 표를 \(\Theta(mn)\)에 채워 해결. <b>왜 DP가 통하나?</b> "끝 글자가 같으면 둘 다 떼고 +1, 다르면 한쪽 떼고 max"라는 <b>최적 부분구조</b>가 있고, 같은 \(c[i,j]\)가 여러 경로에서 <b>겹쳐</b> 재사용되기 때문 — DP의 두 조건이 정확히 충족.</div>
+          </div>
+          <div class="field"><span class="lbl">✏️ 작동 원리 / 풀이 예제 (단계별)</span>
+            <div class="stepper worked">
+              <div class="stp-title">LCS 점화식 유도 + 표 채우기·복원 (X=ABCB, Y=BDCAB)</div>
               <div class="step show"><div class="step-head">1. 직관</div>두 문자열의 끝 글자를 본다. <b>같으면</b> 그 글자를 LCS에 넣고 양쪽을 한 칸씩 줄인 문제로, <b>다르면</b> 한쪽 끝을 떼어낸 두 경우 중 더 긴 쪽을 택한다.</div>
               <div class="step"><div class="step-head">2. 셋업</div>\(c[i,j]\) = \(X_i,Y_j\) prefix의 LCS 길이. 경계: \(i=0\) 또는 \(j=0\)이면 0. X=ABCB(m=4), Y=BDCAB(n=5).</div>
               <div class="step"><div class="step-head">3. 전개 1 — 일치</div>\(x_i=y_j\): \(c[i,j]=c[i-1,j-1]+1\).</div>
               <div class="step"><div class="step-head">4. 전개 2 — 불일치</div>\(x_i\ne y_j\): \(c[i,j]=\max(c[i-1,j], c[i,j-1])\).</div>
-              <div class="step"><div class="step-head">5. 전개 3 — 표 채우기</div>좌상→우하로 채움 (행 X=A,B,C,B / 열 Y=B,D,C,A,B):
-                <pre>     ∅  B  D  C  A  B
+              <div class="step"><div class="step-head">5. 전개 3 — 표 채우기</div>좌상→우하로 채움 (행 X=A,B,C,B / 열 Y=B,D,C,A,B):<div class="scrollx"><pre>     ∅  B  D  C  A  B
   ∅  0  0  0  0  0  0
   A  0  0  0  0  1  1
   B  0  1  1  1  1  2
   C  0  1  1  2  2  2
-  B  0  1  1  2  2  3</pre></div>
+  B  0  1  1  2  2  3</pre></div></div>
               <div class="step"><div class="step-head">6. 결론·복원</div>\(c[4,5]=3\) = LCS 길이. 우하에서 역추적: 일치(↖)면 글자 기록+대각, 불일치면 큰 쪽으로. 경로 → <b>BCB</b> (또는 동률 경로).</div>
               <div class="step"><div class="step-head">7. 검산</div>"BCB"가 ABCB와 BDCAB 모두에서 순서 유지 부분수열인지 확인 ✓. brute force라면 \(2^4=16\)개 부분수열 비교 — DP가 \(\Theta(mn)=20\)칸으로 해결.</div>
               <div class="step"><div class="step-head">8. 시험 변형</div>다른 두 문자열의 c표 채우기, 화살표 복원으로 LCS 쓰기, "brute force가 왜 \(2^m\)인가" 서술. (큰 예: X=ABCBDAB, Y=BDCABA → LCS=BCBA, 길이 4)</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
           <div class="field"><span class="lbl">📊 표·그래프 인사이트</span><div class="callout">brute force는 \(2^m\)개 부분수열 검사 → infeasible. DP \(c[i,j]\) 표 + 화살표(↖ 대각=일치, ↑/← = max 방향)로 LCS를 <b>역추적 복원</b>. 대표예제 matrix-chain은 괄호 위치 결정 \(O(n^3)\).</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>위 STEP에서 X=ABCB, Y=BDCAB의 \(c[i,j]\) 표를 실제로 채워 LCS 복원.</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">subsequence는 <b>연속일 필요 없음</b>(substring과 혼동 금지). 최적 부분구조·겹침 <b>둘 다</b> 없으면 DP 부적합.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高</span></span> ① 최적부분구조·겹침 정의, ② <b>LCS 점화식 작성·c[i,j] 표 채우기·LCS 복원</b>, ③ matrix-chain \(O(n^3)\).</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">선행 <a onclick="goNode('C2')">C2 점화식</a> · 대비 <a onclick="goNode('C8')">C8 그리디</a> · 응용 → <a onclick="goNode('C16')">C16 Floyd</a></div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高 · LCS</span></span>① 최적부분구조·겹침 정의, ② <b>LCS 점화식 작성·c[i,j] 표 채우기·LCS 복원</b>, ③ matrix-chain \(O(n^3)\).</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C2')">C2(점화식 사고)</a>. 대비 → <a onclick="goNode('C8')">C8(그리디: 국소선택)</a>. 응용 → <a onclick="goNode('C16')">C16(Floyd-Warshall도 DP)</a>.</div>
         </div>
       </details>
 
-      <details class="node-card" id="C8" data-node-id="C8" data-hot="1" data-title="C8 그리디 greedy 활동선택 배낭 knapsack Huffman greedy-choice property">
+      <details class="node-card" id="C8" data-node-id="C8" data-hot="1" data-title="그리디 알고리즘 greedy 활동선택 배낭 knapsack huffman">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C8" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C8 · 그리디 알고리즘 — 활동선택/배낭/Huffman
@@ -527,11 +677,13 @@
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>매 단계 <b>지금 당장 가장 좋아 보이는 선택</b>(국소 최적)을 하고 절대 되돌리지 않는다. 단, 그 국소선택이 전역 최적으로 이어진다는 보장이 있는 문제에만 통한다.</div>
           <div class="field"><span class="lbl">📖 정의 / 핵심 조건</span>① <b>greedy-choice property</b>(국소 최적 선택이 전역 최적의 일부가 됨), ② 최적 부분구조. (DP와 달리 부분문제를 다 풀지 않고 하나만 골라 진행)</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span><b>Huffman 코딩</b>은 ZIP·JPEG·MP3 같은 파일 압축의 엔트로피 코딩 단계에 실제로 쓰인다 — 자주 나오는 바이트(영어의 'e', 흰색 픽셀)에 짧은 비트, 드문 것에 긴 비트를 줘 전체 크기를 줄인다. prefix code라 구분자 없이도 디코딩이 유일하다. <i>왜 그리디가 통하나?</i> "가장 드문 두 심볼을 자매로 묶으면 그들이 최적 트리에서 가장 깊은 자리를 차지한다"는 greedy-choice property가 증명되기 때문. 반대로 <b>0-1 배낭</b>(짐을 쪼갤 수 없음)은 그리디가 실패한다 — 비율 큰 것부터 담으면 빈 공간 낭비로 최적이 깨져 DP가 필요. 이 대조가 "언제 그리디, 언제 DP"의 실전 기준.</div>
-          <div class="field"><span class="lbl">🧮 수식</span><div>Huffman 구성 \(O(n\lg n)\) (min-priority queue).</div></div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 / 🔍 작동 원리</span>
-            <div class="stepper solve">
-              <div class="stepper-title">✏️ 풀이 예제 — Huffman 트리 구성 + 정당성 + 비트 수 ({a:45,b:13,c:12,d:16,e:9,f:5} 천 단위)</div>
+          <div class="field"><span class="lbl">🧮 수식</span>Huffman 구성 \(O(n\lg n)\) (min-priority queue).</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><b>Huffman 코딩</b>은 ZIP·JPEG·MP3 같은 파일 압축의 엔트로피 코딩 단계에 실제로 쓰인다 — 자주 나오는 바이트(영어 'e', 흰색 픽셀)에 짧은 비트, 드문 것에 긴 비트를 줘 전체 크기를 줄인다. prefix code라 구분자 없이도 디코딩이 유일. <b>왜 그리디가 통하나?</b> "가장 드문 두 심볼을 자매로 묶으면 그들이 최적 트리에서 가장 깊은 자리를 차지한다"는 greedy-choice property가 증명되기 때문. 반대로 <b>0-1 배낭</b>(짐을 쪼갤 수 없음)은 그리디가 실패한다 — 비율 큰 것부터 담으면 빈 공간 낭비로 최적이 깨져 DP가 필요. 이 대조가 "언제 그리디, 언제 DP"의 실전 기준.</div>
+          </div>
+          <div class="field"><span class="lbl">✏️ 작동 원리 / 풀이 예제 (단계별)</span>
+            <div class="stepper worked">
+              <div class="stp-title">Huffman 트리 구성 + 정당성 + 비트 수 ({a:45,b:13,c:12,d:16,e:9,f:5} 천 단위)</div>
               <div class="step show"><div class="step-head">1. 직관</div>자주 나오는 문자에 <b>짧은 코드</b>, 드문 문자에 긴 코드를 주면 전체 길이가 준다. 가장 드문 둘을 자매로 묶어 트리 바닥에 깔면 자동으로 그렇게 된다.</div>
               <div class="step"><div class="step-head">2. 셋업</div>prefix code(어떤 코드도 다른 코드의 접두사 아님) ⇔ full binary tree. min-priority queue에 {a:45,b:13,c:12,d:16,e:9,f:5}.</div>
               <div class="step"><div class="step-head">3. 전개 1</div>최소 둘 f(5),e(9) 꺼내 합 → 내부노드 <b>14</b>. 큐: {a:45,d:16,b:13,c:12,<b>14</b>}.</div>
@@ -543,17 +695,20 @@
               <div class="step"><div class="step-head">9. 결론·총비트</div>\(\sum(\text{빈도}\times\text{깊이})=(45{\cdot}1+13{\cdot}3+12{\cdot}3+16{\cdot}3+9{\cdot}4+5{\cdot}4)\times1000 = (45+39+36+48+36+20)\times1000 = 224{,}000\) bits. 고정 3-bit는 \(100{\times}3{\times}1000=300{,}000\) → <b>약 25% 절감</b>.</div>
               <div class="step"><div class="step-head">10. 정당성</div>greedy-choice: 최소 빈도 두 문자는 최적 prefix 트리에서 <b>가장 깊은 자매</b>일 수 있음 → 그 선택이 최적해 일부 ⇒ 귀납적 전역 최적.</div>
               <div class="step"><div class="step-head">11. 시험 변형</div>다른 빈도표로 트리·총비트, 고정 vs 가변 절감률, prefix code 판정.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
-          <div class="field"><span class="lbl">📊 표·그래프 인사이트</span><div class="callout"><b>Activity selection</b>: 가장 빨리 끝나는(earliest finish) 활동부터 → 최대 개수. 그리디 성립.<br><b>0-1 vs fractional knapsack</b>: <b>0-1은 그리디 실패</b>(DP 필요), <b>fractional은 그리디 성공</b>(가치/무게 비율 큰 것부터). 이 대조가 "언제 그리디?"의 핵심 사례.</div></div>
+          <div class="field"><span class="lbl">📊 표·그래프 인사이트</span>
+            <div class="callout"><b>Activity selection</b>: 가장 빨리 끝나는(earliest finish) 활동부터 → 최대 개수. 그리디 성립.<br><b>0-1 vs fractional knapsack</b>: <b>0-1은 그리디 실패</b>(DP 필요), <b>fractional은 그리디 성공</b>(가치/무게 비율 큰 것부터). 이 대조가 "언제 그리디?"의 핵심 사례.</div>
+          </div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>위 STEP에서 빈도표 {a:45,b:13,c:12,d:16,e:9,f:5}로 Huffman 트리 구성·총비트 224,000 계산.</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap"><b>모든 최적화가 그리디로 풀리지 않음</b> — 0-1 knapsack 반례. greedy-choice property는 <b>증명</b>이 필요(그냥 "빨라 보여서"가 아님).</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高</span></span> ① <b>greedy vs DP 선택 기준</b>, ② <b>Huffman 트리 구성·비트 수 계산</b>, ③ fractional vs 0-1 knapsack 구분.</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">선행/대비 <a onclick="goNode('C7')">C7 DP</a> · 응용 → <a onclick="goNode('C14')">C14 MST</a> <a onclick="goNode('C15')">C15 Dijkstra</a></div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高 · Huffman</span></span>① <b>greedy vs DP 선택 기준</b>, ② <b>Huffman 트리 구성·비트 수 계산</b>, ③ fractional vs 0-1 knapsack 구분.</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행/대비 <a onclick="goNode('C7')">C7(DP)</a>. 응용 → <a onclick="goNode('C14')">C14(MST의 Prim/Kruskal이 그리디)</a>, <a onclick="goNode('C15')">C15(Dijkstra가 그리디)</a>.</div>
         </div>
       </details>
 
-      <details class="node-card" id="C9" data-node-id="C9" data-hot="1" data-title="C9 분할상환 amortized analysis aggregate accounting potential binary counter 동적 배열">
+      <details class="node-card" id="C9" data-node-id="C9" data-hot="1" data-title="분할상환 분석 amortized binary counter aggregate accounting potential">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C9" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C9 · 분할상환 분석 (Amortized Analysis)
@@ -563,11 +718,13 @@
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>어떤 연산은 가끔 비싸지만 대부분 싸다. <b>연산 시퀀스 전체의 평균</b>으로 개별 연산을 평가하면 "비싼 연산이 분산되어" 평균은 낮다 — 단, 확률이 아니라 <b>최악 보장</b>.</div>
           <div class="field"><span class="lbl">📖 정의</span>n개 연산 시퀀스의 최악 총시간 \(T(n)\) → 연산당 amortized cost = \(T(n)/n\). <b>확률 미개입</b>(평균케이스 분석과 다름), 각 연산의 worst-case 평균 성능을 보장.</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span>Python <code>list.append</code>·Java <code>ArrayList.add</code>·Go <code>append</code>가 <b>동적 배열 재할당</b>의 대표 사례다 — 보통은 빈 칸에 \(O(1)\)로 넣지만, 꽉 차면 두 배 크기 배열을 새로 잡아 전부 복사(\(O(n)\))한다. 이 비싼 연산이 가끔만 일어나(2배마다 한 번) 전체 n번 append의 총비용이 \(O(n)\), 즉 <b>amortized \(O(1)\)</b>. "최악 한 번은 \(O(n)\)인데 왜 평균 \(O(1)\)이라 광고하나?"의 답이 바로 분할상환 — 확률이 아니라 시퀀스 전체로 <b>보장</b>된다(어떤 입력이 와도). binary counter도 같은 원리: 상위 비트는 점점 드물게 뒤집혀 총합이 \(2n\)에 수렴.</div>
-          <div class="field"><span class="lbl">🧮 수식 (binary counter)</span><div>총 flip \(\sum_{i=0}^{k-1}\lfloor n/2^i\rfloor &lt; \sum_{i=0}^{\infty} n/2^i = 2n\) ⇒ 총 \(O(n)\) ⇒ amortized \(O(n)/n=O(1)\).</div></div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 / 🔍 작동 원리</span>
-            <div class="stepper solve">
-              <div class="stepper-title">✏️ 풀이 예제 — Binary counter INCREMENT (k=4, n=8): aggregate로 amortized O(1)</div>
+          <div class="field"><span class="lbl">🧮 수식 (binary counter)</span><div class="scrollx">\[ \sum_{i=0}^{k-1}\lfloor n/2^i\rfloor &lt; \sum_{i=0}^{\infty} n/2^i = 2n \ \Rightarrow\ \text{총 } O(n)\ \Rightarrow\ \text{amortized } O(n)/n=O(1) \]</div></div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario">Python <code>list.append</code>·Java <code>ArrayList.add</code>·Go <code>append</code>가 <b>동적 배열 재할당</b>의 대표 사례 — 보통은 빈 칸에 \(O(1)\)로 넣지만, 꽉 차면 두 배 크기 배열을 새로 잡아 전부 복사(\(O(n)\))한다. 이 비싼 연산이 가끔만(2배마다 한 번) 일어나 전체 n번 append의 총비용이 \(O(n)\), 즉 <b>amortized \(O(1)\)</b>. "최악 한 번은 \(O(n)\)인데 왜 평균 \(O(1)\)이라 광고하나?"의 답이 바로 분할상환 — 확률이 아니라 시퀀스 전체로 <b>보장</b>(어떤 입력이 와도). binary counter도 같은 원리: 상위 비트는 점점 드물게 뒤집혀 총합이 \(2n\)에 수렴.</div>
+          </div>
+          <div class="field"><span class="lbl">✏️ 작동 원리 / 풀이 예제 (단계별)</span>
+            <div class="stepper worked">
+              <div class="stp-title">Binary counter INCREMENT (k=4, n=8) — aggregate로 amortized O(1)</div>
               <div class="step show"><div class="step-head">1. 직관</div>k-bit 카운터를 1씩 올릴 때 비용 = 뒤집힌 비트 수. 가끔(전부 1→0) k개 다 뒤집혀 비싸지만, <b>A[0]은 매번, 상위 비트는 점점 드물게</b> 뒤집힌다.</div>
               <div class="step"><div class="step-head">2. 셋업</div>k=4, n=8회. 0000부터 시작, INCREMENT 1회 비용 = flip된 비트 수.</div>
               <div class="step"><div class="step-head">3. 전개 1 — 시퀀스 추적</div>0000→0001(1) →0010(2) →0011(1) →0100(3) →0101(1) →0110(2) →0111(1) →1000(4). 비용열 = 1,2,1,3,1,2,1,4.</div>
@@ -575,85 +732,98 @@
               <div class="step"><div class="step-head">5. 전개 3 — 총합</div>총 flip = 8+4+2+1 = <b>15</b>. 일반식 \(\sum_{i=0}^{k-1}\lfloor n/2^i\rfloor &lt; \sum_{i=0}^{\infty} n/2^i = 2n = 16\). ✓ (15&lt;16)</div>
               <div class="step"><div class="step-head">6. 결론</div>총비용 &lt; 2n = \(O(n)\) ⇒ <b>amortized = O(n)/n = O(1)</b>. 단일 최악 \(\Theta(k)\)(011...1→100...0)를 시퀀스로 분산하면 연산당 상수.</div>
               <div class="step"><div class="step-head">7. 시험 변형</div>등비합 \(\sum n/2^i=2n\) 유도, "단일 최악 vs amortized" 차이 서술, accounting(비트 set에 2 부과)·potential(\(\Phi\)=set 비트 수)로 같은 결과 도출.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
-          <div class="field"><span class="lbl">📊 표·그래프 인사이트</span>
-            <table><thead><tr><th>방법</th><th>아이디어</th></tr></thead>
-            <tbody><tr><td>Aggregate(집계)</td><td>시퀀스 총비용 \(T(n)\) 구해 \(T(n)/n\)</td></tr>
-            <tr><td>Accounting(회계/credit)</td><td>연산에 amortized 비용 부과, 차액을 credit으로 적립/사용</td></tr>
-            <tr><td>Potential(잠재)</td><td>퍼텐셜 함수 \(\Phi\)로 상태 에너지 정의</td></tr></tbody></table>
+          <div class="field"><span class="lbl">📊 표·그래프 인사이트 (세 방법 구분)</span>
+            <div class="scrollx"><table>
+              <tr><th>방법</th><th>아이디어</th></tr>
+              <tr><td>Aggregate(집계)</td><td>시퀀스 총비용 \(T(n)\) 구해 \(T(n)/n\)</td></tr>
+              <tr><td>Accounting(회계/credit)</td><td>연산에 amortized 비용 부과, 차액을 credit으로 적립/사용</td></tr>
+              <tr><td>Potential(잠재)</td><td>퍼텐셜 함수 \(\Phi\)로 상태 에너지 정의</td></tr>
+            </table></div>
           </div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>위 STEP에서 k=4 카운터를 n=8회 INCREMENT하며 비트별 flip을 세어 총 15 &lt; 2·8=16, amortized O(1) 확인.</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">amortized ≠ 평균케이스(확률 무관). 단일 INCREMENT 최악은 \(\Theta(k)\)(전부 1일 때)지만 amortized는 O(1).</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高</span></span> ① <b>binary counter aggregate 분석(2n 합 유도)</b>, ② <b>amortized O(1) 도출</b>, ③ 세 방법 구분.</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">선행 <a onclick="goNode('C1')">C1</a> · 응용 → 동적 배열(append)·우선순위큐 연산 분석.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高 · binary counter aggregate</span></span>① <b>binary counter aggregate 분석(2n 합 유도)</b>, ② <b>amortized O(1) 도출</b>, ③ 세 방법 구분.</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C1')">C1</a>. 응용 → 동적 배열(append)·우선순위큐 연산 분석.</div>
         </div>
       </details>
     </section>
-    <section class="stem-sec" id="B4">
-      <h2>B4. 그래프 <span style="font-size:.8rem;color:var(--muted);font-weight:400">— 정점·간선 구조를 탐색(BFS/DFS)하고, 순서(위상)·최소연결(MST)·최단거리(SSSP/APSP)를 구한다</span></h2>
 
-      <details class="node-card" id="C10" data-node-id="C10" data-hot="0" data-title="C10 그래프 기초 표현 adjacency list matrix handshaking lemma DAG tree">
+    <section class="stem-sec" id="B4">
+      <h2>B4. 그래프 — 탐색·MST·최단경로</h2>
+      <div class="stem-lead">정점·간선 구조를 탐색(BFS/DFS)하고, 순서(위상)·최소연결(MST)·최단거리(SSSP/APSP)를 구한다.</div>
+
+      <details class="node-card" id="C10" data-node-id="C10" data-hot="0" data-title="그래프 기초 표현 인접 리스트 행렬 handshaking">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C10" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C10 · 그래프 기초 + 표현
-          <span class="nbadge">⭐中</span><span class="nbadge indep">🟢독립</span><span class="nbadge">선행: 없음</span>
+          <span class="nbadge mid">⭐中</span><span class="nbadge">선행: 없음</span>
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>정점(V)과 간선(E)으로 관계를 모델링하고, 이를 컴퓨터에 <b>리스트(희소용)</b> 또는 <b>행렬(밀집용)</b>로 담는 두 방식의 트레이드오프를 잡는다.</div>
           <div class="field"><span class="lbl">📖 정의·용어</span>방향/무방향, degree(in/out), path/simple path, cycle/simple cycle, acyclic, connected(무방향)/strongly connected(방향), CC/SCC, bipartite, forest, <b>tree(\(|E|=|V|-1\), 연결·비순환·유일경로 등 동치)</b>, <b>DAG</b>.</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span>페이스북 친구 그래프(20억 정점)는 <b>희소</b>하다 — 한 사람의 친구는 수백 명뿐이라 \(|E|\ll|V|^2\). 이런 SNS·도로망·웹 링크는 <b>인접 리스트</b>(\(\Theta(V+E)\) 공간)로 저장한다. 반대로 도시 간 모든 항공 노선처럼 <b>밀집</b>하고 "A-B 직항 있나?"를 즉답(\(\Theta(1)\))해야 하거나 간선 가중치를 빽빽이 저장할 땐 <b>인접 행렬</b>(\(\Theta(V^2)\))이 낫다. <i>왜 이 선택이 알고리즘 복잡도를 바꾸나?</i> BFS를 인접행렬로 짜면 매 정점의 이웃 찾기가 행 전체 스캔이라 \(O(V^2)\), 리스트면 \(O(V+E)\) — 자료구조 선택이 곧 성능이다.</div>
-          <div class="field"><span class="lbl">🧮 수식</span><div><b>Handshaking lemma</b>: \(\sum_{v}\deg(v)=2|E|\) (무방향). edge 상한: 방향 \(|E|\le|V|^2\), 무방향 \(|E|\le|V|(|V|-1)/2\).</div></div>
-          <div class="field"><span class="lbl">📊 표·그래프 인사이트</span>
-            <table><thead><tr><th>표현</th><th>공간</th><th>edge 존재검사</th><th>모든 edge 나열</th><th>유리한 그래프</th></tr></thead>
-            <tbody><tr><td>인접 리스트</td><td>Θ(V+E)</td><td>O(V)(degree)</td><td>Θ(V+E)</td><td>sparse(희소)</td></tr>
-            <tr><td>인접 행렬</td><td>Θ(V²)</td><td>Θ(1)</td><td>Θ(V²)</td><td>dense(밀집)·가중치 저장</td></tr></tbody></table>
+          <div class="field"><span class="lbl">🧮 수식</span><b>Handshaking lemma</b>: \(\sum_{v}\deg(v)=2|E|\) (무방향). edge 상한: 방향 \(|E|\le|V|^2\), 무방향 \(|E|\le|V|(|V|-1)/2\).</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario">페이스북 친구 그래프(20억 정점)는 <b>희소</b>하다 — 한 사람의 친구는 수백 명뿐이라 \(|E|\ll|V|^2\). 이런 SNS·도로망·웹 링크는 <b>인접 리스트</b>(\(\Theta(V+E)\) 공간)로 저장. 반대로 도시 간 모든 항공 노선처럼 <b>밀집</b>하고 "A-B 직항 있나?"를 즉답(\(\Theta(1)\))해야 하거나 간선 가중치를 빽빽이 저장할 땐 <b>인접 행렬</b>(\(\Theta(V^2)\))이 낫다. <b>왜 이 선택이 알고리즘 복잡도를 바꾸나?</b> BFS를 인접행렬로 짜면 매 정점의 이웃 찾기가 행 전체 스캔이라 \(O(V^2)\), 리스트면 \(O(V+E)\) — 자료구조 선택이 곧 성능.</div>
+          </div>
+          <div class="field"><span class="lbl">📊 표·그래프 인사이트 (표현 비교)</span>
+            <div class="scrollx"><table>
+              <tr><th>표현</th><th>공간</th><th>edge 존재검사</th><th>모든 edge 나열</th><th>유리한 그래프</th></tr>
+              <tr><td>인접 리스트</td><td>Θ(V+E)</td><td>O(V)(degree)</td><td>Θ(V+E)</td><td>sparse(희소)</td></tr>
+              <tr><td>인접 행렬</td><td>Θ(V²)</td><td>Θ(1)</td><td>Θ(V²)</td><td>dense(밀집)·가중치 저장</td></tr>
+            </table></div>
             <div class="callout">트레이드오프: 희소→리스트, 밀집/빠른 edge검사→행렬.</div>
           </div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>정점 V={1,2,3,4}, 간선 {(1,2),(1,3),(2,4),(3,4)}(무방향)을 ① <b>인접 리스트</b>: 1→[2,3], 2→[1,4], 3→[1,4], 4→[2,3]; ② <b>인접 행렬</b>: 4×4에서 (1,2)(1,3)(2,4)(3,4) 칸이 1. <b>검산</b>: \(\sum\deg = 2+2+2+2 = 8 = 2|E| = 2{\cdot}4\) ✓ (handshaking). 트리 여부: \(|E|=4 \ne |V|-1=3\) → 사이클 존재(트리 아님).</div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>정점 V={1,2,3,4}, 간선 {(1,2),(1,3),(2,4),(3,4)}(무방향)을 ① 인접 리스트: 1→[2,3], 2→[1,4], 3→[1,4], 4→[2,3]; ② 인접 행렬: 4×4에서 (1,2)(1,3)(2,4)(3,4) 칸이 1. 검산: \(\sum\deg = 2+2+2+2 = 8 = 2|E| = 2{\cdot}4\) ✓ (handshaking). 트리 여부: \(|E|=4 \ne |V|-1=3\) → 사이클 존재(트리 아님).</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">인접행렬 BFS는 인접 정점 찾기에 행 전체 스캔 → Ex 22.2-4: 인접행렬 BFS는 \(O(V^2)\) (리스트면 \(O(V+E)\)).</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge">출제 가이드 (Self-study Ex)</span></span> ① \(|E|=|V|-1\) 트리 특성, ② handshaking, ③ 리스트 vs 행렬 공간·연산 복잡도 매칭(Ex 22.2-4 BFS 인접행렬 \(O(V^2)\)).</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">모든 그래프 알고리즘의 토대 → <a onclick="goNode('C11')">C11 BFS</a> <a onclick="goNode('C12')">C12 DFS</a> <a onclick="goNode('C14')">C14 MST</a></div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge mid">출제 가이드 · Self-study Ex</span></span>① \(|E|=|V|-1\) 트리 특성, ② handshaking, ③ 리스트 vs 행렬 공간·연산 복잡도 매칭(Ex 22.2-4 BFS 인접행렬 \(O(V^2)\)).</div>
+          <div class="field"><span class="lbl">🔗 연결</span>모든 그래프 알고리즘의 토대 → <a onclick="goNode('C11')">C11(BFS)</a>, <a onclick="goNode('C12')">C12(DFS)</a>, <a onclick="goNode('C14')">C14(MST)</a>.</div>
         </div>
       </details>
 
-      <details class="node-card" id="C11" data-node-id="C11" data-hot="0" data-title="C11 너비 우선 탐색 BFS 큐 거리 무가중 최단경로 breadth-first tree">
+      <details class="node-card" id="C11" data-node-id="C11" data-hot="0" data-title="너비 우선 탐색 BFS breadth first 큐 거리">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C11" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C11 · 너비 우선 탐색 (BFS)
-          <span class="nbadge">⭐中</span><span class="nbadge">선행: C10</span>
+          <span class="nbadge mid">⭐中</span><span class="nbadge">선행: C10</span>
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>source에서 <b>거리 증가 순(1,2,3...)</b>으로 물결처럼 퍼지며 정점을 발견 → 무가중 그래프의 <b>최단경로(간선 수)</b>를 준다.</div>
           <div class="field"><span class="lbl">📖 정의 / 메커니즘</span>큐 사용. 색 — <b>WHITE</b>(미발견)/<b>GRAY</b>(발견·큐 안)/<b>BLACK</b>(완료·큐 밖). 각 정점 \(v.d\)(거리), \(v.\pi\)(predecessor).</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span>SNS의 "친구의 친구"(촌수)·미로 최단 출구·체스 최소 수순 탐색이 BFS다 — 가중치가 모두 같은(간선 1개=거리 1) 그래프에서 <b>물결처럼 가까운 정점부터</b> 방문하니 처음 도달한 거리가 곧 최단거리다. 웹 크롤러가 시작 페이지에서 가까운 링크부터 수집하거나, 네트워크 라우팅에서 홉(hop) 수 최소 경로를 찾을 때도 BFS. <i>왜 큐인가?</i> "먼저 발견한 정점을 먼저 처리"(FIFO)해야 거리 순서가 보존되기 때문 — 스택을 쓰면 DFS가 된다.</div>
-          <div class="field"><span class="lbl">🧮 수식 / 복잡도</span><div>초기화 \(\Theta(V)\) + 탐색(정점 1회·간선 ≤2회) = <b>\(O(V+E)\)</b>.</div></div>
+          <div class="field"><span class="lbl">🧮 수식 / 복잡도</span>초기화 \(\Theta(V)\) + 탐색(정점 1회·간선 ≤2회) = <b>\(O(V+E)\)</b>.</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario">SNS의 "친구의 친구"(촌수)·미로 최단 출구·체스 최소 수순 탐색이 BFS다 — 가중치가 모두 같은(간선 1개=거리 1) 그래프에서 <b>물결처럼 가까운 정점부터</b> 방문하니 처음 도달한 거리가 곧 최단거리다. 웹 크롤러가 시작 페이지에서 가까운 링크부터 수집하거나, 네트워크 라우팅에서 홉(hop) 수 최소 경로를 찾을 때도 BFS. <b>왜 큐인가?</b> "먼저 발견한 정점을 먼저 처리"(FIFO)해야 거리 순서가 보존되기 때문 — 스택을 쓰면 DFS가 된다.</div>
+          </div>
           <div class="field"><span class="lbl">🔍 작동 원리</span>source s를 GRAY·d=0로 큐에 → DEQUEUE한 u의 인접 WHITE 정점 v를 GRAY·\(v.d=u.d+1\)·\(v.\pi=u\)로 ENQUEUE → u 처리 후 BLACK. predecessor subgraph \(G_\pi\) = <b>breadth-first tree</b> (\(|E_\pi|=|V_\pi|-1\)).</div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>그래프 s→{a,b}, a→{c}, b→{c,d}에서 BFS(s). ① s: d=0, 큐[s]. ② s dequeue → a,b 발견(d=1), 큐[a,b]. ③ a dequeue → c 발견(d=2), 큐[b,c]. ④ b dequeue → d 발견(d=2), c는 이미 GRAY 무시, 큐[c,d]. ⑤ c,d dequeue(이웃 모두 처리됨). <b>결과 거리</b>: s=0, a=1, b=1, c=2, d=2. BFS 트리: s−a, s−b, a−c, b−d.</div>
           <div class="field"><span class="lbl">📊 표·그래프 인사이트</span><div class="callout">색 전이 WHITE→GRAY→BLACK이 "발견→처리중→완료"를 추적. d값이 곧 무가중 최단거리.</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>그래프 s→{a,b}, a→{c}, b→{c,d}에서 BFS(s). ① s: d=0, 큐[s]. ② s dequeue → a,b 발견(d=1), 큐[a,b]. ③ a dequeue → c 발견(d=2), 큐[b,c]. ④ b dequeue → d 발견(d=2), c는 이미 GRAY 무시, 큐[c,d]. ⑤ c,d dequeue(이웃 모두 처리됨). <b>결과 거리</b>: s=0, a=1, b=1, c=2, d=2. BFS 트리: s−a, s−b, a−c, b−d.</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">BFS 최단거리는 <b>무가중</b>일 때만(가중 그래프는 Dijkstra). 인접행렬 구현은 \(O(V^2)\).</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge">출제 가이드 (Self-study Ex)</span></span> ① 큐 상태·색·d 단계별 추적, ② BFS=무가중 최단거리, ③ \(O(V+E)\), ④ Ex 22.2-6(불가능한 BFS 트리).</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">선행 <a onclick="goNode('C10')">C10</a> · 다음 → <a onclick="goNode('C12')">C12 DFS 대조</a> <a onclick="goNode('C15')">C15 SSSP</a></div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge mid">출제 가이드 · Self-study Ex</span></span>① 큐 상태·색·d 단계별 추적, ② BFS=무가중 최단거리, ③ \(O(V+E)\), ④ Ex 22.2-6(불가능한 BFS 트리).</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C10')">C10</a>. 다음 → <a onclick="goNode('C12')">C12(DFS 대조)</a>, <a onclick="goNode('C15')">C15(SSSP의 무가중 특수형이 BFS)</a>.</div>
         </div>
       </details>
 
-      <details class="node-card" id="C12" data-node-id="C12" data-hot="0" data-title="C12 깊이 우선 탐색 DFS 간선 분류 timestamp parenthesis theorem back edge acyclic">
+      <details class="node-card" id="C12" data-node-id="C12" data-hot="0" data-title="깊이 우선 탐색 DFS depth first 간선 분류 timestamp back edge">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C12" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C12 · 깊이 우선 탐색 (DFS) + 간선 분류
-          <span class="nbadge">⭐中</span><span class="nbadge gate">🚪관문</span><span class="nbadge">선행: C10, C11</span>
+          <span class="nbadge mid">⭐中</span><span class="nbadge">선행: C10, C11</span>
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>갈 수 있는 데까지 <b>깊이</b> 들어갔다가 막히면 backtrack. 두 timestamp(발견 d, 완료 f)가 그래프의 숨은 구조(사이클·조상관계)를 드러낸다.</div>
           <div class="field"><span class="lbl">📖 정의 / 메커니즘</span>색(WHITE/GRAY/BLACK) + <b>timestamp</b> \(v.d\)(발견=gray), \(v.f\)(완료=black). 재귀 DFS-VISIT. predecessor subgraph = <b>depth-first forest</b>.</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span>미로를 한 길로 끝까지 가다 막히면 되돌아오는 탐색, 파일시스템 디렉터리 재귀 순회, 컴파일러의 <b>사이클(순환 의존) 검출</b>이 DFS다. 특히 빌드 시스템(make·webpack)이 "A가 B를 import, B가 다시 A를 import"하는 순환 의존을 잡을 때 <b>back edge가 있으면 사이클</b>이라는 DFS 정리를 쓴다. timestamp(d/f)는 함수 호출 스택의 진입·복귀 시각과 같아, <b>괄호 정리</b>(중첩 구조)로 조상-자손 관계를 즉시 판정한다. <i>왜 두 timestamp?</i> 발견만으로는 부족하고, "언제 끝났나(f)"가 위상정렬(C13)·SCC의 핵심 단서이기 때문.</div>
-          <div class="field"><span class="lbl">🧮 수식 / 복잡도</span><div>\(\Theta(V+E)\).</div></div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 / 🔍 작동 원리</span>
-            <div class="stepper solve">
-              <div class="stepper-title">✏️ 풀이 예제 — 간선 분류 (1→2,1→3,2→4,4→2,3→4) + acyclic ⟺ no back edge</div>
+          <div class="field"><span class="lbl">🧮 수식 / 복잡도</span>\(\Theta(V+E)\).</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario">미로를 한 길로 끝까지 가다 막히면 되돌아오는 탐색, 파일시스템 디렉터리 재귀 순회, 컴파일러의 <b>사이클(순환 의존) 검출</b>이 DFS다. 특히 빌드 시스템(make·webpack)이 "A가 B를 import, B가 다시 A를 import"하는 순환 의존을 잡을 때 <b>back edge가 있으면 사이클</b>이라는 DFS 정리를 쓴다. timestamp(d/f)는 함수 호출 스택의 진입·복귀 시각과 같아, <b>괄호 정리</b>(중첩 구조)로 조상-자손 관계를 즉시 판정. <b>왜 두 timestamp?</b> 발견만으로는 부족하고, "언제 끝났나(f)"가 위상정렬(C13)·SCC의 핵심 단서이기 때문.</div>
+          </div>
+          <div class="field"><span class="lbl">✏️ 작동 원리 / 풀이 예제 (단계별)</span>
+            <div class="stepper worked">
+              <div class="stp-title">간선 분류 (1→2,1→3,2→4,4→2,3→4) + acyclic ⟺ no back edge</div>
               <div class="step show"><div class="step-head">1. 직관</div>DFS 중 간선 (u,v)를 따라갈 때 v가 <b>무슨 색인지</b>가 종류를 말해준다 — 처음 보는(WHITE) 길이면 트리, 처리중(GRAY) 조상으로 돌아가면 back.</div>
               <div class="step"><div class="step-head">2. 셋업</div>색 규칙: WHITE→tree, GRAY→back, BLACK→forward/cross. DFS를 1부터 시작.</div>
               <div class="step"><div class="step-head">3. 전개 — DFS 진행</div>1 발견(d=1) → 1→2 v=WHITE: <b>Tree</b>. 2 발견(d=2) → 2→4 WHITE: <b>Tree</b>. 4 발견(d=3) → 4→2 v=GRAY(2 아직 처리중): <b>Back edge</b> = 사이클! → 4 완료(f=4), 2 완료(f=5).</div>
@@ -661,24 +831,27 @@
               <div class="step"><div class="step-head">5. 결론</div>간선 분류: 1→2(T), 2→4(T), 1→3(T), 4→2(<b>Back</b>), 3→4(Cross). <b>Back edge 존재 → 사이클 있음(NOT acyclic)</b>.</div>
               <div class="step"><div class="step-head">6. 정리</div><b>방향 그래프 G가 acyclic ⟺ DFS에 back edge가 없다.</b> 무방향이면 forward/cross가 불가능해 tree·back만 → back 하나라도 있으면 사이클.</div>
               <div class="step"><div class="step-head">7. 시험 변형</div>특정 그래프의 모든 간선 분류, "back edge 없음 → DAG" 정당성, parenthesis theorem로 조상관계 판정.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
           <div class="field"><span class="lbl">📊 표·그래프 인사이트 (Parenthesis theorem)</span>
             <div class="callout">두 정점의 gray interval [d,f]는 <b>포함(조상-자손)</b> 또는 <b>분리</b> — 부분 겹침 불가.</div>
-            <table><thead><tr><th>간선</th><th>도달 시 v 색</th><th>의미</th></tr></thead>
-            <tbody><tr><td>Tree</td><td>WHITE</td><td>DFS forest 간선</td></tr>
-            <tr><td>Back</td><td>GRAY</td><td>자손→조상 (self-loop 포함)</td></tr>
-            <tr><td>Forward</td><td>BLACK</td><td>조상→자손 (gray interval 포함)</td></tr>
-            <tr><td>Cross</td><td>BLACK</td><td>그 외 (gray interval 분리)</td></tr></tbody></table>
+            <div class="scrollx"><table>
+              <tr><th>간선</th><th>도달 시 v 색</th><th>의미</th></tr>
+              <tr><td>Tree</td><td>WHITE</td><td>DFS forest 간선</td></tr>
+              <tr><td>Back</td><td>GRAY</td><td>자손→조상 (self-loop 포함)</td></tr>
+              <tr><td>Forward</td><td>BLACK</td><td>조상→자손 (gray interval 포함)</td></tr>
+              <tr><td>Cross</td><td>BLACK</td><td>그 외 (gray interval 분리)</td></tr>
+            </table></div>
           </div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>위 STEP에서 방향그래프 1→2, 1→3, 2→4, 4→2(back), 3→4의 DFS로 간선 4종 분류.</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap"><b>무방향 DFS는 tree·back edge만</b> 존재(forward/cross 없음). BLACK 도달이 forward인지 cross인지는 gray interval <b>포함 여부</b>로 구분.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge">출제 가이드 (Ex 22.3-5)</span></span> ① 간선 분류·색 판별, ② parenthesis theorem, ③ <b>acyclic ⟺ no back edge</b>(방향), ④ d/f timestamp 추적, ⑤ Problem 22-2(articulation points).</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">선행 <a onclick="goNode('C10')">C10</a> <a onclick="goNode('C11')">C11</a> · 다음 → <a onclick="goNode('C13')">C13 위상정렬</a></div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge mid">출제 가이드 · Ex 22.3-5</span></span>① 간선 분류·색 판별, ② parenthesis theorem, ③ <b>acyclic ⟺ no back edge</b>(방향), ④ d/f timestamp 추적, ⑤ Problem 22-2(articulation points).</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C10')">C10</a>,<a onclick="goNode('C11')">C11</a>. 다음 → <a onclick="goNode('C13')">C13(위상정렬 = DFS finishing time)</a>, acyclic 판정의 핵심.</div>
         </div>
       </details>
 
-      <details class="node-card" id="C13" data-node-id="C13" data-hot="1" data-title="C13 위상 정렬 topological sort DAG finishing time 선수과목 의존성">
+      <details class="node-card" id="C13" data-node-id="C13" data-hot="1" data-title="위상 정렬 topological sort DAG finishing time">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C13" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C13 · 위상 정렬 (Topological Sort)
@@ -688,11 +861,13 @@
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>DAG의 정점들을 <b>모든 간선이 왼→오른쪽</b>이 되도록 한 줄로 세운다 — "선행 작업이 항상 먼저 오는" 작업 순서.</div>
           <div class="field"><span class="lbl">📖 정의 / 메커니즘 (세 관점)</span>① 왼쪽부터 in-degree 0 배치, ② 오른쪽부터 out-degree 0 배치, ③ <b>DFS 후 finishing time 감소 순</b>으로 나열(가장 늦게 끝난 게 맨 앞).</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span>대학 <b>수강신청의 선수과목</b>(자료구조 들어야 알고리즘 수강), 빌드 시스템의 <b>의존성 순서</b>(라이브러리 A 컴파일 후 B), 스프레드시트 셀 재계산 순서, 작업 스케줄러의 task 순서 — 모두 "X가 Y보다 먼저"라는 방향 의존을 한 줄로 펴는 위상정렬이다. Makefile이 <code>make</code>로 타깃 빌드 순서를 정하는 것이 정확히 이것. <i>왜 finishing time 역순인가?</i> 가장 늦게 완료된 정점은 자기 자손(의존 대상)이 모두 먼저 끝났다는 뜻이라, 그것을 맨 앞에 두면 모든 간선이 왼→오른쪽이 된다. 사이클(순환 의존)이 있으면 순서 자체가 불가능 → DAG 조건 필수.</div>
-          <div class="field"><span class="lbl">🧮 수식 / 복잡도</span><div>\(\Theta(V+E)\) (DFS 한 번).</div></div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 / 🔍 작동 원리</span>
-            <div class="stepper solve">
-              <div class="stepper-title">✏️ 풀이 예제 — DFS finishing time 역순 → 위상 순서 (작은 의존 DAG)</div>
+          <div class="field"><span class="lbl">🧮 수식 / 복잡도</span>\(\Theta(V+E)\) (DFS 한 번).</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario">대학 <b>수강신청의 선수과목</b>(자료구조 들어야 알고리즘 수강), 빌드 시스템의 <b>의존성 순서</b>(라이브러리 A 컴파일 후 B), 스프레드시트 셀 재계산 순서, 작업 스케줄러의 task 순서 — 모두 "X가 Y보다 먼저"라는 방향 의존을 한 줄로 펴는 위상정렬. Makefile이 <code>make</code>로 타깃 빌드 순서를 정하는 것이 정확히 이것. <b>왜 finishing time 역순인가?</b> 가장 늦게 완료된 정점은 자기 자손(의존 대상)이 모두 먼저 끝났다는 뜻이라, 그것을 맨 앞에 두면 모든 간선이 왼→오른쪽이 된다. 사이클(순환 의존)이 있으면 순서 자체가 불가능 → DAG 조건 필수.</div>
+          </div>
+          <div class="field"><span class="lbl">✏️ 작동 원리 / 풀이 예제 (단계별)</span>
+            <div class="stepper worked">
+              <div class="stp-title">DFS finishing time 역순 → 위상 순서 (작은 의존 DAG)</div>
               <div class="step show"><div class="step-head">1. 직관</div>가장 <b>늦게 완료(finish)</b>되는 정점이 "가장 위(선행)"여야 한다 — 그 정점에서 나가는 간선의 끝점은 모두 먼저 끝났을 테니.</div>
               <div class="step"><div class="step-head">2. 셋업</div>DAG: 양말→신발, 속옷→바지→벨트→재킷, 셔츠→{벨트,넥타이}, 넥타이→재킷, 시계(독립). DFS 실행하며 \(v.f\) 기록.</div>
               <div class="step"><div class="step-head">3. 전개 1</div>DFS가 각 정점 완료 시각을 매김(예시 f값): 재킷 f=8, 벨트 f=9, 넥타이 f=10, 셔츠 f=11, 바지 f=12, 신발 f=13, 양말 f=14, 속옷 f=16, 시계 f=18. (상수는 예시; 핵심은 자손이 조상보다 먼저 끝남)</div>
@@ -700,17 +875,17 @@
               <div class="step"><div class="step-head">5. 결론</div>f <b>내림차순</b> 나열 → 시계, 속옷, 양말, 신발, 바지, 셔츠, 넥타이, 벨트, 재킷. 모든 간선 왼→오른쪽 = 위상정렬. 비용 = DFS 1회 = \(\Theta(V+E)\).</div>
               <div class="step"><div class="step-head">6. 검산</div>신발은 양말 뒤, 재킷은 (벨트·넥타이·셔츠) 모두 뒤 → 선수관계 만족 ✓. (다른 유효 순서도 존재 — 유일하지 않음)</div>
               <div class="step"><div class="step-head">7. 시험 변형</div>주어진 DAG의 f값으로 위상순서 쓰기, "왜 gray가 불가능한가", 가능한 다른 위상순서 제시.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
           <div class="field"><span class="lbl">📊 표·그래프 인사이트</span><div class="callout">정당성 — 간선 (u,v)가 있으면 항상 \(v.f&lt;u.f\) (DFS에서 v는 white거나 black, gray 불가 = back edge 없음 ⇒ acyclic). Lemma: <b>DAG ⟺ DFS no back edge</b>.</div></div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>위 STEP에서 의존 그래프(셔츠→넥타이→재킷, 양말→신발 등)의 finishing time을 매겨 위상순서 도출.</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">위상정렬은 <b>DAG에서만</b> 정의(사이클 있으면 불가). 정답이 <b>유일하지 않음</b>(Ex 22.4-5: 다른 위상정렬 존재).</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高</span> <span class="nbadge">출제 가이드</span></span> ① <b>DFS finishing time 역순으로 위상순서 도출</b>, ② DAG 조건, ③ \(\Theta(V+E)\), ④ Ex 22.4-5(다른 topological sort), 22.4-3(무방향 사이클 검출).</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">선행 <a onclick="goNode('C12')">C12 DFS</a> · 응용 → <a onclick="goNode('C15')">C15 DAG 최단경로</a></div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高 · 출제 가이드</span></span>① <b>DFS finishing time 역순으로 위상순서 도출</b>, ② DAG 조건, ③ \(\Theta(V+E)\), ④ Ex 22.4-5(다른 topological sort), 22.4-3(무방향 사이클 검출).</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C12')">C12(DFS)</a>. 응용 → <a onclick="goNode('C15')">C15(DAG shortest paths가 위상정렬 후 RELAX)</a>.</div>
         </div>
       </details>
-
-      <details class="node-card" id="C14" data-node-id="C14" data-hot="1" data-title="C14 최소 신장 트리 MST cut property Prim Kruskal safe edge light edge disjoint-set">
+      <details class="node-card" id="C14" data-node-id="C14" data-hot="1" data-title="최소 신장 트리 MST cut property Prim Kruskal safe edge light edge">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C14" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C14 · 최소 신장 트리 (MST) — cut property, Prim, Kruskal
@@ -720,11 +895,13 @@
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>가중 무방향 연결그래프에서 <b>모든 정점을 잇는 가장 싼 트리</b>(\(|E|=|V|-1\)). "안전한 간선(safe edge)만 골라 키우면 최적"이라는 그리디 정당성이 핵심.</div>
           <div class="field"><span class="lbl">📖 정의·용어</span><b>cut</b> (S,V−S)=정점 분할. edge가 cut을 <b>cross</b>(양 끝 분리). cut이 A를 <b>respect</b>(A의 어떤 간선도 cut을 cross 안함). <b>light edge</b>=cut을 cross하는 최소 가중 간선. <b>safe edge</b>=A에 더해도 어떤 MST의 부분집합 유지.</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span>여러 도시를 광케이블·전력망·도로로 잇되 <b>총 부설 비용을 최소화</b>하는 것이 MST다 — 모든 도시가 연결되되 사이클(낭비되는 잉여 회선)은 없게. 통신망 설계, 클러스터 분석, 회로 배선이 대표 응용. <i>왜 그리디가 통하나?</i> cut property: "현재 트리 조각과 바깥을 잇는 가장 싼 간선(light edge)을 더해도 최적성이 깨지지 않는다"가 증명되기 때문 — 매 단계 가장 싼 연결을 골라도 전역 최적. Prim은 한 도시에서 트리를 키우고(힙으로 최근접 도시 선택), Kruskal은 싼 회선부터 깔되 이미 연결된 둘은 건너뛴다(disjoint-set으로 사이클 회피).</div>
-          <div class="field"><span class="lbl">🧮 수식 / 복잡도</span><div>Prim, Kruskal 모두 <b>\(O(E\lg V)\)</b> (binary heap / 정렬).</div></div>
-          <div class="field"><span class="lbl">🔍 작동 원리 (단계별)</span>
+          <div class="field"><span class="lbl">🧮 수식 / 복잡도</span>Prim, Kruskal 모두 <b>\(O(E\lg V)\)</b> (binary heap / 정렬).</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario">여러 도시를 광케이블·전력망·도로로 잇되 <b>총 부설 비용을 최소화</b>하는 것이 MST다 — 모든 도시가 연결되되 사이클(낭비되는 잉여 회선)은 없게. 통신망 설계, 클러스터 분석, 회로 배선이 대표 응용. <b>왜 그리디가 통하나?</b> cut property: "현재 트리 조각과 바깥을 잇는 가장 싼 간선(light edge)을 더해도 최적성이 깨지지 않는다"가 증명되기 때문 — 매 단계 가장 싼 연결을 골라도 전역 최적. Prim은 한 도시에서 트리를 키우고(힙으로 최근접 도시 선택), Kruskal은 싼 회선부터 깔되 이미 연결된 둘은 건너뛴다(disjoint-set으로 사이클 회피).</div>
+          </div>
+          <div class="field"><span class="lbl">🔍 작동 원리 / 유도 (단계별 — 2개)</span>
             <div class="stepper">
-              <div class="stepper-title">🔍 Theorem 23.1 cut property 증명 (교환 논법)</div>
+              <div class="stp-title">Theorem 23.1 cut property 증명 (교환 논법)</div>
               <div class="step show"><div class="step-head">1. 직관</div>"지금까지 모은 A가 어떤 MST의 일부이고, A를 건드리지 않는 cut의 최소 간선(light edge)을 더하면 여전히 MST의 일부다." MST가 그 간선을 안 갖고 있다면 <b>다른 간선과 바꿔치기</b>해도 비용이 안 늘어남을 보인다.</div>
               <div class="step"><div class="step-head">2. 셋업</div>A ⊆ 어떤 MST T. cut (S,V−S)가 A를 respect, (u,v) = 그 cut의 light edge. 목표: (u,v)가 A에 safe.</div>
               <div class="step"><div class="step-head">3. 전개 1 — 가정</div>T가 (u,v)를 포함하면 끝. 안 포함한다고 가정. T에 (u,v)를 더하면 T의 경로 p와 함께 <b>사이클</b> 형성.</div>
@@ -732,12 +909,10 @@
               <div class="step"><div class="step-head">5. 전개 3 — 교환</div>\(T'=T-\{(x,y)\}\cup\{(u,v)\}\). (사이클 깨고 다시 트리)</div>
               <div class="step"><div class="step-head">6. 결론</div>(u,v)가 light이므로 \(w(u,v)\le w(x,y)\) ⇒ \(w(T')\le w(T)\). T가 MST였으니 T'도 MST. A∪{(u,v)} ⊆ T' ⇒ <b>(u,v) safe</b>. ∎</div>
               <div class="step"><div class="step-head">7. 시험 변형</div>증명 각 단계 근거 묻기, Prim/Kruskal이 이 정리를 어떻게 쓰는지(Corollary 23.2) 연결.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
-          </div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>
-            <div class="stepper solve">
-              <div class="stepper-title">✏️ 풀이 예제 — Prim/Kruskal로 MST 구하기 (a-b:4, a-c:1, b-c:2, b-d:5, c-d:8)</div>
+            <div class="stepper worked">
+              <div class="stp-title">Prim/Kruskal로 MST 구하기 (a-b:4, a-c:1, b-c:2, b-d:5, c-d:8)</div>
               <div class="step show"><div class="step-head">1. 직관</div>Prim = 한 트리를 <b>정점 단위</b>로 키운다(트리에 닿는 가장 싼 간선). Kruskal = <b>간선을 싼 순</b>으로 보며 사이클만 피해 합친다.</div>
               <div class="step"><div class="step-head">2. Prim 셋업</div>root=a. key: a=0, 나머지 ∞. Q={a,b,c,d}.</div>
               <div class="step"><div class="step-head">3. Prim 전개</div>① EXTRACT a → key[b]=4, key[c]=1. ② 최소 c(1) 추출, 간선 <b>a-c(1)</b> 채택 → key[b]=min(4,2)=2(b-c), key[d]=8. ③ 최소 b(2) 추출, 간선 <b>b-c(2)</b> 채택 → key[d]=min(8,5)=5(b-d). ④ d(5) 추출, 간선 <b>b-d(5)</b> 채택.</div>
@@ -747,22 +922,25 @@
               <div class="step"><div class="step-head">7. 결론</div>Kruskal MST = {a-c(1), b-c(2), b-d(5)}, 총비용 <b>8</b> — Prim과 동일. (MST 비용은 유일, 트리는 동률 시 다를 수 있음)</div>
               <div class="step"><div class="step-head">8. 복잡도</div>Prim: BUILD O(V)+V·EXTRACT-MIN+E·DECREASE-KEY = O(E lg V). Kruskal: 정렬 O(E lg E)+E·FIND/UNION = O(E lg V).</div>
               <div class="step"><div class="step-head">9. 시험 변형</div>다른 가중그래프에서 Prim key/π 표, Kruskal 채택·기각 순서, 두 결과 비용 일치 확인.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
           <div class="field"><span class="lbl">📊 표·그래프 인사이트 (Prim vs Kruskal)</span>
-            <table><thead><tr><th></th><th>성장 단위</th><th>자료구조</th><th>유리한 그래프</th><th>복잡도</th></tr></thead>
-            <tbody><tr><td>Prim</td><td>정점(단일 트리)</td><td>min-priority queue(heap)</td><td>dense</td><td>O(E lg V)</td></tr>
-            <tr><td>Kruskal</td><td>간선(정렬 순)</td><td>disjoint-set(MAKE/FIND/UNION)</td><td>sparse</td><td>O(E lg V)</td></tr></tbody></table>
+            <div class="scrollx"><table>
+              <tr><th></th><th>성장 단위</th><th>자료구조</th><th>유리한 그래프</th><th>복잡도</th></tr>
+              <tr><td>Prim</td><td>정점(단일 트리)</td><td>min-priority queue(heap)</td><td>dense</td><td>O(E lg V)</td></tr>
+              <tr><td>Kruskal</td><td>간선(정렬 순)</td><td>disjoint-set(MAKE/FIND/UNION)</td><td>sparse</td><td>O(E lg V)</td></tr>
+            </table></div>
             <div class="callout">Corollary 23.2: forest \(G_A\)의 연결요소 C에서 다른 요소로 가는 light edge는 safe (Prim/Kruskal 근거).</div>
           </div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>위 두 번째 STEP에서 가중 그래프(a-b:4, a-c:1, b-c:2, b-d:5, c-d:8)에 Prim(root a)·Kruskal을 돌려 같은 MST 도출.</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">light edge ≠ 항상 전역 최소 간선 — <b>특정 cut을 cross하는</b> 것 중 최소. Kruskal \(\lg E=O(\lg V)\)이므로 복잡도가 Prim과 같음.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高</span> <span class="nbadge">본강의</span></span> ① <b>cut property 정의·증명</b>, ② Prim/Kruskal 단계 추적·복잡도, ③ safe/light/respect 정의.</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">선행 <a onclick="goNode('C8')">C8 그리디</a> <a onclick="goNode('C4')">C4 heap</a> <a onclick="goNode('C10')">C10</a> · 응용 → <a onclick="goNode('C15')">C15 Dijkstra</a></div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高 · Prim 강조 + 본강의</span></span>① <b>cut property 정의·증명</b>, ② Prim/Kruskal 단계 추적·복잡도, ③ safe/light/respect 정의.</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C8')">C8(그리디)</a>,<a onclick="goNode('C4')">C4(heap)</a>,<a onclick="goNode('C10')">C10</a>. 응용 → <a onclick="goNode('C15')">C15(Dijkstra가 유사한 그리디 구조)</a>.</div>
         </div>
       </details>
 
-      <details class="node-card" id="C15" data-node-id="C15" data-hot="1" data-title="C15 단일 출발점 최단경로 SSSP Dijkstra Bellman-Ford DAG PERT relaxation 음수 사이클">
+      <details class="node-card" id="C15" data-node-id="C15" data-hot="1" data-title="단일 출발점 최단경로 SSSP Dijkstra Bellman-Ford DAG PERT relaxation">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C15" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C15 · 단일 출발점 최단경로 (SSSP) — Dijkstra, Bellman-Ford, DAG, PERT
@@ -772,11 +950,13 @@
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>한 source에서 모든 정점까지 <b>최소 가중 합 경로</b>를 구한다. 핵심 연산은 <b>relaxation</b>(더 짧은 길 발견 시 갱신) 하나, 그것을 언제·몇 번 적용하느냐가 알고리즘을 가른다.</div>
           <div class="field"><span class="lbl">📖 정의</span>path weight=간선 가중 합, \(\delta(u,v)\)=최단경로 가중(최소), d[v]=추정치, π[v]=predecessor. <b>Relaxation</b>: <code>if d[u]+w(u,v) &lt; d[v]: d[v]=d[u]+w(u,v); π[v]=u</code>.</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span><b>자동차 내비게이션·지도 앱의 경로탐색</b>이 Dijkstra다 — 교차로=정점, 도로=가중치 간선(거리·시간), 출발지에서 매번 "확정 안 된 정점 중 가장 가까운 것"을 골라 확정하며 퍼진다. 모든 도로 비용이 양수라 그리디가 통한다. 그런데 <b>환율 차익거래</b>처럼 음수 비용(이득)이 섞이면 Dijkstra가 틀려 Bellman-Ford를 쓰고, "음수 사이클"(무한 이득 루프)을 검출한다. <b>PERT 공정 관리</b>는 작업=간선·소요시간=가중치로 보고 <b>임계경로=최장경로</b>를 구해 "프로젝트 최소 완료 시간"을 안다. <i>왜 relaxation 하나로 다 되나?</i> "더 짧은 길을 찾으면 갱신"이 공통 원자 연산이고, 그걸 <b>언제·몇 번</b> 적용하느냐(그리디 1회 vs |V|−1 패스 vs 위상순서)가 알고리즘을 가른다.</div>
-          <div class="field"><span class="lbl">🧮 수식 / 복잡도</span><div>Dijkstra: array \(O(V^2)\), binary heap \(O((V+E)\lg V)\), Fibonacci heap \(O(V\lg V+E)\). Bellman-Ford: <b>\(O(VE)\)</b>. DAG shortest paths: <b>\(\Theta(V+E)\)</b>.</div></div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>
-            <div class="stepper solve">
-              <div class="stepper-title">✏️ 풀이 예제 — Dijkstra (s→a:10, s→c:5, c→a:3, a→b:1, c→b:9, c→d:2)</div>
+          <div class="field"><span class="lbl">🧮 수식 / 복잡도</span>Dijkstra: array \(O(V^2)\), binary heap \(O((V+E)\lg V)\), Fibonacci heap \(O(V\lg V+E)\). Bellman-Ford: <b>\(O(VE)\)</b>. DAG shortest paths: <b>\(\Theta(V+E)\)</b>.</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario"><b>자동차 내비게이션·지도 앱의 경로탐색</b>이 Dijkstra다 — 교차로=정점, 도로=가중치 간선(거리·시간), 출발지에서 매번 "확정 안 된 정점 중 가장 가까운 것"을 골라 확정하며 퍼진다. 모든 도로 비용이 양수라 그리디가 통한다. 그런데 <b>환율 차익거래</b>처럼 음수 비용(이득)이 섞이면 Dijkstra가 틀려 Bellman-Ford를 쓰고, "음수 사이클"(무한 이득 루프)을 검출. <b>PERT 공정 관리</b>(프로젝트 일정)는 작업=간선·소요시간=가중치로 보고 <b>임계경로=최장경로</b>를 구해 "프로젝트 최소 완료 시간"을 안다. <b>왜 relaxation 하나로 다 되나?</b> "더 짧은 길을 찾으면 갱신"이 공통 원자 연산이고, 그걸 <b>언제·몇 번</b> 적용하느냐(그리디 1회 vs |V|−1 패스 vs 위상순서)가 알고리즘을 가른다.</div>
+          </div>
+          <div class="field"><span class="lbl">🔍 작동 원리 / 유도 (단계별 — 3개)</span>
+            <div class="stepper worked">
+              <div class="stp-title">Dijkstra (s→a:10, s→c:5, c→a:3, a→b:1, c→b:9, c→d:2)</div>
               <div class="step show"><div class="step-head">1. 직관</div>매번 "확정 안 된 것 중 d가 가장 작은 정점"을 뽑아 확정하고, 그 이웃을 relax. 양수 가중이라 한 번 확정하면 안 바뀐다.</div>
               <div class="step"><div class="step-head">2. 셋업</div>d[s]=0, 나머지 ∞. S=∅, Q={s,a,c,d,b}.</div>
               <div class="step"><div class="step-head">3. 전개 1</div>EXTRACT s(0) → S={s}. relax: d[a]=10, d[c]=5.</div>
@@ -785,14 +965,12 @@
               <div class="step"><div class="step-head">6. 전개 4</div>최소 a(8) → S={s,c,d,a}. relax: d[b]=min(14, 8+1)=<b>9</b>.</div>
               <div class="step"><div class="step-head">7. 전개 5</div>최소 b(9) → S 전체. 종료.</div>
               <div class="step"><div class="step-head">8. 답</div>\(\delta\): s=0, c=5, d=7, a=8, b=9. 경로 s→a는 직접(10)보다 <b>s→c→a(8)</b>가 짧음 — 그리디가 우회로를 올바로 잡음.</div>
-              <div class="step"><div class="step-head">9. 정당성</div>u 확정 시 d[u]=δ(s,u): 양수라 우회로가 더 짧을 수 없음(아래 별도 증명 STEP).</div>
+              <div class="step"><div class="step-head">9. 정당성</div>u 확정 시 d[u]=δ(s,u): 양수라 우회로가 더 짧을 수 없음(아래 별도 STEP).</div>
               <div class="step"><div class="step-head">10. 시험 변형</div>Q/S/d 표 단계 채우기, "음수 간선이면 왜 깨지나", binary heap 복잡도 O((V+E)lg V).</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
-          </div>
-          <div class="field"><span class="lbl">🔍 작동 원리 (단계별)</span>
             <div class="stepper">
-              <div class="stepper-title">🔍 Dijkstra 정당성 (u 확정 시 d[u]=δ(s,u))</div>
+              <div class="stp-title">Dijkstra 정당성 (u 확정 시 d[u]=δ(s,u))</div>
               <div class="step show"><div class="step-head">1. 직관</div>"지금 d가 가장 작은 미확정 정점 u는 더 줄어들 여지가 없다" — 모든 간선이 양수면, u로 가는 더 짧은 우회로는 존재할 수 없기 때문.</div>
               <div class="step"><div class="step-head">2. 셋업</div>비음수 가중 가정. S=확정 집합. u=EXTRACT-MIN(Q)으로 S에 추가하는 순간. 주장: \(d[u]=\delta(s,u)\).</div>
               <div class="step"><div class="step-head">3. 전개 1 — 모순 가정</div>어떤 u에서 처음으로 \(d[u]\ne\delta(s,u)\)(즉 \(d[u]&gt;\delta(s,u)\))라 하자.</div>
@@ -800,10 +978,10 @@
               <div class="step"><div class="step-head">5. 전개 3 — 부등식</div>양수 가중이라 \(\delta(s,y)\le\delta(s,u)&lt;d[u]\). 따라서 \(d[y]&lt;d[u]\).</div>
               <div class="step"><div class="step-head">6. 결론</div>그러면 EXTRACT-MIN은 u가 아니라 y를 먼저 뽑았어야 함 → 모순. ∴ \(d[u]=\delta(s,u)\). ∎ (양수 가중이 결정적)</div>
               <div class="step"><div class="step-head">7. 시험 변형</div>"왜 음수 간선이면 깨지나"(δ(s,y)≤δ(s,u)가 무너짐) 서술.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
             <div class="stepper">
-              <div class="stepper-title">🔍 Bellman-Ford — |V|−1 패스 + 음수사이클 검출</div>
+              <div class="stp-title">Bellman-Ford — |V|−1 패스 + 음수사이클 검출</div>
               <div class="step show"><div class="step-head">1. 직관</div>최단경로는 간선 ≤|V|−1개. 매 패스마다 "한 간선 더 멀리"의 정답이 확정되니 <b>|V|−1번 모든 간선을 RELAX</b>하면 모두 수렴. 그 뒤에도 줄어들면 = 음수 사이클.</div>
               <div class="step"><div class="step-head">2. 셋업</div>INITIALIZE-SINGLE-SOURCE(d[s]=0, 나머지 ∞).</div>
               <div class="step"><div class="step-head">3. 전개 1</div><b>|V|−1번 반복</b>: 매 반복마다 <b>모든 간선</b> RELAX.</div>
@@ -811,23 +989,26 @@
               <div class="step"><div class="step-head">5. 결론</div>복잡도 \(O(VE)\). TRUE = source 도달 음수사이클 없음.</div>
               <div class="step"><div class="step-head">6. 정당성 — 음수사이클</div>TRUE인데 음수사이클 \(\langle v_0..v_k\rangle\) 가정 → 사이클 따라 \(\sum d[v_i]\le\sum(d[v_{i-1}]+w)\) ⇒ \(0\le\sum w(v_{i-1},v_i)\) → 음수사이클 정의와 모순.</div>
               <div class="step"><div class="step-head">7. 시험 변형</div>패스별 d값 표 추적, "왜 |V|−1번인가", 음수사이클 검출 반환값 의미.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
           <div class="field"><span class="lbl">📊 표·그래프 인사이트 (선택 기준)</span>
-            <table><thead><tr><th>알고리즘</th><th>음수 간선</th><th>핵심</th><th>복잡도</th></tr></thead>
-            <tbody><tr><td>Dijkstra</td><td>✘(비음수만)</td><td>greedy EXTRACT-MIN</td><td>O((V+E)lg V)</td></tr>
-            <tr><td>Bellman-Ford</td><td>✔</td><td>|V|−1 패스 RELAX + 음수사이클 검출</td><td>O(VE)</td></tr>
-            <tr><td>DAG-SP</td><td>✔(사이클 없음)</td><td>위상정렬 후 RELAX</td><td>Θ(V+E)</td></tr></tbody></table>
-            <div class="callout"><b>음수 가중 처리</b>: 음수 간선 자체는 OK, 문제는 <b>source 도달 가능한 음수 사이클</b>(→ −∞). 최단경로는 사이클 미포함(길이 ≤ |V|−1).<br><b>PERT chart</b>: 간선=작업, 가중=소요시간, <b>critical path = DAG의 최장 경로</b>. 가중 음수화 후 DAG-SP, 또는 ∞→−∞·max로 바꿔 최장.</div>
+            <div class="scrollx"><table>
+              <tr><th>알고리즘</th><th>음수 간선</th><th>핵심</th><th>복잡도</th></tr>
+              <tr><td>Dijkstra</td><td>✘(비음수만)</td><td>greedy EXTRACT-MIN</td><td>O((V+E)lg V)</td></tr>
+              <tr><td>Bellman-Ford</td><td>✔</td><td>|V|−1 패스 RELAX + 음수사이클 검출</td><td>O(VE)</td></tr>
+              <tr><td>DAG-SP</td><td>✔(사이클 없음)</td><td>위상정렬 후 RELAX</td><td>Θ(V+E)</td></tr>
+            </table></div>
+            <div class="callout"><b>음수 가중 처리</b>: 음수 간선 자체는 OK, 문제는 <b>source 도달 가능한 음수 사이클</b>(→ −∞). 최단경로는 사이클 미포함(길이 ≤ |V|−1). <b>PERT chart</b>: 간선=작업, 가중=소요시간, <b>critical path = DAG의 최장 경로</b>. 가중 음수화 후 DAG-SP, 또는 ∞→−∞·max로 바꿔 최장.</div>
           </div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>위 첫 STEP "Dijkstra(s)"에서 Q/S/d 표를 단계별로 갱신.</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">Dijkstra는 <b>음수 간선이 있으면 틀림</b>(greedy 가정 깨짐). Bellman-Ford는 음수 허용·느림. DAG는 사이클 없으니 음수도 안전.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge">본강의 출제</span></span> ① <b>Dijkstra 단계 추적(Q/S/d 표)·비음수 제약·정당성</b>, ② Bellman-Ford |V|−1 패스·음수사이클 검출·\(O(VE)\), ③ DAG \(\Theta(V+E)\), ④ <b>PERT 임계경로=최장경로</b>, ⑤ Ex 22.4-2(simple path 개수).</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">선행 <a onclick="goNode('C11')">C11</a> <a onclick="goNode('C13')">C13</a> <a onclick="goNode('C14')">C14</a> · 다음 → <a onclick="goNode('C16')">C16 All-pairs</a></div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge mid">본강의 출제 · summary 미포함</span></span>① <b>Dijkstra 단계 추적(Q/S/d 표)·비음수 제약·정당성</b>, ② Bellman-Ford |V|−1 패스·음수사이클 검출·\(O(VE)\), ③ DAG \(\Theta(V+E)\), ④ <b>PERT 임계경로=최장경로</b>, ⑤ Ex 22.4-2(simple path 개수).</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C11')">C11</a>,<a onclick="goNode('C13')">C13</a>,<a onclick="goNode('C14')">C14</a>. 다음 → <a onclick="goNode('C16')">C16(All-pairs)</a>.</div>
         </div>
       </details>
 
-      <details class="node-card" id="C16" data-node-id="C16" data-hot="1" data-title="C16 모든 쌍 최단경로 All-Pairs Floyd-Warshall intermediate vertex DP 거리 행렬">
+      <details class="node-card" id="C16" data-node-id="C16" data-hot="1" data-title="모든 쌍 최단경로 All-Pairs Floyd-Warshall intermediate vertex DP">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C16" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C16 · 모든 쌍 최단경로 (All-Pairs) — Floyd-Warshall
@@ -837,69 +1018,81 @@
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>모든 정점 쌍의 최단경로를, "<b>중간 정점을 {1..k}까지만 허용</b>"이라는 제약을 k=1,2,...로 점점 풀어가며 DP로 채운다.</div>
           <div class="field"><span class="lbl">📖 정의</span>인접행렬 W(\(w_{ij}=w(i,j)\), 자기 0, 무간선 ∞). 결과 거리행렬 D(\(d_{ij}=\delta(i,j)\)), predecessor 행렬 Π. <b>intermediate vertex</b> = 경로 내부 정점. \(d_{ij}^{(k)}\) = 중간 정점이 {1..k}만인 i→j 최단 가중.</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span>도시 <b>모든 쌍 사이의 최단 이동시간 표</b>(거리 행렬)를 미리 계산해 둘 때, 항공 예약 시스템·물류 허브 배치·네트워크 라우팅 테이블이 Floyd-Warshall을 쓴다 — 한 번에 전체 V×V 최단거리를 \(\Theta(V^3)\)에 채운다. 정점이 수백 개로 빽빽하면(dense) Dijkstra를 V번 돌리는 것보다 구현이 단순하고 음수 간선도 허용. <i>왜 "중간 정점 {1..k}" 발상인가?</i> "정점 k를 새로 경유지로 허용했을 때 더 좋아지는 경로는 딱 k를 거치는 것뿐"이라는 최적 부분구조 덕분에, k를 하나씩 늘리는 DP로 모든 우회로를 체계적으로 고려한다.</div>
           <div class="field"><span class="lbl">🧮 수식 (DP 점화식)</span>
-            <div>\[ d_{ij}^{(k)}=\begin{cases}w_{ij} &amp; k=0\\ \min\!\big(d_{ij}^{(k-1)},\ d_{ik}^{(k-1)}+d_{kj}^{(k-1)}\big) &amp; k\ge1\end{cases} \]</div>
+            <div class="scrollx">\[ d_{ij}^{(k)}=\begin{cases}w_{ij} & k=0\\ \min\!\big(d_{ij}^{(k-1)},\ d_{ik}^{(k-1)}+d_{kj}^{(k-1)}\big) & k\ge1\end{cases} \]</div>
             <div style="color:var(--muted);font-size:.88rem">의미: k를 중간점으로 <b>안 씀</b>(\(d_{ij}^{(k-1)}\)) vs <b>씀</b>(\(i\rightsquigarrow k\rightsquigarrow j\)). 최종 \(D^{(n)}=\delta\).</div>
           </div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 / 🔍 작동 원리</span>
-            <div class="stepper solve">
-              <div class="stepper-title">✏️ 풀이 예제 — Floyd-Warshall 점화식 유도 + 풀이 (1→2:8, 1→3:5, 3→2:1)</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario">도시 <b>모든 쌍 사이의 최단 이동시간 표</b>(거리 행렬)를 미리 계산해 둘 때, 항공 예약 시스템·물류 허브 배치·네트워크 라우팅 테이블이 Floyd-Warshall을 쓴다 — 한 번에 전체 V×V 최단거리를 \(\Theta(V^3)\)에 채운다. 정점이 수백 개로 빽빽하면(dense) Dijkstra를 V번 돌리는 것보다 구현이 단순하고 음수 간선도 허용. <b>왜 "중간 정점 {1..k}" 발상인가?</b> "정점 k를 새로 경유지로 허용했을 때 더 좋아지는 경로는 딱 k를 거치는 것뿐"이라는 최적 부분구조 덕분에, k를 하나씩 늘리는 DP로 모든 우회로를 체계적으로 고려한다.</div>
+          </div>
+          <div class="field"><span class="lbl">✏️ 작동 원리 / 풀이 예제 (단계별)</span>
+            <div class="stepper worked">
+              <div class="stp-title">Floyd-Warshall 점화식 유도 + 풀이 (1→2:8, 1→3:5, 3→2:1)</div>
               <div class="step show"><div class="step-head">1. 직관</div>i→j 최단경로에서 "중간에 거쳐도 되는 정점"을 처음엔 없게(직접 간선만), 그다음 {1}, {1,2}, ... 점점 늘린다. 정점 k를 새로 허용했을 때 좋아지는 건 <b>딱 k를 거치는 경우</b>뿐.</div>
-              <div class="step"><div class="step-head">2. 셋업</div>\(d_{ij}^{(k)}\) = 중간 정점 {1..k} 제한 i→j 최단. 초기 \(D^{(0)}=W\):
-                <pre>D⁰:  1   2   3
+              <div class="step"><div class="step-head">2. 셋업</div>\(d_{ij}^{(k)}\) = 중간 정점 {1..k} 제한 i→j 최단. 초기 \(D^{(0)}=W\):<div class="scrollx"><pre>D⁰:  1   2   3
  1[  0   8   5 ]
  2[  ∞   0   ∞ ]
- 3[  ∞   1   0 ]</pre></div>
+ 3[  ∞   1   0 ]</pre></div></div>
               <div class="step"><div class="step-head">3. 전개 k=1</div>1을 경유 허용 — i,j가 1을 거쳐 좋아지나? (2,3행은 1로 가는 길이 ∞라 변화 없음.) \(D^{(1)}=D^{(0)}\).</div>
               <div class="step"><div class="step-head">4. 전개 k=2</div>2 경유: 2에서 나가는 간선이 없어(\(d_{2j}=∞\)) 갱신 없음. \(D^{(2)}=D^{(1)}\).</div>
               <div class="step"><div class="step-head">5. 전개 k=3</div>3 경유: \(d_{12}^{(3)}=\min(d_{12}^{(2)}, d_{13}^{(2)}+d_{32}^{(2)})=\min(8, 5+1)=\mathbf{6}\). (1→3→2가 1→2 직행보다 짧음!)</div>
               <div class="step"><div class="step-head">6. 결론·답</div>\(D^{(3)}=\delta\): \(d_{12}=6\)(경로 1→3→2), \(d_{13}=5\), \(d_{32}=1\), 나머지 0/∞. 점화식이 우회로 1→3→2를 자동 발견.</div>
               <div class="step"><div class="step-head">7. 복잡도</div>삼중 루프(k 바깥, i·j 안쪽) ⇒ \(\Theta(V^3)\).</div>
               <div class="step"><div class="step-head">8. 시험 변형</div>주어진 W로 특정 \(D^{(k)}\) 계산, "왜 k가 바깥 루프인가", intermediate vertex로 점화식 분해 설명.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
           <div class="field"><span class="lbl">📊 표·그래프 인사이트 (접근 비교)</span>
-            <table><thead><tr><th>접근</th><th>복잡도</th><th>음수</th></tr></thead>
-            <tbody><tr><td>SSSP 반복(Dijkstra)</td><td>array O(V³) / heap O(V²lg V+VE lg V)</td><td>✘</td></tr>
-            <tr><td>SSSP 반복(Bellman-Ford)</td><td>O(V²E)=O(V⁴) dense</td><td>✔</td></tr>
-            <tr><td>Floyd-Warshall</td><td><b>Θ(V³)</b></td><td>✔</td></tr></tbody></table>
+            <div class="scrollx"><table>
+              <tr><th>접근</th><th>복잡도</th><th>음수</th></tr>
+              <tr><td>SSSP 반복(Dijkstra)</td><td>array O(V³) / heap O(V²lg V+VE lg V)</td><td>✘</td></tr>
+              <tr><td>SSSP 반복(Bellman-Ford)</td><td>O(V²E)=O(V⁴) dense</td><td>✔</td></tr>
+              <tr><td>Floyd-Warshall</td><td><b>Θ(V³)</b></td><td>✔</td></tr>
+            </table></div>
           </div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>위 STEP에서 3정점 그래프(1→2:8, 1→3:5, 3→2:1)의 \(D^{(0)}\to D^{(3)}\) 한 스텝씩 계산.</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">삼중 루프 <b>k가 가장 바깥</b>(중간 정점 집합을 키우는 축). i,j 안쪽. 순서 틀리면 점화식 깨짐.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge">본강의 출제</span></span> ① <b>Floyd-Warshall 점화식·intermediate vertex 의미</b>, ② \(\Theta(V^3)\), ③ 행렬 \(D^{(k)}\) 단계 계산, ④ SSSP 반복과 복잡도 비교.</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">선행 <a onclick="goNode('C7')">C7 DP</a> <a onclick="goNode('C15')">C15</a> · DP 기법이 그래프에서 재등장.</div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge mid">본강의 출제 · summary 미포함</span></span>① <b>Floyd-Warshall 점화식·intermediate vertex 의미</b>, ② \(\Theta(V^3)\), ③ 행렬 \(D^{(k)}\) 단계 계산, ④ SSSP 반복과 복잡도 비교.</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C7')">C7(DP)</a>,<a onclick="goNode('C15')">C15</a>. DP 기법(C7)이 그래프에서 재등장.</div>
         </div>
       </details>
     </section>
-    <section class="stem-sec" id="B5">
-      <h2>B5. 정수론·암호 <span style="font-size:.8rem;color:var(--muted);font-weight:400">— 곱셈은 쉽고 인수분해는 어렵다는 비대칭을 Euler 정리로 묶어 RSA 공개키를 만든다</span></h2>
 
-      <details class="node-card" id="C17" data-node-id="C17" data-hot="1" data-title="C17 정수론 소수 Fermat Euler phi totient 소수판정 Miller-Rabin primitive root discrete logarithm">
+    <section class="stem-sec" id="B5">
+      <h2>B5. 정수론·암호 — RSA</h2>
+      <div class="stem-lead">곱셈은 쉽고 인수분해는 어렵다는 비대칭을 Euler 정리로 묶어 RSA 공개키를 만든다.</div>
+
+      <details class="node-card" id="C17" data-node-id="C17" data-hot="1" data-title="정수론 소수 Fermat Euler phi 소수판정 Miller-Rabin">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C17" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C17 · 정수론 기초 — 소수, Fermat, Euler φ, 소수판정
-          <span class="nbadge hot">⭐高</span><span class="nbadge gate">🚪관문</span><span class="nbadge indep">🟢독립</span><span class="nbadge">선행: 없음</span>
+          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: 없음(모듈러 산술)</span>
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span><b>곱셈은 쉽고 인수분해는 어렵다</b>는 비대칭이 공개키 암호의 토대. 그 수학(소수·서로소·Euler φ·Fermat/Euler 정리)을 갖춘다.</div>
-          <div class="field"><span class="lbl">📖 정의</span><ul>
-            <li>소수 = 1·자신만 약수. 소인수분해 \(a=\prod_{p}p^{a_p}\).</li>
-            <li><b>relatively prime(서로소)</b>: 공약수 1뿐. GCD = 소인수분해 최소 지수 곱.</li>
-            <li><b>Euler totient φ(n)</b>: n과 서로소인 [1,n−1] 개수.</li>
-            <li><b>primitive root(원시근)</b>: \(a^m\bmod n=1\)의 최소 m=φ(n)인 a.</li>
-            <li><b>discrete logarithm</b>: \(a^x\equiv b\bmod p\)의 x (구하기 어려움).</li>
-          </ul></div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span>HTTPS·전자서명·블록체인이 모두 이 정수론 위에 선다. 특히 RSA(C19) 키를 만들려면 <b>수백 자리 소수</b>를 빠르게 찾아야 하는데, 큰 수의 진짜 소수 판정은 느리므로 <b>Miller-Rabin</b> 같은 확률적 판정으로 "거의 확실히 소수"를 골라낸다(t회 반복에 오판 확률 \(4^{-t}\)). Fermat/Euler 정리는 "거듭제곱을 mod로 돌리면 주기적으로 1이 된다"는 성질로, RSA 복호화가 원문으로 정확히 되돌아오는 보증의 핵심이다. <i>왜 인수분해가 안전성인가?</i> n=pq는 곱하기 쉽지만, n만 알고 p,q를 되찾기(인수분해)는 천문학적으로 어렵다 — 이 비대칭이 공개키를 공개해도 안전한 이유.</div>
-          <div class="field"><span class="lbl">🧮 수식 (핵심)</span><ul>
-            <li><b>Fermat's little theorem</b>: \(a^{p-1}\bmod p=1\) (p 소수, gcd(a,p)=1).</li>
-            <li><b>Euler's theorem</b>(일반화): \(a^{\phi(n)}\bmod n=1\) (gcd(a,n)=1).</li>
-            <li><b>φ(p)=p−1</b> (p 소수), <b>φ(pq)=(p−1)(q−1)</b> (p,q 소수).</li>
-          </ul></div>
+          <div class="field"><span class="lbl">📖 정의</span>
+            <ul>
+              <li>소수 = 1·자신만 약수. 소인수분해 \(a=\prod_{p}p^{a_p}\).</li>
+              <li><b>relatively prime(서로소)</b>: 공약수 1뿐. GCD = 소인수분해 최소 지수 곱.</li>
+              <li><b>Euler totient φ(n)</b>: n과 서로소인 [1,n−1] 개수.</li>
+              <li><b>primitive root(원시근)</b>: \(a^m\bmod n=1\)의 최소 m=φ(n)인 a.</li>
+              <li><b>discrete logarithm</b>: \(a^x\equiv b\bmod p\)의 x (구하기 어려움).</li>
+            </ul>
+          </div>
+          <div class="field"><span class="lbl">🧮 수식 (핵심)</span>
+            <ul>
+              <li><b>Fermat's little theorem</b>: \(a^{p-1}\bmod p=1\) (p 소수, gcd(a,p)=1).</li>
+              <li><b>Euler's theorem</b>(일반화): \(a^{\phi(n)}\bmod n=1\) (gcd(a,n)=1).</li>
+              <li><b>φ(p)=p−1</b> (p 소수), <b>φ(pq)=(p−1)(q−1)</b> (p,q 소수).</li>
+            </ul>
+          </div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario">HTTPS·전자서명·블록체인이 모두 이 정수론 위에 선다. 특히 RSA(C19) 키를 만들려면 <b>수백 자리 소수</b>를 빠르게 찾아야 하는데, 큰 수의 진짜 소수 판정은 느리므로 <b>Miller-Rabin</b> 같은 확률적 판정으로 "거의 확실히 소수"를 골라낸다(t회 반복에 오판 확률 \(4^{-t}\)). Fermat/Euler 정리는 "거듭제곱을 mod로 돌리면 주기적으로 1이 된다"는 성질로, RSA 복호화가 원문으로 정확히 되돌아오는 보증의 핵심. <b>왜 인수분해가 안전성인가?</b> n=pq는 곱하기 쉽지만, n만 알고 p,q를 되찾기(인수분해)는 천문학적으로 어렵다 — 이 비대칭이 공개키를 공개해도 안전한 이유.</div>
+          </div>
           <div class="field"><span class="lbl">🔍 작동 원리 (단계별)</span>
             <div class="stepper">
-              <div class="stepper-title">🔍 Miller-Rabin 소수 판정</div>
+              <div class="stp-title">Miller-Rabin 소수 판정</div>
               <div class="step show"><div class="step-head">1. 직관</div>Fermat 성질(\(a^{n-1}\equiv1\))을 쓰되, pseudo-prime에 속지 않도록 <b>제곱근 단계에서 '1의 자명하지 않은 제곱근'</b>이 나오는지 추가 검사한다.</div>
               <div class="step"><div class="step-head">2. 셋업</div>n−1을 \(2^k\cdot q\) (q 홀수)로 분해. 랜덤 base a 선택.</div>
               <div class="step"><div class="step-head">3. 전개 1</div>\(a^q\bmod n\) 계산. 1이거나 n−1이면 "maybe prime"(통과).</div>
@@ -907,55 +1100,63 @@
               <div class="step"><div class="step-head">5. 전개 3</div>끝까지 n−1이 안 나오면 → <b>composite 확정</b>.</div>
               <div class="step"><div class="step-head">6. 결론</div>"composite"는 확정, "maybe prime"은 확률적. 합성수를 소수로 오판할 확률 &lt;1/4, <b>t회 반복 → 소수 확률 \(1-4^{-t}\)</b> (t=10이면 &gt;0.99999).</div>
               <div class="step"><div class="step-head">7. 시험 변형</div>n−1=2^k·q 분해, 특정 a로 판정 절차, t회 반복 신뢰도 계산, pseudo-prime와의 차이.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
-          <div class="field"><span class="lbl">📊 표·그래프 인사이트</span><div class="callout">예: gcd(18,300)=\(2^1{\cdot}3^1{\cdot}5^0=6\). φ(37)=36, φ(21)=2·6=12. \(3^4=81\equiv1\bmod10\).<br><b>소수 분포(Prime number theorem)</b>: 소수는 대략 ln n 간격, 짝수·5배수 제외하면 ≈0.4·ln(n)개 테스트면 소수 발견.<br><b>Miller-Rabin</b>: pseudo-prime 검출 확률 &lt;1/4, t회 반복 시 소수 확률 \(1-4^{-t}\) (t=10이면 &gt;0.99999).</div></div>
+          <div class="field"><span class="lbl">📊 표·그래프 인사이트</span>
+            <div class="callout">예: gcd(18,300)=\(2^1{\cdot}3^1{\cdot}5^0=6\). φ(37)=36, φ(21)=2·6=12. \(3^4=81\equiv1\bmod10\).<br><b>소수 분포(Prime number theorem)</b>: 소수는 대략 ln n 간격, 짝수·5배수 제외하면 ≈0.4·ln(n)개 테스트면 소수 발견.<br><b>Miller-Rabin</b>: pseudo-prime 검출 확률 &lt;1/4, t회 반복 시 소수 확률 \(1-4^{-t}\) (t=10이면 &gt;0.99999).</div>
+          </div>
           <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>① <b>φ(21) 계산</b>: 21=3·7(둘 다 소수) → φ(21)=(3−1)(7−1)=2·6=<b>12</b> (서로소: 1,2,4,5,8,10,11,13,16,17,19,20 — 12개 ✓). ② <b>Euler 정리 검산</b>: gcd(3,10)=1, φ(10)=4 → \(3^4=81=80+1\equiv\mathbf{1}\bmod10\) ✓. ③ <b>gcd(18,300)</b>: 18=2·3², 300=2²·3·5² → 공통 최소지수 \(2^1{\cdot}3^1=\mathbf{6}\).</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">Fermat 정리는 <b>gcd(a,p)=1</b> 필요. pseudo-prime(일부 합성수)도 Fermat 성질 만족 → Miller-Rabin로 확률적 보완.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge">본강의 출제</span></span> ① <b>φ(pq)=(p−1)(q−1) 계산</b>, ② Fermat/Euler 정리 적용, ③ Miller-Rabin 절차·확률, ④ 이산로그 난해성.</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">응용 → <a onclick="goNode('C18')">C18 Diffie-Hellman</a> <a onclick="goNode('C19')">C19 RSA</a></div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge mid">본강의 출제</span></span>① <b>φ(pq)=(p−1)(q−1) 계산</b>, ② Fermat/Euler 정리 적용, ③ Miller-Rabin 절차·확률, ④ 이산로그 난해성.</div>
+          <div class="field"><span class="lbl">🔗 연결</span>응용 → <a onclick="goNode('C18')">C18(Diffie-Hellman, 이산로그)</a>, <a onclick="goNode('C19')">C19(RSA, Euler 정리가 정당성 핵심)</a>.</div>
         </div>
       </details>
 
-      <details class="node-card" id="C18" data-node-id="C18" data-hot="0" data-title="C18 Diffie-Hellman 키 교환 이산로그 공유키 원시근">
+      <details class="node-card" id="C18" data-node-id="C18" data-hot="0" data-title="Diffie-Hellman 키 교환 이산로그 공유키">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C18" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C18 · Diffie-Hellman 키 교환
-          <span class="nbadge">⭐中</span><span class="nbadge">선행: C17</span>
+          <span class="nbadge mid">⭐中</span><span class="nbadge">선행: C17</span>
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>도청되는 공개 채널에서도, <b>각자의 비밀 지수</b>만으로 둘만 아는 공유키를 합의한다 — 안전성은 이산로그의 어려움.</div>
           <div class="field"><span class="lbl">📖 정의 / 메커니즘</span>공개 q(소수), α(q의 원시근). A: 비밀 \(X_A\), 공개 \(Y_A=\alpha^{X_A}\bmod q\). B: 비밀 \(X_B\), 공개 \(Y_B=\alpha^{X_B}\bmod q\).</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span>TLS(HTTPS) 핸드셰이크에서 브라우저와 서버가 <b>세션키를 합의</b>할 때 (EC)DH를 쓴다 — 도청자가 오가는 공개값(\(Y_A,Y_B\))을 다 봐도, 각자의 비밀 지수 없이는 공유키 \(K=\alpha^{X_AX_B}\)를 못 만든다. 공격자는 \(Y_A=\alpha^{X_A}\)에서 \(X_A\)를 역산해야 하는데 이것이 <b>이산로그 문제</b>라 사실상 불가능. <i>왜 둘이 같은 K에 도달하나?</i> 지수법칙 \((\alpha^{X_B})^{X_A}=(\alpha^{X_A})^{X_B}=\alpha^{X_AX_B}\) 덕분에 순서와 무관하게 같은 값. 단 상대가 진짜 그 서버인지는 보장 못 해(중간자 공격) 인증서(C20)가 따로 필요.</div>
-          <div class="field"><span class="lbl">🧮 수식 (공유키)</span><div>\[ K=(Y_B)^{X_A}=(Y_A)^{X_B}=\alpha^{X_A X_B}\bmod q \]</div><div style="color:var(--muted);font-size:.88rem">양쪽이 같은 값에 도달.</div></div>
+          <div class="field"><span class="lbl">🧮 수식 (공유키)</span><div class="scrollx">\[ K=(Y_B)^{X_A}=(Y_A)^{X_B}=\alpha^{X_A X_B}\bmod q \]</div> — 양쪽이 같은 값에 도달.</div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario">TLS(HTTPS) 핸드셰이크에서 브라우저와 서버가 <b>세션키를 합의</b>할 때 (EC)DH를 쓴다 — 도청자가 오가는 공개값(\(Y_A,Y_B\))을 다 봐도, 각자의 비밀 지수 없이는 공유키 \(K=\alpha^{X_AX_B}\)를 못 만든다. 공격자는 \(Y_A=\alpha^{X_A}\)에서 \(X_A\)를 역산해야 하는데 이것이 <b>이산로그 문제</b>라 사실상 불가능. <b>왜 둘이 같은 K에 도달하나?</b> 지수법칙 \((\alpha^{X_B})^{X_A}=(\alpha^{X_A})^{X_B}=\alpha^{X_AX_B}\) 덕분에 순서와 무관하게 같은 값. 단 상대가 진짜 그 서버인지는 보장 못 해(중간자 공격) 인증서(C20)가 따로 필요.</div>
+          </div>
           <div class="field"><span class="lbl">📊 표·그래프 인사이트</span><div class="callout">공격자는 공개값 \(Y_A\)에서 \(X_A\)를 얻으려면 \(\alpha^{x}\bmod q=Y_A\) (이산로그)를 풀어야 함 → 어려움.</div></div>
           <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>q=353, α=3. ① A: \(X_A=97\) → \(Y_A=3^{97}\bmod353=\mathbf{40}\). ② B: \(X_B=233\) → \(Y_B=3^{233}\bmod353=\mathbf{248}\). ③ 공개값 40, 248 교환. ④ A 계산: \(K=Y_B^{X_A}=248^{97}\bmod353=\mathbf{160}\). ⑤ B 계산: \(K=Y_A^{X_B}=40^{233}\bmod353=\mathbf{160}\) — <b>일치</b> ✓. ⑥ 공격자는 \(3^x\bmod353=40\)(이산로그)를 풀어야 → 어려움.</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">공유키 합의는 가능하나 <b>상대 인증은 안 됨</b>(중간자 공격 가능 — 별도 인증 필요).</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge">본강의 출제</span></span> ① <b>키 합의 수식·공유키 일치 증명</b>(\(K=\alpha^{X_AX_B}\)), ② 안전성=이산로그 난해성.</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">선행 <a onclick="goNode('C17')">C17 원시근·이산로그</a> · 형제 → <a onclick="goNode('C19')">C19 RSA</a></div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge mid">본강의 출제</span></span>① <b>키 합의 수식·공유키 일치 증명</b>(\(K=\alpha^{X_AX_B}\)), ② 안전성=이산로그 난해성.</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C17')">C17(원시근·이산로그)</a>. 형제 → <a onclick="goNode('C19')">C19(RSA, 인수분해 기반)</a>.</div>
         </div>
       </details>
 
-      <details class="node-card" id="C19" data-node-id="C19" data-hot="1" data-title="C19 공개키 암호 RSA trap-door one-way function Euler 정당성 인수분해">
+      <details class="node-card" id="C19" data-node-id="C19" data-hot="1" data-title="공개키 암호 RSA trap-door one-way function Euler 정리">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C19" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C19 · 공개키 암호 + RSA
-          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C17 (Euler 정리·φ)</span>
+          <span class="nbadge hot">⭐高</span><span class="nbadge">선행: C17 (Euler 정리·φ가 핵심)</span>
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>공개키로 잠그면 개인키로만 열린다. RSA는 "<b>큰 합성수 n의 인수분해가 어렵다</b>"는 사실 위에, Euler 정리로 암복호가 서로 역이 되도록 설계한 것.</div>
           <div class="field"><span class="lbl">📖 정의 / 요건</span>public/private 키 쌍. <b>trap-door one-way function</b> 필요(한 방향 easy, 역방향 infeasible, 단 trap-door 정보 알면 easy). 6 요건(키생성·암호·복호 easy / private 추론·평문 복구 infeasible / 순서무관). 응용: 암복호(secrecy), 디지털 서명(authentication), 키 교환.</div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span>HTTPS 인증서·SSH·PGP 이메일·전자서명이 RSA로 동작한다 — 브라우저는 서버의 <b>공개키 {e,n}</b>로 세션 정보를 암호화하고, 서버만이 <b>개인키 {d}</b>로 복호한다. 누구나 공개키를 가져도 안전한 이유는, d를 알려면 φ(n)=(p−1)(q−1)이 필요하고 그러려면 n을 소인수분해해야 하는데 n=1024비트면 현존 컴퓨터로 불가능하기 때문. <i>왜 암호·복호가 정확히 역이 되나?</i> \(ed\equiv1\bmod\phi(n)\)이 되게 d를 잡으면 \(M^{ed}=M^{k\phi(n)+1}\equiv M\) (Euler 정리) — C17의 정수론이 그대로 정당성의 뼈대다. timing attack(복호 시간 누출) 같은 부채널 공격은 blinding으로 막는다.</div>
-          <div class="field"><span class="lbl">🧮 수식 (RSA)</span><ul>
-            <li>키 생성: 소수 p,q → <b>n=pq</b> → <b>φ(n)=(p−1)(q−1)</b> → e (<b>gcd(e,φ(n))=1</b>, 1&lt;e&lt;φ(n)) → <b>d≡e⁻¹ mod φ(n)</b>(확장 유클리드). 공개키 {e,n}, 개인키 {d,n}.</li>
-            <li>암호화 \(C=M^e\bmod n\), 복호화 \(M=C^d\bmod n=M^{ed}\bmod n\).</li>
-          </ul></div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 / 🔍 작동 원리 <span class="nbadge hot">⭐핵심</span></span>
-            <div class="stepper solve">
-              <div class="stepper-title">✏️ 풀이 예제 — RSA 키생성·암복호 + Euler 정당성 증명 (p=17, q=11, M=88)</div>
+          <div class="field"><span class="lbl">🧮 수식 (RSA)</span>
+            <ul>
+              <li>키 생성: 소수 p,q → <b>n=pq</b> → <b>φ(n)=(p−1)(q−1)</b> → e (<b>gcd(e,φ(n))=1</b>, 1&lt;e&lt;φ(n)) → <b>d≡e⁻¹ mod φ(n)</b>(확장 유클리드). 공개키 {e,n}, 개인키 {d,n}.</li>
+              <li>암호화 \(C=M^e\bmod n\), 복호화 \(M=C^d\bmod n=M^{ed}\bmod n\).</li>
+            </ul>
+          </div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario">HTTPS 인증서·SSH·PGP 이메일·전자서명이 RSA로 동작한다 — 브라우저는 서버의 <b>공개키 {e,n}</b>로 세션 정보를 암호화하고, 서버만이 <b>개인키 {d}</b>로 복호한다. 누구나 공개키를 가져도 안전한 이유는, d를 알려면 φ(n)=(p−1)(q−1)이 필요하고 그러려면 n을 소인수분해해야 하는데 n=1024비트면 현존 컴퓨터로 불가능하기 때문. <b>왜 암호·복호가 정확히 역이 되나?</b> \(ed\equiv1\bmod\phi(n)\)이 되게 d를 잡으면 \(M^{ed}=M^{k\phi(n)+1}\equiv M\) (Euler 정리) — C17의 정수론이 그대로 정당성의 뼈대. timing attack(복호 시간 누출) 같은 부채널 공격은 blinding으로 막는다.</div>
+          </div>
+          <div class="field"><span class="lbl">🔍 작동 원리 / 유도 (단계별 ⭐핵심)</span>
+            <div class="stepper worked">
+              <div class="stp-title">RSA 키생성·암복호 + Euler 정당성 증명 (p=17, q=11, M=88)</div>
               <div class="step show"><div class="step-head">1. 직관</div>e로 e제곱(암호), d로 d제곱(복호)을 하면 합쳐서 \(M^{ed}\). d를 "\(ed\equiv1\bmod\phi(n)\)"이 되게 잡으면 Euler 정리에 의해 \(M^{ed}\equiv M\) — 원문 복귀.</div>
               <div class="step"><div class="step-head">2. 셋업 — 키생성</div>p=17, q=11 → <b>n=187</b> → <b>φ(n)=16·10=160</b>. e: 1&lt;e&lt;160, gcd(e,160)=1 → <b>e=7</b>.</div>
               <div class="step"><div class="step-head">3. 전개 1 — d 구하기</div>\(d\equiv e^{-1}\bmod\phi\): \(7d\equiv1\bmod160\) → <b>d=23</b> (\(7{\cdot}23=161=160+1\equiv1\)). 즉 \(ed=161=1{\cdot}160+1\) (k=1).</div>
@@ -964,60 +1165,195 @@
               <div class="step"><div class="step-head">6. 결론</div>\(M'=M=88\) — 복호가 암호의 역. ∴ RSA 정확. 보안: d를 알려면 φ(n) 필요 → φ=(p−1)(q−1) 알려면 n 인수분해 필요(어려움).</div>
               <div class="step"><div class="step-head">7. 검산</div>\(88^7\bmod187=11\), \(11^{23}\bmod187=88\) ✓.</div>
               <div class="step"><div class="step-head">8. 시험 변형</div>다른 p,q,e로 d 구하고 암복호, "왜 ed≡1 mod φ인가", "인수분해가 왜 보안 근거인가" 연결.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="stepcount"></span><span class="dots"></span></div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
           <div class="field"><span class="lbl">📊 표·그래프 인사이트 (보안 3공격)</span>
-            <table><thead><tr><th>공격</th><th>대응</th></tr></thead>
-            <tbody><tr><td>brute force(키 전수)</td><td>키 공간 크게(n=1024 bits)</td></tr>
-            <tr><td><b>mathematical</b>(n 인수분해→φ→d)</td><td>인수분해 난도 = 보안 근거</td></tr>
-            <tr><td>timing attack(지수화 시간 누출)</td><td>상수시간·랜덤지연·blinding</td></tr></tbody></table>
+            <div class="scrollx"><table>
+              <tr><th>공격</th><th>대응</th></tr>
+              <tr><td>brute force(키 전수)</td><td>키 공간 크게(n=1024 bits)</td></tr>
+              <tr><td><b>mathematical</b>(n 인수분해→φ→d)</td><td>인수분해 난도 = 보안 근거</td></tr>
+              <tr><td>timing attack(지수화 시간 누출)</td><td>상수시간·랜덤지연·blinding</td></tr>
+            </table></div>
             <div class="callout">p,q 제약: 길이 비슷·(p−1)(q−1)에 큰 소인수·gcd(p−1,q−1) 작게·d&gt;n^(1/4).</div>
           </div>
+          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>위 STEP에서 p=17,q=11로 n,φ,e,d를 구하고 M=88 암복호. 핵심 결과: n=187, φ=160, e=7, d=23, \(88^7\bmod187=11\), \(11^{23}\bmod187=88\).</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">보안은 결국 <b>인수분해 난도</b>로 귀결(φ나 d를 직접 구하는 것도 인수분해와 동급 난도). e는 φ(n)과 서로소여야 d가 존재.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge">본강의 출제</span></span> ① <b>RSA 키 생성 전 과정(n,φ,e,d)</b>, ② 암복호 수식, ③ <b>Euler 정리로 정당성 증명</b>, ④ 예제 계산, ⑤ 인수분해=보안 근거, ⑥ trap-door one-way function.</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">선행 <a onclick="goNode('C17')">C17</a> · 다음 → <a onclick="goNode('C20')">C20 서명/PKI</a></div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge mid">본강의 출제</span></span>① <b>RSA 키 생성 전 과정(n,φ,e,d)</b>, ② 암복호 수식, ③ <b>Euler 정리로 정당성 증명</b>, ④ 예제 계산, ⑤ 인수분해=보안 근거, ⑥ trap-door one-way function.</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C17')">C17</a>. 다음 → <a onclick="goNode('C20')">C20(서명/PKI)</a>.</div>
         </div>
       </details>
 
-      <details class="node-card" id="C20" data-node-id="C20" data-hot="0" data-title="C20 디지털 서명 PKI X.509 CA 인증 무결성 certificate authority">
+      <details class="node-card" id="C20" data-node-id="C20" data-hot="0" data-title="디지털 서명 PKI X.509 CA 인증서 무결성 인증">
         <summary>
           <input type="checkbox" class="nodechk" data-id="C20" onclick="event.stopPropagation();markDone(this)" title="학습 완료">
           C20 · 디지털 서명 + PKI (X.509, CA)
-          <span class="nbadge">⭐低</span><span class="nbadge">선행: C19</span>
+          <span class="nbadge low">⭐低</span><span class="nbadge">선행: C19</span>
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>private key로 잠근 것은 누구나 public key로 열 수 있다 → "이건 진짜 그 사람이 보냈다"는 <b>인증·무결성</b>을 보장(단, 기밀성은 아님).</div>
-          <div class="field"><span class="lbl">📖 정의</span><ul>
-            <li><b>인증(authentication)</b>: private key로 암호화 → 누구나 public key로 복호 → 송신자 검증.</li>
-            <li><b>디지털 서명</b>: 해시코드를 private key로 암호화. 출처·무결성 인증. <b>기밀성 미제공</b>(변조는 막으나 도청은 못 막음).</li>
-            <li><b>public key certificate</b>: 공개키+소유자 ID를 신뢰 3자(CA)가 서명.</li>
-            <li><b>CA(Certificate Authority)</b>: 공개키+ID를 서명하는 신뢰기관(정부·금융).</li>
-          </ul></div>
-          <div class="scenario"><span class="lbl">🌍 실세계 시나리오</span>브라우저 주소창의 자물쇠 아이콘이 바로 PKI다 — 웹사이트가 제시한 <b>X.509 인증서</b>(공개키+도메인 ID에 CA가 서명)를 브라우저가 내장된 CA 공개키로 검증해 "이 사이트는 진짜다"를 확인한다. 소프트웨어 코드 서명, 전자계약, 공인인증서가 같은 구조. <i>왜 해시를 서명하나?</i> 문서 전체를 RSA로 암호화하면 느리니, 해시(짧은 지문)만 개인키로 서명한다 — 변조 시 해시가 달라져 검증이 깨진다(무결성). 단 서명은 <b>기밀성을 안 줌</b> — 도청자도 내용은 볼 수 있고, 다만 "조작·위조"만 막는다. 그래서 비밀이 필요하면 암호화(C19)를 따로 건다.</div>
-          <div class="field"><span class="lbl">📊 표·그래프 인사이트</span><div class="callout"><b>X.509</b>: 공개키 인증서 표준(IPsec/SSL/SET/S-MIME). 필드: version, serial #, issuer, validity, subject, public key, signature, CRL(revocation).<br><b>PKIX</b>: PKI 아키텍처(end entity, CA, RA, CRL issuer, repository).</div></div>
+          <div class="field"><span class="lbl">📖 정의</span>
+            <ul>
+              <li><b>인증(authentication)</b>: private key로 암호화 → 누구나 public key로 복호 → 송신자 검증.</li>
+              <li><b>디지털 서명</b>: 해시코드를 private key로 암호화. 출처·무결성 인증. <b>기밀성 미제공</b>(변조는 막으나 도청은 못 막음).</li>
+              <li><b>public key certificate</b>: 공개키+소유자 ID를 신뢰 3자(CA)가 서명.</li>
+              <li><b>CA(Certificate Authority)</b>: 공개키+ID를 서명하는 신뢰기관(정부·금융).</li>
+            </ul>
+          </div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+            <div class="scenario">브라우저 주소창의 자물쇠 아이콘이 바로 PKI다 — 웹사이트가 제시한 <b>X.509 인증서</b>(공개키+도메인 ID에 CA가 서명)를 브라우저가 내장된 CA 공개키로 검증해 "이 사이트는 진짜다"를 확인. 소프트웨어 코드 서명, 전자계약, 공인인증서가 같은 구조. <b>왜 해시를 서명하나?</b> 문서 전체를 RSA로 암호화하면 느리니, 해시(짧은 지문)만 개인키로 서명한다 — 변조 시 해시가 달라져 검증이 깨진다(무결성). 단 서명은 <b>기밀성을 안 줌</b> — 도청자도 내용은 볼 수 있고, 다만 "조작·위조"만 막는다. 그래서 비밀이 필요하면 암호화(C19)를 따로 건다.</div>
+          </div>
+          <div class="field"><span class="lbl">📊 표·그래프 인사이트</span>
+            <div class="callout"><b>X.509</b>: 공개키 인증서 표준(IPsec/SSL/SET/S-MIME). 필드: version, serial #, issuer, validity, subject, public key, signature, CRL(revocation).<br><b>PKIX</b>: PKI 아키텍처(end entity, CA, RA, CRL issuer, repository).</div>
+          </div>
           <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>송신자 서명·수신자 검증 절차 — ① 송신자: 메시지 M의 해시 h=H(M) 계산 → ② 개인키로 서명 \(S=h^d\bmod n\) → ③ (M, S) 전송 → ④ 수신자: 공개키로 \(h'=S^e\bmod n\) 복원 → ⑤ 받은 M으로 직접 H(M) 계산 → ⑥ \(h'\stackrel{?}{=}H(M)\) 비교 → 일치하면 <b>출처·무결성 확인</b>(불일치면 변조). 인증서 검증도 동일: CA가 (공개키+ID) 해시를 서명, 사용자가 CA 공개키로 검증.</div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">디지털 서명은 <b>무결성·인증</b>만, <b>기밀성(secrecy) 아님</b> — 도청은 못 막음.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge">본강의 출제 (빈도 낮음)</span></span> ① 서명=무결성/인증(기밀성 아님), ② 인증서 구조(X.509 필드), ③ CA 역할.</div>
-          <div class="field"><span class="lbl">🔗 연결</span><div class="links">선행 <a onclick="goNode('C19')">C19 RSA</a></div></div>
+          <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge low">본강의 출제 · 빈도 상대적 낮음</span></span>① 서명=무결성/인증(기밀성 아님), ② 인증서 구조(X.509 필드), ③ CA 역할.</div>
+          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C19')">C19(RSA로 서명·검증)</a>.</div>
         </div>
       </details>
     </section>
 
+    <!-- ===== 예상 문제 + 모범 답변 (말미 셀프테스트) ===== -->
+    <section class="stem-sec" id="examqs">
+      <h2>📝 예상 문제 &amp; 모범 답변 (12문항)</h2>
+      <p style="color:var(--muted)">먼저 스스로 답해보고 <b>"답 보기"</b>로 확인하세요. 시험은 <b>증명·복잡도 중심</b>(증명 6 + 복잡도매칭 2 + 추적/계산 4). 출제 가이드 기반.</p>
 
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">증명</span><span>Q1. O-표기 정의로 \(3n+1=O(n^2)\)를 증명하라 — \(c,n_0\)를 명시할 것. <span style="color:var(--muted);font-weight:400">(summary PDF16 p.2~3 ⭐高)</span></span>
+          <button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span>\(O\) 정의 = \(\{f:\exists c,n_0&gt;0,\ 0\le f(n)\le cg(n)\ \forall n\ge n_0\}\). \(3n+1\le cn^2\)의 양변을 \(n^2(&gt;0)\)로 나누면 \(\frac{3}{n}+\frac{1}{n^2}\le c\). 좌변은 \(n\ge1\)에서 최대 \(3+1=4\)이므로 \(c=4,\ n_0=1\)로 잡으면 \(\forall n\ge1\)에서 \(3n+1\le 4n^2\). ∴ \(3n+1=O(n^2)\). ∎</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>① \(O\) 정의 정확히 진술 ② \(n^2\)로 나눠 \(c\) 하한 유도 ③ \(c\ge4,n_0=1\) 구체 제시 ④ "\(O\)는 느슨해도 참"(\(3n+1=O(n)\)도, \(\ne\Theta(n^2)\)) 언급(보너스).</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: <a onclick="goNode('C1')">C1</a></div>
+        </div>
+      </div>
 
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">증명</span><span>Q2. 치환법으로 \(T(n)=2T(\lfloor n/2\rfloor)+n=O(n\lg n)\)을 증명하라. 경계조건을 어떻게 처리하는지 보여라. <span style="color:var(--muted);font-weight:400">(summary PDF16 p.4~10 ⭐高)</span></span>
+          <button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span>추측 \(T(n)\le cn\lg n\). 귀납가정 \(T(\lfloor n/2\rfloor)\le c\lfloor n/2\rfloor\lg(\lfloor n/2\rfloor)\) 대입 → \(T(n)\le cn\lg(n/2)+n = cn\lg n - cn + n\). \(-cn+n\le0 \iff c\ge1\)이면 \(T(n)\le cn\lg n\). <b>경계조건</b>: \(n=1\)은 \(cn\lg n=0&lt;T(1)=1\)이라 실패 → 점근 정의상 "큰 n만" 보이면 되므로 \(n_0=2\)로 이동, \(T(2)=4\le 2c\)에서 \(c\ge2\). ∴ \(c\ge2,n_0=2\)로 \(O(n\lg n)\). ∎</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>① 추측+귀납가정 진술 ② \(\lg(n/2)=\lg n-1\) 전개 ③ \(c\ge1\) 조건 도출 ④ <b>경계조건 트릭</b>(\(n_0=2,c\ge2\)) — 채점 핵심. 마스터정리로 풀면 범위 외(감점 위험).</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: <a onclick="goNode('C2')">C2</a></div>
+        </div>
+      </div>
 
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">증명</span><span>Q3. 임의의 비교정렬은 최악의 경우 \(\Omega(n\lg n)\) 비교가 필요함을 증명하라(Theorem 8.1). <span style="color:var(--muted);font-weight:400">(summary PDF16 p.19~23 ⭐高)</span></span>
+          <button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span>비교정렬을 <b>결정 트리</b>(full binary tree)로 모델 — 잎=출력 순열, 내부노드=비교, 트리 높이 h=최악 비교 횟수. (1) 정렬은 \(n!\)개 순열을 모두 구별해야 하므로 <b>잎 수 ≥ n!</b>. (2) 높이 h 이진트리의 잎 수 ≤ \(2^h\) ⇒ \(n!\le 2^h\). (3) 양변 lg: \(\lg(n!)\le h\). (4) Stirling(식 3.19) \(\lg(n!)=\Theta(n\lg n)\) ⇒ \(h=\Omega(n\lg n)\). ∎</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>① 결정트리 모델 정의(잎=순열, 높이=비교수) ② 잎 \(\ge n!\) ③ 잎 \(\le 2^h\) ⇒ \(n!\le2^h\) ④ \(\lg(n!)=\Theta(n\lg n)\)로 마무리. counting/radix가 이 하한을 "비교 모델 밖"이라 우회함을 덧붙이면 보너스.</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: <a onclick="goNode('C6')">C6</a></div>
+        </div>
+      </div>
 
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">증명</span><span>Q4. MST의 cut property(Theorem 23.1)를 진술하고 교환 논법으로 증명하라. <span style="color:var(--muted);font-weight:400">(PDF11 + summary PDF16 p.53~58 ⭐高)</span></span>
+          <button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span><b>진술</b> — A가 어떤 MST에 포함, cut (S,V−S)가 A를 respect(A의 간선이 cut을 cross 안 함), (u,v)가 그 cut의 light edge(최소 가중)이면 (u,v)는 A에 safe. <b>증명</b>: A⊆MST T. T가 (u,v)를 안 가지면, T에 (u,v)를 더해 생긴 사이클의 경로 p 위에 cut을 cross하는 간선 (x,y)가 존재. \(T'=T-\{(x,y)\}\cup\{(u,v)\}\)는 다시 트리이고, (u,v)가 light이라 \(w(u,v)\le w(x,y)\) ⇒ \(w(T')\le w(T)\) ⇒ T'도 MST. \(A\cup\{(u,v)\}\subseteq T'\)이므로 (u,v) safe. ∎</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>① respect·light·safe 정의 ② (u,v) 추가→사이클→경로 p의 cross 간선 (x,y) 존재 ③ 교환 \(T'\) 구성 ④ \(w(u,v)\le w(x,y)\)로 \(w(T')\le w(T)\) 비용 비교. Corollary 23.2(Prim/Kruskal 근거) 언급 보너스.</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: <a onclick="goNode('C14')">C14</a></div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">증명</span><span>Q5. Dijkstra에서 정점 u가 S에 추가될 때 \(d[u]=\delta(s,u)\)임을 증명하라. 왜 음수 간선이면 깨지는가? <span style="color:var(--muted);font-weight:400">(PDF13 본강의)</span></span>
+          <button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span>비음수 가중 가정. 모순 가정 — 처음으로 \(d[u]&gt;\delta(s,u)\)인 u가 EXTRACT-MIN된다 하자. s→u 최단경로가 S를 떠나는 첫 간선 (x,y)(x∈S, y∉S). x가 이미 확정이라 RELAX로 \(d[y]=\delta(s,y)\). 비음수라 \(\delta(s,y)\le\delta(s,u)&lt;d[u]\) ⇒ \(d[y]&lt;d[u]\). 그러면 EXTRACT-MIN은 y를 먼저 뽑았어야 함 → 모순. ∴ \(d[u]=\delta(s,u)\). <b>음수 간선</b>: \(\delta(s,y)\le\delta(s,u)\)가 무너져(이후 간선이 음수면 더 줄 수 있음) 그리디 확정이 틀림.</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>① 모순 가정 세우기 ② 경계 간선 (x,y)·\(d[y]=\delta(s,y)\) ③ 비음수로 \(d[y]&lt;d[u]\) 부등식 ④ EXTRACT-MIN 모순 ⑤ 음수면 부등식 붕괴 설명.</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: <a onclick="goNode('C15')">C15</a></div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">증명</span><span>Q6. RSA 복호가 암호의 역임을(\(M^{ed}\equiv M\bmod n\)) Euler 정리로 증명하라. <span style="color:var(--muted);font-weight:400">(PDF15 본강의)</span></span>
+          <button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span>키 생성에서 \(ed\equiv1\bmod\phi(n)\)이므로 \(ed=k\phi(n)+1\) (정수 k). 따라서 \(M^{ed}=M^{k\phi(n)+1}=(M^{\phi(n)})^k\cdot M\). Euler 정리(gcd(M,n)=1일 때 \(M^{\phi(n)}\equiv1\bmod n\)) ⇒ \(\equiv 1^k\cdot M=M\bmod n\). (n=pq일 때는 일반화 형태 \(M^{k\phi(n)+1}\equiv M\bmod n\)이 M이 p나 q의 배수여도 성립.) ∴ 복호 \(C^d=M^{ed}\equiv M\). ∎</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>① \(ed\equiv1\bmod\phi\) ⇒ \(ed=k\phi(n)+1\) ② 지수 분해 \((M^{\phi})^k M\) ③ Euler 정리 적용 ④ \(\equiv M\) 결론. 보안=인수분해 난도 연결 보너스.</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: <a onclick="goNode('C19')">C19</a>, <a onclick="goNode('C17')">C17</a></div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">복잡도·매칭</span><span>Q7. 다음 정렬을 (최악 시간 / 안정성 / in-place)로 매칭하라: 삽입·병합·힙·퀵·counting. <span style="color:var(--muted);font-weight:400">(summary + 본강의)</span></span>
+          <button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span>삽입 = \(\Theta(n^2)\) / stable / in-place. 병합 = \(\Theta(n\lg n)\) / stable / <b>not</b> in-place(Θ(n) 추가). 힙 = \(O(n\lg n)\) / <b>not</b> stable / in-place. 퀵 = 최악 \(O(n^2)\)(평균 \(\Theta(n\lg n)\)) / not stable / in-place. counting = \(\Theta(k+n)\) / stable / not in-place.</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>항목별 부분점수. 흔한 실수 — 병합을 in-place로(✗), 힙/퀵을 stable로(✗), 퀵 최악을 \(n\lg n\)으로(✗). BUILD-MAX-HEAP는 tight \(O(n)\)임을 구분(보너스).</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: <a onclick="goNode('C3')">C3</a>, <a onclick="goNode('C4')">C4</a>, <a onclick="goNode('C5')">C5</a>, <a onclick="goNode('C6')">C6</a></div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">복잡도·매칭</span><span>Q8. 다음 그래프 알고리즘의 시간복잡도를 매칭하라: BFS·DFS·위상정렬·Prim(heap)·Kruskal·Dijkstra(heap)·Bellman-Ford·DAG-SP·Floyd-Warshall. <span style="color:var(--muted);font-weight:400">(본강의)</span></span>
+          <button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span>BFS \(O(V+E)\) · DFS \(\Theta(V+E)\) · 위상정렬 \(\Theta(V+E)\) · Prim(binary heap) \(O(E\lg V)\) · Kruskal \(O(E\lg V)\) · Dijkstra(binary heap) \(O((V+E)\lg V)\) · Bellman-Ford \(O(VE)\) · DAG-SP \(\Theta(V+E)\) · Floyd-Warshall \(\Theta(V^3)\).</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>항목별. 함정 — 인접행렬 BFS는 \(O(V^2)\)(Ex 22.2-4), Dijkstra Fibonacci heap은 \(O(V\lg V+E)\), Kruskal은 \(\lg E=O(\lg V)\)라 Prim과 동급임을 알면 보너스.</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: <a onclick="goNode('C11')">C11</a>~<a onclick="goNode('C16')">C16</a></div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">추적·계산</span><span>Q9. \(\{a:45,b:13,c:12,d:16,e:9,f:5\}\)(천 단위)로 Huffman 트리를 구성하고 총 비트 수를 구하라. <span style="color:var(--muted);font-weight:400">(summary PDF16 p.32~38 ⭐高)</span></span>
+          <button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span>최소 둘씩 병합 — f5+e9=14 → c12+b13=25 → 14+d16=30 → 25+30=55 → a45+55=100(루트). 깊이: a=1, b·c·d=3, e·f=4. 총비트 \(=(45{\cdot}1+13{\cdot}3+12{\cdot}3+16{\cdot}3+9{\cdot}4+5{\cdot}4)\times1000=(45+39+36+48+36+20)\times1000=\mathbf{224{,}000}\) bits. 고정 3-bit는 \(300{,}000\) → 약 25% 절감.</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>① 매 단계 최소 두 빈도 병합 순서 ② 트리/깊이 정확 ③ \(\sum\)빈도×깊이 계산 ④ 224,000 vs 300,000 비교. prefix code 성질 언급 보너스.</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: <a onclick="goNode('C8')">C8</a></div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">추적·계산</span><span>Q10. X=ABCB, Y=BDCAB의 LCS를 \(c[i,j]\) 표로 구하고 한 개를 복원하라. <span style="color:var(--muted);font-weight:400">(summary PDF16 p.24~31 ⭐高)</span></span>
+          <button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span>점화식 — \(x_i=y_j\)면 \(c[i,j]=c[i-1,j-1]+1\), 아니면 \(\max(c[i-1,j],c[i,j-1])\). 표(행 A,B,C,B / 열 B,D,C,A,B) 마지막 칸 \(c[4,5]=3\). 우하에서 역추적(일치=↖) → LCS <b>BCB</b>(길이 3). brute force라면 \(2^4=16\)개 부분수열 비교.<div class="scrollx"><pre>     ∅  B  D  C  A  B
+  ∅  0  0  0  0  0  0
+  A  0  0  0  0  1  1
+  B  0  1  1  1  1  2
+  C  0  1  1  2  2  2
+  B  0  1  1  2  2  3</pre></div></div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>① 점화식 3-case ② 표 채우기(경계 0행/0열 포함) ③ \(c[4,5]=3\) ④ 역추적 복원 BCB. subsequence≠substring(연속 불필요) 구분 보너스.</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: <a onclick="goNode('C7')">C7</a></div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">추적·계산</span><span>Q11. RSA에서 p=17, q=11, e=7일 때 n·φ(n)·d를 구하고 M=88을 암·복호하라. <span style="color:var(--muted);font-weight:400">(PDF15 본강의)</span></span>
+          <button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span>\(n=pq=187\). \(\phi(n)=(p-1)(q-1)=16\cdot10=160\). \(d\equiv e^{-1}\bmod\phi\): \(7d\equiv1\bmod160\) → \(d=23\)(\(7\cdot23=161\equiv1\)). 암호 \(C=88^7\bmod187=11\). 복호 \(M=11^{23}\bmod187=88\) ✓. 공개키 {7,187}, 개인키 {23,187}.</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>① \(n=187\) ② \(\phi=160\)(\((p-1)(q-1)\)) ③ \(d=23\)(확장 유클리드/모듈러 역원) ④ 암복호 결과 11→88. gcd(e,φ)=1이라 d 존재함 언급 보너스.</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: <a onclick="goNode('C19')">C19</a>, <a onclick="goNode('C17')">C17</a></div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">추적·계산</span><span>Q12. \(\{a\text{-}b:4, a\text{-}c:1, b\text{-}c:2, b\text{-}d:5, c\text{-}d:8\}\)에 Prim(root a)과 Kruskal로 MST를 구하라. 두 결과 비용이 같은가? <span style="color:var(--muted);font-weight:400">(summary Prim ⭐高 + 본강의 Kruskal)</span></span>
+          <button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span><b>Prim(root a)</b>: key[a]=0 → a-c(1) → b-c(2) → b-d(5). <b>Kruskal</b>(정렬 a-c1,b-c2,a-b4,b-d5,c-d8): a-c(1)✓ → b-c(2)✓ → a-b(4)✗(사이클) → b-d(5)✓ → c-d(8)✗. 두 MST = {a-c, b-c, b-d}, 총비용 <b>8</b>, \(|E|=3=|V|-1\). 비용은 동일(MST 비용은 유일).</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>① Prim key 갱신·간선 채택 순서 ② Kruskal 정렬·사이클 기각(a-b) ③ 동일 MST·비용 8 ④ 두 알고리즘 \(O(E\lg V)\) 동급 언급 보너스.</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: <a onclick="goNode('C14')">C14</a></div>
+        </div>
+      </div>
+    </section>
   </main>
 </div>
 
-<footer>생성: 시험대비 학습자료 하네스 · 1차 자료(강의 PDF + Notion 노트) 기반 · 단일 HTML, 오프라인 동작 · nodes 20 / STEP(원리+풀이예제) / 시나리오 20 / 학습경로 17단계</footer>
+<footer>생성: 시험대비 학습자료 하네스 · 1차 자료(강의 PDF + Notion 노트) 기반 · 단일 HTML, 오프라인 동작 · nodes 20 · 예상문제 12</footer>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" onerror="window.__noKatex=true">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
-  onload="renderMathInElement(document.body,{delimiters:[{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false},{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"
   onerror="katexFallback()"></script>
 <script>
   function katexFallback(){ document.body.classList.add('katex-fallback'); }
@@ -1026,11 +1362,25 @@
     b.setAttribute('data-theme',t); localStorage.setItem('theme',t);
   }
   (function(){const t=localStorage.getItem('theme'); if(t)document.body.setAttribute('data-theme',t);})();
+  function toggleNav(){
+    const rm=document.getElementById('roadmap'), sc=document.getElementById('scrim');
+    const open=rm.classList.toggle('open'); sc.classList.toggle('show',open);
+  }
+  function closeNav(){
+    const rm=document.getElementById('roadmap'), sc=document.getElementById('scrim');
+    if(rm)rm.classList.remove('open'); if(sc)sc.classList.remove('show');
+  }
   function goNode(id){
     const card=document.getElementById(id); if(!card)return;
-    card.open=true; card.scrollIntoView({behavior:'smooth',block:'start'});
+    if(card.tagName==='DETAILS')card.open=true; card.scrollIntoView({behavior:'smooth',block:'start'});
     document.querySelectorAll('.rm-node').forEach(n=>n.classList.remove('active'));
     const rn=document.querySelector('.rm-node[data-target="'+id+'"]'); if(rn)rn.classList.add('active');
+    if(window.matchMedia('(max-width:900px)').matches)closeNav();
+  }
+  function toggleBranch(el){ el.classList.toggle('collapsed'); }
+  function toggleQA(btn){
+    const a=btn.closest('.qa-item').querySelector('.qa-a');
+    const open=a.classList.toggle('open'); btn.textContent=open?'답 숨기기':'답 보기';
   }
   function stepMove(btn,dir){
     const sp=btn.closest('.stepper'), steps=[...sp.querySelectorAll('.step')];
@@ -1040,49 +1390,13 @@
     syncDots(sp,i,steps.length);
   }
   function syncDots(sp,i,n){
-    const d=sp.querySelector('.dots'); if(d)d.innerHTML=Array.from({length:n},(_,k)=>'<i class="'+(k===i?'on':'')+'"></i>').join('');
-    const c=sp.querySelector('.stepcount'); if(c)c.textContent=(i+1)+' / '+n;
+    const d=sp.querySelector('.dots'); if(!d)return;
+    d.innerHTML=Array.from({length:n},(_,k)=>'<i class="'+(k===i?'on':'')+'"></i>').join('');
   }
-  // 학습 경로 데이터
-  const LPATH=[
-    {n:1,ids:['C1'],t:'점근 표기',tag:'gate',why:'선행 없는 관문 / 모든 복잡도 분석·C2의 토대 · 中 · ⭐高'},
-    {n:2,ids:['C2'],t:'점화식(치환·재귀트리)',tag:'gate',why:'C1 알아야 닫힌형 이해 / 정렬·DP 점화식 토대 · 上 · ⭐高'},
-    {n:3,ids:['C3'],t:'삽입·병합 정렬',why:'C1·C2로 복잡도 분석 / C4·C5·C6 비교 기준선 · 中 · ⭐中'},
-    {n:4,ids:['C4','C5'],t:'힙·힙정렬 ▸ 퀵정렬',tag:'group',why:'보장 n lg n vs 평균 빠른 — 비교하며 함께 / C6 하한 대상 · 上 · ⭐高'},
-    {n:5,ids:['C6'],t:'선형정렬 + 비교 하한',why:'C3~C5 알아야 하한 우회 이해 / 정렬 줄기 결론 · 上 · ⭐高'},
-    {n:6,ids:['C9'],t:'분할상환',why:'C1만 있으면 됨(정렬과 독립) / 동적배열·PQ 비용 토대 · 中上 · ⭐高 (곁가지)'},
-    {n:7,ids:['C7','C8'],t:'DP(LCS) ▸ 그리디(Huffman)',tag:'group',why:'부분문제 다 풀기 vs 하나만 — 대비하며 / C16·C14 기법 원천 · 上 · ⭐高'},
-    {n:8,ids:['C10'],t:'그래프 기초·표현',tag:'indep',why:'선행 없는 독립 진입점 / 모든 그래프 알고리즘 토대 · 中 · ⭐中'},
-    {n:9,ids:['C11','C12'],t:'BFS ▸ DFS',tag:'group',why:'큐 vs 스택·거리 vs timestamp / C12는 C13의 관문🚪 · 中 · ⭐中'},
-    {n:10,ids:['C13'],t:'위상정렬',why:'C12 finishing time 핵심 / C15 DAG 전처리 · 中上 · ⭐高'},
-    {n:11,ids:['C14'],t:'MST(cut·Prim·Kruskal)',why:'C10+C8+C4+disjoint-set 집결 / C15 Dijkstra 예고 · 上 · ⭐高'},
-    {n:12,ids:['C15'],t:'SSSP(Dijkstra·BF·DAG·PERT)',why:'C11·C13·C14 토대 / C16으로 확장 · 上 · ⭐高'},
-    {n:13,ids:['C16'],t:'All-pairs(Floyd-Warshall)',why:'C7 DP + C15 둘 다 필요 / 그래프 줄기 결론 · 上 · ⭐高'},
-    {n:14,ids:['C17'],t:'정수론(Fermat·Euler φ·소수판정)',tag:'gate',tag2:'indep',why:'독립 관문, 암호 전체 토대 / C18·C19 · 上 · ⭐高'},
-    {n:15,ids:['C18'],t:'Diffie-Hellman',why:'C17 원시근·이산로그 / C19와 형제 · 中 · ⭐中'},
-    {n:16,ids:['C19'],t:'RSA',why:'C17 Euler 정리가 정당성 핵심 / C20 서명 · 上 · ⭐高'},
-    {n:17,ids:['C20'],t:'서명·PKI',why:'C19 RSA로 서명·검증 / 줄기 마무리(빈도 낮음) · 中 · ⭐低'}
-  ];
-  function renderLpath(){
-    const box=document.getElementById('lpathlist'); if(!box)return;
-    box.innerHTML=LPATH.map(s=>{
-      let tags='';
-      if(s.tag==='gate')tags+='<span class="lp-tag gate">🚪관문</span>';
-      if(s.tag==='indep'||s.tag2==='indep')tags+='<span class="lp-tag indep">🟢독립</span>';
-      if(s.tag==='group')tags+='<span class="lp-tag group">▸묶음</span>';
-      return '<div class="lp-step" data-lpids="'+s.ids.join(',')+'" onclick="goNode(\''+s.ids[0]+'\')">'+
-        '<input type="checkbox" class="lp-chk" data-lp="'+s.n+'" onclick="event.stopPropagation();markLp(this)" title="단계 완료">'+
-        '<div class="num">'+s.n+'</div>'+
-        '<div class="lp-txt"><div class="lp-title">'+s.t+tags+'</div><div class="lp-why">'+s.why+'</div></div></div>';
-    }).join('');
-    const lp=loadLp();
-    box.querySelectorAll('.lp-chk').forEach(c=>{c.checked=!!lp[c.dataset.lp];if(c.checked)c.closest('.lp-step').classList.add('lp-done');});
-  }
-  const LPKEY='studylp:컴퓨터알고리즘';
-  function loadLp(){try{return JSON.parse(localStorage.getItem(LPKEY)||'{}')}catch(e){return {}}}
-  function markLp(chk){const lp=loadLp();lp[chk.dataset.lp]=chk.checked;localStorage.setItem(LPKEY,JSON.stringify(lp));
-    chk.closest('.lp-step').classList.toggle('lp-done',chk.checked);}
-  const PKEY='studyprog:컴퓨터알고리즘';
+  document.querySelectorAll('.stepper').forEach(sp=>{
+    const n=sp.querySelectorAll('.step').length; syncDots(sp,0,n);
+  });
+  const PKEY='studyprog:'+document.title;
   function loadProg(){try{return JSON.parse(localStorage.getItem(PKEY)||'{}')}catch(e){return {}}}
   function saveProg(p){localStorage.setItem(PKEY,JSON.stringify(p))}
   function markDone(chk){
@@ -1097,10 +1411,14 @@
     document.getElementById('progfill').style.width=pct+'%';
     document.getElementById('progtxt').textContent=pct+'%';
   }
+  (function(){const p=loadProg();
+    document.querySelectorAll('.nodechk').forEach(c=>{c.checked=!!p[c.dataset.id];
+      if(c.checked){const rn=document.querySelector('.rm-node[data-target="'+c.dataset.id+'"]');if(rn)rn.classList.add('done');}});
+    updateProg();})();
   function filterNodes(q){
     q=q.trim().toLowerCase();
     document.querySelectorAll('.node-card').forEach(card=>{
-      const hit=!q||card.dataset.title.toLowerCase().includes(q)||card.textContent.toLowerCase().includes(q);
+      const hit=!q||(card.dataset.title||'').toLowerCase().includes(q)||card.id.toLowerCase().includes(q)||card.textContent.toLowerCase().includes(q);
       card.classList.toggle('hidden',!hit);
     });
   }
@@ -1109,22 +1427,9 @@
     hotOnly=!hotOnly;
     document.getElementById('hotbtn').classList.toggle('on',hotOnly);
     document.querySelectorAll('.node-card').forEach(card=>{
-      const hot=card.dataset.hot==='1';
-      card.classList.toggle('hidden',hotOnly&&!hot);
-    });
-    document.querySelectorAll('.rm-node').forEach(n=>{
-      const hot=n.classList.contains('hot');
-      n.classList.toggle('dim',hotOnly&&!hot);
+      card.classList.toggle('dim', hotOnly && card.dataset.hot!=='1');
     });
   }
-  window.addEventListener('DOMContentLoaded',function(){
-    renderLpath();
-    document.querySelectorAll('.stepper').forEach(sp=>{const n=sp.querySelectorAll('.step').length;syncDots(sp,0,n);});
-    const p=loadProg();
-    document.querySelectorAll('.nodechk').forEach(c=>{c.checked=!!p[c.dataset.id];
-      if(c.checked){const rn=document.querySelector('.rm-node[data-target="'+c.dataset.id+'"]');if(rn)rn.classList.add('done');}});
-    updateProg();
-  });
 </script>
 </body>
 </html>

@@ -86,12 +86,13 @@
   <section class="hero">
     <div class="eyebrow">Final Exam Prep Hub</div>
     <h1>4개 과목, 하나의 학습 허브</h1>
-    <p>강의자료(PDF)와 강의 노트를 분석해 만든 인터랙티브 학습 자료입니다. 각 과목을 <b style="color:var(--ink)">큰 그림(로드맵) → 핵심 개념 드릴다운</b>으로 훑고, 실세계 시나리오·단계별 풀이 예제·시험 포인트까지 한 번에.</p>
+    <p>강의자료(PDF)와 강의 노트를 분석해 만든 인터랙티브 학습 자료입니다. 각 과목을 <b style="color:var(--ink)">첫 화면 MECE 트리맵 → 로드맵 → 핵심 개념 드릴다운</b>으로 훑고, 실세계 시나리오·단계별 풀이 예제·시험 포인트·<b style="color:var(--ink)">예상 문제+모범답변</b>까지 한 번에. 아이패드 등 <b style="color:var(--ink)">반응형</b>.</p>
     <div class="stats">
       <span class="chip"><b>4</b> 과목</span>
-      <span class="chip"><b>85</b> 핵심 개념</span>
-      <span class="chip"><b>로드맵</b> + 추천 학습경로</span>
-      <span class="chip"><b>오프라인</b> 동작</span>
+      <span class="chip"><b>83</b> 핵심 개념</span>
+      <span class="chip"><b>MECE 트리맵</b> + 로드맵</span>
+      <span class="chip"><b>예상문제</b> 셀프테스트</span>
+      <span class="chip"><b>오프라인</b> · 반응형</span>
     </div>
     <div class="agg" id="agg">
       <div style="font-size:.82rem;color:var(--muted);margin-bottom:6px">전체 학습 진도 <b id="aggtxt" style="color:var(--ink)">0%</b></div>
@@ -104,10 +105,12 @@
   <section class="how">
     <h3>📖 학습 자료 사용법</h3>
     <div class="hows">
-      <div><span class="ic">🗺️</span><b>로드맵</b><p>과목 전체 구조를 한눈에 보고 개념을 클릭해 드릴다운.</p></div>
-      <div><span class="ic">🧭</span><b>추천 학습경로</b><p>개념 의존도를 위상정렬한 순서대로 따라가기.</p></div>
+      <div><span class="ic">🌳</span><b>MECE 트리맵</b><p>첫 화면에서 과목 전체를 빠짐없이·겹침없이 Top-Down으로.</p></div>
+      <div><span class="ic">🗺️</span><b>로드맵 + 학습경로</b><p>구조(공간)와 의존도 위상정렬 동선(시간)을 함께.</p></div>
       <div><span class="ic">✏️</span><b>단계별 풀이</b><p>구체 입력 → 단계별 풀이 → 답을 스테퍼로.</p></div>
-      <div><span class="ic">📝</span><b>시험 포인트</b><p>과목별 출제 경향에 맞춘 핵심·함정·진도 저장.</p></div>
+      <div><span class="ic">📰</span><b>논문 포스터</b><p>핵심 논문을 terminology·concept·breakthrough로 (의생명).</p></div>
+      <div><span class="ic">📝</span><b>예상문제+모범답변</b><p>출제 가이드 기반, 답 가림→펼침 셀프테스트.</p></div>
+      <div><span class="ic">📱</span><b>반응형·오프라인</b><p>아이패드·모바일 대응, 단일 HTML로 오프라인 동작.</p></div>
     </div>
   </section>
 
@@ -125,9 +128,9 @@
     {slug:'algorithms', title:'컴퓨터 알고리즘', prof:'임을규 교수', cc:'#7c5cff', nodes:20,
      exam:'증명 · 복잡도', topics:'정렬 · DP · 그리디 · 그래프(MST·최단경로) · 정수론/RSA',
      hot:'⭐ 핵심: Ω(n lg n) 하한 · cut property · Dijkstra · RSA'},
-    {slug:'biomed-ai', title:'의생명과학을 위한 AI', prof:'노미나 교수', cc:'#3ecf8e', nodes:21,
-     exam:'주관식 · 모델링+논문 해석', topics:'genomic LM · 토크나이징 · Transformer/Hyena · 전이학습',
-     hot:'⭐ 관문: 토크나이징 → 모델 계보 → 모델 선택 근거'},
+    {slug:'biomed-ai', title:'의생명과학을 위한 AI', prof:'노미나 교수', cc:'#3ecf8e', nodes:19,
+     exam:'서술형 · 입력→출력 / 논문 3편', topics:'genomic 토큰화 · BP · GNN/GAT 노드업데이트 · 논문 포스터(DNABERT·Deep Learning·GAT)',
+     hot:'⭐ GNN 식 출제 확정 · 주차별 2문제(총 6) · 3주 노드 업데이트'},
     {slug:'medical-dx-ai', title:'의료진단을 위한 AI', prof:'김정희 교수', cc:'#ff8a5b', nodes:20,
      exam:'객관식 · 매칭형', topics:'생체신호(ECG·EEG) · 의료영상 모달리티 · 계측 · CNN',
      hot:'⭐ 매칭표 집중: ECG 파형 · 영상 모달리티 비교 · 계측 5분류'},
