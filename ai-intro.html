@@ -108,10 +108,22 @@
   .dots i.on{background:var(--accent)}
   .ncheck{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.85rem;cursor:pointer}
   .hidden{display:none!important}
+  .sim{border:1px solid var(--line);border-radius:10px;padding:12px;margin:10px 0;background:var(--panel2)}
+  .sim.star{border-color:var(--hot)}
+  .sim-title{font-weight:700;font-size:.92rem;margin-bottom:8px;color:var(--ink)}
+  .sim-label{display:inline-block;font-size:.74rem;color:var(--accent2);border:1px solid var(--accent2);border-radius:6px;padding:1px 8px;margin-bottom:8px}
+  .sim-stage{display:flex;justify-content:center;align-items:center;min-height:60px;margin:6px 0}
+  .sim-ctrl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .sim-step{font-size:.82rem;color:var(--muted)}
+  .sim-desc{font-size:.88rem;margin:8px 0 0;line-height:1.6}
+  @media(max-width:600px){.sim-ctrl{flex-direction:column;align-items:stretch}}
   .scrollx{overflow-x:auto;-webkit-overflow-scrolling:touch}
   .treemap{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:22px}
   .treemap h2{margin:.1em 0 .2em;font-size:1.15rem}
   .treemap .tm-sub{color:var(--muted);font-size:.88rem;margin-bottom:12px}
+  #tree-container{width:100%;min-height:280px;overflow:hidden;touch-action:pan-y}
+  #tree-container svg{display:block}
+  .tree-hint{color:var(--muted);font-size:.82rem;margin-top:8px}
   .tree, .tree ul{list-style:none;margin:0;padding-left:18px}
   .tree>li{margin:4px 0}
   .tm-root{font-weight:800;font-size:1rem}
@@ -176,6 +188,14 @@
     <h2>🗺️ 로드맵 · 학습경로</h2>
 
     <div class="rm-stem">
+      <div class="rm-stem-name">0. 선행지식</div>
+      <div class="rm-node" data-target="prereq-search" onclick="goNode('prereq-search')"><span class="dot"></span>상태공간·탐색·휴리스틱</div>
+      <div class="rm-node" data-target="prereq-optima" onclick="goNode('prereq-optima')"><span class="dot"></span>지역최적·전역최적</div>
+      <div class="rm-node" data-target="prereq-prob" onclick="goNode('prereq-prob')"><span class="dot"></span>확률·조건부확률</div>
+      <div class="rm-node" data-target="prereq-complexity" onclick="goNode('prereq-complexity')"><span class="dot"></span>계산 복잡도</div>
+    </div>
+
+    <div class="rm-stem">
       <div class="rm-stem-name">B1. 탐색 — Uninformed</div>
       <div class="rm-node hot" data-target="C1" onclick="goNode('C1')"><span class="dot"></span>C1 탐색 정식화·4지표<span class="badge-hot">⭐高</span></div>
       <div class="rm-node hot" data-target="C2" onclick="goNode('C2')"><span class="dot"></span>C2 BFS<span class="badge-hot">⭐高</span></div>
@@ -230,7 +250,7 @@
     <section class="intro">
       <h1>인공지능개론 <small style="font-size:.7em;color:var(--muted)">시험대비 학습자료</small></h1>
       <p><b>이 과목은 결국 — 딥러닝 이전의 고전 AI/ML로 두 가지를 푼다: (A) 탐색으로 문제 풀기, (B) 데이터로 학습하기.</b></p>
-      <p style="color:var(--muted)">상단 <b>MECE 트리맵</b>으로 전체 구조를 잡고, 좌측 로드맵의 노드를 클릭해 드릴다운하세요. 각 노드는 <b>직관 → 정의 → 🌍실세계 시나리오 → 단계별 풀이(STEP) → 시험 포인트</b> 순. 맨 끝 <b>예상 문제</b>로 셀프테스트.</p>
+      <p style="color:var(--muted)">상단 <b>인터랙티브 탐색 트리</b>로 전체 구조를 잡는다. 노드를 펼치고 잎을 클릭하면 해당 카드로 이동한다. 본문 전 <b>선행지식</b>으로 토대를 다지고, 각 노드는 <b>직관 → 정의 → 🌍실세계 시나리오 → 단계별 풀이(STEP) → 시험 포인트</b> 순으로 읽는다. 맨 끝 <b>예상 문제</b>로 셀프테스트한다.</p>
       <div class="pillrow">
         <span class="pill">기말 형식: <b>객관식·증명 없음</b></span>
         <span class="pill"><b>토픽당 1문제 · 8~10문제</b> 서술형</span>
@@ -240,11 +260,22 @@
     </section>
 
     <section class="treemap" id="treemap">
-      <h2>🧭 한눈에 보는 전체 구조 (MECE 트리맵)</h2>
-      <div class="tm-sub">큰 가지를 먼저 본 뒤, 잎(개념)을 클릭하면 해당 카드로 드릴다운합니다. ⭐⭐는 졸업시험 단골.</div>
+      <h2>🧭 한눈에 보는 전체 구조 (인터랙티브 탐색 트리)</h2>
+      <div class="tm-sub">노드 클릭 = 가지 접기/펴기, 잎(개념) 클릭 = 해당 카드로 이동. 휠·핀치로 줌, 드래그로 이동. ⭐⭐는 졸업시험 단골.</div>
+      <div id="tree-container" role="tree" aria-label="과목 구조 탐색 트리"></div>
+      <div class="tree-hint">탐색 트리가 안 보이면 아래 정적 목차로 표시됩니다(오프라인 폴백).</div>
+      <div id="treemap-fallback" style="display:none">
       <ul class="tree">
         <li><span class="tm-root">인공지능개론 — 고전 AI/ML: (A) 탐색으로 풀기 + (B) 데이터로 배우기</span>
           <ul>
+            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">▾</span>0. 선행지식 <span class="tm-desc">— 본문 전 최소 토대: 상태공간·탐색·휴리스틱·최적·확률·복잡도</span></span>
+              <ul>
+                <li><span class="tm-leaf" data-target="prereq-search" onclick="goNode('prereq-search')">상태공간·탐색·휴리스틱</span>
+                <span class="tm-leaf" data-target="prereq-optima" onclick="goNode('prereq-optima')">지역최적·전역최적</span>
+                <span class="tm-leaf" data-target="prereq-prob" onclick="goNode('prereq-prob')">확률·조건부확률</span>
+                <span class="tm-leaf" data-target="prereq-complexity" onclick="goNode('prereq-complexity')">계산 복잡도</span></li>
+              </ul>
+            </li>
             <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">▾</span>가지 1. 탐색 — Uninformed <span class="tm-desc">— 휴리스틱 없이 맹목 전개, 4지표로 평가</span></span>
               <ul>
                 <li><span class="tm-leaf hot" data-target="C1" onclick="goNode('C1')">C1 탐색 정식화·4지표 ⭐</span>
@@ -292,7 +323,48 @@
           </ul>
         </li>
       </ul>
+      </div><!-- /treemap-fallback -->
       <div class="tm-sub" style="margin-top:10px"><b>MECE 점검:</b> 5개 가지는 서로 다른 문제틀(맹목 / 휴리스틱·지역 / 적대 / 제약 / 학습)로 상호배타이며, C1~C23 전 개념을 빠짐없이 덮는다(전체포괄). 탐색(가지1~4)↔학습(가지5)이 과목의 두 대전환 축.</div>
+    </section>
+
+    <!-- ===================== 선행지식 (Prerequisites) ===================== -->
+    <section class="stem-sec" id="prereq">
+      <h2>0. 선행지식 — 본문 진입 전 최소 토대</h2>
+      <p style="color:var(--muted)">아래 핵심 용어는 C1~C23을 읽기 위한 최소 토대다. 정의만 외우지 말고 <b>쓰임</b>(어느 수업 개념에 쓰는지)으로 연결하라.</p>
+
+      <details class="node-card" id="prereq-search" data-node-id="prereq-search" data-title="선행지식 상태공간 탐색 휴리스틱">
+        <summary><input type="checkbox" class="nodechk" data-id="prereq-search" onclick="event.stopPropagation();markDone(this)" title="학습 완료">선행 1 · 상태공간 · 탐색 · 휴리스틱 <span class="nbadge">기초</span><span class="chev">▶</span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">상태공간 (state space)</span>문제를 풀며 도달할 수 있는 모든 상태와, 한 상태에서 다른 상태로 가는 연산자(엣지)의 집합. <i>쓰임:</i> C1의 탐색 정식화(상태=노드, 연산자=엣지), CSP(C14)의 변수 할당 공간.</div>
+          <div class="field"><span class="lbl">탐색 (search)</span>상태공간을 탐색 트리로 펼쳐 시작에서 목표로 가는 경로를 찾는 과정. 핵심 선택은 <b>노드 확장 순서</b>다. <i>쓰임:</i> BFS·DFS·IDS·UCS·A*(C2~C8) 전체가 확장 순서를 달리한 변형.</div>
+          <div class="field"><span class="lbl">휴리스틱 (heuristic) h(n)</span>노드 n에서 목표까지 남은 비용의 추정값. 실제값이 아니라 "그럴듯한 추정"이다. <i>쓰임:</i> 정보 탐색의 핵심 — Greedy(C7)·A*(C8)·dominance(C9), CSP의 min-conflicts(C16) 모두 휴리스틱으로 다음 후보를 고른다.</div>
+        </div>
+      </details>
+
+      <details class="node-card" id="prereq-optima" data-node-id="prereq-optima" data-title="선행지식 지역최적 전역최적">
+        <summary><input type="checkbox" class="nodechk" data-id="prereq-optima" onclick="event.stopPropagation();markDone(this)" title="학습 완료">선행 2 · 지역최적 · 전역최적 <span class="nbadge">기초</span><span class="chev">▶</span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">전역최적 (global optimum)</span>목적함수가 전체 공간에서 가장 좋은 값을 갖는 상태. 우리가 진짜 찾고 싶은 해다.</div>
+          <div class="field"><span class="lbl">지역최적 (local optimum)</span>이웃보다는 좋지만 전역최적은 아닌 상태. 이웃만 보고 움직이면 여기 갇힌다. <i>쓰임:</i> Hill-Climbing(C10)·k-means seed 민감성(C19)이 지역최적에 갇히는 대표 사례. min-conflicts(C16)가 막히면 무작위 재시작이나 Simulated Annealing으로 탈출한다.</div>
+        </div>
+      </details>
+
+      <details class="node-card" id="prereq-prob" data-node-id="prereq-prob" data-title="선행지식 확률 조건부확률">
+        <summary><input type="checkbox" class="nodechk" data-id="prereq-prob" onclick="event.stopPropagation();markDone(this)" title="학습 완료">선행 3 · 확률 · 조건부확률 <span class="nbadge">기초</span><span class="chev">▶</span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">확률 P(A)</span>사건 A가 일어날 가능성을 0~1로 나타낸 값. <i>쓰임:</i> min-conflicts·Simulated Annealing(C16)의 "확률적으로 나쁜 수를 허용", Q-Learning(C21)의 행동 선택.</div>
+          <div class="field"><span class="lbl">조건부확률 P(A|B)</span>B가 주어졌을 때 A가 일어날 확률. <i>쓰임:</i> 엔트로피·정보이득(C18 Decision Tree)이 "속성값이 주어졌을 때 클래스 분포"를 다루는 토대.</div>
+        </div>
+      </details>
+
+      <details class="node-card" id="prereq-complexity" data-node-id="prereq-complexity" data-title="선행지식 계산 복잡도 빅오">
+        <summary><input type="checkbox" class="nodechk" data-id="prereq-complexity" onclick="event.stopPropagation();markDone(this)" title="학습 완료">선행 4 · 계산 복잡도 (시간 · 공간) <span class="nbadge">기초</span><span class="chev">▶</span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">시간 복잡도</span>입력 크기에 따라 생성·확장하는 노드 수의 증가율(보통 최악 기준). <i>쓰임:</i> 탐색 4지표(C1)의 한 축, BFS·DFS 비교(C5b)의 핵심 잣대.</div>
+          <div class="field"><span class="lbl">공간 복잡도</span>동시에 메모리에 올라가는 최대 노드 수. <i>쓰임:</i> BFS가 지수 공간(메모리)으로 못 쓰이고 DFS·IDS가 선형 공간으로 유리하다는 논쟁(C2·C3·C4)의 기준.</div>
+          <div class="field"><span class="lbl">b · d · m (탐색 파라미터)</span>b=분기수, d=최소비용해 깊이, m=상태공간 최대 깊이. <i>쓰임:</i> 모든 탐색 복잡도 표(O(b^d) 등)가 이 세 기호로 표현된다.</div>
+        </div>
+      </details>
     </section>
 
     <!-- ===================== B1 ===================== -->
@@ -489,6 +561,21 @@
               <div class="step"><div class="step-head">7. 검산</div>h₂는 절대 실제 이동수를 넘지 않음(타일당 최소 이동만 셈) → admissible → 최적 보장.</div>
               <div class="step"><div class="step-head">8. 시험 변형</div>"왜 h₂(맨해튼)가 h₁(오배치 수)보다 노드를 적게 확장하나?" → C9 dominance로 연결.</div>
               <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">🎬 인터랙티브 시뮬레이션 (탐색 트리 확장: open/closed, f=g+h)</span>
+            <div class="sim" id="sim-astar">
+              <div class="sim-title">A*로 Arad → Bucharest — 단계마다 OPEN/CLOSED와 f=g+h 갱신</div>
+              <span class="sim-label">개념: A* · f = g + h</span>
+              <div class="sim-stage"></div>
+              <div class="sim-ctrl">
+                <button class="btn sim-prev">◀ 이전</button>
+                <span class="sim-step">단계 0 / 6</span>
+                <button class="btn sim-next">다음 ▶</button>
+                <button class="btn sim-play">▶ 자동</button>
+              </div>
+              <p class="sim-desc"></p>
+              <p style="font-size:.78rem;color:var(--muted);margin:6px 0 0">OPEN=확장 대기(최소 f부터) · CLOSED=확장 완료. Greedy가 빠진 Fagaras(450) 대신 A*는 Pitesti 경유(418)를 찾는다.</p>
             </div>
           </div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">h만(Greedy)도 g만(UCS)도 아닌 <b>합</b>이 핵심. h가 과대평가하면 최적성 깨짐(→C9).</div></div>
@@ -710,10 +797,25 @@
               <div class="step"><div class="step-head">3. 전개1·변수 선택</div>현재 <b>충돌에 연루된</b> 퀸(conflicted variable) 하나를 무작위로 고른다.</div>
               <div class="step"><div class="step-head">4. 전개2·값 선택</div>그 퀸을 같은 열의 어느 행으로 옮겨야 <b>공격받는 수가 최소(min-conflicts)</b>가 되는지 계산해 그 행으로 이동.</div>
               <div class="step"><div class="step-head">5. 전개3</div>h가 0이 될 때까지 3~4 반복. (충돌 0 = 해.)</div>
-              <div class="step"><div class="step-head">6. 결론</div>매우 큰 n(수백만)에서도 거의 상수 시간에 수렴 → CSP local search의 위력.</div>
+              <div class="step"><div class="step-head">6. 결론</div>n이 수백만이어도 거의 상수 시간에 수렴 → CSP local search의 위력.</div>
               <div class="step"><div class="step-head">7. 검산·한계</div>만약 h가 안 줄고 멈추면 <b>local optimum</b> → 무작위 재시작 또는 <b>SA(확률적 악수 허용)</b>로 탈출.</div>
               <div class="step"><div class="step-head">8. 시험 변형 ⭐⭐</div>"min-conflicts 절차를 설명하고, hill-climbing과 simulated annealing을 비교하라" — <b>졸업시험 단골 그대로.</b> 답: 절차 4단계 + HC는 local optimum에 갇힘/SA는 나쁜 수 확률 허용으로 탈출.</div>
               <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">🎬 인터랙티브 시뮬레이션 ⭐⭐ (min-conflicts 재생)</span>
+            <div class="sim star" id="sim-minconf">
+              <div class="sim-title">4-Queens를 min-conflicts로 — 충돌 수 h가 0으로 줄어드는 과정</div>
+              <span class="sim-label">개념: CSP 지역탐색</span>
+              <div class="sim-stage"></div>
+              <div class="sim-ctrl">
+                <button class="btn sim-prev">◀ 이전</button>
+                <span class="sim-step">단계 0 / 3</span>
+                <button class="btn sim-next">다음 ▶</button>
+                <button class="btn sim-play">▶ 자동</button>
+              </div>
+              <p class="sim-desc"></p>
+              <p style="font-size:.78rem;color:var(--muted);margin:6px 0 0">🔴 빨강=충돌 중인 퀸 · 🟢 초록=충돌 없음 · 파란 테두리=이번에 옮긴 열. h=서로 공격하는 퀸 쌍의 수.</p>
             </div>
           </div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">hill-climbing이라 <b>local optimum에 갇힐 수 있음</b> → <b>Simulated Annealing(SA)</b> 은 확률적으로 나쁜 수도 허용해 탈출. (<span class="nbadge warn">⚠️ SA 온도스케줄·수용확률 수식은 PDF 미수록</span> — 개념만: "나쁜 수 확률적 허용으로 local optimum 탈출".)</div></div>
@@ -1033,6 +1135,7 @@
 
 <footer>생성: 시험대비 학습자료 하네스 · 인공지능개론(최용석 교수) · 1차 자료(강의 PDF 10 + Notion Day 노트) 기반 · 단일 HTML, 오프라인 동작 · 재빌드 2026-06-04</footer>
 
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" onerror="window.__noKatex=true">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
@@ -1122,6 +1225,238 @@
   document.addEventListener('keydown',(e)=>{
     if(e.key==='/'&&document.activeElement.id!=='search'){e.preventDefault();document.getElementById('search').focus();}
   });
+
+  // ===================== D3 Collapsible 탐색 트리 =====================
+  const TREE={ name:"인공지능개론", id:null, children:[
+    { name:"선행지식", id:"prereq", children:[
+        { name:"상태공간·탐색·휴리스틱", id:"prereq-search" },
+        { name:"지역최적·전역최적", id:"prereq-optima" },
+        { name:"확률·조건부확률", id:"prereq-prob" },
+        { name:"계산 복잡도", id:"prereq-complexity" } ] },
+    { name:"탐색 — Uninformed", id:"B1", children:[
+        { name:"C1 탐색 정식화·4지표", id:"C1" },
+        { name:"C2 BFS", id:"C2" },
+        { name:"C3 DFS", id:"C3" },
+        { name:"C4 IDS", id:"C4" },
+        { name:"C5 UCS", id:"C5" },
+        { name:"C5b 종합 비교표", id:"C5b" } ] },
+    { name:"탐색 — Informed & Local", id:"B2", children:[
+        { name:"C6 휴리스틱", id:"C6" },
+        { name:"C7 Greedy", id:"C7" },
+        { name:"C8 A*", id:"C8" },
+        { name:"C9 Admissible·Dominance", id:"C9" },
+        { name:"C10 Hill-Climbing", id:"C10" } ] },
+    { name:"탐색 — Adversarial", id:"B3", children:[
+        { name:"C11 게임·Minimax", id:"C11" },
+        { name:"C12 Alpha-Beta", id:"C12" },
+        { name:"C13 Evaluation Fn", id:"C13" } ] },
+    { name:"탐색 — CSP", id:"B4", children:[
+        { name:"C14 CSP 정식화", id:"C14" },
+        { name:"C15 Backtracking+휴리스틱", id:"C15" },
+        { name:"C16 min-conflicts ⭐⭐", id:"C16" } ] },
+    { name:"학습 (Learning)", id:"B5", children:[
+        { name:"C17 kNN", id:"C17" },
+        { name:"C18 Decision Tree", id:"C18" },
+        { name:"C19 k-means", id:"C19" },
+        { name:"C20 계층군집", id:"C20" },
+        { name:"C21 Q-Learning", id:"C21" },
+        { name:"C22 Perceptron·XOR", id:"C22" },
+        { name:"C23 Backpropagation", id:"C23" } ] }
+  ]};
+  function treeGoSection(id){
+    const t=document.getElementById(id); if(!t)return;
+    if(t.tagName==='DETAILS')t.open=true;
+    t.scrollIntoView({behavior:'smooth',block:'start'});
+    const rn=document.querySelector('.rm-node[data-target="'+id+'"]');
+    if(rn){document.querySelectorAll('.rm-node').forEach(n=>n.classList.remove('active'));rn.classList.add('active');}
+  }
+  function renderTree(){
+    const el=document.getElementById('tree-container'); if(!el)return;
+    const width=el.clientWidth||640, dx=26, dy=Math.min(220, Math.max(120, width/4));
+    const root=d3.hierarchy(TREE);
+    root.x0=0; root.y0=0;
+    root.descendants().forEach((d,i)=>{ d._id=i; d._children=d.children;
+      if(d.depth>=1) d.children=null; });            // 1단계만 펼친 채 시작
+    const svg=d3.create("svg")
+      .attr("viewBox",[-dy/2,-dx,width,dx])
+      .style("width","100%").style("height","auto")
+      .style("font","13px Pretendard,sans-serif").style("user-select","none");
+    const gLink=svg.append("g").attr("fill","none")
+      .attr("stroke","var(--line)").attr("stroke-width",1.5);
+    const gNode=svg.append("g").attr("cursor","pointer").attr("pointer-events","all");
+    const zoom=d3.zoom().scaleExtent([0.4,2.5]).on("zoom",e=>{
+      gLink.attr("transform",e.transform); gNode.attr("transform",e.transform); });
+    svg.call(zoom);
+    function update(source){
+      const nodes=root.descendants().reverse(), links=root.links();
+      const layout=d3.tree().nodeSize([dx,dy]); layout(root);
+      let lo=root, hi=root; root.eachBefore(n=>{ if(n.x<lo.x)lo=n; if(n.x>hi.x)hi=n; });
+      const h=Math.max(dx, hi.x-lo.x+dx*2);
+      const t=svg.transition().duration(250).attr("viewBox",[-dy/2,lo.x-dx,width,h]);
+      el.style.minHeight=Math.min(680,h+40)+"px";
+      const node=gNode.selectAll("g").data(nodes,d=>d._id);
+      const nEnter=node.enter().append("g")
+        .attr("transform",`translate(${source.y0},${source.x0})`)
+        .attr("fill-opacity",0).attr("stroke-opacity",0)
+        .on("click",(e,d)=>{
+          if(d._children){ d.children=d.children?null:d._children; update(d); }
+          if(d.data.id) treeGoSection(d.data.id);
+        });
+      nEnter.append("circle").attr("r",4.5)
+        .attr("fill",d=>d._children?"var(--accent)":"var(--muted)")
+        .attr("stroke-width",10).attr("stroke","transparent");
+      nEnter.append("text").attr("dy","0.32em")
+        .attr("x",d=>d._children?-9:9).attr("text-anchor",d=>d._children?"end":"start")
+        .attr("fill","var(--ink)").text(d=>d.data.name)
+        .clone(true).lower().attr("stroke","var(--panel)").attr("stroke-width",3);
+      node.merge(nEnter).transition(t)
+        .attr("transform",d=>`translate(${d.y},${d.x})`)
+        .attr("fill-opacity",1).attr("stroke-opacity",1);
+      node.exit().transition(t).remove()
+        .attr("transform",`translate(${source.y},${source.x})`)
+        .attr("fill-opacity",0).attr("stroke-opacity",0);
+      const link=gLink.selectAll("path").data(links,d=>d.target._id);
+      const diag=d3.linkHorizontal().x(d=>d.y).y(d=>d.x);
+      const lEnter=link.enter().append("path").attr("d",()=>{
+        const o={x:source.x0,y:source.y0}; return diag({source:o,target:o}); });
+      link.merge(lEnter).transition(t).attr("d",diag);
+      link.exit().transition(t).remove().attr("d",()=>{
+        const o={x:source.x,y:source.y}; return diag({source:o,target:o}); });
+      root.eachBefore(d=>{ d.x0=d.x; d.y0=d.y; });
+    }
+    el.innerHTML=""; el.appendChild(svg.node());
+    update(root);
+  }
+  function initTree(){
+    const cont=document.getElementById('tree-container'), fb=document.getElementById('treemap-fallback');
+    if(typeof d3==='undefined'){            // CDN 실패 → 정적 트리맵 폴백
+      if(cont)cont.style.display='none';
+      if(fb)fb.style.display='block';
+      return;
+    }
+    if(fb)fb.style.display='none';
+    try{ renderTree(); }
+    catch(err){ if(cont)cont.style.display='none'; if(fb)fb.style.display='block'; }
+  }
+  window.addEventListener('load',initTree);
+  let __treeRT;
+  window.addEventListener('resize',()=>{ clearTimeout(__treeRT);
+    __treeRT=setTimeout(()=>{ if(typeof d3!=='undefined'&&document.getElementById('tree-container').style.display!=='none') renderTree(); },200); });
+
+  // ===================== 개념 시뮬레이션 (vanilla, 오프라인) =====================
+  function makeStepper(root, frames){
+    let i=0, timer=null;
+    const stage=root.querySelector('.sim-stage'), step=root.querySelector('.sim-step'),
+          desc=root.querySelector('.sim-desc'), label=root.querySelector('.sim-label');
+    function show(){ frames[i].render(stage); desc.innerHTML=frames[i].desc;
+      if(label&&frames[i].label!=null)label.textContent=frames[i].label;
+      step.textContent=`단계 ${i} / ${frames.length-1}`; }
+    root.querySelector('.sim-prev').onclick=()=>{ if(i>0){i--;show();} };
+    root.querySelector('.sim-next').onclick=()=>{ if(i<frames.length-1){i++;show();} };
+    const play=root.querySelector('.sim-play');
+    if(play)play.onclick=function(){
+      if(timer){clearInterval(timer);timer=null;this.textContent='▶ 자동';return;}
+      this.textContent='⏸ 정지';
+      timer=setInterval(()=>{ if(i<frames.length-1){i++;show();}
+        else{clearInterval(timer);timer=null;this.textContent='▶ 자동';} },900);
+    };
+    show();
+  }
+
+  // --- 시뮬레이션 1: CSP 지역탐색 (min-conflicts) — 4-Queens 충돌 최소화 (최우선) ---
+  (function(){
+    const root=document.getElementById('sim-minconf'); if(!root)return;
+    const N=4, CELL=46, PAD=10, W=N*CELL+PAD*2, H=N*CELL+PAD*2;
+    // (열 q[c]=행). 학습용으로 결정적 시퀀스: 초기 충돌 상태 → min-conflicts 이동 → 해
+    // boards[k] = 각 단계의 열별 행 배치(0-index 행). attacks 계산은 렌더에서.
+    const boards=[
+      [0,0,0,0], // 초기: 모두 1행 → h=6
+      [0,3,0,0], // 2열을 충돌 최소 행(4행=idx3)으로 → h=3
+      [0,3,0,2], // 4열 이동 → h=1
+      [1,3,0,2]  // 1열 이동 → 해(h=0)
+    ];
+    function conflictsOf(q){ // 충돌 쌍 수 + 각 퀸 충돌여부
+      const n=q.length; const bad=new Array(n).fill(false); let pairs=0;
+      for(let a=0;a<n;a++)for(let b=a+1;b<n;b++){
+        if(q[a]===q[b]||Math.abs(q[a]-q[b])===Math.abs(a-b)){pairs++;bad[a]=true;bad[b]=true;}
+      }
+      return {pairs,bad};
+    }
+    // 각 단계에서 "이번에 옮긴 열" 강조용 (0-index)
+    const moved=[-1,1,3,0];
+    function render(stage, k){
+      const q=boards[k], {pairs,bad}=conflictsOf(q);
+      let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:240px;height:auto" role="img" aria-label="4퀸 보드">`;
+      for(let r=0;r<N;r++)for(let c=0;c<N;c++){
+        const x=PAD+c*CELL, y=PAD+r*CELL;
+        const dark=(r+c)%2===1;
+        s+=`<rect x="${x}" y="${y}" width="${CELL}" height="${CELL}" fill="${dark?'var(--panel2)':'var(--panel)'}" stroke="var(--line)"/>`;
+      }
+      for(let c=0;c<N;c++){
+        const r=q[c], x=PAD+c*CELL+CELL/2, y=PAD+r*CELL+CELL/2;
+        const col=bad[c]?'var(--hot)':'var(--ok)';
+        const ring=(c===moved[k])?`<circle cx="${x}" cy="${y}" r="${CELL/2-3}" fill="none" stroke="var(--accent)" stroke-width="3"/>`:'';
+        s+=`<circle cx="${x}" cy="${y}" r="${CELL/2-9}" fill="${col}"/>${ring}`;
+      }
+      s+=`</svg>`;
+      stage.innerHTML=s;
+      return pairs;
+    }
+    const frames=[
+      {label:'초기 상태 (complete state)', render:(st)=>render(st,0),
+       desc:'<b>충돌 수 h = 6</b>. 네 퀸을 모두 1행에 무작위로 깔았다. 제약 위반을 허용한 <b>완전 상태</b>에서 시작한다(백트래킹과 정반대).'},
+      {label:'이동 1 — 변수·값 선택', render:(st)=>render(st,1),
+       desc:'충돌 퀸 중 <b>2열</b>(파란 테두리)을 골라, 같은 열에서 <b>공격을 가장 적게 받는 행</b>(4행)으로 옮긴다. <b>h: 6 → 3</b>.'},
+      {label:'이동 2 — min-conflicts', render:(st)=>render(st,2),
+       desc:'<b>4열</b>을 충돌 최소 행(3행)으로 재배정. 빨강=아직 충돌하는 퀸, 초록=충돌 없음. <b>h: 3 → 1</b>.'},
+      {label:'해 (h = 0)', render:(st)=>render(st,3),
+       desc:'<b>1열</b>을 2행으로 옮겨 마지막 충돌을 없앤다. 모든 퀸이 초록 = <b>충돌 0 = 해</b>. n이 수백만이어도 거의 상수 시간에 수렴한다. 만약 h가 안 줄고 멈추면 <b>지역최적</b> → 무작위 재시작 또는 <b>Simulated Annealing</b>(확률적 악수 허용)으로 탈출.'}
+    ];
+    makeStepper(root, frames);
+  })();
+
+  // --- 시뮬레이션 2: A* / 탐색 트리 확장 (open/closed, f=g+h) 스테퍼 ---
+  (function(){
+    const root=document.getElementById('sim-astar'); if(!root)return;
+    // 루마니아 축소 그래프: Arad→Bucharest. g=실제, h=직선거리.
+    const H={A:366,S:253,T:329,Z:374,F:176,R:193,P:100,B:0,O:380};
+    const NAME={A:'Arad',S:'Sibiu',T:'Timisoara',Z:'Zerind',F:'Fagaras',R:'Rimnicu',P:'Pitesti',B:'Bucharest',O:'Oradea'};
+    // 각 단계: open 리스트(노드:g), closed 집합, 방금 확장한 노드
+    const steps=[
+      {expand:'A', g:{A:0}, open:{A:0}, closed:[], note:'시작 A를 open에 넣음. f(A)=g0+h366=366.'},
+      {expand:'A', g:{A:0,S:140,T:118,Z:75}, open:{S:140,T:118,Z:75}, closed:['A'],
+        note:'A 확장 → 자식 S·T·Z 생성. f: S=140+253=<b>393</b>, T=118+329=447, Z=75+374=449. 최소 f=S.'},
+      {expand:'S', g:{A:0,S:140,T:118,Z:75,F:239,R:220,O:291}, open:{T:118,Z:75,F:239,R:220,O:291}, closed:['A','S'],
+        note:'S 확장 → F·R·O 생성. f: F=239+176=415, <b>R=220+193=413</b>, O=291+380=671. 최소 f=R(413).'},
+      {expand:'R', g:{A:0,S:140,T:118,Z:75,F:239,R:220,O:291,P:317}, open:{T:118,Z:75,F:239,O:291,P:317}, closed:['A','S','R'],
+        note:'R 확장 → P 생성. f: P=317+100=<b>417</b>, F=415. 다음 최소 f=F(415)이지만 곧 P 경로가 역전.'},
+      {expand:'F', g:{A:0,S:140,T:118,Z:75,F:239,R:220,O:291,P:317,B:450}, open:{T:118,Z:75,O:291,P:317,B:450}, closed:['A','S','R','F'],
+        note:'F 확장 → B 생성. f: <b>B=450</b>(F 경로). 그러나 open에 P(417)<B(450) → B를 아직 목표로 확정하지 않음(A*는 최소 f부터).'},
+      {expand:'P', g:{A:0,S:140,T:118,Z:75,F:239,R:220,O:291,P:317,B:418}, open:{T:118,Z:75,O:291,B:418}, closed:['A','S','R','F','P'],
+        note:'P 확장 → B 재발견, g=317+101=418. <b>B=418 < 450</b> → 더 싼 경로로 갱신. 다음 최소 f=B(418).'},
+      {expand:'B', g:{A:0,S:140,T:118,Z:75,F:239,R:220,O:291,P:317,B:418}, open:{}, closed:['A','S','R','F','P','B'],
+        note:'<b>B를 최소 f로 확장 = 목표 도달. 최적해 418</b>: A→S→R→P→B. admissible h 덕에 첫 목표 확장이 곧 최적.'}
+    ];
+    function render(stage,k){
+      const st=steps[k];
+      let html='<div class="scrollx"><table style="font-size:.8rem"><tr><th>집합</th><th>노드 (f = g + h)</th></tr>';
+      const openRows=Object.keys(st.open).map(n=>{
+        const g=st.open[n], f=g+H[n];
+        const mark=(n===st.expand&&k>0)?' style="color:var(--accent);font-weight:700"':'';
+        return `<span${mark}>${NAME[n]} (${f}=${g}+${H[n]})</span>`;
+      }).join(' · ')||'∅';
+      html+=`<tr><td><b style="color:var(--ok)">OPEN</b></td><td>${openRows}</td></tr>`;
+      html+=`<tr><td><b style="color:var(--muted)">CLOSED</b></td><td>${st.closed.map(n=>NAME[n]).join(' · ')||'∅'}</td></tr>`;
+      html+='</table></div>';
+      stage.innerHTML=html;
+    }
+    const frames=steps.map((st,k)=>({
+      label:'확장 노드: '+NAME[st.expand]+(k===steps.length-1?' (목표)':''),
+      render:(stg)=>render(stg,k),
+      desc:st.note
+    }));
+    makeStepper(root, frames);
+  })();
 </script>
 </body>
 </html>

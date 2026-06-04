@@ -152,6 +152,62 @@
     .nbody{padding:12px 14px}
   }
   footer{max-width:var(--maxw);margin:0 auto;padding:30px 20px;color:var(--muted);font-size:.85rem}
+  /* ===== 선행지식 ===== */
+  .prereq{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:22px;scroll-margin-top:84px}
+  .prereq>h2{margin:.1em 0 .2em;font-size:1.15rem}
+  .prereq .pq-sub{color:var(--muted);font-size:.88rem;margin-bottom:12px}
+  .pq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+  .pq-card{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--panel2);scroll-margin-top:84px}
+  .pq-card h3{margin:.1em 0 .3em;font-size:.98rem;color:var(--accent)}
+  .pq-card .pq-def{font-size:.9rem}
+  .pq-card .pq-use{display:block;margin-top:6px;font-size:.84rem;color:var(--muted)}
+  .pq-card .pq-use b{color:var(--accent2)}
+  .pq-term{border-bottom:1px dotted var(--accent);cursor:help}
+  /* ===== D3 탐색 트리 ===== */
+  #tree-container{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:10px 12px;margin-bottom:8px;overflow:hidden;min-height:120px}
+  #tree-container svg text{fill:var(--ink)}
+  .tree-hint{color:var(--muted);font-size:.82rem;margin:0 0 14px;padding:0 4px}
+  /* ===== 인터랙티브 포스터(7모듈) ===== */
+  .poster.deep{grid-column:1/-1}
+  .pm{border:1px solid var(--line);border-radius:10px;margin:10px 0;background:var(--panel);overflow:hidden}
+  .pm>.pm-head{cursor:pointer;list-style:none;padding:10px 13px;display:flex;align-items:center;gap:9px;
+    font-weight:700;font-size:.94rem}
+  .pm>.pm-head::-webkit-details-marker{display:none}
+  .pm>.pm-head .pm-num{flex:none;width:22px;height:22px;border-radius:6px;background:var(--accent2);color:#fff;
+    font-size:.78rem;display:flex;align-items:center;justify-content:center}
+  .pm>.pm-head .pm-chev{margin-left:auto;color:var(--muted);transition:transform .2s}
+  .pm[open]>.pm-head .pm-chev{transform:rotate(90deg)}
+  .pm[open]>.pm-head{border-bottom:1px solid var(--line)}
+  .pm-body{padding:12px 14px;font-size:.92rem}
+  .pm-body ul{margin:4px 0;padding-left:18px}
+  /* 입력→출력 토글 */
+  .io-toggle{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+  .io-toggle button{font-size:.82rem}
+  .io-toggle button.on{border-color:var(--accent);color:var(--accent)}
+  .io-panel{border:1px dashed var(--line);border-radius:8px;padding:10px 12px;background:var(--panel2);margin-top:6px}
+  .io-panel .io-arrow{color:var(--accent2);font-weight:700;margin:0 6px}
+  /* before/after 비교 */
+  .ba{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:stretch;margin:8px 0}
+  .ba .ba-box{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--panel2);font-size:.86rem}
+  .ba .ba-box.before{border-color:var(--hot)}
+  .ba .ba-box.after{border-color:var(--ok)}
+  .ba .ba-mid{align-self:center;color:var(--accent2);font-weight:800}
+  @media(max-width:600px){.ba{grid-template-columns:1fr}.ba .ba-mid{transform:rotate(90deg)}}
+  /* 시뮬레이션(vanilla) */
+  .sim{border:1px solid var(--line);border-radius:10px;padding:12px;margin:10px 0;background:var(--panel2)}
+  .sim-stage{min-height:160px;display:block;overflow-x:auto}
+  .sim-stage svg{display:block;width:100%;height:auto}
+  .sim-ctrl{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .sim-step{font-size:.85rem;color:var(--muted)}
+  .sim-desc{margin:8px 0 0;font-size:.88rem;min-height:1.4em}
+  @media(max-width:600px){.sim-ctrl{flex-direction:column;align-items:stretch}}
+  /* 셀프테스트(답 가림→펼침) */
+  .selftest{border:1px solid var(--warn);background:rgba(255,207,92,.06);border-radius:10px;padding:12px 14px;margin:8px 0}
+  .selftest .st-q{font-weight:700;margin-bottom:6px}
+  .selftest .st-a{max-height:0;overflow:hidden;transition:max-height .3s;color:var(--ink)}
+  .selftest .st-a.open{max-height:2000px;margin-top:8px}
+  .selftest .st-toggle{font-size:.82rem;margin-top:6px}
 </style>
 </head>
 <body data-theme="dark">
@@ -172,6 +228,11 @@
   <!-- ===== 로드맵 + 학습경로 + 목차 ===== -->
   <nav class="roadmap" id="roadmap" aria-label="로드맵">
     <h2>🗺️ 로드맵 (주차별 줄기)</h2>
+
+    <div class="rm-stem">
+      <div class="rm-stem-name">선행지식</div>
+      <div class="rm-node" data-target="prereq" onclick="goNode('prereq')"><span class="dot"></span>선행지식 (필수 용어)</div>
+    </div>
 
     <div class="rm-stem">
       <div class="rm-stem-name">B1 · 1주 — 딥러닝 기초 + 변이탐지</div>
@@ -233,6 +294,7 @@
 
     <div class="pathpanel">
       <h3>바로가기</h3>
+      <div class="pathstep" onclick="document.getElementById('prereq').scrollIntoView({behavior:'smooth'})"><span class="pnum">🧱</span>선행지식 (토대 용어)</div>
       <div class="pathstep" onclick="document.getElementById('posters').scrollIntoView({behavior:'smooth'})"><span class="pnum">📰</span>핵심 논문 포스터 (P1~P3)</div>
       <div class="pathstep" onclick="document.getElementById('examqs').scrollIntoView({behavior:'smooth'})"><span class="pnum">📝</span>예상 문제 (6문제)</div>
     </div>
@@ -242,12 +304,58 @@
   <main class="content">
     <section class="intro">
       <h1>의생명과학을 위한 AI <small style="font-size:.7em;color:var(--muted)">(노미나 교수)</small></h1>
-      <p><b>과목 한 줄 요약:</b> 이 과목은 결국 <b>"생물 데이터(genomic 서열 / 분자·생물 네트워크 그래프)를 딥러닝으로 어떻게 입력하고(토큰화·그래프화), 어떻게 학습하고(역전파), 어떻게 노드를 갱신해(message passing/attention) 예측을 내는가"</b>를 푼다.</p>
+      <p><b>과목 한 줄 요약:</b> <b>"생물 데이터(genomic 서열 / 분자·생물 네트워크 그래프)를 딥러닝에 어떻게 입력하고(토큰화·그래프화), 어떻게 학습하며(역전파), 어떻게 노드를 갱신해(message passing/attention) 예측을 내는가"</b>를 다룬다.</p>
       <p style="color:var(--muted)">시험은 <b>주차별 2문제(총 6개)</b>, "입력→출력을 식으로 서술" 형태이며 <b>GNN 식 문제 1개가 확정</b>되어 있다. 관문 개념은 <b>C4(BP) · C13(노드업데이트) · C16(GAT)</b> — 이 셋이 식 문제의 핵심.</p>
     </section>
 
-    <!-- ===== 첫 화면: MECE 트리맵 ===== -->
+    <!-- ===== 선행지식 (본문 진입 전 토대) ===== -->
+    <section class="prereq" id="prereq">
+      <h2>🧱 선행지식 — 본문 진입 전 최소 토대</h2>
+      <div class="pq-sub">이 과목은 "생물 데이터를 딥러닝에 입력→학습→출력"으로 푼다. 아래 핵심 용어를 먼저 잡으면 본문이 막힘없이 읽힌다. 각 용어는 어느 본문 개념을 이해하는 데 쓰는지(<b>쓰임</b>)를 함께 적었다.</div>
+      <div class="pq-grid">
+        <div class="pq-card" id="prereq-dogma">
+          <h3>DNA · RNA · 전사 · 발현</h3>
+          <div class="pq-def">DNA는 유전정보 저장체, RNA는 그 전달 사본. <b>전사</b>는 DNA→mRNA 복사, <b>발현</b>은 유전자가 실제 단백질·기능으로 나타나는 정도. (DNA→RNA→단백질 = 중심원리)</div>
+          <span class="pq-use"><b>쓰임:</b> C1(중심원리)·C2(변이탐지)에서 AI 입력 데이터의 출처를 이해.</span>
+        </div>
+        <div class="pq-card" id="prereq-seq">
+          <h3>서열 · k-mer</h3>
+          <div class="pq-def"><b>서열</b>은 A·C·G·T 글자를 순서대로 늘어놓은 문자열(예: ACTACG). <b>k-mer</b>는 연속한 k개 염기를 한 단위(단어)로 묶은 것(3-mer: ACT, CTA, …).</div>
+          <span class="pq-use"><b>쓰임:</b> C8·C9(토큰화)·DNABERT에서 서열을 모델 입력 토큰으로 바꾸는 단위.</span>
+        </div>
+        <div class="pq-card" id="prereq-tensor">
+          <h3>텐서 · 임베딩</h3>
+          <div class="pq-def"><b>텐서</b>는 숫자를 담은 다차원 배열(벡터·행렬의 일반화, 예: 이미지 = 높이×너비×채널). <b>임베딩</b>은 글자·토큰을 의미를 담은 dense 벡터로 사상한 것.</div>
+          <span class="pq-use"><b>쓰임:</b> C6(pileup 텐서)·C8~C9(토큰 임베딩)·C13(노드 표현)에서 "데이터를 숫자로".</span>
+        </div>
+        <div class="pq-card" id="prereq-graph">
+          <h3>그래프 (노드 · 엣지)</h3>
+          <div class="pq-def"><b>그래프</b> \(G=(V,E)\): <b>노드</b>(V, 개체 — 유전자·원자·사람)와 <b>엣지</b>(E, 관계 — 상호작용·결합·친구)로 이뤄진 구조. 격자·시퀀스와 달리 이웃 수가 가변.</div>
+          <span class="pq-use"><b>쓰임:</b> C12~C18(GNN)에서 "관계가 정보"인 생물 네트워크를 표현.</span>
+        </div>
+        <div class="pq-card" id="prereq-attn">
+          <h3>attention</h3>
+          <div class="pq-def">여러 입력 중 <b>어디에 얼마나 집중할지</b>를 학습된 가중치로 정하는 메커니즘. 가중치 합은 1(softmax 정규화)이고, 중요한 입력에 큰 가중치가 붙는다.</div>
+          <span class="pq-use"><b>쓰임:</b> C11(self-attention)·C16(GAT 이웃 attention)에서 이웃·토큰을 차등 집계.</span>
+        </div>
+        <div class="pq-card">
+          <h3>역전파 · gradient (보너스)</h3>
+          <div class="pq-def"><b>gradient</b>는 "이 가중치를 조금 키우면 에러가 얼마나 변하나". <b>역전파</b>는 그 gradient를 출력→입력 방향으로 한 번에 계산하는 절차.</div>
+          <span class="pq-use"><b>쓰임:</b> C4(BP)는 이 과목 모든 모델(DNABERT·GNN·CNN)의 공통 학습 엔진.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 첫 화면: 탐색 트리(D3) + 정적 트리맵 폴백 ===== -->
     <section class="treemap" id="treemap">
+      <h2>🧭 한눈에 보는 전체 구조 (탐색 트리)</h2>
+      <div class="tm-sub">노드를 클릭하면 펼치고(▸), 잎(개념)을 클릭하면 해당 카드로 드릴다운합니다. 휠·핀치로 줌, 드래그로 이동. 3개 주차 가지는 시험범위(주차별 2문제)와 1:1, 4번째 가지는 "범위 밖".</div>
+      <div id="tree-container" aria-label="과목 구조 탐색 트리"></div>
+      <p class="tree-hint">탐색 트리가 보이지 않으면(오프라인 등) 아래 정적 트리맵을 사용하세요.</p>
+    </section>
+
+    <!-- 정적 트리맵: D3 실패 시 폴백 -->
+    <section class="treemap" id="treemap-fallback" style="display:none">
       <h2>🧭 한눈에 보는 전체 구조 (MECE 트리맵)</h2>
       <div class="tm-sub">큰 가지를 먼저 본 뒤, 잎(개념)을 클릭하면 해당 카드로 드릴다운합니다. 3개 주차 가지는 시험범위(주차별 2문제)와 1:1, 4번째 가지는 "범위 밖".</div>
       <ul class="tree">
@@ -363,7 +471,7 @@
         <div class="nbody">
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>"사람이 feature를 손으로 설계하지 않고, 여러 층이 raw 데이터에서 점점 추상적인 표현을 스스로 배운다."</div>
           <div class="field"><span class="lbl">📖 정의</span>딥러닝 = 비선형 모듈을 여러 층 합성해 raw 입력 → 점점 추상적 표현으로 변환. 이미지 예: edge → motif → part → object. 이 층들은 사람이 설계하지 않고 <b>데이터로 학습</b>.</div>
-          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scen">전통 ML은 사람이 conservation·SIFT 같은 feature를 설계해야 했다. 딥러닝은 raw DNA·이미지를 통째로 먹고 유용한 표현을 스스로 발견 → genomics·drug discovery에서 SOTA(LeCun-Bengio-Hinton, Nature 2015).</div></div>
+          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scen">전통 ML은 사람이 conservation·SIFT 같은 feature를 설계해야 했다. 딥러닝은 raw DNA·이미지를 그대로 입력받아 유용한 표현을 스스로 찾는다 → genomics·drug discovery에서 SOTA(LeCun-Bengio-Hinton, Nature 2015).</div></div>
           <div class="field"><span class="lbl">📊 표·그래프 인사이트</span><div class="callout">지도학습 = 입력→점수벡터 → 목적함수로 에러 측정 → 가중치(수백만 knobs)를 <b>gradient 반대 방향</b>으로 조정. gradient = "이 가중치를 조금 키우면 에러가 얼마나 변하나".</div></div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">"표현학습 = 비지도"가 아니다. 지도/자기지도 모두 가능. 핵심은 "feature를 학습"한다는 점.</div></div>
           <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐</span>"왜 딥러닝이 feature engineering보다 강한가". BP(C4)의 전제. (출처: Deep Learning 논문 p.436)</div>
@@ -500,7 +608,7 @@
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span>"DNA=문장, 뉴클레오타이드=글자로 보고 NLP의 pretrain→finetune을 그대로."</div>
+          <div class="field"><span class="lbl">🎯 한 줄 직관</span>"DNA=문장, 뉴클레오타이드=글자로 보고 NLP의 pretrain→finetune 패러다임을 그대로 적용한다."</div>
           <div class="field"><span class="lbl">📖 정의/대응</span>Genome/Gene/Protein ↔ Document/Sentence, Nucleotides/Amino acids ↔ Words, Motifs ↔ idioms(국소), Co-evolution ↔ context(원거리). gLM = genomic grammar·distant interaction 식별 + 아키텍처·토큰화·사전학습·평가 최적화.</div>
           <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scen">영어 LLM이 위키 전체로 사전학습 후 감정분류로 파인튜닝되듯, gLM은 인간 유전체(라벨 없음)로 사전학습 후 "enhancer인가" 태스크로 파인튜닝. 적은 라벨로 강한 표현 재사용.</div></div>
           <div class="field"><span class="lbl">🔍 작동 원리 (2단계)</span><div class="callout">Random gLM →(unlabeled genome) Pretraining → Pretrained gLM →(task data) Fine-tuning → Task-adapted.</div></div>
@@ -777,7 +885,7 @@
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span>"GCN=차수 정규화로 이웃 집계, GraphSAGE=대형 그래프용 이웃 샘플링 + 다양한 aggregator."</div>
+          <div class="field"><span class="lbl">🎯 한 줄 직관</span>"GCN=차수 정규화로 이웃 집계, GraphSAGE=대형 그래프용 이웃 샘플링 + 교체 가능한 aggregator(mean/pool/LSTM)."</div>
           <div class="field"><span class="lbl">📖 정의</span>C13 일반형의 두 구체 변주.</div>
           <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scen">수백만 노드 그래프(대형 소셜·생물 네트워크)에서 GraphSAGE는 이웃을 고정 수만큼 샘플링해 계산량을 통제하고, unseen 노드에도 적용(inductive).</div></div>
           <div class="field"><span class="lbl">🧮 수식 ⭐</span>
@@ -947,60 +1055,315 @@
     <!-- ===== 핵심 논문 포스터 ===== -->
     <section class="stem-sec" id="posters">
       <h2>📰 핵심 논문 포스터 (3개)</h2>
+      <p style="color:var(--muted);margin:.2em 0 1em">각 논문을 7모듈(①문제정의 ②선행용어 ③핵심아이디어 ④아키텍처 ⑤수식·메커니즘 ⑥결과·의의 ⑦시험포인트)로 펼쳤습니다. 모듈을 열어 단계 스테퍼·시뮬레이션·셀프테스트를 직접 조작하세요.</p>
       <div class="poster-wrap">
 
-        <article class="poster" id="P1" data-poster-id="P1">
-          <h3>Deep Learning <small>(LeCun, Bengio &amp; Hinton, Nature 2015)</small></h3>
-          <div class="p-tag">[1주 — BP의 원천] 딥러닝 = 여러 층이 raw 데이터에서 표현을 자동 학습, <b>역전파(backpropagation)</b>로 가중치를 갱신 — 음성·비전·genomics를 석권.</div>
-          <div class="p-sec"><span class="lbl">📚 Terminology</span>
-            <ul>
-              <li><b>Representation learning</b> — raw 데이터에서 feature를 자동 발견(사람이 설계 X).</li>
-              <li><b>Backpropagation (BP)</b> — 목적함수 gradient를 chain rule로 출력→입력 역전파해 구하는 절차.</li>
-              <li><b>SGD</b> — 소수 예제로 gradient를 추정해 가중치를 반복 갱신.</li>
-              <li><b>ReLU</b> — \(f(z)=\max(0,z)\), 깊은 망에서 sigmoid보다 빠른 학습.</li>
-              <li><b>CNN</b> — 국소 연결·가중치 공유·풀링으로 이미지 처리.</li>
-              <li><b>RNN/LSTM</b> — 시퀀스 처리, BP through time으로 학습(gradient 폭발/소실 이슈).</li>
-            </ul>
-          </div>
-          <div class="p-sec"><span class="lbl">💡 Core Concept / Method</span><div class="scrollx">입력→여러 비선형 층→출력. forward: \(z=Wy, y=f(z)\). loss로 출력-정답 비교. <b>backward</b>: 출력층 \(\partial E/\partial y=y-t\)에서 시작, chain rule로 \(\partial E/\partial z, \partial E/\partial w\)를 역전파. 갱신 \(w\leftarrow w-\eta\partial E/\partial w\). 이미지 표현 위계: edge→motif→part→object.</div></div>
-          <div class="p-sec"><span class="lbl">🚀 Breakthrough</span><div class="p-break">feature engineering 없이 raw 데이터로 SOTA(ImageNet 에러 반감, 음성인식). genomics(비코딩 변이→질병)에도 적용. <b>본 과목 모든 모델(DNABERT·GNN·CNN 변이탐지)의 학습 엔진 = BP</b>.</div></div>
-          <div class="p-sec"><span class="lbl">🔗 강의·시험 연결</span>C3(표현학습), <b>C4(BP — 1주 출제 확정급)</b>, C5(CNN). 시험: forward→loss→backward→update 식 서술.</div>
+        <!-- ===================== P1: Deep Learning (7모듈) ===================== -->
+        <article class="poster deep" id="P1" data-poster-id="P1">
+          <h3>① Deep Learning <small>(LeCun, Bengio &amp; Hinton, Nature 2015)</small></h3>
+          <div class="p-tag">[1주 — BP의 원천] 딥러닝 = 여러 층이 raw 데이터에서 표현을 자동 학습, <b>역전파(backpropagation)</b>로 가중치를 갱신. BP는 이 과목 모든 모델의 공통 학습 엔진.</div>
+
+          <details class="pm" open><summary class="pm-head"><span class="pm-num">①</span>문제 정의 — 무엇을 푸는가<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <p><b>태스크:</b> raw 데이터(이미지·음성·서열)를 직접 입력받아, 사람이 feature를 설계하지 않고도 분류·예측을 수행한다. 핵심 질문 = "여러 비선형 층의 수백만 가중치를 <b>어떻게 학습</b>시키는가" → 답이 역전파.</p>
+              <div class="io-toggle" data-iogroup="p1io">
+                <button class="btn on" onclick="ioPick(this,'p1io',0)">이미지 분류</button>
+                <button class="btn" onclick="ioPick(this,'p1io',1)">음성 인식</button>
+                <button class="btn" onclick="ioPick(this,'p1io',2)">genomics</button>
+              </div>
+              <div class="io-panel" id="p1io">
+                <span class="io-in"></span><span class="io-arrow">→</span><span class="io-out"></span>
+              </div>
+            </div>
+          </details>
+
+          <details class="pm"><summary class="pm-head"><span class="pm-num">②</span>선행 용어<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <ul>
+                <li><b>Representation learning</b> — raw 데이터에서 feature를 자동 발견(사람이 설계 X).</li>
+                <li><b>Backpropagation (BP)</b> — 목적함수 gradient를 chain rule로 출력→입력 역전파해 구하는 절차.</li>
+                <li><b>gradient</b> — "이 가중치를 조금 키우면 에러가 얼마나 변하나"의 방향·크기.</li>
+                <li><b>SGD</b> — 미니배치로 gradient를 추정해 가중치를 반복 갱신.</li>
+                <li><b>ReLU</b> — \(f(z)=\max(0,z)\), 깊은 망에서 sigmoid보다 빠른 학습(gradient 소실 완화).</li>
+                <li><b>CNN / RNN·LSTM</b> — 국소·공유의 이미지 처리 / 시퀀스 처리(BP through time).</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="pm"><summary class="pm-head"><span class="pm-num">③</span>핵심 아이디어 — breakthrough 한 문장<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <p><b>"feature를 손으로 만들지 말고, 여러 층이 데이터에서 표현을 스스로 학습하게 하라 — 그 학습은 역전파로 가능하다."</b></p>
+              <div class="ba">
+                <div class="ba-box before"><b>Before (전통 ML)</b><br>사람이 conservation·SIFT·HOG 같은 feature를 손으로 설계 → 도메인마다 새로 설계, 한계 명확.</div>
+                <div class="ba-mid">⟶</div>
+                <div class="ba-box after"><b>After (딥러닝)</b><br>raw 입력을 그대로 받아 edge→motif→part→object 위계를 <b>스스로</b> 학습 → ImageNet 에러 반감, 음성·genomics SOTA.</div>
+              </div>
+            </div>
+          </details>
+
+          <details class="pm"><summary class="pm-head"><span class="pm-num">④</span>아키텍처 — 레이어별 표현 학습 (스테퍼)<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <p>입력에서 출력까지 비선형 층을 통과하며 표현이 점점 추상화된다. ▶로 한 층씩 진행하며 활성을 관찰하세요.</p>
+              <div class="sim" data-sim="dl-forward">
+                <div class="sim-stage"></div>
+                <div class="sim-ctrl">
+                  <button class="btn sim-prev">◀ 이전</button>
+                  <button class="btn sim-next">다음 ▶</button>
+                  <button class="btn sim-play">▶ 자동</button>
+                  <span class="sim-step"></span>
+                </div>
+                <p class="sim-desc"></p>
+              </div>
+            </div>
+          </details>
+
+          <details class="pm"><summary class="pm-head"><span class="pm-num">⑤</span>수식·메커니즘 — 역전파 gradient 흐름 (스테퍼)<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <div class="scrollx" style="margin-bottom:8px">Forward: \(z=Wy,\ y=f(z)\). Loss: \(E=\tfrac12\sum_l(y_l-t_l)^2\). Backward(chain rule): 출력층 \(\partial E/\partial y=y-t\)에서 시작 → \(\partial E/\partial z=\partial E/\partial y\cdot f'(z)\) → \(\partial E/\partial w=y_{\text{below}}\cdot\partial E/\partial z\). Update: \(w\leftarrow w-\eta\,\partial E/\partial w\).</div>
+              <p>▶로 forward(파랑)와 backward(빨강) gradient 흐름을 따라가세요.</p>
+              <div class="sim" data-sim="dl-backprop">
+                <div class="sim-stage"></div>
+                <div class="sim-ctrl">
+                  <button class="btn sim-prev">◀ 이전</button>
+                  <button class="btn sim-next">다음 ▶</button>
+                  <button class="btn sim-play">▶ 자동</button>
+                  <span class="sim-step"></span>
+                </div>
+                <p class="sim-desc"></p>
+              </div>
+            </div>
+          </details>
+
+          <details class="pm"><summary class="pm-head"><span class="pm-num">⑥</span>결과·의의<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <div class="p-break">feature engineering 없이 raw 데이터로 SOTA(ImageNet 에러 반감, 음성인식 도약). genomics(비코딩 변이→질병)에도 적용. <b>본 과목 모든 모델(DNABERT·GNN·CNN 변이탐지)의 학습 엔진 = BP</b> — 모델이 달라도 "loss를 가중치로 미분→갱신"은 공통.</div>
+            </div>
+          </details>
+
+          <details class="pm"><summary class="pm-head"><span class="pm-num">⑦</span>시험 포인트 — 셀프테스트<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <p style="color:var(--muted);font-size:.85rem">먼저 스스로 답하고 "답 보기"로 확인. (강의·시험 연결: C3·<b>C4(1주 출제 확정급)</b>·C5)</p>
+              <div class="selftest">
+                <div class="st-q">Q. 역전파 한 사이클을 forward→loss→backward→update 식으로 서술하라.</div>
+                <div class="st-a">① Forward \(z=Wy,\ y=f(z)\) 입력→출력. ② Loss \(E=\tfrac12\sum(y-t)^2\). ③ Backward: 출력층 \(\partial E/\partial y=y-t\) → \(\partial E/\partial z=(y-t)f'(z)\) → \(\partial E/\partial w=y_{\text{below}}\,\partial E/\partial z\)를 입력층까지 chain rule 반복. ④ Update \(w\leftarrow w-\eta\,\partial E/\partial w\)(gradient 반대 방향).</div>
+                <button class="btn st-toggle" onclick="toggleST(this)">답 보기</button>
+              </div>
+              <div class="selftest">
+                <div class="st-q">Q. ReLU가 sigmoid보다 깊은 망에서 유리한 이유와 \(f'(z)\)는?</div>
+                <div class="st-a">\(f'(z)=1\ (z&gt;0)\), \(0\ (z\le0)\) — 양수 구간에서 gradient가 죽지 않아 <b>gradient 소실</b>이 완화된다. sigmoid는 양 끝에서 \(f'\approx0\)이라 깊은 망에서 gradient가 사라진다.</div>
+                <button class="btn st-toggle" onclick="toggleST(this)">답 보기</button>
+              </div>
+            </div>
+          </details>
         </article>
 
-        <article class="poster" id="P2" data-poster-id="P2">
-          <h3>DNABERT <small>(Ji et al., Bioinformatics 2021)</small></h3>
+        <!-- ===================== P2: DNABERT (7모듈) ===================== -->
+        <article class="poster deep" id="P2" data-poster-id="P2">
+          <h3>② DNABERT <small>(Ji et al., Bioinformatics 2021)</small></h3>
           <div class="p-tag">[2주 — 토큰화·MLM] BERT를 DNA에 — <b>k-mer 토큰화 + 양방향 MLM 사전학습</b>으로 비코딩 DNA의 "언어"를 해독, promoter·splice·TFBS를 SOTA로.</div>
-          <div class="p-sec"><span class="lbl">📚 Terminology</span>
-            <ul>
-              <li><b>k-mer tokenization</b> — 연속 k염기를 한 토큰으로(k=3~6). vocab \(=4^k+5\).</li>
-              <li><b>[CLS]/[SEP]/[MASK]/[PAD]/[UNK]</b> — 특수토큰(분류/분리/마스킹/패딩/미지).</li>
-              <li><b>MLM (Masked LM)</b> — 토큰 ~15%를 [MASK], 양방향 문맥으로 예측(self-supervised).</li>
-              <li><b>Bidirectional self-attention</b> — 좌우 문맥 동시 참조(이해에 강함).</li>
-              <li><b>Multi-Head Attention</b> — \(\text{softmax}(\dfrac{QK^T}{\sqrt{d_k}})V\)를 여러 head로.</li>
-              <li><b>Fine-tuning</b> — 사전학습 가중치 + 태스크 head로 적은 라벨 학습.</li>
-            </ul>
-          </div>
-          <div class="p-sec"><span class="lbl">💡 Core Concept / Method</span><div class="scrollx">DNA 서열 → k-mer 토큰화 → [CLS] k-mer… [SEP] → 임베딩 행렬 M(Token+Positional) → <b>12 Transformer 인코더 층</b>(768 hidden, 12 head) → 사전학습 시 [MASK] 예측(cross-entropy \(L=-\sum y_i'\log y_i\)) → 파인튜닝(sentence-level/token-level classifier). 입력 max 512. k=6이 최고.</div></div>
-          <div class="p-sec"><span class="lbl">🚀 Breakthrough</span><div class="p-break">단일 사전학습 모델이 promoter/splice/TFBS를 동시에 SOTA, 적은 라벨에서도 강함, 사람 유전체→다른 종 일반화. 사전학습이 random init보다 훨씬 낮은 loss로 수렴(Fig.6) — <b>사전학습의 가치 정량 입증</b>.</div></div>
-          <div class="p-sec"><span class="lbl">🔗 강의·시험 연결</span><b>C8·C9(토큰화 — 2주 출제), C11(MLM)</b>. 시험: "DNA→k-mer→토큰ID→임베딩 형상" + vocab=4^k+5 + MLM 손실.</div>
+
+          <details class="pm" open><summary class="pm-head"><span class="pm-num">①</span>문제 정의 — 입력→출력<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <p><b>태스크:</b> DNA 서열(라벨 없는 인간 유전체)을 입력해 사전학습한 뒤, 적은 라벨로 다운스트림 예측(promoter·splice site·전사인자 결합부위)에 파인튜닝한다.</p>
+              <div class="io-toggle" data-iogroup="p2io">
+                <button class="btn on" onclick="ioPick(this,'p2io',0)">프로모터 예측</button>
+                <button class="btn" onclick="ioPick(this,'p2io',1)">splice site</button>
+                <button class="btn" onclick="ioPick(this,'p2io',2)">TFBS</button>
+              </div>
+              <div class="io-panel" id="p2io">
+                <span class="io-in"></span><span class="io-arrow">→</span><span class="io-out"></span>
+              </div>
+            </div>
+          </details>
+
+          <details class="pm"><summary class="pm-head"><span class="pm-num">②</span>선행 용어<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <ul>
+                <li><b>k-mer tokenization</b> — 연속 k염기를 한 토큰으로(k=3~6). vocab \(=4^k+5\).</li>
+                <li><b>[CLS]/[SEP]/[MASK]/[PAD]/[UNK]</b> — 특수토큰(분류/분리/마스킹/패딩/미지).</li>
+                <li><b>MLM (Masked LM)</b> — 토큰 ~15%를 [MASK], 양방향 문맥으로 예측(self-supervised).</li>
+                <li><b>Bidirectional self-attention</b> — 좌우 문맥 동시 참조(이해에 강함).</li>
+                <li><b>Multi-Head Attention</b> — \(\text{softmax}(\dfrac{QK^T}{\sqrt{d_k}})V\)를 여러 head로.</li>
+                <li><b>Fine-tuning</b> — 사전학습 가중치 + 태스크 head로 적은 라벨 학습.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="pm"><summary class="pm-head"><span class="pm-num">③</span>핵심 아이디어 — breakthrough 한 문장<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <p><b>"DNA를 문장으로 보고(k-mer=단어), 가린 단어 맞히기(MLM)만으로 생물 문법을 배우게 하라."</b></p>
+              <div class="ba">
+                <div class="ba-box before"><b>Before</b><br>태스크마다 feature·모델을 따로 설계, 라벨 데이터가 많이 필요. promoter·splice를 각각 다른 모델로.</div>
+                <div class="ba-mid">⟶</div>
+                <div class="ba-box after"><b>After (DNABERT)</b><br>라벨 없는 유전체로 한 번 사전학습 → 적은 라벨로 promoter·splice·TFBS를 <b>한 모델</b>이 SOTA, 다른 종에도 일반화.</div>
+              </div>
+            </div>
+          </details>
+
+          <details class="pm"><summary class="pm-head"><span class="pm-num">④</span>아키텍처 — 서열→k-mer→토큰→트랜스포머 (스테퍼)<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <p>입력 서열이 어떻게 모델 입력으로 변환되는지 ▶로 한 단계씩 따라가세요(서열 → k-mer 토큰화 → 특수토큰 → 임베딩 → 인코더).</p>
+              <div class="sim" data-sim="dnabert-pipe">
+                <div class="sim-stage"></div>
+                <div class="sim-ctrl">
+                  <button class="btn sim-prev">◀ 이전</button>
+                  <button class="btn sim-next">다음 ▶</button>
+                  <button class="btn sim-play">▶ 자동</button>
+                  <span class="sim-step"></span>
+                </div>
+                <p class="sim-desc"></p>
+              </div>
+            </div>
+          </details>
+
+          <details class="pm"><summary class="pm-head"><span class="pm-num">⑤</span>수식·메커니즘 — self-attention (토큰 간 화살표)<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <div class="scrollx" style="margin-bottom:8px">Self-attention: \( \text{head}_i = \text{softmax}\big(\dfrac{MW_i^Q\,MW_i^{K\,T}}{\sqrt{d_k}}\big)MW_i^V \), \( \text{MultiHead}(M)=\text{Concat}(\text{head}_1,\dots,\text{head}_h)W^O \). MLM 손실 \(L=-\sum_i y_i'\log(y_i)\)(cross-entropy). \(M\)=토큰 임베딩, \(d_k\)=key 차원.</div>
+              <p>[MASK] 토큰이 어느 이웃 토큰을 얼마나 참조하는지 ▶로 관찰하세요(화살표 굵기 = attention 가중치).</p>
+              <div class="sim" data-sim="dnabert-attn">
+                <div class="sim-stage"></div>
+                <div class="sim-ctrl">
+                  <button class="btn sim-prev">◀ 이전</button>
+                  <button class="btn sim-next">다음 ▶</button>
+                  <button class="btn sim-play">▶ 자동</button>
+                  <span class="sim-step"></span>
+                </div>
+                <p class="sim-desc"></p>
+              </div>
+            </div>
+          </details>
+
+          <details class="pm"><summary class="pm-head"><span class="pm-num">⑥</span>결과·의의<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <div class="p-break">단일 사전학습 모델이 promoter/splice/TFBS를 동시에 SOTA, 적은 라벨에서도 강함, 사람 유전체→다른 종 일반화. 사전학습이 random init보다 훨씬 낮은 loss로 수렴(Fig.6) — <b>사전학습의 가치를 정량 입증</b>. k=6 vocab=4101이 최고 성능.</div>
+            </div>
+          </details>
+
+          <details class="pm"><summary class="pm-head"><span class="pm-num">⑦</span>시험 포인트 — 셀프테스트<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <p style="color:var(--muted);font-size:.85rem">먼저 스스로 답하고 "답 보기"로. (연결: <b>C8·C9(토큰화 2주 출제)</b>·C11(MLM))</p>
+              <div class="selftest">
+                <div class="st-q">Q. DNA 서열을 DNABERT 입력으로 만드는 과정을 입력→출력 형상까지 서술하라. vocab 크기도.</div>
+                <div class="st-a">서열 → <b>k-mer 토큰화</b>(연속 k염기=1토큰; non-overlap은 trailing base 손실, overlap은 중복) → [CLS]+k-mer들+[SEP], max 512([PAD] 보충) → Token+Positional Embedding → 행렬 \(M\)=(512, hidden=768) → 12 Transformer 인코더. <b>Vocab \(=4^k+5\)</b>(예 k=6 → 4101).</div>
+                <button class="btn st-toggle" onclick="toggleST(this)">답 보기</button>
+              </div>
+              <div class="selftest">
+                <div class="st-q">Q. DNABERT의 사전학습 방식(MLM)과 손실 함수는? 왜 self-supervised인가?</div>
+                <div class="st-a">토큰 ~15%(연속 k-mer)를 [MASK] → <b>양방향</b> self-attention으로 가린 토큰을 예측. 손실 = cross-entropy \(L=-\sum_i y_i'\log(y_i)\). 정답을 원본 서열에서 가져오므로 별도 라벨이 필요 없다(self-supervised).</div>
+                <button class="btn st-toggle" onclick="toggleST(this)">답 보기</button>
+              </div>
+            </div>
+          </details>
         </article>
 
-        <article class="poster" id="P3" data-poster-id="P3">
-          <h3>Graph Attention Networks <small>(Veličković et al., ICLR 2018)</small></h3>
+        <!-- ===================== P3: GAT (7모듈) ===================== -->
+        <article class="poster deep" id="P3" data-poster-id="P3">
+          <h3>③ Graph Attention Networks <small>(Veličković et al., ICLR 2018)</small></h3>
           <div class="p-tag">[3주 — GNN 식·attention] GNN의 message passing을 유지하되 이웃 집계를 <b>학습된 attention 가중치</b>로 — 이웃 차등으로 노드 분류 SOTA(transductive·inductive).</div>
-          <div class="p-sec"><span class="lbl">📚 Terminology</span>
-            <ul>
-              <li><b>Attention coefficient \(\alpha_{ij}\)</b> — 이웃 \(j\)가 \(i\)에 기여하는 정규화 가중치(\(\sum_j\alpha_{ij}=1\)).</li>
-              <li><b>Masked attention</b> — 1-hop 이웃에만 \(e_{ij}\) 계산(그래프 구조 주입).</li>
-              <li><b>Multi-head attention</b> — K개 독립 attention 병렬, concat 또는 average.</li>
-              <li><b>LeakyReLU</b> — attention \(a\)의 비선형(slope 0.2).</li>
-              <li><b>Transductive vs Inductive</b> — 같은 그래프 학습/평가 vs unseen 그래프 일반화.</li>
-              <li><b>GCN</b> — 비교 baseline(고정 차수 정규화).</li>
-            </ul>
-          </div>
-          <div class="p-sec"><span class="lbl">💡 Core Concept / Method (3-step)</span><div class="scrollx">① score \(e_{ij}=a(W\vec{h}_i, W\vec{h}_j)\) = LeakyReLU(\(\vec{a}^T[W\vec{h}_i\Vert W\vec{h}_j]\)). ② normalize \(\alpha_{ij}=\text{softmax}_j(e_{ij})\). ③ update \(\vec{h}_i'=\sigma(\sum_{j\in\mathcal{N}_i}\alpha_{ij}W\vec{h}_j)\). Multi-head: \(\Vert_{k=1}^K\)(중간층) / average(최종층).</div></div>
-          <div class="p-sec"><span class="lbl">🚀 Breakthrough</span><div class="p-break">spectral 방법의 한계(그래프 구조 고정 의존·eigendecomposition) 극복, 행렬연산 불필요·병렬화, <b>inductive 적용 가능</b>. Cora 83.0%·Citeseer 72.5%(GCN +1.5/+1.6), PPI 0.973(GraphSAGE +20.5%). Const-GAT 대비 +3.9% → 이웃 차등의 직접 효과.</div></div>
-          <div class="p-sec"><span class="lbl">🔗 강의·시험 연결</span><b>C16(GAT 식 — GNN 식 문제 강력 후보), C13(노드업데이트), C17(결과)</b>. 시험: GAT 3-step 식·기호, GCN 대조, multi-head.</div>
+
+          <details class="pm" open><summary class="pm-head"><span class="pm-num">①</span>문제 정의 — 입력→출력<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <p><b>태스크:</b> 그래프 \(G=(V,E)\)와 노드 feature를 입력해, 각 노드(또는 그래프)의 라벨을 예측한다. 기존 GCN은 모든 이웃을 차수 기반으로 <b>동등하게</b> 섞는데, GAT는 이웃마다 중요도를 학습한다.</p>
+              <div class="io-toggle" data-iogroup="p3io">
+                <button class="btn on" onclick="ioPick(this,'p3io',0)">노드 분류(Cora)</button>
+                <button class="btn" onclick="ioPick(this,'p3io',1)">inductive(PPI)</button>
+                <button class="btn" onclick="ioPick(this,'p3io',2)">단백질 기능</button>
+              </div>
+              <div class="io-panel" id="p3io">
+                <span class="io-in"></span><span class="io-arrow">→</span><span class="io-out"></span>
+              </div>
+            </div>
+          </details>
+
+          <details class="pm"><summary class="pm-head"><span class="pm-num">②</span>선행 용어<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <ul>
+                <li><b>Attention coefficient \(\alpha_{vu}\)</b> — 이웃 \(u\)가 \(v\)에 기여하는 정규화 가중치(\(\sum_u\alpha_{vu}=1\)).</li>
+                <li><b>Masked attention</b> — 1-hop 이웃에만 \(e_{vu}\) 계산(그래프 구조 주입).</li>
+                <li><b>Multi-head attention</b> — K개 독립 attention 병렬, concat 또는 average.</li>
+                <li><b>LeakyReLU</b> — attention \(a\)의 비선형(slope 0.2).</li>
+                <li><b>Transductive vs Inductive</b> — 같은 그래프 학습/평가 vs unseen 그래프 일반화.</li>
+                <li><b>GCN</b> — 비교 baseline(고정 차수 정규화 \(\tilde{D}^{-1/2}\tilde{A}\tilde{D}^{-1/2}\)).</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="pm"><summary class="pm-head"><span class="pm-num">③</span>핵심 아이디어 — breakthrough 한 문장<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <p><b>"이웃을 평균(GCN)하지 말고, 어떤 이웃이 더 중요한지 attention으로 학습해 차등 집계하라."</b></p>
+              <div class="ba">
+                <div class="ba-box before"><b>Before (GCN)</b><br>차수 기반 <b>고정</b> 가중치 \(1/\sqrt{\tilde d_v\tilde d_u}\). 모든 이웃을 구조만으로 동등 취급, 학습되지 않음. spectral이라 그래프 구조에 의존.</div>
+                <div class="ba-mid">⟶</div>
+                <div class="ba-box after"><b>After (GAT)</b><br>이웃마다 <b>학습된</b> \(\alpha_{vu}\)로 차등 집계. 행렬분해 불필요·병렬화·<b>inductive 가능</b>. PPI에서 GraphSAGE +20.5%.</div>
+              </div>
+            </div>
+          </details>
+
+          <details class="pm"><summary class="pm-head"><span class="pm-num">④</span>아키텍처 — 노드 임베딩 갱신 (스테퍼)<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <p>한 노드가 이웃에서 정보를 모아 표현을 갱신하는 GAT 한 층을 ▶로 따라가세요(선형변환 → score → softmax → 가중합 → 비선형).</p>
+              <div class="sim" data-sim="gat-stepper">
+                <div class="sim-stage"></div>
+                <div class="sim-ctrl">
+                  <button class="btn sim-prev">◀ 이전</button>
+                  <button class="btn sim-next">다음 ▶</button>
+                  <button class="btn sim-play">▶ 자동</button>
+                  <span class="sim-step"></span>
+                </div>
+                <p class="sim-desc"></p>
+              </div>
+            </div>
+          </details>
+
+          <details class="pm"><summary class="pm-head"><span class="pm-num">⑤</span>수식·메커니즘 — message passing + attention 시뮬레이션<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <div class="scrollx" style="margin-bottom:8px">
+                <div><b>확정 표기(시험 식):</b> \( h_v^{(k)}=\sigma\big(\sum_{u\in N(v)} \alpha_{vu}\, W\, h_u^{(k-1)}\big) \)</div>
+                <div>Step1 score \( e_{vu}=a(W h_v, W h_u)=\text{LeakyReLU}(\vec{a}^T[W h_v\,\Vert\,W h_u]) \). Step2 normalize \( \alpha_{vu}=\dfrac{\exp(e_{vu})}{\sum_{r\in N(v)}\exp(e_{vr})} \). Step3 update = 위 확정식.</div>
+                <div>Multi-head: \( h_v' = \big\Vert_{k=1}^{K}\sigma(\sum_{u\in N(v)}\alpha_{vu}^k W^k h_u) \)(중간층) / average(최종층).</div>
+              </div>
+              <p>슬라이더로 두 이웃의 attention score를 바꾸면 \(\alpha\)(softmax)와 가중합 결과가 즉시 반응합니다(엣지 굵기 = \(\alpha\)).</p>
+              <div class="sim" data-sim="gat-attn">
+                <div class="sim-stage"></div>
+                <div class="sim-ctrl">
+                  <label style="font-size:.85rem">score \(e_{v u_1}\): <input type="range" class="gat-e1" min="-3" max="3" step="0.1" value="2.0"></label>
+                  <label style="font-size:.85rem">score \(e_{v u_2}\): <input type="range" class="gat-e2" min="-3" max="3" step="0.1" value="1.0"></label>
+                </div>
+                <p class="sim-desc"></p>
+              </div>
+            </div>
+          </details>
+
+          <details class="pm"><summary class="pm-head"><span class="pm-num">⑥</span>결과·의의<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <div class="scrollx">
+                <table>
+                  <tr><th></th><th>Cora</th><th>Citeseer</th><th>Pubmed</th><th>PPI(F1)</th></tr>
+                  <tr><td>GCN</td><td>81.5</td><td>70.3</td><td>79.0</td><td>—</td></tr>
+                  <tr><td>GraphSAGE 최고</td><td>—</td><td>—</td><td>—</td><td>0.768</td></tr>
+                  <tr><td>Const-GAT</td><td>—</td><td>—</td><td>—</td><td>0.934</td></tr>
+                  <tr><td><b>GAT</b></td><td><b>83.0</b></td><td><b>72.5</b></td><td>79.0</td><td><b>0.973</b></td></tr>
+                </table>
+              </div>
+              <div class="p-break">spectral 한계(구조 고정 의존·eigendecomposition) 극복, 병렬화, <b>inductive 가능</b>. Const-GAT(attention 상수=동등) 대비 +3.9%(0.973 vs 0.934) → 구조 동일·attention만 다르므로 이 차이가 <b>"이웃 차등 가중"의 순수 효과</b>.</div>
+            </div>
+          </details>
+
+          <details class="pm"><summary class="pm-head"><span class="pm-num">⑦</span>시험 포인트 — 셀프테스트<span class="pm-chev">▶</span></summary>
+            <div class="pm-body">
+              <p style="color:var(--muted);font-size:.85rem">먼저 스스로 답하고 "답 보기"로. (연결: <b>C16(GAT 식 — GNN 식 문제 강력 후보)</b>·C13·C17)</p>
+              <div class="selftest">
+                <div class="st-q">Q. GAT가 GCN의 이웃 집계를 어떻게 바꾸나? 3단계 식으로 쓰라.</div>
+                <div class="st-a">GCN의 고정 정규화 \(1/\sqrt{\tilde d_v\tilde d_u}\)를 학습 attention \(\alpha_{vu}\)로 대체. ① score \(e_{vu}=\text{LeakyReLU}(\vec a^T[Wh_v\Vert Wh_u])\). ② normalize \(\alpha_{vu}=\dfrac{\exp(e_{vu})}{\sum_{r\in N(v)}\exp(e_{vr})}\). ③ update \(h_v^{(k)}=\sigma(\sum_{u\in N(v)}\alpha_{vu}Wh_u^{(k-1)})\). multi-head로 K개 병렬(concat/average).</div>
+                <button class="btn st-toggle" onclick="toggleST(this)">답 보기</button>
+              </div>
+              <div class="selftest">
+                <div class="st-q">Q. score \(e_{vu_1}=2.0,\ e_{vu_2}=1.0\)일 때 \(\alpha\)를 계산하고, GAT가 GCN보다 우월한 근거를 논문 결과로 들라.</div>
+                <div class="st-a">\(\alpha_{vu_1}=\dfrac{e^2}{e^2+e^1}=\dfrac{7.39}{10.11}=0.73\), \(\alpha_{vu_2}=0.27\)(GCN이면 0.5/0.5). 근거: Const-GAT(동등) 대비 PPI +3.9%, GCN 대비 Cora +1.5%, inductive에서 GraphSAGE +20.5%.</div>
+                <button class="btn st-toggle" onclick="toggleST(this)">답 보기</button>
+              </div>
+            </div>
+          </details>
         </article>
 
       </div>
@@ -1009,7 +1372,7 @@
     <!-- ===== 예상 문제 ===== -->
     <section class="stem-sec" id="examqs">
       <h2>📝 예상 문제 &amp; 모범 답변 (주차별 2문제 = 총 6문제)</h2>
-      <p style="color:var(--muted)">형태: "입력→출력 서술형", <b>GNN 식 문제 1개 확정 포함(Q5)</b>. 먼저 스스로 답해보고 <b>"답 보기"</b>로 확인하세요.</p>
+      <p style="color:var(--muted)">형태: "입력→출력 서술형", <b>GNN 식 문제 1개 확정 포함(Q5)</b>. 먼저 스스로 답한 뒤 <b>"답 보기"</b>로 확인한다.</p>
 
       <div class="qa-item">
         <div class="qa-q"><span class="qa-type">서술형·1주</span><span>Q1. 역전파(backpropagation)의 한 사이클을 입력→출력 순서로 서술하라. forward, loss, backward, weight update 각 단계의 식을 포함하라. <small style="color:var(--muted)">(출처: 시험범위 BP / Deep Learning 논문)</small></span>
@@ -1089,6 +1452,8 @@
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
   onload="renderMathInElement(document.body,{delimiters:[{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"
   onerror="katexFallback()"></script>
+<!-- D3 (탐색 트리용; 없으면 정적 트리맵 폴백) -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 <script>
   function katexFallback(){
     document.body.classList.add('katex-fallback');
@@ -1161,6 +1526,356 @@
   document.addEventListener('keydown',e=>{
     if(e.key==='/'&&document.activeElement.id!=='search'){e.preventDefault();document.getElementById('search').focus();}
   });
+
+  /* ===================== 셀프테스트(답 가림→펼침) ===================== */
+  function toggleST(btn){
+    const a=btn.parentElement.querySelector('.st-a');
+    const open=a.classList.toggle('open'); btn.textContent=open?'답 숨기기':'답 보기';
+  }
+
+  /* ===================== 입력→출력 토글 ===================== */
+  const IO={
+    p1io:[
+      ['raw 이미지 픽셀 텐서','클래스 라벨(개·고양이…)'],
+      ['raw 음성 파형/스펙트로그램','음소·단어 시퀀스'],
+      ['raw DNA 서열·변이','질병 위험·기능 예측']],
+    p2io:[
+      ['DNA 서열(프로모터 후보 영역)','프로모터 여부 0/1'],
+      ['exon-intron 경계 부근 서열','splice site 여부 0/1'],
+      ['전사인자 결합 후보 서열','TFBS 여부 0/1']],
+    p3io:[
+      ['Cora 그래프 + 논문 feature','논문 주제 클래스(7개 중 1)'],
+      ['학습에 없던 PPI 그래프','단백질 다중라벨(121, inductive)'],
+      ['단백질 residue 그래프','GO 기능 다중라벨']]
+  };
+  function ioRender(group,idx){
+    const panel=document.getElementById(group); if(!panel)return;
+    const pair=IO[group][idx];
+    panel.querySelector('.io-in').innerHTML='<b>입력:</b> '+pair[0];
+    panel.querySelector('.io-out').innerHTML='<b>출력:</b> '+pair[1];
+  }
+  function ioPick(btn,group,idx){
+    btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on'); ioRender(group,idx);
+  }
+  Object.keys(IO).forEach(g=>ioRender(g,0));
+
+  /* ===================== 시뮬레이션 공통 스테퍼 ===================== */
+  function makeStepper(root,frames){
+    let i=0,timer=null;
+    const stage=root.querySelector('.sim-stage'),step=root.querySelector('.sim-step'),
+          desc=root.querySelector('.sim-desc');
+    function show(){
+      frames[i].render(stage); desc.innerHTML=frames[i].desc;
+      if(step)step.textContent='단계 '+i+' / '+(frames.length-1);
+      if(window.renderMathInElement&&!window.__noKatex){
+        try{renderMathInElement(desc,{delimiters:[{left:'\\(',right:'\\)',display:false}],throwOnError:false});}catch(e){}
+      }
+    }
+    const prev=root.querySelector('.sim-prev'),next=root.querySelector('.sim-next'),play=root.querySelector('.sim-play');
+    if(prev)prev.onclick=()=>{if(i>0){i--;show();}};
+    if(next)next.onclick=()=>{if(i<frames.length-1){i++;show();}};
+    if(play)play.onclick=function(){
+      if(timer){clearInterval(timer);timer=null;this.textContent='▶ 자동';return;}
+      this.textContent='⏸ 정지';
+      timer=setInterval(()=>{if(i<frames.length-1){i++;show();}
+        else{clearInterval(timer);timer=null;play.textContent='▶ 자동';}},900);
+    };
+    show();
+  }
+  function svgEl(vb){
+    return '<svg viewBox="'+vb+'" style="font:13px Pretendard,sans-serif" font-family="Pretendard,sans-serif">';
+  }
+  const AC='var(--accent)',AC2='var(--accent2)',OK='var(--ok)',HOT='var(--hot)',MUT='var(--muted)',INK='var(--ink)',LINE='var(--line)';
+
+  /* ---- P1 ④ 레이어별 표현 학습 스테퍼 ---- */
+  function simDLForward(stage){
+    const labels=['입력층 (raw 픽셀)','은닉1 (edge)','은닉2 (motif/part)','출력층 (object 클래스)'];
+    return labels.map((lab,k)=>({
+      desc:'층 '+k+': <b>'+lab+'</b> 활성. 앞 층 출력에 \\(z=Wy\\), \\(y=f(z)\\) 적용 → 점점 추상적 표현.',
+      render(st){
+        let s=svgEl('0 0 460 150');
+        for(let L=0;L<4;L++){
+          const x=50+L*130, on=L<=k;
+          const cnt=[4,3,3,2][L];
+          for(let n=0;n<cnt;n++){
+            const y=30+n*30;
+            s+='<circle cx="'+x+'" cy="'+y+'" r="9" fill="'+(on?(L===k?OK:AC):'transparent')+'" stroke="'+(on?AC:LINE)+'" stroke-width="2"/>';
+            if(L<3){const nx=50+(L+1)*130,nc=[4,3,3,2][L+1];for(let m=0;m<nc;m++){const ny=30+m*30;
+              s+='<line x1="'+(x+9)+'" y1="'+y+'" x2="'+(nx-9)+'" y2="'+ny+'" stroke="'+LINE+'" stroke-width="0.6" opacity="0.5"/>';}}
+          }
+          s+='<text x="'+x+'" y="140" text-anchor="middle" fill="'+(on?INK:MUT)+'" font-size="11">'+['입력','은닉1','은닉2','출력'][L]+'</text>';
+        }
+        s+='</svg>'; st.innerHTML=s;
+      }
+    }));
+  }
+
+  /* ---- P1 ⑤ 역전파 gradient 흐름 스테퍼 ---- */
+  function simDLBackprop(stage){
+    const fr=[
+      {dir:0,t:'Forward: 입력→출력으로 \\(z=Wy,\\ y=f(z)\\) 계산(파랑).'},
+      {dir:0,t:'출력층 도달. 예측 \\(y\\)와 정답 \\(t\\) 비교 → loss \\(E=\\tfrac12(y-t)^2\\).'},
+      {dir:1,t:'Backward 시작: 출력층 \\(\\partial E/\\partial y=y-t\\)(빨강).'},
+      {dir:1,t:'역전파: \\(\\partial E/\\partial z=\\partial E/\\partial y\\cdot f\'(z)\\), \\(\\partial E/\\partial w=y_{below}\\,\\partial E/\\partial z\\)를 입력층까지.'},
+      {dir:2,t:'Update: \\(w\\leftarrow w-\\eta\\,\\partial E/\\partial w\\) — gradient 반대 방향으로 갱신.'}
+    ];
+    const reached=[1,2,2,4,4];
+    return fr.map((f,k)=>({
+      desc:f.t,
+      render(st){
+        let s=svgEl('0 0 460 120');
+        const xs=[60,200,340,420];
+        for(let L=0;L<3;L++){
+          const col=f.dir===1?HOT:(f.dir===2?OK:AC);
+          const active=f.dir===0?L<reached[k]:(f.dir===1?L>=(3-reached[k]+1)||true:true);
+          s+='<line x1="'+(xs[L]+12)+'" y1="60" x2="'+(xs[L+1]-12)+'" y2="60" stroke="'+(active?col:LINE)+'" stroke-width="'+(active?3:1)+'" marker-end="url(#ar'+(f.dir)+')"/>';
+        }
+        ['입력','은닉','출력','loss'].forEach((lab,L)=>{
+          s+='<circle cx="'+xs[L]+'" cy="60" r="12" fill="'+(L===2?AC2:'transparent')+'" stroke="'+INK+'" stroke-width="1.5"/>';
+          s+='<text x="'+xs[L]+'" y="95" text-anchor="middle" fill="'+INK+'" font-size="11">'+lab+'</text>';
+        });
+        s+='<defs>'+
+          '<marker id="ar0" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="'+AC+'"/></marker>'+
+          '<marker id="ar1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="'+HOT+'"/></marker>'+
+          '<marker id="ar2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="'+OK+'"/></marker>'+
+          '</defs></svg>';
+        st.innerHTML=s;
+      }
+    }));
+  }
+
+  /* ---- P2 ④ DNABERT 파이프라인 스테퍼 ---- */
+  function simDnabertPipe(stage){
+    const fr=[
+      {t:'<b>1. 입력 서열</b> ACTACGACT (예, k=3).',box:['ACTACGACT'],note:'raw DNA 문자열'},
+      {t:'<b>2. k-mer 토큰화</b> (3-mer, non-overlap) → ACT · ACG · ACT.',box:['ACT','ACG','ACT'],note:'연속 k염기=한 단어'},
+      {t:'<b>3. 특수토큰</b> 추가 → [CLS] ACT ACG ACT [SEP].',box:['[CLS]','ACT','ACG','ACT','[SEP]'],note:'분류/분리 토큰, max 512([PAD])'},
+      {t:'<b>4. 임베딩</b> 각 토큰 → Token+Positional → 행렬 M=(512, 768).',box:['e1','e2','e3','e4','e5'],note:'vocab=4^k+5 (k=3→69, k=6→4101)'},
+      {t:'<b>5. 12 Transformer 인코더</b> → 토큰별 문맥 임베딩(양방향 self-attention).',box:['h1','h2','h3','h4','h5'],note:'768 hidden · 12 head · 12 layer'}
+    ];
+    return fr.map((f,k)=>({
+      desc:f.t+' <span style="color:var(--muted)">— '+f.note+'</span>',
+      render(st){
+        let s=svgEl('0 0 460 90'),n=f.box.length,w=Math.min(80,420/n);
+        f.box.forEach((b,j)=>{
+          const x=20+j*(w+6);
+          const fill=(b==='[CLS]'||b==='[SEP]')?AC2:(k>=4?OK:AC);
+          s+='<rect x="'+x+'" y="25" width="'+w+'" height="34" rx="6" fill="transparent" stroke="'+fill+'" stroke-width="2"/>';
+          s+='<text x="'+(x+w/2)+'" y="46" text-anchor="middle" fill="'+INK+'" font-size="11">'+b+'</text>';
+        });
+        s+='</svg>'; st.innerHTML=s;
+      }
+    }));
+  }
+
+  /* ---- P2 ⑤ self-attention 화살표 스테퍼 ---- */
+  function simDnabertAttn(stage){
+    const toks=['[CLS]','ACT','[MASK]','ACT','[SEP]'];
+    // [MASK]가 각 토큰을 참조하는 attention 가중치(단계별로 한 이웃씩 강조)
+    const w=[0.05,0.35,0.10,0.40,0.10];
+    const fr=[
+      {hi:1,t:'[MASK]가 좌측 문맥 <b>ACT</b>(위치1)를 참조. 가중치 0.35.'},
+      {hi:3,t:'[MASK]가 우측 문맥 <b>ACT</b>(위치3)를 참조. 가중치 0.40 — 양방향으로 동시에 본다.'},
+      {hi:-1,t:'전체 attention 분포: 가까운 문맥 토큰에 큰 가중치(화살표 굵기). softmax로 합=1.'}
+    ];
+    return fr.map((f)=>({
+      desc:f.t,
+      render(st){
+        let s=svgEl('0 0 460 130'),xs=[];
+        toks.forEach((b,j)=>{const x=30+j*100;xs.push(x);
+          const isMask=b==='[MASK]';
+          s+='<rect x="'+(x-30)+'" y="80" width="60" height="30" rx="6" fill="'+(isMask?HOT:'transparent')+'" stroke="'+(isMask?HOT:AC)+'" stroke-width="2"/>';
+          s+='<text x="'+x+'" y="100" text-anchor="middle" fill="'+INK+'" font-size="10">'+b+'</text>';
+        });
+        const mx=xs[2];
+        toks.forEach((b,j)=>{if(j===2)return;
+          const show=(f.hi===-1)||(f.hi===j);
+          const tw=Math.max(1,w[j]*14);
+          s+='<path d="M'+mx+',80 Q'+((mx+xs[j])/2)+',20 '+xs[j]+',80" fill="none" stroke="'+(show?AC2:LINE)+'" stroke-width="'+(show?tw:1)+'" opacity="'+(show?0.9:0.3)+'"/>';
+          if(show)s+='<text x="'+((mx+xs[j])/2)+'" y="30" text-anchor="middle" fill="'+AC2+'" font-size="10">'+w[j].toFixed(2)+'</text>';
+        });
+        s+='</svg>'; st.innerHTML=s;
+      }
+    }));
+  }
+
+  /* ---- P3 ④ GAT 노드 업데이트 스테퍼 ---- */
+  function simGatStepper(stage){
+    const fr=[
+      {t:'<b>1. 그래프·이웃</b>: 중심 노드 \\(v\\)와 이웃 \\(u_1,u_2,u_3\\). \\(N(v)=\\{u_1,u_2,u_3\\}\\).',stage:0},
+      {t:'<b>2. 선형변환</b>: 모든 노드에 공유 \\(W\\) 적용 → \\(Wh_v, Wh_u\\).',stage:1},
+      {t:'<b>3. score</b>: 쌍별 \\(e_{vu}=\\text{LeakyReLU}(\\vec a^T[Wh_v\\Vert Wh_u])\\).',stage:2},
+      {t:'<b>4. softmax</b>: \\(\\alpha_{vu}=\\exp(e_{vu})/\\sum_r\\exp(e_{vr})\\) → 0.5/0.3/0.2(예).',stage:3},
+      {t:'<b>5. 가중합+비선형</b>: \\(h_v^{(k)}=\\sigma(\\sum_u\\alpha_{vu}Wh_u)\\) — 중요한 이웃을 더 반영.',stage:4}
+    ];
+    const alpha=[0.5,0.3,0.2];
+    return fr.map((f)=>({
+      desc:f.t,
+      render(st){
+        let s=svgEl('0 0 460 200');
+        const cx=230,cy=110,R=75,upos=[];
+        for(let i=0;i<3;i++){const ang=-Math.PI/2+i*(2*Math.PI/3);upos.push([cx+R*Math.cos(ang),cy+R*Math.sin(ang)]);}
+        upos.forEach((p,i)=>{
+          const w=f.stage>=4?Math.max(1.5,alpha[i]*12):(f.stage>=3?Math.max(1.5,alpha[i]*12):2);
+          const col=f.stage>=3?AC2:LINE;
+          s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+p[0]+'" y2="'+p[1]+'" stroke="'+col+'" stroke-width="'+w+'"/>';
+          if(f.stage>=3)s+='<text x="'+((cx+p[0])/2)+'" y="'+((cy+p[1])/2-4)+'" fill="'+AC2+'" font-size="11">α='+alpha[i]+'</text>';
+        });
+        upos.forEach((p,i)=>{
+          s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="16" fill="'+(f.stage>=1?'rgba(91,157,255,.18)':'transparent')+'" stroke="'+AC+'" stroke-width="2"/>';
+          s+='<text x="'+p[0]+'" y="'+(p[1]+4)+'" text-anchor="middle" fill="'+INK+'" font-size="11">'+(f.stage>=1?'Wh':'h')+(i+1)+'</text>';
+        });
+        s+='<circle cx="'+cx+'" cy="'+cy+'" r="20" fill="'+(f.stage>=4?OK:HOT)+'" stroke="'+INK+'" stroke-width="2"/>';
+        s+='<text x="'+cx+'" y="'+(cy+4)+'" text-anchor="middle" fill="#fff" font-size="12">'+(f.stage>=4?"h_v'":'v')+'</text>';
+        s+='</svg>'; st.innerHTML=s;
+      }
+    }));
+  }
+
+  /* ---- P3 ⑤ GAT attention 슬라이더(파라미터 반응형) ---- */
+  function initGatAttn(root){
+    const e1=root.querySelector('.gat-e1'),e2=root.querySelector('.gat-e2'),
+          stage=root.querySelector('.sim-stage'),desc=root.querySelector('.sim-desc');
+    function draw(){
+      const s1=+e1.value,s2=+e2.value;
+      const z1=Math.exp(s1),z2=Math.exp(s2),Z=z1+z2;
+      const a1=z1/Z,a2=z2/Z;
+      // Wh_u1=[1,0], Wh_u2=[0,2]
+      const out=[a1*1+a2*0, a1*0+a2*2];
+      let s=svgEl('0 0 460 170');
+      const cx=230,cy=90;
+      const p1=[100,40],p2=[360,40];
+      [[p1,a1,'u₁',s1],[p2,a2,'u₂',s2]].forEach(([p,a,lab,sc])=>{
+        s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+p[0]+'" y2="'+p[1]+'" stroke="'+AC2+'" stroke-width="'+Math.max(1.5,a*16)+'"/>';
+        s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="18" fill="rgba(91,157,255,.18)" stroke="'+AC+'" stroke-width="2"/>';
+        s+='<text x="'+p[0]+'" y="'+(p[1]+4)+'" text-anchor="middle" fill="'+INK+'" font-size="12">'+lab+'</text>';
+        s+='<text x="'+((cx+p[0])/2)+'" y="'+((cy+p[1])/2)+'" text-anchor="middle" fill="'+AC2+'" font-size="11">α='+a.toFixed(2)+'</text>';
+      });
+      s+='<circle cx="'+cx+'" cy="'+cy+'" r="20" fill="'+OK+'" stroke="'+INK+'" stroke-width="2"/>';
+      s+='<text x="'+cx+'" y="'+(cy+4)+'" text-anchor="middle" fill="#fff" font-size="12">v</text>';
+      s+='</svg>'; stage.innerHTML=s;
+      desc.innerHTML='score \\(e=('+s1.toFixed(1)+', '+s2.toFixed(1)+')\\) → softmax \\(\\alpha=('+a1.toFixed(2)+', '+a2.toFixed(2)+')\\). '+
+        '가중합 \\(\\sum\\alpha Wh_u=['+out[0].toFixed(2)+', '+out[1].toFixed(2)+']\\) (Wh<sub>u₁</sub>=[1,0], Wh<sub>u₂</sub>=[0,2]). '+
+        (Math.abs(a1-0.5)<0.06?'두 이웃이 거의 동등 → GCN과 유사.':'<b>차등 집계</b> — 더 큰 score의 이웃을 강조(GCN은 항상 0.5/0.5).');
+      if(window.renderMathInElement&&!window.__noKatex){try{renderMathInElement(desc,{delimiters:[{left:'\\(',right:'\\)',display:false}],throwOnError:false});}catch(e){}}
+    }
+    e1.addEventListener('input',draw); e2.addEventListener('input',draw); draw();
+  }
+
+  /* ===================== 시뮬레이션 부트스트랩 ===================== */
+  function initSims(){
+    const map={
+      'dl-forward':simDLForward,'dl-backprop':simDLBackprop,
+      'dnabert-pipe':simDnabertPipe,'dnabert-attn':simDnabertAttn,
+      'gat-stepper':simGatStepper
+    };
+    document.querySelectorAll('.sim[data-sim]').forEach(root=>{
+      const key=root.getAttribute('data-sim');
+      if(key==='gat-attn'){initGatAttn(root);return;}
+      if(map[key]){try{makeStepper(root,map[key](root.querySelector('.sim-stage')));}catch(e){}}
+    });
+  }
+
+  /* ===================== D3 탐색 트리 ===================== */
+  const TREE={name:"의생명과학을 위한 AI",id:null,children:[
+    {name:"선행지식",id:"prereq",children:[
+      {name:"DNA·RNA·전사·발현",id:"prereq-dogma"},
+      {name:"서열·k-mer",id:"prereq-seq"},
+      {name:"텐서·임베딩",id:"prereq-tensor"},
+      {name:"그래프(노드·엣지)",id:"prereq-graph"},
+      {name:"attention",id:"prereq-attn"}]},
+    {name:"1주 · 기초+변이탐지",id:null,children:[
+      {name:"C1 중심원리",id:"C1"},{name:"C2 NGS 변이탐지",id:"C2"},
+      {name:"C3 표현학습",id:"C3"},{name:"C4 역전파 BP ⭐",id:"C4"},
+      {name:"C5 CNN vs FC",id:"C5"},{name:"C6 DeepVariant·NeuSomatic",id:"C6"}]},
+    {name:"2주 · 서열을 언어로",id:null,children:[
+      {name:"C7 gLM 패러다임",id:"C7"},{name:"C8 토큰화① single-nt",id:"C8"},
+      {name:"C9 토큰화② k-mer",id:"C9"},{name:"C10 토큰화③ BPE",id:"C10"},
+      {name:"C11 사전학습 MLM/CLM",id:"C11"}]},
+    {name:"3주 · 그래프 신경망",id:null,children:[
+      {name:"C12 그래프·GNN 동기",id:"C12"},{name:"C13 노드업데이트 ⭐",id:"C13"},
+      {name:"C14 CNN vs GNN",id:"C14"},{name:"C15 GCN·GraphSAGE",id:"C15"},
+      {name:"C16 GAT ⭐",id:"C16"},{name:"C17 GAT 평가결과",id:"C17"},
+      {name:"C18 분류·손실",id:"C18"}]},
+    {name:"참고(범위 밖)",id:null,children:[{name:"C19 ProtBERT 실습",id:"C19"}]},
+    {name:"핵심 논문 포스터",id:"posters",children:[
+      {name:"P1 Deep Learning",id:"P1"},{name:"P2 DNABERT",id:"P2"},{name:"P3 GAT",id:"P3"}]},
+    {name:"예상 문제(6)",id:"examqs"}
+  ]};
+  function goSection(id){const t=document.getElementById(id);
+    if(t){if(t.tagName==='DETAILS')t.open=true; t.scrollIntoView({behavior:'smooth',block:'start'});}}
+  function renderTree(){
+    const el=document.getElementById('tree-container'); if(!el)return;
+    const width=el.clientWidth||600, dx=24, dy=Math.min(200,Math.max(110,width/4));
+    const root=d3.hierarchy(TREE);
+    root.x0=0;root.y0=0;
+    root.descendants().forEach((d,i)=>{d._id=i;d._children=d.children;
+      if(d.depth>=1)d.children=null;});
+    const svg=d3.create("svg")
+      .attr("viewBox",[-dy/2,-dx,width,dx])
+      .style("width","100%").style("height","auto")
+      .style("font","13px Pretendard,sans-serif").style("user-select","none");
+    const gLink=svg.append("g").attr("fill","none")
+      .attr("stroke","var(--line)").attr("stroke-width",1.5);
+    const gNode=svg.append("g").attr("cursor","pointer").attr("pointer-events","all");
+    const zoom=d3.zoom().scaleExtent([0.4,2.5]).on("zoom",e=>{
+      gLink.attr("transform",e.transform);gNode.attr("transform",e.transform);});
+    svg.call(zoom);
+    function update(source){
+      const nodes=root.descendants().reverse(),links=root.links();
+      const tree=d3.tree().nodeSize([dx,dy]);tree(root);
+      let l=root,r=root;root.eachBefore(n=>{if(n.x<l.x)l=n;if(n.x>r.x)r=n;});
+      const h=Math.max(dx,r.x-l.x+dx*2);
+      const t=svg.transition().duration(250).attr("viewBox",[-dy/2,l.x-dx,width,h]);
+      const node=gNode.selectAll("g").data(nodes,d=>d._id);
+      const nEnter=node.enter().append("g")
+        .attr("transform",`translate(${source.y0},${source.x0})`)
+        .attr("fill-opacity",0).attr("stroke-opacity",0)
+        .on("click",(e,d)=>{
+          if(d._children){d.children=d.children?null:d._children;update(d);}
+          if(d.data.id)goSection(d.data.id);});
+      nEnter.append("circle").attr("r",4.5)
+        .attr("fill",d=>d._children?"var(--accent)":"var(--muted)")
+        .attr("stroke-width",10).attr("stroke","transparent");
+      nEnter.append("text").attr("dy","0.32em")
+        .attr("x",d=>d._children?-9:9).attr("text-anchor",d=>d._children?"end":"start")
+        .attr("fill","var(--ink)").text(d=>d.data.name)
+        .clone(true).lower().attr("stroke","var(--panel)").attr("stroke-width",3);
+      node.merge(nEnter).transition(t)
+        .attr("transform",d=>`translate(${d.y},${d.x})`)
+        .attr("fill-opacity",1).attr("stroke-opacity",1);
+      node.exit().transition(t).remove()
+        .attr("transform",`translate(${source.y},${source.x})`).attr("fill-opacity",0);
+      const link=gLink.selectAll("path").data(links,d=>d.target._id);
+      const diag=d3.linkHorizontal().x(d=>d.y).y(d=>d.x);
+      const lEnter=link.enter().append("path").attr("d",()=>{
+        const o={x:source.x0,y:source.y0};return diag({source:o,target:o});});
+      link.merge(lEnter).transition(t).attr("d",diag);
+      link.exit().transition(t).remove().attr("d",()=>{
+        const o={x:source.x,y:source.y};return diag({source:o,target:o});});
+      root.eachBefore(d=>{d.x0=d.x;d.y0=d.y;});
+    }
+    el.innerHTML="";el.appendChild(svg.node());
+    update(root);
+  }
+  function initTree(){
+    const tc=document.getElementById('tree-container'),fb=document.getElementById('treemap-fallback');
+    if(typeof d3==='undefined'){
+      const tm=document.getElementById('treemap'); if(tm)tm.style.display='none';
+      if(fb)fb.style.display='block';
+      return;
+    }
+    if(fb)fb.style.display='none';
+    try{renderTree();}catch(e){
+      const tm=document.getElementById('treemap'); if(tm)tm.style.display='none';
+      if(fb)fb.style.display='block';
+    }
+  }
+  let __rt;window.addEventListener('resize',()=>{clearTimeout(__rt);__rt=setTimeout(()=>{if(typeof d3!=='undefined')try{renderTree();}catch(e){}},200);});
+
+  /* ===================== 부트스트랩 ===================== */
+  window.addEventListener('load',()=>{initTree();initSims();});
 </script>
 </body>
 </html>

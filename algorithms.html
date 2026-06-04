@@ -154,6 +154,28 @@
     .nbody{padding:12px 14px}
   }
   footer{max-width:var(--maxw);margin:0 auto;padding:30px 20px;color:var(--muted);font-size:.85rem}
+  .simwrap{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:22px}
+  .simwrap h2{margin:.1em 0 .2em;font-size:1.15rem}
+  .sim{border:1px solid var(--line);border-radius:10px;padding:14px;margin:14px 0;background:var(--panel2)}
+  .sim .sim-title{font-weight:700;color:var(--accent2);font-size:.95rem;margin-bottom:4px}
+  .sim .sim-hint{color:var(--muted);font-size:.82rem;margin-bottom:10px}
+  .sim-stage{min-height:150px;display:flex;align-items:flex-end;gap:8px;padding:10px 4px;overflow-x:auto}
+  .bar{flex:0 0 34px;border-radius:5px 5px 0 0;background:var(--accent);display:flex;align-items:flex-end;justify-content:center;
+    color:#fff;font-size:.75rem;font-weight:700;padding-bottom:3px;transition:height .25s,background .2s}
+  [data-theme="light"] .bar{color:#fff}
+  .bar.cmp{background:var(--warn);color:#3a2c00}
+  .bar.swap{background:var(--hot)}
+  .bar.sorted{background:var(--ok);color:#06231a}
+  .dptable{border-collapse:collapse;font-size:.85rem}
+  .dptable td,.dptable th{border:1px solid var(--line);width:34px;height:30px;text-align:center;padding:0;transition:background .2s}
+  .dptable th{background:var(--panel);color:var(--muted);font-weight:700}
+  .dptable td.fill{background:rgba(91,157,255,.16)}
+  .dptable td.cur{background:var(--warn);color:#3a2c00;font-weight:800}
+  .dptable td.path{outline:2px solid var(--ok);outline-offset:-2px}
+  .sim-ctrl{display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .sim-step{color:var(--muted);font-size:.84rem;margin-left:4px}
+  .sim-desc{margin:10px 0 0;font-size:.9rem;background:var(--panel);border-left:3px solid var(--accent2);padding:8px 12px;border-radius:6px}
+  @media(max-width:600px){ .sim-ctrl{flex-direction:column;align-items:stretch} .sim-ctrl .btn{width:100%} }
 </style>
 </head>
 <body data-theme="dark">
@@ -174,6 +196,10 @@
 <div class="layout">
   <nav class="roadmap" id="roadmap" aria-label="로드맵">
     <h2>🗺️ 로드맵 · 목차</h2>
+    <div class="rm-stem">
+      <div class="rm-stem-name">B0. 선행지식</div>
+      <div class="rm-node" data-target="prereq" onclick="goNode('prereq')"><span class="dot"></span>토대 용어 5</div>
+    </div>
     <div class="rm-stem">
       <div class="rm-stem-name">B1. 분석 기초</div>
       <div class="rm-node hot" data-target="C1" onclick="goNode('C1')"><span class="dot"></span>C1 점근 표기<span class="badge-hot">⭐高</span></div>
@@ -219,13 +245,27 @@
     <section class="intro">
       <h1>컴퓨터 알고리즘 <small style="font-size:.7em;color:var(--muted)">(임을규)</small></h1>
       <p>이 과목은 결국 <b>주어진 계산 문제를 어떤 절차로 얼마나 효율적으로(시간·공간) 푸는가</b>를 점근 복잡도로 분석하고, 정렬·DP·그리디·그래프·암호의 표준 알고리즘과 그 <b>정당성(증명)</b>을 익히는 것을 다룬다.</p>
-      <p style="color:var(--muted)">아래 <b>① MECE 트리맵</b>으로 전체 구조를 한눈에 잡고 → <b>② 로드맵·추천 학습 경로</b>로 공부 동선을 따라 → <b>③ 노드 카드(C1~C20)</b>를 드릴다운하고 → <b>④ 말미 예상 문제(12)</b>로 셀프테스트하세요. ⭐高 14개에 시간을 더 배분.</p>
+      <p style="color:var(--muted)">아래 <b>① 탐색 트리</b>로 전체 구조를 한눈에 잡고 → <b>② 로드맵·추천 학습 경로</b>로 공부 동선을 따라 → <b>③ 노드 카드(C1~C20)</b>를 드릴다운하고 → <b>④ 말미 예상 문제(12)</b>로 셀프테스트한다. ⭐高 14개에 시간을 더 배분.</p>
+    </section>
+
+    <section class="stem-sec" id="prereq" style="scroll-margin-top:84px">
+      <h2>B0. 선행지식 — 본문 전에 갖출 토대</h2>
+      <div class="stem-lead">C1~C20을 막힘없이 읽기 위한 최소 용어. 정의는 한 줄, <i>쓰임</i>으로 본강의 개념과 연결한다. 자세한 전개는 본문 카드에서 다룬다.</div>
+      <div class="node-card" style="margin-top:14px"><div class="nbody">
+        <div class="field"><span class="lbl">점근표기 (O / Θ / Ω)</span>입력 크기 \(n\)에 대한 함수 성장률의 상한(\(O\))·정확(\(\Theta\))·하한(\(\Omega\)). 상수배와 하위항은 무시한다. <i>쓰임:</i> 정렬·그래프 알고리즘의 복잡도 비교와 비교정렬 하한 \(\Omega(n\lg n)\) 증명의 공용 언어 — C1·C6·Q1·Q3.</div>
+        <div class="field"><span class="lbl">자료구조 (스택·큐·힙·그래프)</span>스택=LIFO, 큐=FIFO, 힙=부모가 자식보다 큰(작은) 완전이진트리(우선순위 연산 \(O(\lg n)\)), 그래프=정점·간선 집합 \(G=(V,E)\). <i>쓰임:</i> DFS는 스택·BFS는 큐, 힙정렬·Prim·Dijkstra는 힙, 그래프는 B4 전체의 대상 — C4·C11·C12·C14·C15.</div>
+        <div class="field"><span class="lbl">재귀 (recursion)</span>문제를 같은 형태의 더 작은 문제로 환원해 자기 자신을 호출하는 절차. 종료(기저)조건이 있어야 멈춘다. <i>쓰임:</i> 병합·퀵정렬과 분할정복의 실행 구조, 점화식 \(T(n)\)이 곧 재귀 호출 비용 — C2·C3·C5.</div>
+        <div class="field"><span class="lbl">증명기법 (귀납·반증)</span>수학적 귀납법=기저+귀납가정으로 모든 \(n\) 입증, 반증(모순법)="틀렸다"고 가정해 모순을 끌어내 옳음을 보임. <i>쓰임:</i> 점화식 치환법(귀납)·Dijkstra 정당성·MST cut property(모순/교환 논법)는 모두 이 틀 — C2·C14·C15·Q2·Q4·Q5.</div>
+        <div class="field"><span class="lbl">분할정복 (divide &amp; conquer)</span>분할(divide)→정복(작은 문제 재귀 해결)→결합(combine)의 3단계 설계 패러다임. 비용은 점화식으로 분석한다. <i>쓰임:</i> 병합정렬·퀵정렬의 뼈대이자 점화식 풀이의 출발점 — C2·C3·C5.</div>
+      </div></div>
     </section>
 
     <section class="treemap" id="treemap">
-      <h2>🧭 한눈에 보는 전체 구조 (MECE 트리맵)</h2>
-      <div class="tm-sub">큰 가지를 먼저 본 뒤, 잎(개념)을 클릭하면 해당 카드로 드릴다운합니다. ⭐ = 고빈도.</div>
-      <ul class="tree">
+      <h2>🧭 한눈에 보는 전체 구조 (탐색 트리)</h2>
+      <div class="tm-sub">내부 노드를 클릭하면 가지를 접고/펼치고, 잎(개념)을 클릭하면 해당 카드로 이동한다. 휠·드래그로 줌·팬. ⭐ = 고빈도.</div>
+      <div id="tree-container" style="width:100%;min-height:320px;overflow:hidden"></div>
+      <noscript><p class="tm-sub">JS가 꺼져 있으면 아래 정적 트리맵으로 대신 봅니다.</p></noscript>
+      <ul class="tree" id="treemap-fallback" style="display:none">
         <li><span class="tm-root">컴퓨터 알고리즘 = 계산 문제를 푸는 효율적 절차 + 그 정당성(증명)·복잡도</span>
           <ul>
             <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">▾</span>가지 1. 복잡도 분석 도구 <span class="tm-desc">— 알고리즘을 재는 자(尺)</span></span>
@@ -325,6 +365,38 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
       <p style="color:var(--muted);font-size:.83rem;margin-top:8px"><b>요령:</b> ①②(C1·C2) 무조건 먼저. 그다음 두 갈래 병렬 — 정렬·설계(③~⑦) 와 그래프(⑧~⑬)·암호(⑭~⑰). C9·C10·C17은 선행 가벼워 "막힐 때 갈아타는 곁가지". ⭐高 14개에 시간 더 배분.</p>
     </section>
 
+    <section class="simwrap" id="sims">
+      <h2>🔬 인터랙티브 시뮬레이션</h2>
+      <div class="tm-sub">단계를 직접 전진/후진하며 상태를 관찰한다. 색은 현재 비교·교환·확정을 뜻한다. 복잡도 직관을 눈으로 잡는 게 목적.</div>
+
+      <div class="sim" id="sim-sort">
+        <div class="sim-title">① 정렬 스테퍼 — 삽입 정렬 (막대 비교·삽입)</div>
+        <div class="sim-hint">막대 높이 = 값. <span style="color:var(--warn)">노랑</span>=비교 중 · <span style="color:var(--hot)">빨강</span>=이동(삽입) · <span style="color:var(--ok)">초록</span>=정렬 확정. 각 패스마다 앞쪽 정렬 구간에 한 원소를 끼워넣는다 — 최악 \(\Theta(n^2)\).</div>
+        <div class="sim-stage"></div>
+        <div class="sim-ctrl">
+          <button class="btn sim-prev">◀ 이전</button>
+          <button class="btn sim-next">다음 ▶</button>
+          <button class="btn sim-play">▶ 자동</button>
+          <span class="sim-step"></span>
+        </div>
+        <p class="sim-desc"></p>
+      </div>
+
+      <div class="sim" id="sim-dp">
+        <div class="sim-title">② DP 표 채우기 스테퍼 — LCS(ABCB, BDCAB)</div>
+        <div class="sim-hint">행=X(ABCB), 열=Y(BDCAB). 셀을 한 칸씩 채운다 — <span style="color:var(--warn)">노랑</span>=현재 계산 셀, 초록 테두리=최종 역추적 경로. 점화식이 위·왼쪽·대각선 값만 보므로 표를 한 번 훑어 \(\Theta(mn)\).</div>
+        <div class="sim-stage" style="align-items:flex-start"></div>
+        <div class="sim-ctrl">
+          <button class="btn sim-prev">◀ 이전</button>
+          <button class="btn sim-next">다음 ▶</button>
+          <button class="btn sim-play">▶ 자동</button>
+          <span class="sim-step"></span>
+        </div>
+        <p class="sim-desc"></p>
+        <div style="margin-top:8px;font-size:.88rem" id="dp-formula">점화식: \( c[i,j]=\begin{cases} c[i-1,j-1]+1 &amp; x_i=y_j\\ \max(c[i-1,j],\,c[i,j-1]) &amp; x_i\ne y_j\end{cases} \)</div>
+      </div>
+    </section>
+
     <section class="stem-sec" id="B1">
       <h2>B1. 분석 기초 — 점근표기·점화식</h2>
       <div class="stem-lead">모든 알고리즘을 재는 자(尺): 성장률 표기와 재귀 점화식 풀이.</div>
@@ -387,7 +459,7 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span>분할정복 알고리즘이 자기 자신을 부르며 만든 비용식 \(T(n)\)을, "결국 몇 급(n lg n? n²?)이냐"의 닫힌형으로 푸는 두 가지 손기술.</div>
+          <div class="field"><span class="lbl">🎯 한 줄 직관</span>분할정복 알고리즘이 자기 자신을 부르며 만든 비용식 \(T(n)\)을, "결국 몇 급(n lg n? n²?)이냐"의 닫힌형으로 푸는 두 가지 방법.</div>
           <div class="field"><span class="lbl">📖 정의</span>두 방법만 사용 — <b>Substitution(치환·귀납)</b>, <b>Recursion-tree(재귀 트리)</b>.</div>
           <div class="field"><span class="lbl">🧮 수식</span>표본 점화식 \(T(n)=2T(\lfloor n/2\rfloor)+n\) (병합정렬형) → 답 \(\Theta(n\lg n)\).</div>
           <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
@@ -525,7 +597,7 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span>pivot 하나를 골라 "작은 것 | pivot | 큰 것"으로 갈라(PARTITION) 양쪽을 재귀. 평균은 매우 빠르나, 분할이 한쪽으로 쏠리면 느려진다.</div>
+          <div class="field"><span class="lbl">🎯 한 줄 직관</span>pivot 하나를 골라 "작은 것 | pivot | 큰 것"으로 갈라(PARTITION) 양쪽을 재귀. 평균은 빠르지만, 분할이 한쪽으로 쏠리면 느려진다.</div>
           <div class="field"><span class="lbl">📖 정의 / 의사코드</span><pre>QUICKSORT(A,p,r):
   if p &lt; r:
     q = PARTITION(A,p,r)
@@ -1218,7 +1290,7 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
     <!-- ===== 예상 문제 + 모범 답변 (말미 셀프테스트) ===== -->
     <section class="stem-sec" id="examqs">
       <h2>📝 예상 문제 &amp; 모범 답변 (12문항)</h2>
-      <p style="color:var(--muted)">먼저 스스로 답해보고 <b>"답 보기"</b>로 확인하세요. 시험은 <b>증명·복잡도 중심</b>(증명 6 + 복잡도매칭 2 + 추적/계산 4). 출제 가이드 기반.</p>
+      <p style="color:var(--muted)">먼저 스스로 답해본 뒤 <b>"답 보기"</b>로 확인한다. 시험은 <b>증명·복잡도 중심</b>(증명 6 + 복잡도매칭 2 + 추적/계산 4). 출제 가이드 기반.</p>
 
       <div class="qa-item">
         <div class="qa-q"><span class="qa-type">증명</span><span>Q1. O-표기 정의로 \(3n+1=O(n^2)\)를 증명하라 — \(c,n_0\)를 명시할 것. <span style="color:var(--muted);font-weight:400">(summary PDF16 p.2~3 ⭐高)</span></span>
@@ -1355,6 +1427,7 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
   onload="renderMathInElement(document.body,{delimiters:[{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false},{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"
   onerror="katexFallback()"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 <script>
   function katexFallback(){ document.body.classList.add('katex-fallback'); }
   function toggleTheme(){
@@ -1430,6 +1503,229 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
       card.classList.toggle('dim', hotOnly && card.dataset.hot!=='1');
     });
   }
+
+  /* ===== D3 collapsible 탐색 트리 (정적 트리맵 대체) ===== */
+  const TREE={name:"컴퓨터 알고리즘",id:null,children:[
+    {name:"B0. 선행지식",id:"prereq"},
+    {name:"B1. 분석 기초",id:"B1",children:[
+      {name:"C1 점근 표기 ⭐",id:"C1"},
+      {name:"C2 점화식 풀이 ⭐",id:"C2"}]},
+    {name:"B2. 정렬",id:"B2",children:[
+      {name:"C3 삽입·병합",id:"C3"},
+      {name:"C4 힙·힙정렬 ⭐",id:"C4"},
+      {name:"C5 퀵정렬 ⭐",id:"C5"},
+      {name:"C6 선형정렬·하한 ⭐",id:"C6"}]},
+    {name:"B3. 설계기법",id:"B3",children:[
+      {name:"C7 DP·LCS ⭐",id:"C7"},
+      {name:"C8 그리디·Huffman ⭐",id:"C8"},
+      {name:"C9 분할상환 ⭐",id:"C9"}]},
+    {name:"B4. 그래프",id:"B4",children:[
+      {name:"C10 그래프 기초",id:"C10"},
+      {name:"C11 BFS",id:"C11"},
+      {name:"C12 DFS·간선분류",id:"C12"},
+      {name:"C13 위상정렬 ⭐",id:"C13"},
+      {name:"C14 MST ⭐",id:"C14"},
+      {name:"C15 단일출발 최단경로 ⭐",id:"C15"},
+      {name:"C16 모든쌍 최단경로 ⭐",id:"C16"}]},
+    {name:"B5. 정수론·암호",id:"B5",children:[
+      {name:"C17 정수론·소수판정 ⭐",id:"C17"},
+      {name:"C18 Diffie-Hellman",id:"C18"},
+      {name:"C19 공개키·RSA ⭐",id:"C19"},
+      {name:"C20 디지털 서명·PKI",id:"C20"}]},
+    {name:"📝 예상 문제 (12)",id:"examqs"}
+  ]};
+  function treeGo(id){ if(id) goNode(id); }
+  function renderTree(){
+    const el=document.getElementById('tree-container'); if(!el)return;
+    const width=el.clientWidth||720, dx=26, dy=Math.min(230,Math.max(120,width/4));
+    const root=d3.hierarchy(TREE);
+    root.x0=0; root.y0=0;
+    root.descendants().forEach((d,i)=>{ d._id=i; d._children=d.children;
+      if(d.depth>=1) d.children=null; });
+    const svg=d3.create("svg")
+      .attr("viewBox",[-dy/2,-dx,width,dx])
+      .style("width","100%").style("height","auto")
+      .style("font","13px Pretendard,sans-serif").style("user-select","none");
+    const gLink=svg.append("g").attr("fill","none")
+      .attr("stroke","var(--line)").attr("stroke-width",1.5);
+    const gNode=svg.append("g").attr("cursor","pointer").attr("pointer-events","all");
+    const zoom=d3.zoom().scaleExtent([0.4,2.5]).on("zoom",e=>{
+      gLink.attr("transform",e.transform); gNode.attr("transform",e.transform); });
+    svg.call(zoom);
+    function update(source){
+      const nodes=root.descendants().reverse(), links=root.links();
+      d3.tree().nodeSize([dx,dy])(root);
+      let lo=root,hi=root; root.eachBefore(n=>{ if(n.x<lo.x)lo=n; if(n.x>hi.x)hi=n; });
+      const h=Math.max(dx,hi.x-lo.x+dx*2);
+      const t=svg.transition().duration(250).attr("viewBox",[-dy/2,lo.x-dx,width,h]);
+      const node=gNode.selectAll("g").data(nodes,d=>d._id);
+      const nEnter=node.enter().append("g")
+        .attr("transform",`translate(${source.y0},${source.x0})`)
+        .attr("fill-opacity",0).attr("stroke-opacity",0)
+        .on("click",(e,d)=>{
+          if(d._children){ d.children=d.children?null:d._children; update(d); }
+          else treeGo(d.data.id);
+        });
+      nEnter.append("circle").attr("r",4.5)
+        .attr("fill",d=>d._children?"var(--accent)":"var(--muted)")
+        .attr("stroke-width",10).attr("stroke","transparent");
+      nEnter.append("text").attr("dy","0.32em")
+        .attr("x",d=>d._children?-9:9).attr("text-anchor",d=>d._children?"end":"start")
+        .attr("fill","var(--ink)").text(d=>d.data.name)
+        .clone(true).lower().attr("stroke","var(--panel)").attr("stroke-width",3)
+        .attr("stroke-linejoin","round");
+      node.merge(nEnter).transition(t)
+        .attr("transform",d=>`translate(${d.y},${d.x})`)
+        .attr("fill-opacity",1).attr("stroke-opacity",1);
+      node.exit().transition(t).remove()
+        .attr("transform",`translate(${source.y},${source.x})`).attr("fill-opacity",0);
+      const link=gLink.selectAll("path").data(links,d=>d.target._id);
+      const diag=d3.linkHorizontal().x(d=>d.y).y(d=>d.x);
+      const lEnter=link.enter().append("path").attr("d",()=>{
+        const o={x:source.x0,y:source.y0}; return diag({source:o,target:o}); });
+      link.merge(lEnter).transition(t).attr("d",diag);
+      link.exit().transition(t).remove().attr("d",()=>{
+        const o={x:source.x,y:source.y}; return diag({source:o,target:o}); });
+      root.eachBefore(d=>{ d.x0=d.x; d.y0=d.y; });
+    }
+    el.innerHTML=""; el.appendChild(svg.node());
+    update(root);
+  }
+  function initTree(){
+    const fb=document.getElementById('treemap-fallback'), tc=document.getElementById('tree-container');
+    if(typeof d3==='undefined'){ if(tc)tc.style.display='none'; if(fb)fb.style.display='block'; return; }
+    if(fb)fb.style.display='none';
+    try{ renderTree(); }catch(e){ if(tc)tc.style.display='none'; if(fb)fb.style.display='block'; }
+  }
+  let _treeRT;
+  window.addEventListener('load',initTree);
+  window.addEventListener('resize',()=>{ clearTimeout(_treeRT); _treeRT=setTimeout(()=>{ if(typeof d3!=='undefined')renderTree(); },200); });
+
+  /* ===== 개념 시뮬레이션 (vanilla, 오프라인) ===== */
+  function makeStepper(root,frames){
+    let i=0,timer=null;
+    const stage=root.querySelector('.sim-stage'),
+          step=root.querySelector('.sim-step'),
+          desc=root.querySelector('.sim-desc'),
+          playBtn=root.querySelector('.sim-play');
+    function show(){
+      frames[i].render(stage);
+      desc.textContent=frames[i].desc;
+      step.textContent='단계 '+i+' / '+(frames.length-1);
+    }
+    root.querySelector('.sim-prev').onclick=()=>{ if(i>0){i--;show();} };
+    root.querySelector('.sim-next').onclick=()=>{ if(i<frames.length-1){i++;show();} };
+    playBtn.onclick=function(){
+      if(timer){ clearInterval(timer); timer=null; this.textContent='▶ 자동'; return; }
+      this.textContent='⏸ 정지';
+      timer=setInterval(()=>{
+        if(i<frames.length-1){ i++; show(); }
+        else{ clearInterval(timer); timer=null; playBtn.textContent='▶ 자동'; }
+      },800);
+    };
+    show();
+  }
+
+  /* 정렬: 삽입 정렬 막대 스테퍼 */
+  function buildSortFrames(){
+    const init=[5,2,8,1,4,7,3];
+    const frames=[]; const a=init.slice();
+    const maxV=Math.max(...init);
+    function snap(arr,marks,sortedUpto,desc){
+      const copy=arr.slice();
+      frames.push({desc,render(stage){
+        stage.innerHTML='';
+        copy.forEach((v,idx)=>{
+          const bar=document.createElement('div');
+          bar.className='bar';
+          if(idx<=sortedUpto) bar.classList.add('sorted');
+          if(marks.cmp&&marks.cmp.includes(idx)) bar.classList.add('cmp');
+          if(marks.swap&&marks.swap.includes(idx)) bar.classList.add('swap');
+          bar.style.height=(28+v/maxV*110)+'px';
+          bar.textContent=v;
+          stage.appendChild(bar);
+        });
+      }});
+    }
+    snap(a,{},-1,'시작: 정렬 안 된 배열 [5,2,8,1,4,7,3]. 첫 원소는 그 자체로 정렬된 구간으로 본다.');
+    for(let j=1;j<a.length;j++){
+      const key=a[j];
+      snap(a,{cmp:[j]},j-1,'패스 '+j+': key='+key+' 를 앞의 정렬된 구간 [0..'+(j-1)+']에 끼워넣는다.');
+      let k=j-1;
+      while(k>=0 && a[k]>key){
+        snap(a,{cmp:[k,k+1]},j-1,'비교: a['+k+']='+a[k]+' > key='+key+' → 한 칸 오른쪽으로 민다.');
+        a[k+1]=a[k];
+        snap(a,{swap:[k,k+1]},j-1,'이동: a['+k+'] 값을 a['+(k+1)+']로 복사. key 자리를 비운다.');
+        k--;
+      }
+      a[k+1]=key;
+      snap(a,{swap:[k+1]},j,'삽입: key='+key+' 를 a['+(k+1)+']에 놓는다. 정렬 구간이 [0..'+j+']로 확장.');
+    }
+    snap(a,{},a.length-1,'완료: 전체 정렬. 최악(역순 입력)이면 매 패스 j번 비교 → 총 Θ(n²).');
+    return frames;
+  }
+
+  /* DP: LCS 표 채우기 스테퍼 */
+  function buildDPFrames(){
+    const X="ABCB", Y="BDCAB", m=X.length, n=Y.length;
+    const c=Array.from({length:m+1},()=>Array(n+1).fill(0));
+    const order=[]; // 채움 순서 좌표 + 설명
+    const frames=[];
+    // base
+    frames.push({fill:[],cur:null,path:[],desc:'경계 조건: 0행과 0열은 모두 0(빈 문자열과의 LCS=0).'});
+    for(let i=1;i<=m;i++){
+      for(let j=1;j<=n;j++){
+        let d;
+        if(X[i-1]===Y[j-1]){ c[i][j]=c[i-1][j-1]+1;
+          d='x'+i+'='+X[i-1]+' = y'+j+'='+Y[j-1]+' (일치) → c['+i+','+j+']=c['+(i-1)+','+(j-1)+']+1='+c[i][j]+'.'; }
+        else{ c[i][j]=Math.max(c[i-1][j],c[i][j-1]);
+          d='x'+i+'='+X[i-1]+' ≠ y'+j+'='+Y[j-1]+' → max(위 '+c[i-1][j]+', 왼 '+c[i][j-1]+')='+c[i][j]+'.'; }
+        order.push({i,j,d});
+      }
+    }
+    // snapshot helper renders current c-state up to step
+    const snap=order.map((o,k)=>{
+      const filled=order.slice(0,k+1).map(p=>p.i+','+p.j);
+      return {fill:filled,cur:o.i+','+o.j,path:[],desc:'셀 c['+o.i+','+o.j+'] 계산 — '+o.d};
+    });
+    snap.forEach(s=>frames.push(s));
+    // backtrack path BCB: cells where match taken
+    const pathCells=[];
+    let pi=m,pj=n;
+    while(pi>0&&pj>0){
+      if(X[pi-1]===Y[pj-1]){ pathCells.push(pi+','+pj); pi--; pj--; }
+      else if(c[pi-1][pj]>=c[pi][pj-1]) pi--; else pj--;
+    }
+    frames.push({fill:order.map(p=>p.i+','+p.j),cur:null,path:pathCells,
+      desc:'완성: c[4,5]=3. 우하에서 역추적(일치 셀=대각선)하면 LCS = BCB (길이 3). 표를 한 번 훑었으니 Θ(mn).'});
+    // renderer
+    function renderTable(stage,fr){
+      let html='<table class="dptable"><tr><th></th><th>∅</th>';
+      for(let j=0;j<n;j++) html+='<th>'+Y[j]+'</th>';
+      html+='</tr>';
+      for(let i=0;i<=m;i++){
+        html+='<tr><th>'+(i===0?'∅':X[i-1])+'</th>';
+        for(let j=0;j<=n;j++){
+          const key=i+','+j;
+          let cls='';
+          if(fr.path&&fr.path.includes(key)) cls+=' path';
+          if(fr.cur===key) cls+=' cur';
+          else if((i===0||j===0)||(fr.fill&&fr.fill.includes(key))) cls+=' fill';
+          const val=(i===0||j===0)?0:(fr.fill&&fr.fill.includes(key)||fr.cur===key?c[i][j]:'');
+          html+='<td class="'+cls.trim()+'">'+val+'</td>';
+        }
+        html+='</tr>';
+      }
+      html+='</table>';
+      stage.innerHTML=html;
+    }
+    return frames.map(fr=>({desc:fr.desc,render(stage){renderTable(stage,fr);}}));
+  }
+
+  window.addEventListener('load',function(){
+    const s1=document.getElementById('sim-sort'); if(s1)makeStepper(s1,buildSortFrames());
+    const s2=document.getElementById('sim-dp'); if(s2)makeStepper(s2,buildDPFrames());
+  });
 </script>
 </body>
 </html>
