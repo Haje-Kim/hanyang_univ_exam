@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>페이지를 찾을 수 없음 · 한양대 AI융합대학원 학습 허브</title>
+<!-- 잘못된 경로(대소문자 오타·옛 파일명 등)로 들어와도 학습 허브로 안내 -->
+<script>
+  // 프로젝트 사이트 베이스로 자동 이동. 무한루프 방지: 이미 허브면 이동 안 함.
+  (function(){
+    var base = '/hanyang_univ_exam/';
+    var here = location.pathname.replace(/\/+$/,'/');
+    if (here !== base && here !== base + 'index.html') {
+      setTimeout(function(){ location.replace(base); }, 2500);
+    }
+  })();
+</script>
+<style>
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+    background:#0f1218;color:#e7ecf3;font-family:-apple-system,"Segoe UI",Roboto,"Malgun Gothic",sans-serif;line-height:1.7}
+  .box{max-width:540px;padding:32px 26px;text-align:center}
+  .code{font-size:3rem;font-weight:800;letter-spacing:-.02em;background:linear-gradient(90deg,#5b9dff,#7c5cff);
+    -webkit-background-clip:text;background-clip:text;color:transparent;margin:0}
+  h1{font-size:1.25rem;margin:.4em 0 .2em}
+  p{color:#9aa7b8;margin:.3em 0}
+  a.btn{display:inline-block;margin-top:18px;background:#5b9dff;color:#04122e;font-weight:800;
+    padding:11px 20px;border-radius:999px;text-decoration:none}
+  .links{margin-top:18px;font-size:.9rem}
+  .links a{color:#5b9dff;text-decoration:none;margin:0 8px}
+</style>
+</head>
+<body>
+  <div class="box">
+    <p class="code">404</p>
+    <h1>그 주소엔 페이지가 없어요</h1>
+    <p>주소의 <b>대소문자</b>를 확인하거나, 아래에서 바로 이동하세요.</p>
+    <p style="font-size:.85rem">잠시 후 학습 허브로 자동 이동합니다…</p>
+    <a class="btn" href="/hanyang_univ_exam/">🏠 학습 허브로 가기</a>
+    <div class="links">
+      <a href="/hanyang_univ_exam/ai-intro.html">인공지능개론</a>·
+      <a href="/hanyang_univ_exam/algorithms.html">컴퓨터 알고리즘</a>·
+      <a href="/hanyang_univ_exam/biomed-ai.html">의생명과학 AI</a>·
+      <a href="/hanyang_univ_exam/medical-dx-ai.html">의료진단 AI</a>
+    </div>
+  </div>
+</body>
+</html>
