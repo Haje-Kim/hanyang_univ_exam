@@ -116,6 +116,11 @@
   .sim-ctrl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}
   .sim-step{font-size:.82rem;color:var(--muted)}
   .sim-desc{font-size:.88rem;margin:8px 0 0;line-height:1.6}
+  .sim canvas{display:block;width:100%;max-width:320px;height:auto;border-radius:10px}
+  .sim-metric{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .sim-meter{flex:1 1 180px;height:10px;border-radius:999px;background:var(--panel);border:1px solid var(--line);overflow:hidden}
+  .sim-meter-fill{height:100%;width:0;background:linear-gradient(90deg,var(--hot),var(--accent),var(--ok));transition:width .2s ease}
+  .sim-caption{margin:8px 0 0;font-size:.88rem;line-height:1.6}
   @media(max-width:600px){.sim-ctrl{flex-direction:column;align-items:stretch}}
   .scrollx{overflow-x:auto;-webkit-overflow-scrolling:touch}
   .treemap{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:22px}
@@ -780,27 +785,19 @@
         <summary><input type="checkbox" class="nodechk" data-id="C16" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C16 · Local Search for CSP — min-conflicts <span class="nbadge hot">⭐⭐ 졸업단골</span><span class="nbadge">선행: C10, C15</span><span class="nbadge">최우선</span><span class="chev">▶</span></summary>
         <div class="nbody">
           <div class="banner">🎓 졸업시험 단골 — 최우선 암기. "min-conflicts 절차 + Hill-Climbing vs Simulated Annealing"을 한 문단으로.</div>
-          <div class="field"><span class="lbl">🎯 왜 배우나 (직관)</span>backtracking(백트래킹)은 빈 보드에 한 칸씩 "조심조심" 놓다가 막히면 되돌아온다. min-conflicts는 <b>정반대 발상</b>이다 — <b>일단 다 깔아 놓고(틀려도 좋다) 가장 시끄러운 놈부터 고친다.</b> 자리 배치가 엉킨 결혼식장에서, 표를 새로 짜는 대신 <b>가장 많이 부딪히는 하객을 덜 부딪히는 자리로 한 명씩 옮기는</b> 것과 같다. <i>(비유의 한계: 하객은 옮겨도 다른 데서 또 싸울 수 있다 — 그래서 충돌이 안 줄면 local optimum(지역최적)에 갇힌다.)</i></div>
-          <div class="field"><span class="lbl">📖 정의 · 메커니즘</span>
-            <ul>
-              <li><b>complete state(완전 상태)</b> — 모든 변수에 값이 이미 배정된 상태. 충돌(conflict, 제약 위반)이 있어도 된다. ↔ backtracking의 <b>partial state(부분 상태)</b>.</li>
-              <li><b>변수 선택</b> — 충돌에 연루된 변수(<b>conflicted variable, 충돌 변수</b>)를 하나 무작위로 고른다.</li>
-              <li><b>값 선택</b> — <b>min-conflicts heuristic(최소 충돌 휴리스틱)</b>: 위반 제약 수가 최소가 되는 값으로 옮긴다. 곧 <b>h(n)=총 위반 제약 수</b>를 목적함수로 하는 hill-climbing(언덕 오르기).</li>
-              <li>h가 0이 될 때까지 반복 → <b>충돌 0 = 해(solution)</b>.</li>
-            </ul>
-          </div>
+          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span><p>시험에서 이 주제가 자꾸 나오는 이유는 분명하다. 시간표 편성이나 N-Queens처럼 <b>정답 경로 자체는 중요하지 않고 마지막 배치만 맞으면 되는 CSP(제약 만족 문제)</b>에서는, 빈칸을 하나씩 채우는 backtracking보다 <b>지금 당장 충돌을 얼마나 빨리 없애느냐</b>가 더 중요할 때가 많다. <b>Local Search(지역 탐색)</b> for CSP는 바로 그 순간을 겨냥한다. 해를 "만들어 가는" 대신 먼저 하나 만들어 놓고, 충돌을 줄이는 방향으로 빠르게 다듬기 때문에 큰 문제에서도 매우 강력하다.</p><p>직관은 4-Queens로 보면 가장 쉽다. 각 열에 퀸을 하나씩 두어 <b>complete state(완전 상태)</b>를 먼저 만든다. 처음에는 같은 행이나 대각선에서 서로 공격해도 괜찮다. 이제 전체를 다시 시작하지 않고, 현재 싸움을 일으키는 퀸 하나만 집어 들어 같은 열 안에서 더 덜 부딪히는 칸으로 옮긴다. 그러면 충돌 수 h가 6, 3, 1처럼 내려가다가 결국 0이 되는 순간 해가 된다.</p><p>이 과정은 어수선한 기숙사 방을 정리하는 것과 비슷하다. 방 전체를 비우고 다시 배치하는 대신, 지금 가장 문제를 일으키는 가구 하나를 골라 다른 위치로 조금씩 옮기며 동선을 좋게 만든다. <b>다만 이 비유가 깨지는 지점은</b>, 실제 알고리즘은 "보기 좋아 보이는 위치"가 아니라 <b>제약 위반 수</b>를 기준으로 이웃 상태를 계산해 선택한다는 점이다.</p><p>정의로 말하면, min-conflicts는 <b>hill-climbing(언덕오르기)</b>을 CSP에 맞게 쓴 방법이다. 현재 상태의 평가함수를 <b>총 위반 제약 수 h</b>로 두고, 매 단계마다 <b>conflicted variable(충돌 변수)</b> 하나를 골라 그 변수의 값을 <b>min-conflicts heuristic(최소 충돌 휴리스틱)</b>이 가장 좋은 방향으로 다시 정한다. 즉 "어느 값을 주면 새 충돌이 가장 적어지는가?"만 계속 묻는 알고리즘이다.</p><p>메커니즘을 층층이 보면 더 명확하다. 첫째, 상태 표현은 "각 변수에 값이 모두 들어간 배치"다. 둘째, 평가층에서는 현재 몇 개의 제약이 깨졌는지 세어 h를 만든다. 셋째, 선택층에서는 h를 만드는 당사자 중 하나인 conflicted variable을 무작위로 뽑는다. 넷째, 이동층에서는 그 변수를 가질 수 있는 후보 값들을 같은 조건으로 모두 훑어 보고, 위반 수가 최소가 되는 값으로 옮긴다. 다섯째, 종료층에서는 h=0이면 즉시 끝내고, h가 더 이상 줄지 않는 <b>local optimum(지역최적)</b>에 걸리면 무작위 재시작이나 <b>Simulated Annealing(담금질 모사)</b>처럼 확률적으로 나쁜 수도 허용하는 방법으로 빠져나간다.</p></div>
           <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario"><b>대규모 시간표/N-queens</b> — 퀸을 다 깔아 놓고(충돌 있어도 OK) 충돌하는 퀸을 골라 그 열에서 공격을 가장 적게 받는 행으로 옮긴다. 백트래킹보다 훨씬 큰 규모에서 빠름.</div></div>
           <div class="field"><span class="lbl">📊 인사이트</span><div class="callout">4-queens는 4⁴=256 상태, h=공격 수. 무작위 초기에서 <b>임의 n에 대해 거의 상수 시간</b>에 해결 — <b>n=10,000,000도</b> 높은 확률로 푼다.</div></div>
           <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 ⭐⭐</span>
             <div class="stepper star">
               <div class="stepper-title">min-conflicts로 N-Queens 해결</div>
-              <div class="step show"><div class="step-head">1. 직관</div>백트래킹은 빈 보드에서 하나씩 놓지만, min-conflicts는 <b>다 놓고 고친다</b>.</div>
-              <div class="step"><div class="step-head">2. 셋업</div>각 열에 퀸 하나를 <b>무작위 행</b>에 배치(complete state). h=서로 공격하는 쌍 수(&gt;0 가능).</div>
-              <div class="step"><div class="step-head">3. 전개1·변수 선택</div>현재 <b>충돌에 연루된</b> 퀸(conflicted variable) 하나를 무작위로 고른다.</div>
-              <div class="step"><div class="step-head">4. 전개2·값 선택</div>그 퀸을 같은 열의 어느 행으로 옮겨야 <b>공격받는 수가 최소(min-conflicts)</b>가 되는지 계산해 그 행으로 이동.</div>
+              <div class="step show"><div class="step-head">1. 직관</div>Backtracking은 빈 보드에서 하나씩 놓지만, min-conflicts는 <b>다 놓고 고친다</b>.</div>
+              <div class="step"><div class="step-head">2. 셋업</div>각 열에 퀸 하나를 <b>무작위 행</b>에 배치해 complete state를 만든다. h=서로 공격하는 쌍 수(&gt;0 가능).</div>
+              <div class="step"><div class="step-head">3. 전개1·변수 선택</div>현재 <b>충돌에 연루된</b> 퀸 하나, 즉 conflicted variable을 무작위로 고른다.</div>
+              <div class="step"><div class="step-head">4. 전개2·값 선택</div>그 퀸을 같은 열의 어느 행으로 옮겨야 <b>공격받는 수가 최소</b>가 되는지 계산해, min-conflicts heuristic이 고른 행으로 이동한다.</div>
               <div class="step"><div class="step-head">5. 전개3</div>h가 0이 될 때까지 3~4 반복. (충돌 0 = 해.)</div>
               <div class="step"><div class="step-head">6. 결론</div>n이 수백만이어도 거의 상수 시간에 수렴 → CSP local search의 위력.</div>
-              <div class="step"><div class="step-head">7. 검산·한계</div>만약 h가 안 줄고 멈추면 <b>local optimum</b> → 무작위 재시작 또는 <b>SA(확률적 악수 허용)</b>로 탈출.</div>
+              <div class="step"><div class="step-head">7. 검산·한계</div>만약 h가 안 줄고 멈추면 local optimum에 걸린 것일 수 있다 → 무작위 재시작 또는 Simulated Annealing으로 탈출.</div>
               <div class="step"><div class="step-head">8. 시험 변형 ⭐⭐</div>"min-conflicts 절차를 설명하고, hill-climbing과 simulated annealing을 비교하라" — <b>졸업시험 단골 그대로.</b> 답: 절차 4단계 + HC는 local optimum에 갇힘/SA는 나쁜 수 확률 허용으로 탈출.</div>
               <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
@@ -809,18 +806,22 @@
             <div class="sim star" id="sim-minconf">
               <div class="sim-title">4-Queens를 min-conflicts로 — 충돌 수 h가 0으로 줄어드는 과정</div>
               <span class="sim-label">개념: CSP 지역탐색</span>
-              <div class="sim-stage"></div>
-              <div class="sim-ctrl">
-                <button class="btn sim-prev">◀ 이전</button>
-                <span class="sim-step">단계 0 / 3</span>
-                <button class="btn sim-next">다음 ▶</button>
-                <button class="btn sim-play">▶ 자동</button>
+              <div class="sim-stage"><canvas id="sim-minconf-canvas" width="320" height="320" role="img" aria-label="4-Queens min-conflicts 애니메이션"></canvas></div>
+              <div class="sim-metric">
+                <span id="sim-minconf-h">h = 6</span>
+                <div class="sim-meter" aria-hidden="true"><div class="sim-meter-fill" id="sim-minconf-meter"></div></div>
               </div>
-              <p class="sim-desc"></p>
-              <p style="font-size:.78rem;color:var(--muted);margin:6px 0 0">🔴 빨강 원=충돌 중인 퀸 · 🟢 초록 원=충돌 없음 · 빨간 선=서로 공격하는 퀸 쌍 · 🔵 파란 테두리=지금 미끄러져 이동 중인 퀸 · <b>h</b>=총 충돌 쌍 수. <b>▶ 자동</b>을 눌러 h가 0으로 줄어드는 과정을 보라.</p>
+              <div class="sim-ctrl">
+                <button class="btn" id="sim-minconf-back">◀ Step Back</button>
+                <button class="btn" id="sim-minconf-play">▶ Play</button>
+                <button class="btn" id="sim-minconf-forward">Step Forward ▶</button>
+                <span class="sim-step" id="sim-minconf-step">단계 0 / 3</span>
+              </div>
+              <p class="sim-desc sim-caption" id="sim-minconf-caption"></p>
+              <p style="font-size:.78rem;color:var(--muted);margin:6px 0 0">🔴 빨강=충돌 중인 퀸 · 🟢 초록=충돌 없음 · 파란 테두리=이번에 옮긴 열. h=서로 공격하는 퀸 쌍의 수.</p>
             </div>
           </div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">hill-climbing이라 <b>local optimum에 갇힐 수 있음</b> → <b>Simulated Annealing(SA)</b> 은 확률적으로 나쁜 수도 허용해 탈출. (<span class="nbadge warn">⚠️ SA 온도스케줄·수용확률 수식은 PDF 미수록</span> — 개념만: "나쁜 수 확률적 허용으로 local optimum 탈출".)</div></div>
+          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">hill-climbing이라 <b>local optimum에 갇힐 수 있음</b> → <b>Simulated Annealing(SA)</b>은 확률적으로 나쁜 수도 허용해 탈출. (<span class="nbadge warn">⚠️ SA 온도스케줄·수용확률 수식은 PDF 미수록</span> — 개념만: "나쁜 수 확률적 허용으로 local optimum 탈출".)</div></div>
           <div class="exam-box"><span class="lbl">📝 시험 포인트 (⭐⭐ 졸업 단골, 서술형)</span>
             <b>(1) min-conflicts 절차</b>를 말로: complete state로 시작 → conflicted 변수 선택 → 위반 최소 값으로 재배정 → 반복.<br>
             <b>(2) 왜 빠른가</b>: 큰 n에서도 거의 상수 시간(backtracking과 대비).<br>
@@ -1072,27 +1073,19 @@
       <div class="qa-item star">
         <div class="qa-q"><span class="qa-type star">⭐⭐ 졸업단골</span><span>Q4. <b>CSP의 Local Search(min-conflicts)</b> 절차를 설명하고, <b>Hill-Climbing과 Simulated Annealing</b>을 비교하라. <span style="color:var(--muted);font-weight:400">(출처: Notion Day5 — "졸업 시험 단골!" / C16)</span></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
         <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span><b>min-conflicts 절차</b> — ① 모든 변수를 일단 다 할당해 <b>complete state</b>로 시작(제약 위반 허용), ② 충돌에 연루된(conflicted) 변수를 하나 무작위로 선택, ③ 그 변수를 <b>위반 제약 수가 최소가 되는 값(min-conflicts 휴리스틱)</b> 으로 재배정, ④ 충돌(h=총 위반 수)이 0이 될 때까지 반복. 이는 h=위반 제약 수에 대한 <b>hill-climbing</b>이다. 매우 큰 n(수백만 queens)에서도 거의 상수 시간에 수렴해 backtracking보다 강력하다. <b>비교</b> — <b>Hill-Climbing</b>은 더 나은 이웃이 없으면 멈춰 <b>local optimum에 갇힌다</b>. <b>Simulated Annealing</b>은 확률적으로 <b>나쁜 수도 허용</b>해(초기엔 높은 확률, 점차 감소) local optimum을 탈출한다.</div>
-          <div class="field"><span class="lbl">📊 Hill-Climbing vs Simulated Annealing</span>
-            <table style="width:100%;border-collapse:collapse;font-size:.84rem;margin-top:6px">
-              <thead><tr style="color:var(--accent)">
-                <th style="text-align:left;padding:4px 6px;border-bottom:1px solid var(--line)"></th>
-                <th style="text-align:left;padding:4px 6px;border-bottom:1px solid var(--line)">Hill-Climbing (HC)</th>
-                <th style="text-align:left;padding:4px 6px;border-bottom:1px solid var(--line)">Simulated Annealing (SA)</th></tr></thead>
-              <tbody>
-                <tr><td style="padding:4px 6px;border-bottom:1px solid var(--line)"><b>나쁜 수(악수)</b></td>
-                  <td style="padding:4px 6px;border-bottom:1px solid var(--line)">채택 안 함 (개선만)</td>
-                  <td style="padding:4px 6px;border-bottom:1px solid var(--line)"><b>확률적으로 채택</b> (∝ exp(−Δ/T))</td></tr>
-                <tr><td style="padding:4px 6px;border-bottom:1px solid var(--line)"><b>local optimum</b></td>
-                  <td style="padding:4px 6px;border-bottom:1px solid var(--line)">갇힘 (탈출 불가)</td>
-                  <td style="padding:4px 6px;border-bottom:1px solid var(--line)">초기 높은 온도 T로 <b>탈출 가능</b></td></tr>
-                <tr><td style="padding:4px 6px"><b>수렴</b></td>
-                  <td style="padding:4px 6px">빠르나 suboptimal 위험</td>
-                  <td style="padding:4px 6px">느리나 전역최적 확률↑ (T가 식으며 HC로 수렴)</td></tr>
-              </tbody></table>
-          </div>
-          <div class="field"><span class="lbl">⚠️ 흔한 실수</span>① <b>complete state(다 배정)로 시작</b>한다는 점을 빠뜨리고 "하나씩 놓는다"고 쓰면 backtracking과 혼동 → 감점. ② min-conflicts는 "무작위로 옮긴다"가 아니다 — <b>위반이 최소가 되는 값</b>으로 옮긴다. ③ SA를 "항상 나쁜 수 허용"이라 쓰면 틀림 — <b>확률적으로, 그리고 온도가 식으며 그 확률이 줄어든다</b>.</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>complete state 시작(+), conflicted 변수 선택(+), min-conflicts(위반 최소 값)(+), hill-climbing임 명시(+), 큰 n 상수시간(+가산), HC=local optimum 갇힘 / SA=나쁜 수 확률 허용 탈출 비교(+필수). <i>졸업단골 — 절차+비교를 한 문단으로.</i></div>
+          <div class="field"><span class="lbl">✅ 모범 답변</span><p><b>절차 서술</b> — CSP에서 min-conflicts는 먼저 모든 변수에 값을 넣어 <b>complete state</b>로 시작한다. 이때 제약 위반이 있어도 괜찮다. 그런 다음 현재 충돌을 일으키는 변수들 가운데 하나의 <b>conflicted variable</b>을 선택하고, 그 변수에 넣을 수 있는 값들 중에서 <b>위반 제약 수를 가장 적게 만드는 값</b>, 즉 min-conflicts 휴리스틱이 선택한 값으로 재배정한다. 이 한 번의 이동은 "전체를 다시 푸는 것"이 아니라 "문제를 일으키는 한 변수만 고쳐 보는 것"이다. 이후 총 충돌 수 h를 다시 계산하고, h가 0이 될 때까지 같은 과정을 반복한다. 따라서 min-conflicts는 h=총 위반 제약 수를 평가함수로 쓰는 <b>hill-climbing</b>의 한 형태이며, N-Queens 같은 큰 문제에서도 backtracking보다 훨씬 큰 규모를 빠르게 다룰 수 있다.</p><p><b>서술형 비교 포인트</b> — Hill-Climbing은 현재 상태보다 더 좋은 이웃만 따라가므로, 주변에 더 나은 상태가 없으면 <b>local optimum</b>이나 plateau에서 멈출 수 있다. 반면 Simulated Annealing은 초기에 높은 확률로, 시간이 지날수록 낮은 확률로 <b>일시적으로 더 나쁜 이동도 허용</b>한다. 그래서 눈앞의 평가값만 보면 손해처럼 보여도 지역 함정을 넘어 더 좋은 영역으로 갈 가능성이 생긴다.</p></div>
+          <div class="field"><span class="lbl">📊 비교 표</span><div class="scrollx"><table>
+            <tr><th>항목</th><th>Hill-Climbing</th><th>Simulated Annealing</th></tr>
+            <tr><td>이동 규칙</td><td>더 좋은 이웃으로만 이동</td><td>좋은 이웃은 이동, 나쁜 이웃도 확률적으로 허용</td></tr>
+            <tr><td>결정성</td><td>대체로 greedy하고 결정적</td><td>확률적 선택 포함</td></tr>
+            <tr><td>local optimum 대응</td><td>갇히기 쉬움</td><td>탈출 가능성 있음</td></tr>
+            <tr><td>초기 단계 성향</td><td>항상 즉시 개선만 추구</td><td>탐험(exploration)을 더 많이 허용</td></tr>
+            <tr><td>후반 단계 성향</td><td>처음부터 끝까지 동일</td><td>온도 감소와 함께 점점 보수적으로 변함</td></tr>
+            <tr><td>장점</td><td>단순하고 빠르며 구현이 쉬움</td><td>지역 함정을 넘을 수 있어 더 강건함</td></tr>
+            <tr><td>약점</td><td>plateau, ridge, local optimum에 약함</td><td>확률적이라 실행마다 다를 수 있고 온도 설계가 중요</td></tr>
+          </table></div></div>
+          <div class="field"><span class="lbl">⚠️ common mistakes</span><p>첫째, min-conflicts를 backtracking처럼 "빈칸을 하나씩 채우는 절차"로 쓰면 틀린다. 핵심은 <b>complete state에서 시작</b>한다는 점이다. 둘째, conflicted variable 선택과 값 선택을 섞어 쓰면 감점된다. 변수는 "어느 퀸을 고칠지", 값은 "그 퀸을 어느 행으로 보낼지"다. 셋째, Hill-Climbing과 Simulated Annealing의 차이를 "둘 다 좋아지는 방향으로 간다" 정도로만 쓰면 부족하다. <b>SA는 나쁜 이동도 확률적으로 허용</b>한다는 문장이 반드시 들어가야 한다. 넷째, h를 경로비용으로 설명하면 안 된다. 여기서 h는 <b>현재 배치의 총 위반 제약 수</b>다.</p></div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>complete state 시작(+), conflicted variable 선택(+), min-conflicts(위반 최소 값)(+), hill-climbing임 명시(+), 큰 n 상수시간(+가산), HC=local optimum 갇힘 / SA=나쁜 수 확률 허용 탈출 비교(+필수). <i>졸업단골 — 절차, 비교 표, 실수 포인트까지 한 번에 정리.</i></div>
           <div style="color:var(--muted);font-size:.85rem">연결 노드: C16, C10, C15</div>
         </div>
       </div>
@@ -1384,85 +1377,225 @@
     show();
   }
 
-  // --- 공유 경량 애니메이션 엔진 (3B1B식 모핑 · CDN 0 · 오프라인 우선) ---
-  window.sceneEngine = window.sceneEngine || (function(){
-    const E={linear:t=>t, smooth:t=>t*t*(3-2*t), easeOut:t=>1-Math.pow(1-t,3)};
-    const lerp=(a,b,t)=>a+(b-a)*t;
-    function interp(a,b,t){
-      if(typeof a==='number')return lerp(a,b,t);
-      if(Array.isArray(a))return a.map((x,i)=>interp(x,b[i],t));
-      if(a&&typeof a==='object'){const o={};for(const k in a)o[k]=interp(a[k],b[k],t);return o;}
-      return t<1?a:b;
-    }
-    const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function fit(cv){const dpr=window.devicePixelRatio||1, r=cv.getBoundingClientRect();
-      cv.width=Math.max(1,r.width*dpr); cv.height=Math.max(1,r.height*dpr);
-      const ctx=cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0); return {ctx,w:r.width,h:r.height};}
-    function create(cv,{steps,draw,duration=650,easing='smooth'}){
-      let i=0, raf=0;
-      const color=(name,fb)=>{const v=getComputedStyle(cv).getPropertyValue('--'+name).trim(); return v||fb;};
-      function render(st){const {ctx,w,h}=fit(cv); ctx.clearRect(0,0,w,h); draw(ctx,st,{w,h,color});}
-      function show(idx){i=idx; render(steps[i]);}
-      function go(idx){idx=Math.max(0,Math.min(steps.length-1,idx));
-        if(reduced||idx===i){show(idx);return idx;}
-        cancelAnimationFrame(raf); const from=steps[i], to=steps[idx], t0=performance.now();
-        (function f(now){const p=Math.min(1,(now-t0)/duration); render(interp(from,to,E[easing](p)));
-          if(p<1)raf=requestAnimationFrame(f); else i=idx;})(t0); return idx;}
-      const repaint=()=>show(i);
-      window.addEventListener('resize',repaint);
-      new MutationObserver(repaint).observe(document.body,{attributes:true,attributeFilter:['data-theme','class']});
-      show(0);
-      return {next:()=>go(i+1), prev:()=>go(i-1), go, show, get index(){return i;}, len:steps.length};
-    }
-    return {create};
-  })();
-
-  // --- 시뮬레이션 1: CSP 지역탐색 (min-conflicts) — 퀸이 미끄러지며 충돌 h가 0으로 줄어드는 모핑 씬 ---
+  // --- 시뮬레이션 1: CSP 지역탐색 (min-conflicts) — 4-Queens 충돌 최소화 (최우선) ---
   (function(){
-    const root=document.getElementById('sim-minconf'); if(!root||!window.sceneEngine)return;
-    const stage=root.querySelector('.sim-stage'); if(!stage)return;
-    stage.innerHTML='<canvas class="mc-cv" style="width:100%;max-width:300px;height:300px;display:block;margin:0 auto"></canvas>';
-    const cv=stage.querySelector('canvas'), N=4;
+    const root=document.getElementById('sim-minconf'); if(!root)return;
+    const canvas=root.querySelector('#sim-minconf-canvas');
+    const ctx=canvas&&canvas.getContext('2d');
+    if(!canvas||!ctx)return;
+    const playBtn=root.querySelector('#sim-minconf-play');
+    const backBtn=root.querySelector('#sim-minconf-back');
+    const forwardBtn=root.querySelector('#sim-minconf-forward');
+    const stepEl=root.querySelector('#sim-minconf-step');
+    const hEl=root.querySelector('#sim-minconf-h');
+    const meterEl=root.querySelector('#sim-minconf-meter');
+    const captionEl=root.querySelector('#sim-minconf-caption');
+    const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+    const N=4, PAD=18, SIZE=canvas.width, CELL=(SIZE-PAD*2)/N;
     const steps=[
-      {rows:[0,0,0,0],h:6,note:'<b>초기 상태 (complete state, 완전 상태)</b> · h=6. 네 퀸을 일단 다 깔았다 — 제약 위반을 허용한 채 출발(백트래킹과 정반대). 빨간 선=서로 공격하는 쌍.'},
-      {rows:[0,3,0,0],h:3,note:'<b>이동 1 — 변수·값 선택</b> · h: 6→3. 충돌 퀸 중 2열을 골라(파란 테두리로 미끄러져 이동), 같은 열에서 <b>공격을 가장 적게 받는 행</b>(min-conflicts)으로 옮긴다.'},
-      {rows:[0,3,0,2],h:1,note:'<b>이동 2 — min-conflicts</b> · h: 3→1. 4열을 충돌 최소 행으로 재배정. 빨강 원=아직 충돌, 초록 원=충돌 없음.'},
-      {rows:[1,3,0,2],h:0,note:'<b>해 (h=0)</b> · 1열을 옮겨 마지막 충돌 제거. 모든 퀸이 초록 = 충돌 0 = 해. n이 수백만이어도 거의 상수 시간에 수렴. 막히면(지역최적) 무작위 재시작·SA로 탈출.'}
+      {
+        board:[0,0,0,0],
+        moved:-1,
+        h:6,
+        title:'단계 0 / 3',
+        caption:'초기 complete state(완전 상태)다. 각 열에 퀸은 하나씩 있지만 모두 1행에 몰려 있어 h=6이다.'
+      },
+      {
+        board:[0,3,0,0],
+        moved:1,
+        h:3,
+        title:'단계 1 / 3',
+        caption:'conflicted variable(충돌 변수)로 2열 퀸을 잡고, 같은 열의 후보 행 중 min-conflicts heuristic(최소 충돌 휴리스틱)이 고른 4행으로 부드럽게 이동한다. h가 6에서 3으로 줄어든다.'
+      },
+      {
+        board:[0,3,0,2],
+        moved:3,
+        h:1,
+        title:'단계 2 / 3',
+        caption:'이번에는 4열 퀸이 움직인다. 전체 배치를 갈아엎지 않고 문제를 일으키는 열 하나만 고쳐서 h를 1까지 낮춘다.'
+      },
+      {
+        board:[1,3,0,2],
+        moved:0,
+        h:0,
+        title:'단계 3 / 3',
+        caption:'마지막으로 1열 퀸을 2행으로 옮기면 더 이상 충돌이 없다. h=0이 되어 4-Queens 해에 도달한다.'
+      }
     ];
-    function bad(rows){const b=new Array(N).fill(false);
-      for(let a=0;a<N;a++)for(let c=a+1;c<N;c++){const ra=Math.round(rows[a]),rc=Math.round(rows[c]);
-        if(ra===rc||Math.abs(ra-rc)===Math.abs(a-c)){b[a]=true;b[c]=true;}}return b;}
-    function draw(ctx,s,{w,h,color}){
-      const size=Math.min(w,h), pad=size*0.07, cell=(size-pad*2)/N;
-      const panel=color('panel','#161b24'),panel2=color('panel2','#1d2531'),line=color('line','#2a3340'),
-            ink=color('ink','#e7ecf3'),accent=color('accent','#5b9dff'),hot=color('hot','#ff6b6b'),ok=color('ok','#3ecf8e');
-      for(let r=0;r<N;r++)for(let c=0;c<N;c++){ctx.fillStyle=(r+c)%2?panel2:panel;
-        ctx.fillRect(pad+c*cell,pad+r*cell,cell,cell); ctx.strokeStyle=line; ctx.lineWidth=1;
-        ctx.strokeRect(pad+c*cell,pad+r*cell,cell,cell);}
-      const rows=s.rows, B=bad(rows), X=c=>pad+c*cell+cell/2, Y=r=>pad+r*cell+cell/2;
-      ctx.lineWidth=2.5; ctx.globalAlpha=.55; ctx.strokeStyle=hot;
-      for(let a=0;a<N;a++)for(let c=a+1;c<N;c++){const ra=Math.round(rows[a]),rc=Math.round(rows[c]);
-        if(ra===rc||Math.abs(ra-rc)===Math.abs(a-c)){ctx.beginPath();ctx.moveTo(X(a),Y(rows[a]));ctx.lineTo(X(c),Y(rows[c]));ctx.stroke();}}
-      ctx.globalAlpha=1;
-      for(let c=0;c<N;c++){const mv=Math.abs(rows[c]-Math.round(rows[c]))>.02;
-        ctx.beginPath(); ctx.arc(X(c),Y(rows[c]),cell*0.30,0,7); ctx.fillStyle=B[c]?hot:ok; ctx.fill();
-        if(mv){ctx.beginPath();ctx.arc(X(c),Y(rows[c]),cell*0.30+4,0,7);ctx.strokeStyle=accent;ctx.lineWidth=3;ctx.stroke();}}
-      ctx.fillStyle=ink; ctx.font='bold '+Math.round(size*0.07)+'px system-ui'; ctx.textAlign='left'; ctx.textBaseline='top';
-      ctx.fillText('h = '+Math.round(s.h),pad,pad*0.15);
+    let stepIndex=0;
+    let animFrame=0;
+    let autoplayTimer=0;
+    let isAnimating=false;
+    let isPlaying=false;
+    let motionDisabled=reducedMotion.matches;
+    let currentBoard=steps[0].board.slice();
+    let currentH=steps[0].h;
+
+    function getTheme(){
+      const cs=getComputedStyle(canvas);
+      return {
+        accent:cs.getPropertyValue('--accent').trim()||'#4f46e5',
+        hot:cs.getPropertyValue('--hot').trim()||'#ef4444',
+        ok:cs.getPropertyValue('--ok').trim()||'#22c55e',
+        panel:cs.getPropertyValue('--panel').trim()||'#ffffff',
+        panel2:cs.getPropertyValue('--panel2').trim()||'#f3f4f6',
+        line:cs.getPropertyValue('--line').trim()||'#cbd5e1',
+        ink:cs.getPropertyValue('--ink').trim()||'#111827'
+      };
     }
-    const scene=sceneEngine.create(cv,{steps,draw,duration:650});
-    const stepEl=root.querySelector('.sim-step'), descEl=root.querySelector('.sim-desc');
-    function sync(idx){const t=(idx==null?scene.index:idx);
-      if(stepEl)stepEl.textContent='단계 '+t+' / '+(steps.length-1);
-      if(descEl)descEl.innerHTML=steps[t].note;}
-    const nx=root.querySelector('.sim-next'), pv=root.querySelector('.sim-prev'), pl=root.querySelector('.sim-play');
-    if(nx)nx.onclick=()=>{sync(scene.next());};
-    if(pv)pv.onclick=()=>{sync(scene.prev());};
-    let timer=null;
-    if(pl)pl.onclick=()=>{if(timer){clearInterval(timer);timer=null;pl.textContent='▶ 자동';return;}
-      pl.textContent='⏸ 정지'; timer=setInterval(()=>{if(scene.index>=steps.length-1){clearInterval(timer);timer=null;pl.textContent='▶ 자동';return;}sync(scene.next());},1150);};
-    sync();
-    const det=root.closest('details'); if(det)det.addEventListener('toggle',()=>{if(det.open)scene.show(scene.index);});
+    function conflictsOf(board){
+      const bad=new Array(board.length).fill(false);
+      let pairs=0;
+      for(let a=0;a<board.length;a++)for(let b=a+1;b<board.length;b++){
+        if(board[a]===board[b]||Math.abs(board[a]-board[b])===Math.abs(a-b)){pairs++;bad[a]=true;bad[b]=true;}
+      }
+      return {pairs,bad};
+    }
+    function easeInOutCubic(t){
+      return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+    }
+    function draw(board,hValue,highlightCol){
+      const theme=getTheme();
+      const {bad}=conflictsOf(board);
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle=theme.panel2;
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      for(let r=0;r<N;r++){
+        for(let c=0;c<N;c++){
+          const x=PAD+c*CELL, y=PAD+r*CELL;
+          ctx.fillStyle=(r+c)%2===0?theme.panel:theme.panel2;
+          ctx.fillRect(x,y,CELL,CELL);
+          ctx.strokeStyle=theme.line;
+          ctx.lineWidth=1;
+          ctx.strokeRect(x,y,CELL,CELL);
+        }
+      }
+      if(highlightCol>=0){
+        const x=PAD+highlightCol*CELL+3;
+        ctx.strokeStyle=theme.accent;
+        ctx.lineWidth=3;
+        ctx.strokeRect(x,PAD+3,CELL-6,SIZE-PAD*2-6);
+      }
+      board.forEach((row,col)=>{
+        const x=PAD+col*CELL+CELL/2;
+        const y=PAD+row*CELL+CELL/2;
+        const radius=CELL*0.28;
+        ctx.beginPath();
+        ctx.fillStyle=bad[col]?theme.hot:theme.ok;
+        ctx.arc(x,y,radius,0,Math.PI*2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.strokeStyle=theme.ink;
+        ctx.lineWidth=2;
+        ctx.arc(x,y,radius,0,Math.PI*2);
+        ctx.stroke();
+        ctx.fillStyle=theme.panel;
+        ctx.font=`${Math.round(CELL*0.34)}px Georgia, serif`;
+        ctx.textAlign='center';
+        ctx.textBaseline='middle';
+        ctx.fillText('Q',x,y+1);
+      });
+      hEl.textContent=`h = ${Math.round(hValue)}`;
+      meterEl.style.width=`${Math.max(0,Math.min(100,((6-hValue)/6)*100))}%`;
+    }
+    function updateText(){
+      const state=steps[stepIndex];
+      stepEl.textContent=state.title;
+      captionEl.textContent=state.caption;
+      backBtn.disabled=isAnimating||stepIndex===0;
+      forwardBtn.disabled=isAnimating||stepIndex===steps.length-1;
+      playBtn.textContent=isPlaying?'⏸ Pause':'▶ Play';
+    }
+    function stopAutoplay(){
+      if(autoplayTimer){ clearTimeout(autoplayTimer); autoplayTimer=0; }
+      isPlaying=false;
+      updateText();
+    }
+    function snapTo(index){
+      stepIndex=index;
+      currentBoard=steps[index].board.slice();
+      currentH=steps[index].h;
+      draw(currentBoard,currentH,steps[index].moved);
+      updateText();
+    }
+    function animateTo(index,onDone){
+      if(index<0||index>=steps.length||index===stepIndex){ if(onDone)onDone(); return; }
+      cancelAnimationFrame(animFrame);
+      const from=steps[stepIndex];
+      const to=steps[index];
+      const duration=780;
+      const start=performance.now();
+      isAnimating=true;
+      updateText();
+      if(motionDisabled){
+        stepIndex=index;
+        currentBoard=to.board.slice();
+        currentH=to.h;
+        isAnimating=false;
+        draw(currentBoard,currentH,to.moved);
+        updateText();
+        if(onDone)onDone();
+        return;
+      }
+      function tick(now){
+        const t=Math.min(1,(now-start)/duration);
+        const e=easeInOutCubic(t);
+        currentBoard=from.board.map((row,col)=>row+(to.board[col]-row)*e);
+        currentH=from.h+(to.h-from.h)*e;
+        draw(currentBoard,currentH,to.moved);
+        if(t<1){
+          animFrame=requestAnimationFrame(tick);
+          return;
+        }
+        stepIndex=index;
+        currentBoard=to.board.slice();
+        currentH=to.h;
+        isAnimating=false;
+        draw(currentBoard,currentH,to.moved);
+        updateText();
+        if(onDone)onDone();
+      }
+      animFrame=requestAnimationFrame(tick);
+    }
+    function scheduleNext(){
+      if(!isPlaying)return;
+      if(stepIndex>=steps.length-1){ stopAutoplay(); return; }
+      autoplayTimer=setTimeout(()=>animateTo(stepIndex+1,scheduleNext),180);
+    }
+    backBtn.onclick=()=>{
+      if(isAnimating)return;
+      stopAutoplay();
+      animateTo(stepIndex-1);
+    };
+    forwardBtn.onclick=()=>{
+      if(isAnimating)return;
+      stopAutoplay();
+      animateTo(stepIndex+1);
+    };
+    playBtn.onclick=()=>{
+      if(isAnimating)return;
+      if(isPlaying){ stopAutoplay(); return; }
+      if(stepIndex>=steps.length-1){ snapTo(0); }
+      isPlaying=true;
+      updateText();
+      scheduleNext();
+    };
+    if(typeof reducedMotion.addEventListener==='function'){
+      reducedMotion.addEventListener('change',e=>{
+        motionDisabled=e.matches;
+        if(motionDisabled&&isAnimating){
+          cancelAnimationFrame(animFrame);
+          snapTo(stepIndex);
+        }else{
+          draw(currentBoard,currentH,steps[stepIndex].moved);
+        }
+      });
+    }else if(typeof reducedMotion.addListener==='function'){
+      reducedMotion.addListener(e=>{ motionDisabled=e.matches; draw(currentBoard,currentH,steps[stepIndex].moved); });
+    }
+    const observer=new MutationObserver(()=>draw(currentBoard,currentH,steps[stepIndex].moved));
+    observer.observe(document.body,{attributes:true,attributeFilter:['data-theme']});
+    snapTo(0);
   })();
 
   // --- 시뮬레이션 2: A* / 탐색 트리 확장 (open/closed, f=g+h) 스테퍼 ---

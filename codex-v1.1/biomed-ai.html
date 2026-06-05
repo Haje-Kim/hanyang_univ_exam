@@ -208,25 +208,14 @@
   .selftest .st-a{max-height:0;overflow:hidden;transition:max-height .3s;color:var(--ink)}
   .selftest .st-a.open{max-height:2000px;margin-top:8px}
   .selftest .st-toggle{font-size:.82rem;margin-top:6px}
-  /* ===== v1.1: 5단 빌드업 설명 박스 ===== */
-  .buildup{border:1px solid var(--accent2);background:linear-gradient(160deg,rgba(124,92,255,.06),var(--panel2));
-    border-radius:10px;padding:12px 15px;margin:8px 0}
-  .buildup p{margin:0 0 10px}
-  .buildup p:last-child{margin-bottom:0}
-  .buildup b{color:var(--ink)}
-  /* ===== v1.1: canvas 모핑 애니메이션 씬 ===== */
-  .viz-scene{border:1px solid var(--line);border-radius:10px;padding:12px;margin:10px 0;background:var(--panel2)}
-  .viz-scene.star{border-color:var(--hot)}
-  .viz-title{font-weight:700;font-size:.92rem;margin-bottom:8px;color:var(--ink)}
-  .viz-label{display:inline-block;font-size:.74rem;color:var(--accent2);border:1px solid var(--accent2);border-radius:6px;padding:1px 8px;margin-bottom:8px}
-  .viz-scene canvas{display:block;width:100%;height:300px;border-radius:10px;background:transparent}
-  .viz-metric{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:.86rem}
-  .viz-meter{flex:1 1 160px;height:10px;border-radius:999px;background:var(--panel);border:1px solid var(--line);overflow:hidden}
-  .viz-meter-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--ok));transition:width .25s ease}
-  .viz-caption{margin:8px 0 0;font-size:.88rem;line-height:1.6;min-height:2.6em;color:var(--ink)}
-  .viz-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}
-  .viz-controls input[type=range]{flex:1 1 120px}
-  @media(max-width:600px){.viz-controls{flex-direction:column;align-items:stretch}.viz-scene canvas{height:240px}}
+  .rafsim{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel2);margin:10px 0}
+  .rafsim canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+  .rafsim meter{width:100%;height:12px}
+  .rafsim-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+  .rafsim-head b{color:var(--accent)}
+  .rafsim-ctrl{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0 6px}
+  .rafsim-meta{font-size:.84rem;color:var(--muted)}
+  .rafsim-note{font-size:.85rem;color:var(--muted);margin:6px 0 0}
 </style>
 </head>
 <body data-theme="dark">
@@ -507,16 +496,8 @@
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span>"출력에서 입력 방향으로 chain rule(연쇄법칙)을 반복 적용해, 각 가중치가 에러에 얼마나 기여하는지(gradient(기울기))를 한 번의 backward pass(역방향 패스)로 계산."</div>
-          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span>
-            <div class="buildup">
-              <p>이 개념이 시험에 확정 출제된 이유는 분명하다. DNABERT·GNN·CNN 변이탐지까지 이 과목 <b>모든 모델은 같은 한 가지 절차로 학습</b>되는데, 그 절차가 backpropagation(역전파)이다. 모델 구조가 아무리 달라져도 "틀린 만큼을 어떻게 가중치 탓으로 나눌 것인가"라는 질문은 똑같고, 그 답이 곧 backprop이다. 그래서 이 하나를 정확히 쓰면 나머지 모델의 학습은 전부 같은 틀로 설명된다.</p>
-              <p>직관은 작은 예 하나로 충분하다. 입력 \(x{=}2\), 가중치 \(w{=}0.3\)이면 출력은 \(y{=}0.6\)인데 정답은 \(t{=}1\)이다. 0.4만큼 모자라다. 그러면 "\(w\)를 키워야 하나 줄여야 하나, 얼마나?"를 알아야 한다. backprop은 바로 이 <b>\(\partial E/\partial w\)(에러를 가중치로 미분한 값)</b>를 계산해 방향과 크기를 동시에 알려준다.</p>
-              <p>비유로 말하면, 합창단이 음을 틀렸을 때 지휘자가 <b>맨 뒷줄부터 거꾸로</b> "네가 0.3만큼 높였고, 그건 앞 사람이 0.5 올린 탓이었다"고 책임을 한 단계씩 되짚어 분배하는 것과 같다. <b>다만 이 비유가 깨지는 지점은</b>, backprop은 사람처럼 추궁하는 게 아니라 각 연결마다 <b>국소 미분(local derivative)</b>을 곱해 가는 순수 계산이라는 점이다 — 감정도 판단도 없고 chain rule만 있다.</p>
-              <p>정의로 말하면, backpropagation(역전파)은 <b>다층 신경망의 가중치에 대한 목적함수의 gradient(기울기)를 chain rule(연쇄법칙)로 출력층에서 입력층 방향으로 한 번에 계산하는 절차</b>다. 한 모듈 입력의 gradient는 그 출력의 gradient(=다음 모듈 입력의 gradient)에서 거꾸로 얻는다.</p>
-              <p>메커니즘을 층층이 보면 다섯 겹이다. <b>순전파층(forward)</b>: 입력→출력으로 \(z_l=\sum_k w_{kl}y_k\), \(y_l=f(z_l)\)를 계산하며 각 층 출력을 저장한다. <b>손실층(loss)</b>: \(E=\tfrac12\sum_l(y_l-t_l)^2\)로 정답과의 차이를 잰다. <b>출력 미분층</b>: \(\partial E/\partial y_l=y_l-t_l\)에서 시작해 \(\partial E/\partial z_l=\partial E/\partial y_l\cdot f'(z_l)\). <b>역전파층</b>: \(\partial E/\partial y_k=\sum_l w_{kl}\,\partial E/\partial z_l\)로 위층 신호를 받아 입력층까지 거꾸로 전파한다. <b>갱신층(update)</b>: \(\partial E/\partial w_{jk}=y_j\,\partial E/\partial z_k\)를 구해 \(w\leftarrow w-\eta\,\partial E/\partial w\)로 gradient의 <b>반대 방향</b>으로 한 걸음 내린다.</p>
-            </div>
-          </div>
+          <div class="field"><span class="lbl">개념 설명 (Hook rightarrow Intuition rightarrow Analogy rightarrow Definition rightarrow Mechanism)</span><p><b>Hook</b> backpropagation(역전파)은 이 과목의 거의 모든 학습 모델을 실제로 움직이게 하는 공통 엔진이다.</p><p><b>Intuition</b> loss를 만든 책임이 앞쪽 layer에도 누적되어 있으므로 gradient(기울기) 신호를 출력에서 입력 방향으로 되감아야 각 weight가 얼마나 바뀌어야 하는지 알 수 있다.</p><p><b>Analogy</b> 최종 보고서의 오류를 찾기 위해 마지막 페이지에서 시작해 앞쪽 결재 단계를 거슬러 올라가는 것과 비슷하다. 다만 실제 모델은 말이 아니라 미분값으로 책임 비율을 계산한다.</p><p><b>Definition</b> backpropagation(역전파)은 chain rule로 각 weight의 gradient(기울기) \(\partial E/\partial w\)를 효율적으로 계산하는 알고리즘이다.</p><p><b>Mechanism</b> forward 계산 → loss 계산 → 출력층 gradient(기울기) 계산 → hidden layer로 backward 전파 → \(w\leftarrow w-\eta\,\partial E/\partial w\) 업데이트 순서로 진행한다.</p></div>
+          <div class="field"><span class="lbl">🎯 한 줄 직관</span>"출력에서 입력 방향으로 chain rule을 반복 적용해, 각 가중치가 에러에 얼마나 기여하는지(gradient)를 한 번의 backward pass로 계산."</div>
           <div class="field"><span class="lbl">📖 정의</span>BP = 다층 망의 가중치에 대한 목적함수 gradient를 구하는 절차 = <b>chain rule의 실용적 적용</b>. 한 모듈 입력의 gradient는 그 출력의 gradient(다음 모듈 입력)에서 거꾸로 계산. 출력(top)→입력(bottom) 반복.</div>
           <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scen">DNABERT(C11)·GNN(C13)·CNN 변이탐지(C6) — 본 과목의 <b>모든 모델이 BP로 학습</b>된다. "loss를 가중치로 미분 → 갱신"이 공통 엔진. 시험은 이 forward→loss→backward→update를 식으로 묻는다.</div></div>
           <div class="field"><span class="lbl">🧮 수식 (forward / backward)</span>
@@ -560,31 +541,28 @@
               </ol>
             </div>
           </div>
-          <div class="field"><span class="lbl">🎬 모핑 애니메이션 — gradient(기울기)가 뒤로 흐른다 (canvas)</span>
-            <div class="viz-scene star" id="viz-backprop" data-viz="backprop">
-              <div class="viz-title">3층 망에서 forward(순전파, 파랑) → loss(손실) → backward(역전파, 빨강) → update(갱신, 초록)</div>
-              <span class="viz-label">개념: backpropagation(역전파) chain rule</span>
-              <canvas id="viz-backprop-cv" role="img" aria-label="역전파 gradient 역류 애니메이션"></canvas>
-              <div class="viz-metric">
-                <span id="viz-backprop-val" aria-live="polite">단계 대기</span>
-                <div class="viz-meter" aria-hidden="true"><div class="viz-meter-fill" id="viz-backprop-meter"></div></div>
-              </div>
-              <p class="viz-caption" data-caption></p>
-              <div class="viz-controls">
-                <button class="btn" data-prev aria-label="이전 단계">◀</button>
-                <button class="btn" data-play>▶ 재생</button>
-                <button class="btn" data-next aria-label="다음 단계">▶</button>
-                <input type="range" data-scrub min="0" step="1" value="0" aria-label="단계 이동">
-              </div>
-              <p style="font-size:.78rem;color:var(--muted);margin:6px 0 0">🔵 파랑=forward 활성 흐름 · 🔴 빨강=backward gradient 역류(굵기=|gradient|) · 🟢 초록=가중치 갱신. 진행 막대=현재 |∂E/∂w|.</p>
-            </div>
-          </div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">BP는 마법이 아니라 chain rule. (1) 출력층 미분 \(y-t\)에서 시작해 거꾸로. (2) ReLU가 sigmoid보다 깊은 망에서 빠름(gradient 소실 완화). (3) gradient의 <b>반대</b> 방향으로 갱신.</div></div>
           <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐⭐⭐</span><b>"입력→forward(z=Wx,y=f(z))→loss→backward(∂E/∂z, ∂E/∂w)→update"를 식으로 서술</b>. 1주 출제 확정급. (출처: Deep Learning 논문 Fig.1c/d)</div>
           <div class="field" style="margin-top:8px;color:var(--muted);font-size:.85rem">🔗 연결: 선행 C3 / → 모든 학습(C6,C11,C13,C16,C18,C19)</div>
         </div>
       </details>
 
+          <div class="field"><span class="lbl">requestAnimationFrame 장면 2 · backpropagation(역전파) gradient(기울기) flow</span>
+            <div class="rafsim" id="bp-raf-wrap">
+              <div class="rafsim-head">
+                <b>Scene 2. gradient(기울기) 신호가 backward로 흐르는 과정</b>
+                <span class="rafsim-meta" id="bp-raf-stage">정지 프레임</span>
+              </div>
+              <canvas id="bp-gradient-canvas" width="720" height="260" role="img" aria-label="backpropagation 역전파 gradient 기울기 흐름 캔버스"></canvas>
+              <div class="rafsim-ctrl">
+                <button class="btn" id="bp-raf-prev">이전 단계</button>
+                <button class="btn" id="bp-raf-play">재생</button>
+                <button class="btn" id="bp-raf-next">다음 단계</button>
+              </div>
+              <meter id="bp-raf-meter" min="0" max="100" value="0"></meter>
+              <p class="rafsim-note" id="bp-raf-caption">색 강도는 gradient(기울기) magnitude를 뜻한다. prefers-reduced-motion이면 현재 단계의 정지 프레임만 보여준다.</p>
+            </div>
+          </div>
       <!-- C5 -->
       <details class="node-card" id="C5" data-node-id="C5" data-title="CNN vs Fully-Connected 파라미터 공유">
         <summary>
@@ -674,16 +652,8 @@
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span>"글자(A/C/G/T) 하나하나를 token(토큰)으로 — SNP(단일염기변이) 효과를 직접 모델링하나 sequence(시퀀스)가 길어진다."</div>
-          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span>
-            <div class="buildup">
-              <p>딥러닝 모델은 글자를 못 먹는다. 숫자(텐서)만 먹는다. 그래서 2주 시험이 "DNA 서열을 어떻게 입력하나"를 자꾸 묻는 것이다 — DNA라는 <b>문자열을 모델이 처리할 숫자 토큰으로 바꾸는 첫 관문</b>이 genomic tokenization(유전체 토큰화)이고, single-nucleotide(단일 뉴클레오타이드) 방식이 그 가장 기본 단위다.</p>
-              <p>직관은 영어 문장 처리와 똑같다. 영어를 NLP에 넣을 때 글자 단위로 쪼갤지(c-a-t) 단어 단위로 쪼갤지(cat)를 정하듯, DNA도 <b>한 글자씩(A·C·G·T)</b> 토큰으로 쓸지 여러 글자를 묶을지 정해야 한다. single-nt는 "한 글자=한 토큰"이라, 겸상적혈구의 A→T 같은 <b>한 글자 변이가 곧 한 토큰의 변화</b>로 1:1 대응된다.</p>
-              <p>비유로 보면 one-hot(원핫) 인코딩은 4칸짜리 출석부와 같다. A가 오면 첫 칸에만 1을 켜고 나머지는 0(A=[1,0,0,0]). 누가 왔는지 정보 손실 없이 정확히 표시된다. <b>다만 이 비유가 깨지는 지점은</b>, 출석부는 사람 수만큼만 칸이 늘지만 one-hot은 서열 길이 \(L\)이 길어질수록 <b>4×\(L\) 행렬</b>로 입력이 통째로 커지고, 게다가 A와 G가 화학적으로 가깝다는 <b>유사성을 전혀 못 담는다</b>(모든 글자가 서로 직교).</p>
-              <p>정의로 말하면, single-nucleotide tokenization(단일 뉴클레오타이드 토큰화)은 <b>각 염기 하나를 1개의 token(토큰)으로 두는 것</b>이다. 표현은 둘 중 하나다 — (1) one-hot(원핫): 각 염기를 서로 다른 binary vector(이진 벡터)로(고정·sparse(희소)·학습 안 함), (2) single-nt embedding(임베딩): 각 염기를 token ID(토큰 번호)로 바꾼 뒤 <b>학습되는 dense vector(밀집 벡터)</b>로 사상.</p>
-              <p>메커니즘을 층층이 보면 네 겹이다. <b>분절층</b>: 서열 "ACTACGACT"를 글자 단위로 끊는다(L개 토큰). <b>사상층</b>: 각 글자를 고정 행 순서 [A,C,G,T]의 one-hot으로(→4×L) 또는 token ID 시퀀스로 바꾼다. <b>임베딩층</b>: token ID를 embedding table(임베딩 표)에서 dense vector로 뽑아 (L, d) 형상을 만든다(여기는 <b>학습</b> 대상). <b>전달층</b>: 이 (L, d) 텐서가 Transformer(트랜스포머) 등 모델 입력이 된다. one-hot은 길이 폭발이 약점, embedding은 학습 가능·유사성 표현이 강점이다.</p>
-            </div>
-          </div>
+          <div class="field"><span class="lbl">개념 설명 (Hook rightarrow Intuition rightarrow Analogy rightarrow Definition rightarrow Mechanism)</span><p><b>Hook</b> genomic tokenization은 DNA를 모델이 읽을 수 있는 token(토큰) 단위로 바꾸는 첫 관문이다.</p><p><b>Intuition</b> 모델은 문자 A/C/G/T 자체를 직접 이해하지 못하므로, 각 염기를 one-hot이나 embedding(임베딩) vector로 바꿔야 계산이 가능하다.</p><p><b>Analogy</b> 긴 유전체 문장을 띄어쓰기 없는 문자열에서 읽기 단위로 끊는 것과 비슷하다. 다만 자연어의 단어처럼 의미 경계가 명확한 것은 아니어서 token(토큰) 크기를 설계해야 한다.</p><p><b>Definition</b> single-nucleotide tokenization(단일 염기 토큰화)은 A/C/G/T를 한 글자씩 token(토큰)으로 두고, one-hot 또는 embedding(임베딩)으로 표현하는 방식이다.</p><p><b>Mechanism</b> 염기를 사전의 token id로 바꾸고, one-hot이면 \(4\times L\) 행렬을 만들고, embedding(임베딩)이면 \(L\times d\) dense matrix를 만든 뒤 다음 encoder로 보낸다.</p></div>
+          <div class="field"><span class="lbl">🎯 한 줄 직관</span>"글자(A/C/G/T) 하나하나를 토큰으로 — SNP 효과를 직접 모델링하나 시퀀스가 길어진다."</div>
           <div class="field"><span class="lbl">📖 정의 (입력→출력 형상)</span>
             <ul>
               <li><b>One-hot</b>: 각 염기 → distinct binary vector (A=[1,0,0,0], C=[0,1,0,0], G=[0,0,1,0], T=[0,0,0,1]). 서열 길이 L → <b>4×L 행렬</b>. 정보손실 없으나 입력 길어짐.</li>
@@ -700,25 +670,6 @@
               <li><b>답:</b> one-hot은 4×L, sparse·고정. single-nt 임베딩은 (L,d), dense·학습.</li>
             </ol></div>
           </div>
-          <div class="field"><span class="lbl">🎬 모핑 애니메이션 — 서열이 token→one-hot→embedding으로 변형 (canvas)</span>
-            <div class="viz-scene" id="viz-token" data-viz="token">
-              <div class="viz-title">"ACTACG"가 글자→token ID→one-hot(4×L)→dense embedding(임베딩)으로 부드럽게 모핑</div>
-              <span class="viz-label">개념: genomic tokenization(유전체 토큰화)</span>
-              <canvas id="viz-token-cv" role="img" aria-label="genomic 토큰화 모핑 애니메이션"></canvas>
-              <div class="viz-metric">
-                <span id="viz-token-val" aria-live="polite">단계 대기</span>
-                <div class="viz-meter" aria-hidden="true"><div class="viz-meter-fill" id="viz-token-meter"></div></div>
-              </div>
-              <p class="viz-caption" data-caption></p>
-              <div class="viz-controls">
-                <button class="btn" data-prev aria-label="이전 단계">◀</button>
-                <button class="btn" data-play>▶ 재생</button>
-                <button class="btn" data-next aria-label="다음 단계">▶</button>
-                <input type="range" data-scrub min="0" step="1" value="0" aria-label="단계 이동">
-              </div>
-              <p style="font-size:.78rem;color:var(--muted);margin:6px 0 0">셀 밝기=값 크기. one-hot은 한 칸만 켜진 4×L sparse(희소), embedding은 학습된 dense(밀집) 값. 진행 막대=변환 진행도.</p>
-            </div>
-          </div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">one-hot(sparse·고정) ≠ single-nt embedding(dense·학습). 둘 다 base-level이나 후자가 학습가능.</div></div>
           <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐⭐</span><b>"DNA 서열→토큰화→토큰ID→임베딩 형상" 서술</b>. single-nt vs k-mer vs BPE trade-off(C9·C10 묶음). (출처: 2.gLM p.7–8)</div>
           <div class="field" style="margin-top:8px;color:var(--muted);font-size:.85rem">🔗 연결: 선행 C7 / 묶음 C9,C10</div>
@@ -734,6 +685,7 @@
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
+          <div class="field"><span class="lbl">개념 설명 (Hook rightarrow Intuition rightarrow Analogy rightarrow Definition rightarrow Mechanism)</span><p><b>Hook</b> DNABERT를 이해하려면 genomic tokenization이 왜 single base에서 k-mer token(토큰)으로 커지는지 설명할 수 있어야 한다.</p><p><b>Intuition</b> 한 글자 token(토큰)은 SNP에는 강하지만 motif 문맥을 짧게 보고, k-mer token(토큰)은 더 긴 패턴을 한 번에 압축해 attention(어텐션)이 다룰 단위를 줄여 준다.</p><p><b>Analogy</b> 철자를 하나씩 읽는 대신 음절 단위로 읽으면 속도가 빨라지는 것과 비슷하다. 하지만 단위를 너무 크게 잡으면 중복과 희소성이 커진다.</p><p><b>Definition</b> k-mer tokenization(k-mer 토큰화)은 연속된 k개의 염기를 하나의 token(토큰)으로 취급하는 방식이며, DNABERT는 여기에 [CLS], [SEP] 같은 특수 token(토큰)을 붙인다.</p><p><b>Mechanism</b> 시퀀스를 k-mer로 분할하고 token id로 바꾼 뒤 positional embedding(위치 임베딩)을 더해 encoder 입력 행렬을 만든다. vocabulary 크기는 \(4^k+5\)다.</p></div>
           <div class="field"><span class="lbl">🎯 한 줄 직관</span>"연속 k개 염기를 한 단어로 — non-overlapping은 꼬리가 잘리고, overlapping은 중복이 심하다."</div>
           <div class="field"><span class="lbl">📖 정의 (입력→출력)</span>
             <ul>
@@ -861,16 +813,8 @@
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span>"각 node(노드)는 neighbor(이웃)에서 message(메시지)를 모아(AGGREGATE(집계)) 자기 표현을 갱신(UPDATE(갱신)). layer(층)를 쌓을수록 더 먼 이웃 정보가 도달."</div>
-          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span>
-            <div class="buildup">
-              <p>이 개념은 시험에 <b>식 문제로 확정 출제</b>된다(GNN 식 1개 확정). 이유는 단순하다. GAT(C16)·GCN·GraphSAGE(C15)가 전부 이 한 골격의 변주이기 때문에, 이 message passing(메시지 전달) 한 식을 손으로 계산할 수 있으면 3주 그래프 신경망 전체가 같은 틀로 풀린다.</p>
-              <p>직관은 소문이 퍼지는 마을로 보면 쉽다. 한 사람(노드)의 생각은 <b>이웃들과 이야기한 뒤 조금씩 바뀐다</b>. GNN 한 층이 정확히 이것이다 — 노드 \(v\)는 자기 이웃 \(\mathcal{N}(v)\)의 현재 표현 \(h_u\)를 모아 평균 낸 뒤, 그 이웃 의견과 자기 의견을 섞어 새 표현 \(h_v^{(k+1)}\)로 갱신한다. 한 번 이야기하면 1-hop(한 다리) 이웃까지, 두 번이면 2-hop(두 다리)까지 정보가 닿는다.</p>
-              <p>비유로 보면 CNN(합성곱망)의 필터가 픽셀 주변 3×3을 모아 갱신하는 것과 같은 "이웃으로 갱신"이다. <b>다만 이 비유가 깨지는 지점은</b>, 이미지의 이웃은 항상 9개이고 위·아래·왼쪽이라는 <b>순서가 있지만</b>, 그래프의 이웃은 노드마다 <b>수가 다르고 순서가 없다</b>. 그래서 AGGREGATE는 sum·mean·max처럼 <b>permutation-invariant(순서 불변)</b>여야 하고, 이웃 가중치 \(W_{\text{neigh}}\)는 모든 이웃에 <b>같은 행렬</b>을 써야 한다(순서가 없으니 이웃마다 다른 가중치를 줄 수가 없다).</p>
-              <p>정의로 말하면, 한 GNN 층은 두 함수의 합성이다 — 초기화 \(h_v^{(0)}=x_v\) 위에서 <b>AGGREGATE(집계)</b>로 이웃 표현을 하나의 message(메시지) \(m_v^{(k)}\)로 모으고, <b>UPDATE(갱신)</b>로 자기 표현 \(h_v^{(k)}\)와 그 메시지를 결합해 \(h_v^{(k+1)}\)을 만든다. 구체형(mean+linear)은 아래 🧮 수식의 확정식 그대로다.</p>
-              <p>메커니즘을 층층이 보면 다섯 겹이다. <b>초기화층</b>: 노드 feature를 \(h_v^{(0)}=x_v\)로 둔다. <b>집계층</b>: \(m_v^{(k)}=\tfrac{1}{|\mathcal{N}(v)|}\sum_{u\in\mathcal{N}(v)}h_u^{(k)}\)로 이웃 평균을 낸다(정규화 \(1/|\mathcal{N}(v)|\)). <b>갱신층</b>: \(h_v^{(k+1)}=\sigma(W_{\text{neigh}}m_v^{(k)}+W_{\text{self}}h_v^{(k)}+b)\)로 이웃 메시지와 자기 표현을 선형결합 후 비선형. <b>전노드 반복층</b>: 같은 \(W\)로 모든 노드를 동시에 갱신해 \(H^{(k+1)}\). <b>K층 반복층</b>: 출력을 다음 층 입력으로 넣어 receptive field(수용영역)를 K-hop으로 키운다(너무 깊으면 oversmoothing(과평활)).</p>
-            </div>
-          </div>
+          <div class="field"><span class="lbl">개념 설명 (Hook rightarrow Intuition rightarrow Analogy rightarrow Definition rightarrow Mechanism)</span><p><b>Hook</b> 3주차의 핵심 계산 문제는 결국 "한 node가 이웃에서 받은 정보로 어떻게 update되는가"이다.</p><p><b>Intuition</b> 그래프에서는 pixel 격자처럼 고정 위치가 없으므로, 각 node는 이웃들의 message passing(메시지 패싱) 결과를 모아 자신의 representation을 새로 만든다.</p><p><b>Analogy</b> 친구 셋의 조언을 평균내어 자신의 판단을 수정하는 것과 비슷하다. 다만 실제 모델은 조언을 그냥 더하는 것이 아니라 공유 weight와 비선형 함수를 통과시켜 update한다.</p><p><b>Definition</b> GNN node update(노드 업데이트)는 AGGREGATE로 이웃 표현을 모은 뒤 UPDATE로 자기 표현과 결합하는 message passing(메시지 패싱) 연산이다.</p><p><b>Mechanism</b> \(h_v^{(0)}=x_v\)에서 시작해 \(m_v^{(k)}=\text{AGGREGATE}(\{h_u^{(k)}\})\), \(h_v^{(k+1)}=\text{UPDATE}(h_v^{(k)},m_v^{(k)})\)를 반복한다. K층이면 K-hop 정보가 들어온다.</p></div>
+          <div class="field"><span class="lbl">🎯 한 줄 직관</span>"각 노드는 이웃에서 메시지를 모아(AGGREGATE) 자기 표현을 갱신(UPDATE). 층을 쌓을수록 더 먼 이웃 정보가 도달."</div>
           <div class="field"><span class="lbl">📖 정의</span>초기화 \(h_v^{(0)}=x_v\). 한 층 = AGGREGATE(이웃 모음) + UPDATE(자기와 결합).</div>
           <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scen">소셜 네트워크에서 한 사람의 성향을 친구들 정보로 추정 — GNN 한 층 = "이웃 의견 모아 내 표현 갱신". 유전자 네트워크에서 한 유전자 기능을 이웃 유전자로 보강.</div></div>
           <div class="field"><span class="lbl">🧮 수식 (일반형 — 시험 식 본체)</span>
@@ -911,25 +855,6 @@
                 <li>\(\tilde{\mathcal{N}}(v_4)=\{v_2,v_3,v_4\}\): \(m=\dfrac{2+0+4}{3}=2.000\), \(h_{v_4}^{(1)}=0.6(4)+0.4(2.0)=\mathbf{3.200}\).</li>
                 <li><b>답:</b> \(H^{(1)}=[1.000, 2.133, 0.667, 3.200]^T\).</li>
               </ul>
-            </div>
-          </div>
-          <div class="field"><span class="lbl">🎬 모핑 애니메이션 — 이웃 message(메시지)가 모여 노드 벡터 갱신 (canvas) ⭐⭐⭐</span>
-            <div class="viz-scene star" id="viz-gnn" data-viz="gnn">
-              <div class="viz-title">위 worked example 4-노드 그래프: 이웃 값이 \(v_1\)로 흘러 모여(mean) 갱신 \(1.0\to1.000\) — 점이 새 값으로 미끄러진다</div>
-              <span class="viz-label">개념: GNN message passing(메시지 전달)</span>
-              <canvas id="viz-gnn-cv" role="img" aria-label="GNN 노드 업데이트 message passing 애니메이션"></canvas>
-              <div class="viz-metric">
-                <span id="viz-gnn-val" aria-live="polite">단계 대기</span>
-                <div class="viz-meter" aria-hidden="true"><div class="viz-meter-fill" id="viz-gnn-meter"></div></div>
-              </div>
-              <p class="viz-caption" data-caption></p>
-              <div class="viz-controls">
-                <button class="btn" data-prev aria-label="이전 단계">◀</button>
-                <button class="btn" data-play>▶ 재생</button>
-                <button class="btn" data-next aria-label="다음 단계">▶</button>
-                <input type="range" data-scrub min="0" step="1" value="0" aria-label="단계 이동">
-              </div>
-              <p style="font-size:.78rem;color:var(--muted);margin:6px 0 0">노드 안 숫자=현재 \(h\) 값(원 크기·밝기에 비례). 🔵 파랑 엣지=이웃 메시지 흐름. 갱신되는 노드는 🟢 초록. 진행 막대=중심 노드 새 값(0~4).</p>
             </div>
           </div>
           <div class="field"><span class="lbl">📊 인사이트 (K-layer)</span><div class="callout">1층=1-hop, 2층=2-hop, K층=K-hop receptive field. 너무 깊으면 <b>oversmoothing</b>(임베딩 유사화)·<b>oversquashing</b>(먼 정보 압축).</div></div>
@@ -1020,16 +945,8 @@
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span>"모든 neighbor(이웃)가 똑같이 기여할 필요 없다 → message passing(메시지 전달)은 유지하되, <b>학습된 attention(주의집중) 가중치</b>로 이웃을 차등 집계."</div>
-          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span>
-            <div class="buildup">
-              <p>C13의 GNN은 이웃을 <b>전부 똑같이</b> 평균 냈다(\(1/|\mathcal{N}(v)|\)). 그런데 현실의 이웃은 다 똑같이 중요하지 않다 — 같은 친구라도 어떤 친구는 내 성향을 더 잘 설명한다. GAT(Graph Attention Network, 그래프 어텐션 네트워크)는 바로 이 불만에서 출발한다. 시험에서 GNN 식 문제의 강력 후보(핵심 논문)인 이유는, "고정 평균을 학습 가중치로 바꾼다"는 한 줄 변경이 어디인지를 정확히 짚는지를 묻기 때문이다.</p>
-              <p>직관은 한 문장이다. <b>GCN(그래프 합성곱망)이 두 이웃을 0.5/0.5로 봤을 자리에, GAT는 0.73/0.27처럼 차등으로 본다.</b> 더 informative(유익)한 이웃에 큰 가중치가 자동으로 붙도록 <b>attention coefficient(주의집중 계수) \(\alpha_{vu}\)</b>를 학습한다.</p>
-              <p>비유로 보면 회의에서 의견을 모을 때 <b>발언권을 차등으로 주는 사회자</b>와 같다. 관련 깊은 사람 말은 크게, 곁가지는 작게 반영한다. <b>다만 이 비유가 깨지는 지점은</b>, 사회자는 주관으로 판단하지만 GAT의 가중치는 \(e_{vu}=\text{LeakyReLU}(\vec a^T[Wh_v\Vert Wh_u])\)라는 <b>학습된 점수 함수 + softmax(소프트맥스) 정규화</b>로만 정해진다(이웃에 대해 합이 1). 또 masked attention(가려진 주의집중)이라 <b>1-hop(한 다리) 이웃에만</b> 점수를 매긴다 — 전체 그래프를 미리 알 필요가 없어 inductive(귀납적, unseen 그래프 일반화)가 된다.</p>
-              <p>정의로 말하면, GAT는 <b>GCN의 고정 차수 정규화(\(\tilde D^{-1/2}\tilde A\tilde D^{-1/2}\))를 학습되는 attention coefficient(주의집중 계수) \(\alpha_{vu}\)로 대체한 masked self-attention(가려진 자기주의집중) GNN</b>이다. message passing 골격(C13)은 그대로 두고, 이웃 집계 가중치만 학습으로 바꾼 것이다.</p>
-              <p>메커니즘을 층층이 보면 세 겹(+멀티헤드)이다. <b>점수층(score)</b>: 공유 \(W\)로 변환한 \(Wh_v, Wh_u\)에서 쌍별 중요도 \(e_{vu}=a(Wh_v, Wh_u)\)를 잰다. <b>정규화층(normalize)</b>: 이웃에 대해 softmax(소프트맥스) — \(\alpha_{vu}=\exp(e_{vu})/\sum_{r\in\mathcal{N}(v)}\exp(e_{vr})\)(합=1). <b>갱신층(update)</b>: \(h_v^{(k+1)}=\sigma(\sum_{u\in\mathcal{N}(v)}\alpha_{vu}Wh_u)\)로 가중합 후 비선형. <b>멀티헤드층(multi-head)</b>: K개 독립 attention을 병렬로 돌려 concat(중간층) 또는 average(최종층)로 안정화한다.</p>
-            </div>
-          </div>
+          <div class="field"><span class="lbl">개념 설명 (Hook rightarrow Intuition rightarrow Analogy rightarrow Definition rightarrow Mechanism)</span><p><b>Hook</b> GAT는 "모든 이웃을 똑같이 평균내면 정보가 희석된다"는 3주차 불만에서 출발한다.</p><p><b>Intuition</b> 어떤 이웃은 중심 node와 강하게 관련되고 어떤 이웃은 약하므로, node update 전에 attention(어텐션) weight를 학습해야 더 중요한 message passing(메시지 패싱)이 남는다.</p><p><b>Analogy</b> 팀 회의에서 모두 발언은 하지만 최종 판단은 더 전문적인 사람의 의견을 더 크게 반영하는 것과 비슷하다. 다만 실제 모델은 사람의 직감을 쓰지 않고 softmax attention(어텐션) 계수로 가중합한다.</p><p><b>Definition</b> GAT(Graph Attention Network)는 이웃별 attention coefficient \(\alpha_{vu}\)를 학습해 node update에 사용하는 GNN이다.</p><p><b>Mechanism</b> 1) \(e_{vu}=a(Wh_v,Wh_u)\)로 score를 만든다. 2) softmax로 \(\alpha_{vu}\)를 만든다. 3) \(h_v^{(k+1)}=\sigma(\sum_u \alpha_{vu}Wh_u)\)로 update한다. 필요하면 multi-head attention(어텐션)을 concat 또는 average한다.</p></div>
+          <div class="field"><span class="lbl">🎯 한 줄 직관</span>"모든 이웃이 똑같이 기여할 필요 없다 → message passing은 유지하되, <b>학습된 attention 가중치</b>로 이웃을 차등 집계."</div>
           <div class="field"><span class="lbl">📖 정의</span>GAT = GCN의 고정 차수 정규화를 <b>학습 attention coefficient</b> \(\alpha_{vu}\)로 대체. masked self-attention(1-hop 이웃에만).</div>
           <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scen">소셜 네트워크에서 연결되어도 다 비슷한 건 아니다(homophily 불완전). GAT는 더 informative한 이웃에 큰 가중치를 자동 학습 → 노드 분류 정확도↑.</div></div>
           <div class="field"><span class="lbl">🧮 수식 (3-step — 시험 식 후보)</span>
@@ -1069,24 +986,6 @@
               <li><b>답:</b> GCN은 두 이웃을 동등(0.5/0.5)히 봤을 자리에, GAT는 0.73/0.27로 <b>차등</b> — 더 중요한 이웃 강조.</li>
             </ol></div>
           </div>
-          <div class="field"><span class="lbl">🎬 모핑 애니메이션 — attention(주의집중) 가중치 = 엣지 굵기 (canvas) ⭐⭐⭐</span>
-            <div class="viz-scene star" id="viz-gat" data-viz="gat">
-              <div class="viz-title">score \(e_{vu}\)를 슬라이더로 바꾸면 softmax \(\alpha_{vu}\)와 <b>엣지 굵기</b>가 실시간 반응 — 중요한 이웃이 굵어진다</div>
-              <span class="viz-label">개념: GAT attention(주의집중) 차등 집계</span>
-              <canvas id="viz-gat-cv" role="img" aria-label="GAT attention 가중치 엣지 굵기 애니메이션"></canvas>
-              <div class="viz-metric">
-                <span id="viz-gat-val" aria-live="polite"></span>
-                <div class="viz-meter" aria-hidden="true"><div class="viz-meter-fill" id="viz-gat-meter"></div></div>
-              </div>
-              <p class="viz-caption" data-caption></p>
-              <div class="viz-controls">
-                <label style="font-size:.82rem;flex:1 1 120px">score \(e_{vu_1}\) <input type="range" data-e1 min="-3" max="3" step="0.1" value="2.0"></label>
-                <label style="font-size:.82rem;flex:1 1 120px">score \(e_{vu_2}\) <input type="range" data-e2 min="-3" max="3" step="0.1" value="1.0"></label>
-                <button class="btn" data-demo>▶ 차등 시연</button>
-              </div>
-              <p style="font-size:.78rem;color:var(--muted);margin:6px 0 0">엣지 굵기·라벨=\(\alpha_{vu}\)(softmax, 합=1). 두 score가 같으면 0.5/0.5(=GCN). 진행 막대=두 \(\alpha\)의 격차(차등 강도).</p>
-            </div>
-          </div>
           <div class="field"><span class="lbl">📊 인사이트 (GCN vs GAT)</span><div class="callout">GCN=차수 기반 <b>고정</b> 정규화. GAT=이웃마다 <b>학습된</b> attention(엣지 두께=중요도, t-SNE에서 시각화).</div></div>
           <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">GAT의 \(\alpha\)는 <b>이웃에 대해 softmax 정규화</b>(\(\sum_u \alpha_{vu}=1\)). attention \(a\)는 LeakyReLU(slope 0.2). masked attention이라 1-hop 이웃에만(전체 그래프 사전지식 불필요 → inductive 가능).</div></div>
           <div class="exam-box"><span class="lbl">📝 시험 포인트 ⭐⭐⭐</span>GAT 3-step(score→softmax→가중합) 식·기호 + "왜 attention"(이웃 차등) + multi-head + GCN 대조. <b>GNN 식 문제의 강력 후보(핵심 논문)</b>. (출처: 3.graphNN p.22–25 / GAT 논문 eq1–6)</div>
@@ -1094,6 +993,22 @@
         </div>
       </details>
 
+          <div class="field"><span class="lbl">requestAnimationFrame 장면 1 · GNN/GAT node update와 message passing(메시지 패싱)</span>
+            <div class="rafsim" id="gat-raf-wrap">
+              <div class="rafsim-head">
+                <b>Scene 1. 이웃 message가 중심 node로 모여 update되는 과정</b>
+                <span class="rafsim-meta" id="gat-raf-stage">정지 프레임</span>
+              </div>
+              <canvas id="gnn-gat-node-canvas" width="720" height="320" role="img" aria-label="GNN GAT node update message passing canvas"></canvas>
+              <div class="rafsim-ctrl">
+                <button class="btn" id="gat-raf-prev">이전 단계</button>
+                <button class="btn" id="gat-raf-play">재생</button>
+                <button class="btn" id="gat-raf-next">다음 단계</button>
+              </div>
+              <meter id="gat-raf-meter" min="0" max="100" value="0"></meter>
+              <p class="rafsim-note" id="gat-raf-caption">엣지 두께는 attention(어텐션) weight, 움직이는 입자는 message passing(메시지 패싱), 오른쪽 막대는 중심 node vector update를 나타낸다.</p>
+            </div>
+          </div>
       <!-- C17 -->
       <details class="node-card" id="C17" data-node-id="C17" data-title="GAT 평가 결과 논문 해석">
         <summary>
@@ -1501,6 +1416,29 @@
 
     <!-- ===== 예상 문제 ===== -->
     <section class="stem-sec" id="examqs">
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">우선순위</span><span>Q0-1. <b>입력 prompt 전체</b>: "backpropagation(역전파)을 Hook → Intuition → Definition → forward/backward 수식 → gradient(기울기) update 순서로 설명하라. 왜 출력층에서 시작하는지, 왜 gradient의 반대 방향으로 weight를 갱신하는지 반드시 포함하라."</span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">모범 답안</span>backpropagation(역전파)은 loss가 어떤 weight를 얼마나 잘못 움직였는지 계산하는 절차다. 직관적으로는 출력 오차가 앞쪽 layer들의 선택이 누적된 결과이므로, 책임을 분해하려면 출력층에서 입력층 방향으로 gradient(기울기)를 전파해야 한다. 수식으로는 forward에서 \(z_l=\sum_k w_{kl}y_k\), \(y_l=f(z_l)\)를 계산하고, loss를 \(E=\tfrac12\sum_l(y_l-t_l)^2\)로 둔다. 그 다음 출력층에서 \(\partial E/\partial y_l=y_l-t_l\), \(\partial E/\partial z_l=(\partial E/\partial y_l)f'(z_l)\)를 계산한다. hidden layer에서는 chain rule로 \(\partial E/\partial y_k=\sum_l w_{kl}\partial E/\partial z_l\), \(\partial E/\partial z_k=(\partial E/\partial y_k)f'(z_k)\)를 반복한다. 각 연결의 gradient(기울기)는 \(\partial E/\partial w_{jk}=y_j(\partial E/\partial z_k)\)이고, 최종 update는 \(w\leftarrow w-\eta\,\partial E/\partial w\)다. 반대 방향으로 가는 이유는 gradient(기울기)가 loss가 가장 빠르게 증가하는 방향이기 때문이다.</div>
+          <div class="field"><span class="lbl">common mistakes</span><div class="trap">출력층 미분 \(y-t\)를 생략하거나, gradient(기울기)와 update를 같은 개념으로 쓰거나, "weight를 gradient 방향으로 움직인다"라고 쓰면 감점이다.</div></div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">우선순위</span><span>Q0-2. <b>입력 prompt 전체</b>: "genomic tokenization(유전체 토큰화)을 single-nucleotide, k-mer, BPE 기준으로 비교하고 DNABERT 입력이 어떻게 만들어지는지 설명하라. token(토큰), embedding(임베딩), attention(어텐션), vocabulary 크기 \(4^k+5\)를 모두 포함하라."</span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">모범 답안</span>genomic tokenization(유전체 토큰화)은 DNA 문자열을 모델이 계산 가능한 token(토큰) 열로 바꾸는 과정이다. single-nucleotide 방식은 A/C/G/T를 한 글자씩 token(토큰)으로 두기 때문에 SNP 같은 미세 변화를 직접 보존하지만 길이가 길어지고 문맥 단위가 짧다. k-mer 방식은 연속된 k개의 염기를 하나의 token(토큰)으로 묶어 motif 수준 문맥을 더 크게 본다. DNABERT는 여기에 [CLS], [SEP], [MASK], [PAD], [UNK]를 더해 vocabulary 크기를 \(4^k+5\)로 둔다. BPE는 데이터에서 자주 함께 나오는 염기 조합을 병합해 token(토큰)을 학습적으로 만든다. DNABERT 입력은 시퀀스를 k-mer token(토큰)으로 나누고, 각 token id를 embedding(임베딩) vector로 바꾼 뒤 positional embedding(위치 임베딩)을 더해 encoder 입력 행렬을 만든다. 그 다음 self-attention(셀프 어텐션)이 주변 token(토큰) 문맥을 참조해 masked token(토큰)을 예측한다.</div>
+          <div class="field"><span class="lbl">common mistakes</span><div class="trap">vocabulary를 \(4k+5\)로 잘못 쓰거나, one-hot과 embedding(임베딩)을 구분하지 않거나, DNABERT가 CLM이 아니라 MLM이라는 점을 놓치면 틀린다.</div></div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">우선순위</span><span>Q0-3. <b>입력 prompt 전체</b>: "3주차 node update 문제를 서술형으로 풀어라. GNN의 message passing(메시지 패싱)과 GAT의 attention(어텐션) update 차이를 함께 설명하고, 왜 GAT에서 edge 두께가 attention weight를 뜻한다고 볼 수 있는지 말하라."</span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">모범 답안</span>GNN의 기본 node update는 message passing(메시지 패싱) 두 단계로 정리된다. 먼저 AGGREGATE에서 이웃 표현을 모아 \(m_v^{(k)}=\text{AGGREGATE}(\{h_u^{(k)}:u\in\mathcal N(v)\})\)를 만들고, 다음 UPDATE에서 \(h_v^{(k+1)}=\text{UPDATE}(h_v^{(k)},m_v^{(k)})\)로 중심 node 표현을 바꾼다. mean aggregation이면 \(m_v^{(k)}=\frac{1}{|\mathcal N(v)|}\sum_{u\in\mathcal N(v)} h_u^{(k)}\)처럼 모든 이웃을 같은 비율로 평균낸다. 반면 GAT는 각 이웃에 대해 attention(어텐션) score \(e_{vu}=a(Wh_v,Wh_u)\)를 계산하고, softmax로 \(\alpha_{vu}\)를 만든 뒤 \(h_v^{(k+1)}=\sigma(\sum_u \alpha_{vu}Wh_u)\)로 update한다. 따라서 GNN은 모든 edge를 동일한 통로로 보고, GAT는 edge마다 중요도가 다른 통로로 본다. 시각적으로 edge 두께를 attention weight에 대응시키는 이유는 \(\alpha_{vu}\)가 클수록 그 edge를 통해 더 많은 정보량이 중심 node update에 반영되기 때문이다.</div>
+          <div class="field"><span class="lbl">common mistakes</span><div class="trap">AGGREGATE와 UPDATE를 한 줄로 섞어 쓰거나, GAT의 softmax normalization을 빼먹거나, attention(어텐션)이 node 자체의 속성만 본다고 쓰면 감점이다.</div></div>
+        </div>
+      </div>
       <h2>📝 예상 문제 &amp; 모범 답변 (주차별 2문제 = 총 6문제)</h2>
       <p style="color:var(--muted)">형태: "입력→출력 서술형", <b>GNN 식 문제 1개 확정 포함(Q5)</b>. 먼저 스스로 답한 뒤 <b>"답 보기"</b>로 확인한다.</p>
 
@@ -1512,7 +1450,6 @@
             <div class="scrollx">① <b>Forward</b>: 각 층 총입력 \(z_l=\sum_k w_{kl}y_k\), 출력 \(y_l=f(z_l)\)(\(f\)=ReLU/sigmoid)를 입력→출력 방향 계산. ② <b>Loss</b>: cost \(E=\tfrac12\sum_l(y_l-t_l)^2\)로 출력과 정답 비교. ③ <b>Backward</b>(chain rule): 출력층 \(\dfrac{\partial E}{\partial y_l}=y_l-t_l\), \(\dfrac{\partial E}{\partial z_l}=\dfrac{\partial E}{\partial y_l}f'(z_l)\); 은닉층 \(\dfrac{\partial E}{\partial y_k}=\sum_l w_{kl}\dfrac{\partial E}{\partial z_l}\), \(\dfrac{\partial E}{\partial z_k}=\dfrac{\partial E}{\partial y_k}f'(z_k)\)를 입력층까지 반복; 가중치 \(\dfrac{\partial E}{\partial w_{jk}}=y_j\dfrac{\partial E}{\partial z_k}\). ④ <b>Update</b>: \(w\leftarrow w-\eta\dfrac{\partial E}{\partial w}\)(gradient 반대 방향), 미니배치로 SGD 반복.</div>
           </div>
           <div class="field"><span class="lbl">🎯 부분점수 포인트</span>forward 식(+), 출력층 미분 \(y-t\)(+), chain rule로 역전파(+), 가중치 gradient \(y_j\partial E/\partial z_k\)(+), update 부호(−η)(+).</div>
-          <div class="field"><span class="lbl">⚠️ 흔한 실수</span><div class="trap">① update 부호를 \(w\leftarrow w+\eta\,\partial E/\partial w\)로 잘못 씀 — gradient의 <b>반대</b> 방향(\(-\eta\))이어야 손실이 준다. ② 출력층을 \(t-y\)로 거꾸로 씀(정의 \(E=\tfrac12(y-t)^2\)이면 \(\partial E/\partial y=y-t\)). ③ \(f'(z)\) 곱을 빠뜨림 — \(\partial E/\partial z=\partial E/\partial y\cdot f'(z)\). ④ "BP가 새 학습 알고리즘"이라 서술 — BP는 gradient <b>계산</b>법(chain rule)일 뿐, 갱신은 SGD가 한다.</div></div>
           <div style="color:var(--muted);font-size:.85rem">연결 노드: C4, C3 / P1</div>
         </div>
       </div>
@@ -1555,7 +1492,6 @@
             <div class="scrollx"><b>일반식</b>(self-included 규약 \(\tilde{\mathcal{N}}(v)\ni v\)): \(m_v^{(k)}=\dfrac{1}{|\tilde{\mathcal{N}}(v)|}\sum_{u\in\tilde{\mathcal{N}}(v)}h_u^{(k)}\) (AGGREGATE), \(h_v^{(k+1)}=\sigma(W_{\text{neigh}}m_v^{(k)}+W_{\text{self}}h_v^{(k)}+b)\) (UPDATE). <b>계산</b>: ① AGGREGATE \(m_{v_1}^{(0)}=\dfrac{1+2+0}{3}=1.000\). ② UPDATE \(h_{v_1}^{(1)}=0.6\cdot1.0+0.4\cdot1.000=\mathbf{1.000}\). (이 문제는 3-노드에서 \(v_1\)만 묻는다. 노드 C13의 4-노드 예제에서는 동일 절차로 \(v_2{=}2.133, v_3{=}0.667, v_4{=}3.200\).) 핵심: AGGREGATE는 순서 불변(mean), \(W_{\text{neigh}}\)는 모든 이웃 공유(이웃 순서 없음), \(1/|\tilde{\mathcal{N}}(v)|\)로 정규화.</div>
           </div>
           <div class="field"><span class="lbl">🎯 부분점수 포인트</span>일반 AGGREGATE/UPDATE 식(+), mean 정규화 \(1/|\tilde{\mathcal{N}}(v)|\)(+), \(m_{v_1}=1.000\)(+), \(h_{v_1}^{(1)}=1.000\) 최종(+), \(W_{\text{neigh}}\) 공유 이유(+).</div>
-          <div class="field"><span class="lbl">⚠️ 흔한 실수</span><div class="trap">① self-included(\(v\)를 이웃에 포함) 규약을 놓쳐 분모 \(|\mathcal{N}(v)|\)를 틀림 — 여기선 \(\tilde{\mathcal{N}}(v_1)=\{v_1,v_2,v_3\}\)이라 분모 3, \(m=\tfrac{1+2+0}{3}=1.000\). ② 정규화 \(1/|\mathcal{N}(v)|\)를 빼고 sum만 함(순서불변은 유지되나 값이 달라짐). ③ 이웃마다 다른 \(W\)를 줌 — 순서가 없으므로 \(W_{\text{neigh}}\)는 <b>모든 이웃 공유</b>. ④ \(a,b\)를 자기·이웃에 뒤바꿔 대입(\(h=a\,h_v+b\,m\), 여기 \(a{=}0.6\)는 자기, \(b{=}0.4\)는 이웃).</div></div>
           <div style="color:var(--muted);font-size:.85rem">연결 노드: C13 / P3</div>
         </div>
       </div>
@@ -1568,7 +1504,6 @@
             <div class="scrollx">GAT는 GCN의 <b>고정 대칭 차수 정규화</b>(\(\tilde{D}^{-1/2}\tilde{A}\tilde{D}^{-1/2}\), 즉 엣지별 고정 가중치 \(1/\sqrt{\tilde{d}_v\,\tilde{d}_u}\))를 <b>학습된 attention</b>으로 대체. ① <b>score</b> \(e_{vu}=a(Wh_v, Wh_u)\)(=LeakyReLU(\(\vec{a}^T[Wh_v\Vert Wh_u]\))). ② <b>normalize</b> \(\alpha_{vu}=\dfrac{\exp(e_{vu})}{\sum_{r\in\mathcal{N}(v)}\exp(e_{vr})}\)(softmax). ③ <b>update</b> \(h_v^{(k+1)}=\sigma(\sum_{u\in\mathcal{N}(v)}\alpha_{vu}Wh_u)\). multi-head로 K개 병렬(concat/average). <b>우월 이유</b>: 이웃마다 다른 importance를 학습 → 더 informative한 이웃 강조. 근거: Const-GAT(attention 상수=동등)보다 PPI F1 +3.9%(0.973 vs 0.934), GCN 대비 Cora +1.5%·inductive에서 GraphSAGE +20.5%.</div>
           </div>
           <div class="field"><span class="lbl">🎯 부분점수 포인트</span>3-step 식(score/softmax/가중합)(+ + +), GCN 고정정규화 대비 학습 attention(+), Const-GAT/GCN 대비 수치 근거(+).</div>
-          <div class="field"><span class="lbl">⚠️ 흔한 실수</span><div class="trap">① softmax 정규화 범위를 빼먹음 — \(\alpha_{vu}\)는 <b>이웃 \(\mathcal{N}(v)\)에 대해</b> softmax라 \(\sum_u\alpha_{vu}=1\). ② GAT가 GCN을 "항상 압도"한다고 단정 — Pubmed는 동률(79.0). ③ "attention이 message passing을 없앴다"고 서술 — 골격은 그대로, <b>집계 가중치만</b> \(1/|\mathcal{N}(v)|\)→\(\alpha_{vu}\)로 바뀐 것. ④ LeakyReLU/concat을 빠뜨려 score 함수를 단순 내적으로 적음.</div></div>
           <div style="color:var(--muted);font-size:.85rem">연결 노드: C16, C17 / P3</div>
         </div>
       </div>
@@ -1910,273 +1845,231 @@
     });
   }
 
-  /* ===================== v1.1 sceneEngine: CDN-free 모핑 애니메이션(오프라인) ===================== */
-  const sceneEngine=(function(){
-    const easings={smooth:t=>t*t*(3-2*t),easeInOut:t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2};
-    const lerp=(a,b,t)=>a+(b-a)*t;
-    function interp(a,b,t){
-      if(typeof a==='number')return lerp(a,b,t);
-      if(Array.isArray(a))return a.map((x,i)=>interp(x,b[i],t));
-      if(a&&typeof a==='object'){const o={};for(const k in a)o[k]=interp(a[k],b[k],t);return o;}
-      return t<1?a:b;
-    }
-    function makeColor(el){return(name,fb)=>{const v=getComputedStyle(el).getPropertyValue('--'+name).trim();return v||fb;};}
-    const reduced=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function fitCanvas(cv){
-      const dpr=window.devicePixelRatio||1,r=cv.getBoundingClientRect();
-      const w=r.width||cv.clientWidth||300,h=r.height||300;
-      cv.width=w*dpr;cv.height=h*dpr;
-      const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);
-      return{ctx,w,h};
-    }
-    function create(cv,opt){
-      const{steps,draw,caption,onState,duration=750,easing='easeInOut'}=opt;
-      let i=0,raf=0;const color=makeColor(cv);
-      const root=cv.closest('.viz-scene');
-      const capEl=root?root.querySelector('[data-caption]'):null;
-      function render(state){const{ctx,w,h}=fitCanvas(cv);ctx.clearRect(0,0,w,h);draw(ctx,state,{w,h,color});if(onState)onState(state,root);}
-      function show(idx){i=idx;render(steps[i]);if(capEl&&caption)capEl.textContent=caption(i);}
-      function go(idx){
-        idx=Math.max(0,Math.min(steps.length-1,idx));
-        if(reduced||idx===i){show(idx);return idx;}
-        cancelAnimationFrame(raf);
-        const from=steps[i],to=steps[idx],t0=performance.now();
-        if(capEl&&caption)capEl.textContent=caption(idx);
-        (function frame(now){
-          const p=Math.min(1,(now-t0)/duration);
-          render(interp(from,to,easings[easing](p)));
-          if(p<1)raf=requestAnimationFrame(frame);else i=idx;
-        })(t0);
-        return idx;
-      }
-      const repaint=()=>show(i);
-      window.addEventListener('resize',repaint);
-      const mo=new MutationObserver(repaint);
-      mo.observe(document.body,{attributes:true,attributeFilter:['data-theme']});
-      show(0);
-      return{next(){return go(i+1);},prev(){return go(i-1);},go,show,repaint,get index(){return i;},get target(){return Math.max(0,Math.min(steps.length-1,i));},len:steps.length};
-    }
-    return{create,reduced};
-  })();
-
-  function wireScene(scene,root){
-    const scrub=root.querySelector('[data-scrub]');if(scrub){scrub.max=scene.len-1;scrub.value=scene.index;}
-    const nx=root.querySelector('[data-next]'),pv=root.querySelector('[data-prev]'),pl=root.querySelector('[data-play]');
-    if(nx)nx.onclick=()=>{const t=scene.next();if(scrub)scrub.value=t;};
-    if(pv)pv.onclick=()=>{const t=scene.prev();if(scrub)scrub.value=t;};
-    if(scrub)scrub.oninput=e=>scene.go(+e.target.value);
-    if(pl){let timer=null;pl.onclick=()=>{
-      if(timer){clearInterval(timer);timer=null;pl.textContent='▶ 재생';return;}
-      pl.textContent='⏸ 일시정지';
-      timer=setInterval(()=>{
-        if(scene.index>=scene.len-1){clearInterval(timer);timer=null;pl.textContent='▶ 재생';return;}
-        const t=scene.next();if(scrub)scrub.value=t;
-      },1000);
-    };}
-  }
-  function setMeter(root,frac,txt){
-    const m=root.querySelector('.viz-meter-fill');if(m)m.style.width=Math.max(0,Math.min(1,frac))*100+'%';
-    const v=root.querySelector('[id$="-val"]');if(v&&txt!=null)v.textContent=txt;
-  }
-
-  /* ---- 씬 A: backprop gradient 역류 ---- */
-  function buildBackprop(){
-    // 노드 4개(입력·은닉·출력·loss) 가로 배치. forward(파랑)→loss→backward(빨강)→update(초록)
-    const base={fwd:0,bwd:0,upd:0,grad:0};
-    const steps=[
-      {...base,fwd:0,note:'시작 — 입력 \\(x=2\\), \\(w=0.3\\). 아직 흐름 없음.'},
-      {...base,fwd:1,note:'Forward(순전파): 입력→출력으로 \\(z=Wy,\\ y=f(z)\\). 파랑이 오른쪽으로 흐른다.'},
-      {...base,fwd:1,loss:1,note:'출력 \\(y=0.6\\) vs 정답 \\(t=1\\) → loss(손실) \\(E=\\tfrac12(y-t)^2=0.08\\).'},
-      {...base,fwd:1,loss:1,bwd:1,grad:0.4,note:'Backward(역전파) 시작: 출력층 \\(\\partial E/\\partial y=y-t=-0.4\\). 빨강이 왼쪽으로 역류.'},
-      {...base,fwd:1,loss:1,bwd:1,grad:0.8,note:'chain rule: \\(\\partial E/\\partial w=x\\cdot\\partial E/\\partial z=2(-0.4)=-0.8\\). gradient 굵어짐.'},
-      {...base,fwd:1,loss:1,bwd:1,upd:1,grad:0.8,note:'Update(갱신): \\(w\\leftarrow0.3-0.1(-0.8)=0.38\\) — gradient 반대 방향. 초록 강조.'}
-    ];
-    return{steps,duration:700,
-      caption:i=>steps[i].note,
-      onState:(s,root)=>setMeter(root,s.grad/0.8,'|∂E/∂w| = '+(s.grad).toFixed(2)),
-      draw(ctx,s,{w,h,color}){
-        const ink=color('ink','#e7ecf3'),ac=color('accent','#5b9dff'),hot=color('hot','#ff6b6b'),
-              ok=color('ok','#3ecf8e'),line=color('line','#2a3340'),mut=color('muted','#9aa7b8');
-        const labs=['입력 x','은닉','출력 y','loss'],xs=[w*0.12,w*0.40,w*0.66,w*0.88],cy=h*0.42;
-        ctx.lineWidth=2;ctx.font='13px Pretendard,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-        for(let L=0;L<3;L++){
-          const x1=xs[L],x2=xs[L+1];
-          // forward 파랑
-          ctx.strokeStyle=line;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x1+16,cy);ctx.lineTo(x2-16,cy);ctx.stroke();
-          if(s.fwd>0){ctx.strokeStyle=ac;ctx.lineWidth=2+2*s.fwd;ctx.globalAlpha=s.fwd;
-            ctx.beginPath();ctx.moveTo(x1+16,cy-6);ctx.lineTo(x2-16,cy-6);ctx.stroke();ctx.globalAlpha=1;}
-          // backward 빨강(역방향), 굵기=grad
-          if(s.bwd>0){ctx.strokeStyle=hot;ctx.lineWidth=1.5+s.grad*7;ctx.globalAlpha=s.bwd;
-            ctx.beginPath();ctx.moveTo(x2-16,cy+8);ctx.lineTo(x1+16,cy+8);ctx.stroke();
-            // 화살표(왼쪽)
-            ctx.beginPath();ctx.moveTo(x1+16,cy+8);ctx.lineTo(x1+24,cy+4);ctx.lineTo(x1+24,cy+12);ctx.closePath();ctx.fillStyle=hot;ctx.fill();ctx.globalAlpha=1;}
-        }
-        for(let L=0;L<4;L++){
-          const x=xs[L],isOut=L===2,isLoss=L===3;
-          let fill='transparent';
-          if(s.upd>0&&L<3)fill=ok;else if(isOut&&s.fwd>0)fill=ac;else if(isLoss&&s.loss>0)fill=hot;
-          ctx.fillStyle=fill==='transparent'?'transparent':fill;
-          ctx.strokeStyle=ink;ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(x,cy,isLoss?13:15,0,7);if(fill!=='transparent')ctx.fill();ctx.stroke();
-          ctx.fillStyle=ink;ctx.fillText(labs[L],x,cy+34);
-        }
-        // 값 라벨
-        ctx.fillStyle=mut;ctx.font='12px Pretendard,sans-serif';
-        if(s.fwd>0)ctx.fillText('y=0.6',xs[2],cy-30);
-        if(s.upd>0){ctx.fillStyle=ok;ctx.fillText('w: 0.3 → 0.38',xs[1],h-14);}
-      }
+  function getSceneTheme(canvas){
+    const source=(document.body && document.body.dataset && document.body.dataset.theme) ? getComputedStyle(document.body) : getComputedStyle(canvas);
+    return {
+      bg: source.getPropertyValue('--panel').trim() || '#000',
+      panel: source.getPropertyValue('--panel2').trim() || '#111',
+      line: source.getPropertyValue('--line').trim() || '#333',
+      ink: source.getPropertyValue('--ink').trim() || '#ddd',
+      muted: source.getPropertyValue('--muted').trim() || '#888',
+      accent: source.getPropertyValue('--accent').trim() || '#58f',
+      accent2: source.getPropertyValue('--accent2').trim() || '#85f',
+      hot: source.getPropertyValue('--hot').trim() || '#f66',
+      ok: source.getPropertyValue('--ok').trim() || '#3c8'
     };
   }
-
-  /* ---- 씬 B: genomic 토큰화 모핑 ---- */
-  function buildToken(){
-    const seq=['A','C','T','A','C','G'],rows=['A','C','G','T'];
-    // 각 글자의 one-hot 행 인덱스
-    const oh=seq.map(c=>rows.indexOf(c));
-    // dense embedding(가짜 학습값) 4행 — 토큰ID(oh[j])마다 다른 값이 반영되도록
-    const emb=seq.map((c,j)=>{const id=oh[j];return [0,1,2,3].map(r=>{
-      // 토큰ID·차원별 결정적 값. 같은 염기는 같은 임베딩, 다른 염기는 다른 임베딩.
-      return 0.5+0.4*Math.sin((id+1)*1.7+(r+1)*0.9);
-    });});
-    // 상태: mode 0=글자, 1=token ID, 2=one-hot(sparse), 3=embedding(dense)
-    const steps=[
-      {mode:0,fill:seq.map(()=>rows.map(()=>0)),prog:0,note:'서열 "ACTACG" — 모델은 글자를 못 먹는다. 숫자로 바꿔야 한다.'},
-      {mode:1,fill:seq.map(()=>rows.map(()=>0)),prog:0.25,note:'분절 → 각 글자를 token ID(토큰 번호)로(A=0,C=1,G=2,T=3).'},
-      {mode:2,fill:seq.map((c,j)=>rows.map((_,r)=>r===oh[j]?1:0)),prog:0.6,note:'one-hot(원핫): 해당 행만 1, 나머지 0 → 4×L sparse(희소) 행렬. 정보손실 없으나 길이 폭발.'},
-      {mode:3,fill:emb,prog:1,note:'single-nt embedding(임베딩): token ID→학습 dense(밀집) 벡터 (L, d). 유사성·학습 가능.'}
-    ];
-    return{steps,duration:800,
-      caption:i=>steps[i].note,
-      onState:(s,root)=>setMeter(root,s.prog,['글자','token ID','one-hot (4×L)','embedding (L,d)'][Math.round(s.mode)]||''),
-      draw(ctx,s,{w,h,color}){
-        const ink=color('ink','#e7ecf3'),ac=color('accent','#5b9dff'),ac2=color('accent2','#7c5cff'),
-              line=color('line','#2a3340'),mut=color('muted','#9aa7b8');
-        const n=seq.length,gx=w*0.18,gw=Math.min(46,(w-gx-20)/n),cellH=Math.min(34,(h*0.6)/4),gy=h*0.18;
-        ctx.font='12px Pretendard,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-        // 행 라벨
-        for(let r=0;r<4;r++){ctx.fillStyle=mut;ctx.fillText(rows[r],gx-16,gy+r*cellH+cellH/2);}
-        for(let j=0;j<n;j++){
-          const x=gx+j*gw;
-          // 글자/토큰ID 헤더
-          ctx.fillStyle=ink;ctx.font='13px Pretendard,sans-serif';
-          const head=s.mode<1.5?seq[j]:'#'+oh[j];
-          ctx.fillText(head,x+gw/2,gy-14);
-          ctx.font='12px Pretendard,sans-serif';
-          for(let r=0;r<4;r++){
-            const v=s.fill[j][r],y=gy+r*cellH;
-            ctx.globalAlpha=0.18+0.82*Math.min(1,Math.abs(v));
-            ctx.fillStyle=s.mode>2.5?ac2:ac;
-            if(Math.abs(v)>0.02){ctx.fillRect(x+3,y+2,gw-6,cellH-4);}
-            ctx.globalAlpha=1;
-            ctx.strokeStyle=line;ctx.lineWidth=1;ctx.strokeRect(x+3,y+2,gw-6,cellH-4);
-          }
-        }
-        ctx.fillStyle=mut;ctx.font='12px Pretendard,sans-serif';ctx.textAlign='left';
-        ctx.fillText(s.mode<2.5?'sparse(희소): 칸 하나만 켜짐':'dense(밀집): 학습된 연속값',gx-16,gy+4*cellH+22);
-      }
-    };
+  function easeInOutCubic(t){
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
-
-  /* ---- 씬 C: GNN message passing(C13 worked example 4-노드) ---- */
-  function buildGnn(){
-    // v1=1,v2=2,v3=0,v4=4. self-included N(v1)={v1,v2,v3}, mean=1.000, h=0.6*1+0.4*1=1.000
-    const H0=[1,2,0,4];
-    // 단계: 0 초기, 1 이웃 강조, 2 메시지 흐름, 3 평균 m=1.0, 4 갱신 h=1.0
-    const steps=[
-      {flow:0,upd:0,center:1.0,m:0,note:'초기 \\(h^{(0)}\\): v1=1.0, v2=2.0, v3=0.0, v4=4.0. 중심=v1.'},
-      {flow:0.4,upd:0,center:1.0,m:0,note:'이웃 \\(\\tilde{\\mathcal N}(v_1)=\\{v_1,v_2,v_3\\}\\) 식별(self 포함).'},
-      {flow:1,upd:0,center:1.0,m:0,note:'AGGREGATE(집계): 이웃 메시지가 v1로 흘러 모인다(파랑 엣지).'},
-      {flow:1,upd:0,center:1.0,m:1,note:'mean(평균) \\(m=\\tfrac{1+2+0}{3}=1.000\\) — 순서 불변 집계.'},
-      {flow:0.5,upd:1,center:1.0,m:1,note:'UPDATE(갱신) \\(h_{v_1}^{(1)}=0.6(1.0)+0.4(1.000)=\\mathbf{1.000}\\). v1 갱신 완료.'}
-    ];
-    // 노드 좌표(상대)
-    const P=[[0.30,0.35],[0.62,0.22],[0.30,0.75],[0.70,0.68]];
-    const NB=[1,2]; // v1의 이웃(자기 외): v2,v3 인덱스
-    return{steps,duration:750,
-      caption:i=>steps[i].note,
-      onState:(s,root)=>setMeter(root,s.center/4,'h(v1) = '+s.center.toFixed(3)+(s.m>0.5?'  ·  m = 1.000':'')),
-      draw(ctx,s,{w,h,color}){
-        const ink=color('ink','#e7ecf3'),ac=color('accent','#5b9dff'),ok=color('ok','#3ecf8e'),
-              line=color('line','#2a3340'),mut=color('muted','#9aa7b8');
-        const pts=P.map(p=>[p[0]*w,p[1]*h]);
-        // 엣지(전체 그래프: v1-v2,v1-v3,v2-v4,v3-v4)
-        const edges=[[0,1],[0,2],[1,3],[2,3]];
-        ctx.strokeStyle=line;ctx.lineWidth=1.5;
-        edges.forEach(([a,b])=>{ctx.beginPath();ctx.moveTo(pts[a][0],pts[a][1]);ctx.lineTo(pts[b][0],pts[b][1]);ctx.stroke();});
-        // 이웃 메시지 흐름(파랑): v2,v3 → v1
-        if(s.flow>0){
-          NB.forEach(k=>{
-            ctx.strokeStyle=ac;ctx.lineWidth=1.5+3*s.flow;ctx.globalAlpha=Math.min(1,s.flow);
-            ctx.beginPath();ctx.moveTo(pts[k][0],pts[k][1]);ctx.lineTo(pts[0][0],pts[0][1]);ctx.stroke();ctx.globalAlpha=1;
-          });
-        }
-        // 노드
-        const vals=[s.center,2,0,4],names=['v1','v2','v3','v4'];
-        pts.forEach((p,k)=>{
-          const isC=k===0,r=14+Math.abs(vals[k])*3.2;
-          ctx.beginPath();ctx.arc(p[0],p[1],r,0,7);
-          ctx.fillStyle=isC?(s.upd>0.5?ok:ac):'rgba(91,157,255,0.16)';
-          ctx.globalAlpha=isC?1:0.9;ctx.fill();ctx.globalAlpha=1;
-          ctx.strokeStyle=ink;ctx.lineWidth=1.6;ctx.stroke();
-          ctx.fillStyle=isC?'#04122e':ink;ctx.font='12px Pretendard,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-          ctx.fillText(names[k],p[0],p[1]-5);
-          ctx.fillText(vals[k].toFixed(isC?2:1),p[0],p[1]+9);
-        });
-        if(s.m>0.5){ctx.fillStyle=mut;ctx.textAlign='center';ctx.font='12px Pretendard,sans-serif';
-          ctx.fillText('m = 1.000 (mean)',pts[0][0],pts[0][1]+44);}
+  function lerp(a,b,t){ return a + (b-a) * t; }
+  function setupRafScene(config){
+    const canvas=document.getElementById(config.canvasId);
+    if(!canvas)return;
+    const ctx=canvas.getContext('2d');
+    const playBtn=document.getElementById(config.playId);
+    const prevBtn=document.getElementById(config.prevId);
+    const nextBtn=document.getElementById(config.nextId);
+    const meter=document.getElementById(config.meterId);
+    const caption=document.getElementById(config.captionId);
+    const stage=document.getElementById(config.stageId);
+    const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let rafId=0;
+    let playing=false;
+    let sceneIndex=0;
+    let sceneStart=0;
+    const sceneCount=config.scenes.length;
+    function applyMeta(progress){
+      if(meter) meter.value=Math.round(progress*100);
+      if(stage) stage.textContent='단계 '+(sceneIndex+1)+' / '+sceneCount;
+      if(caption) caption.innerHTML=config.scenes[sceneIndex].caption;
+    }
+    function drawFrame(ts){
+      const current=config.scenes[sceneIndex];
+      const duration=current.duration || 2400;
+      if(!sceneStart) sceneStart=ts;
+      const raw=Math.min(1,(ts-sceneStart)/duration);
+      const eased=easeInOutCubic(raw);
+      applyMeta(((sceneIndex+eased)/sceneCount));
+      config.draw(ctx, canvas, current, eased, getSceneTheme(canvas));
+      if(raw>=1){
+        sceneIndex=(sceneIndex+1)%sceneCount;
+        sceneStart=ts;
       }
-    };
+      if(playing) rafId=requestAnimationFrame(drawFrame);
+    }
+    function renderStatic(){
+      const current=config.scenes[sceneIndex];
+      applyMeta((sceneIndex+1)/sceneCount);
+      config.draw(ctx, canvas, current, 1, getSceneTheme(canvas));
+    }
+    function stop(){
+      playing=false;
+      sceneStart=0;
+      if(rafId) cancelAnimationFrame(rafId);
+      if(playBtn) playBtn.textContent='재생';
+    }
+    function start(){
+      if(reduce){ renderStatic(); return; }
+      if(playing) return;
+      playing=true;
+      if(playBtn) playBtn.textContent='일시정지';
+      rafId=requestAnimationFrame(drawFrame);
+    }
+    if(playBtn) playBtn.onclick=()=>{ if(playing) stop(); else start(); };
+    if(prevBtn) prevBtn.onclick=()=>{ stop(); sceneIndex=(sceneIndex-1+sceneCount)%sceneCount; renderStatic(); };
+    if(nextBtn) nextBtn.onclick=()=>{ stop(); sceneIndex=(sceneIndex+1)%sceneCount; renderStatic(); };
+    renderStatic();
   }
-
-  /* ---- 씬 D: GAT attention = 엣지 굵기(슬라이더 반응형) ---- */
-  function buildGat(root){
-    const cv=root.querySelector('canvas'),e1=root.querySelector('[data-e1]'),e2=root.querySelector('[data-e2]'),
-          demo=root.querySelector('[data-demo]'),cap=root.querySelector('[data-caption]');
-    const color=(name,fb)=>{const v=getComputedStyle(cv).getPropertyValue('--'+name).trim();return v||fb;};
-    function fit(){const dpr=window.devicePixelRatio||1,r=cv.getBoundingClientRect(),w=r.width||300,hh=r.height||300;
-      cv.width=w*dpr;cv.height=hh*dpr;const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return{ctx,w,h:hh};}
-    function draw(){
-      const s1=+e1.value,s2=+e2.value,z1=Math.exp(s1),z2=Math.exp(s2),Z=z1+z2,a1=z1/Z,a2=z2/Z;
-      const{ctx,w,h}=fit();ctx.clearRect(0,0,w,h);
-      const ink=color('ink','#e7ecf3'),ac=color('accent','#5b9dff'),ac2=color('accent2','#7c5cff'),ok=color('ok','#3ecf8e');
-      const cx=w*0.5,cy=h*0.62,u1=[w*0.22,h*0.22],u2=[w*0.78,h*0.22];
-      [[u1,a1,'u₁',s1],[u2,a2,'u₂',s2]].forEach(([p,a])=>{
-        ctx.strokeStyle=ac2;ctx.lineWidth=Math.max(1.5,a*22);ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(p[0],p[1]);ctx.stroke();
-        ctx.fillStyle=ac2;ctx.font='13px Pretendard,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-        ctx.fillText('α='+a.toFixed(2),(cx+p[0])/2,(cy+p[1])/2-10);
+  function drawVectorBars(ctx,x,y,values,theme,label){
+    ctx.save();
+    ctx.fillStyle=theme.muted;
+    ctx.fillText(label,x,y-10);
+    values.forEach((v,i)=>{
+      const h=60*v;
+      ctx.fillStyle=i===0?theme.accent:theme.ok;
+      ctx.fillRect(x+i*20,y-h,12,h);
+    });
+    ctx.restore();
+  }
+  function drawGatNodeScene(ctx,canvas,scene,t,theme){
+    const w=canvas.width,h=canvas.height;
+    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle=theme.bg;
+    ctx.fillRect(0,0,w,h);
+    const center={x:250,y:160};
+    const neighbors=[
+      {x:90,y:70,label:'u1',weight:0.62,vec:[0.9,0.2]},
+      {x:95,y:255,label:'u2',weight:0.24,vec:[0.3,0.7]},
+      {x:405,y:80,label:'u3',weight:0.14,vec:[0.1,0.9]}
+    ];
+    const base=[0.25,0.35];
+    const target=[0.25,0.35];
+    neighbors.forEach(n=>{ target[0]+=n.weight*n.vec[0]; target[1]+=n.weight*n.vec[1]; });
+    const current=[lerp(base[0],target[0],t),lerp(base[1],target[1],t)];
+    ctx.font='14px Pretendard, sans-serif';
+    neighbors.forEach((n,idx)=>{
+      ctx.lineWidth=2+10*n.weight;
+      ctx.strokeStyle=theme.accent2;
+      ctx.globalAlpha=0.35+0.5*n.weight;
+      ctx.beginPath();
+      ctx.moveTo(n.x,n.y);
+      ctx.lineTo(center.x,center.y);
+      ctx.stroke();
+      const pulse=(t + idx*0.22)%1;
+      const px=lerp(n.x,center.x,pulse);
+      const py=lerp(n.y,center.y,pulse);
+      ctx.fillStyle=theme.hot;
+      ctx.globalAlpha=0.75;
+      ctx.beginPath();
+      ctx.arc(px,py,5,0,Math.PI*2);
+      ctx.fill();
+      ctx.globalAlpha=1;
+      ctx.fillStyle=theme.ink;
+      ctx.strokeStyle=theme.accent;
+      ctx.lineWidth=2;
+      ctx.beginPath();
+      ctx.arc(n.x,n.y,24,0,Math.PI*2);
+      ctx.fillStyle=theme.panel;
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle=theme.ink;
+      ctx.fillText(n.label+'  α='+n.weight.toFixed(2),n.x-26,n.y+42);
+    });
+    ctx.fillStyle=theme.panel;
+    ctx.strokeStyle=theme.ok;
+    ctx.lineWidth=3;
+    ctx.beginPath();
+    ctx.arc(center.x,center.y,32,0,Math.PI*2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle=theme.ink;
+    ctx.fillText('v center',center.x-26,center.y+52);
+    drawVectorBars(ctx,500,220,base,theme,'before');
+    drawVectorBars(ctx,585,220,current,theme,'after');
+    ctx.fillStyle=theme.muted;
+    ctx.fillText(scene.captionShort,470,42);
+  }
+  function drawBackpropScene(ctx,canvas,scene,t,theme){
+    const w=canvas.width,h=canvas.height;
+    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle=theme.bg;
+    ctx.fillRect(0,0,w,h);
+    const layers=[120,320,520,650];
+    const grads=scene.grads;
+    const nodes=[[90,170],[70,130,210],[70,130,210],[170]];
+    ctx.font='14px Pretendard, sans-serif';
+    for(let li=0;li<layers.length;li++){
+      const ys=nodes[li];
+      ys.forEach((yy,ni)=>{
+        ctx.fillStyle=theme.panel;
+        ctx.strokeStyle=li===3?theme.hot:theme.accent;
+        ctx.lineWidth=2;
+        ctx.beginPath();
+        ctx.arc(layers[li],yy,20,0,Math.PI*2);
+        ctx.fill();
+        ctx.stroke();
       });
-      [[u1,'u₁'],[u2,'u₂']].forEach(([p,lab])=>{
-        ctx.beginPath();ctx.arc(p[0],p[1],20,0,7);ctx.fillStyle='rgba(91,157,255,0.16)';ctx.fill();
-        ctx.strokeStyle=ac;ctx.lineWidth=2;ctx.stroke();ctx.fillStyle=ink;ctx.fillText(lab,p[0],p[1]);
-      });
-      ctx.beginPath();ctx.arc(cx,cy,22,0,7);ctx.fillStyle=ok;ctx.fill();ctx.strokeStyle=ink;ctx.lineWidth=2;ctx.stroke();
-      ctx.fillStyle='#04122e';ctx.fillText('v',cx,cy);
-      setMeter(root,Math.abs(a1-a2),'α = ('+a1.toFixed(2)+', '+a2.toFixed(2)+')'+(Math.abs(a1-0.5)<0.06?'  ≈ GCN(동등)':'  차등'));
-      if(cap)cap.innerHTML='score e=('+s1.toFixed(1)+', '+s2.toFixed(1)+') → softmax α=('+a1.toFixed(2)+', '+a2.toFixed(2)+'). '+
-        (Math.abs(a1-0.5)<0.06?'두 이웃 거의 동등 — GCN과 유사.':'엣지 굵기가 다르다 = 더 중요한 이웃을 강조(GCN은 항상 0.5/0.5).');
     }
-    e1.addEventListener('input',draw);e2.addEventListener('input',draw);
-    window.addEventListener('resize',draw);cv.__repaint=draw;
-    new MutationObserver(draw).observe(document.body,{attributes:true,attributeFilter:['data-theme']});
-    if(demo){let t=null;demo.onclick=()=>{
-      if(t){clearInterval(t);t=null;demo.textContent='▶ 차등 시연';return;}
-      demo.textContent='⏸ 정지';let k=0;
-      t=setInterval(()=>{k+=0.18;e1.value=(2.2*Math.sin(k)).toFixed(1);e2.value=(2.2*Math.cos(k*0.8)).toFixed(1);draw();
-        if(k>6.3){clearInterval(t);t=null;demo.textContent='▶ 차등 시연';}},120);
-    };}
-    draw();
+    grads.forEach((mag,idx)=>{
+      const x2=layers[3-idx],x1=layers[2-idx];
+      const y1=idx===0?170:(idx===1?130:90);
+      const y2=170;
+      ctx.strokeStyle=theme.hot;
+      ctx.globalAlpha=0.25+mag*0.75;
+      ctx.lineWidth=2+mag*8;
+      ctx.beginPath();
+      ctx.moveTo(x1,y1);
+      ctx.lineTo(x2,y2);
+      ctx.stroke();
+      const pulse=1-t;
+      const px=lerp(x2,x1,pulse);
+      const py=lerp(y2,y1,pulse);
+      ctx.fillStyle=theme.hot;
+      ctx.globalAlpha=0.35+mag*0.65;
+      ctx.beginPath();
+      ctx.arc(px,py,5+mag*3,0,Math.PI*2);
+      ctx.fill();
+      ctx.globalAlpha=1;
+    });
+    ctx.fillStyle=theme.ink;
+    ctx.fillText('loss',628,205);
+    ctx.fillText('output',495,245);
+    ctx.fillText('hidden',295,245);
+    ctx.fillText('input',100,245);
+    ctx.fillStyle=theme.muted;
+    ctx.fillText(scene.captionShort,38,34);
   }
-
-  function initVizScenes(){
-    const reg={backprop:buildBackprop,token:buildToken,gnn:buildGnn};
-    document.querySelectorAll('.viz-scene[data-viz]').forEach(root=>{
-      const key=root.getAttribute('data-viz');
-      try{
-        if(key==='gat'){buildGat(root);return;}
-        const cv=root.querySelector('canvas');if(!cv||!reg[key])return;
-        const scene=sceneEngine.create(cv,reg[key]());
-        cv.__repaint=scene.repaint;
-        wireScene(scene,root);
-      }catch(e){}
+  function initRafScenes(){
+    setupRafScene({
+      canvasId:'gnn-gat-node-canvas',
+      playId:'gat-raf-play',
+      prevId:'gat-raf-prev',
+      nextId:'gat-raf-next',
+      meterId:'gat-raf-meter',
+      captionId:'gat-raf-caption',
+      stageId:'gat-raf-stage',
+      scenes:[
+        {caption:'Scene 1-1. message passing(메시지 패싱): 이웃 node의 표현이 중심 node로 이동한다.', captionShort:'messages in', duration:2200},
+        {caption:'Scene 1-2. attention(어텐션): edge 두께는 \u03B1 weight를 뜻하고, 높은 edge가 더 강한 신호를 보낸다.', captionShort:'attention weighting', duration:2200},
+        {caption:'Scene 1-3. node update: 중심 node vector가 부드럽게 before → after로 바뀐다.', captionShort:'vector update', duration:2200}
+      ],
+      draw:drawGatNodeScene
+    });
+    setupRafScene({
+      canvasId:'bp-gradient-canvas',
+      playId:'bp-raf-play',
+      prevId:'bp-raf-prev',
+      nextId:'bp-raf-next',
+      meterId:'bp-raf-meter',
+      captionId:'bp-raf-caption',
+      stageId:'bp-raf-stage',
+      scenes:[
+        {caption:'Scene 2-1. loss에서 가장 큰 gradient(기울기)가 출력층으로 먼저 걸린다.', captionShort:'output gradients', grads:[1,0.65,0.38], duration:2200},
+        {caption:'Scene 2-2. chain rule로 hidden layer까지 gradient(기울기) 신호가 전달된다.', captionShort:'hidden propagation', grads:[0.8,0.55,0.32], duration:2200},
+        {caption:'Scene 2-3. weight별 gradient(기울기) 크기에 따라 update 강도가 달라진다.', captionShort:'update strength', grads:[0.55,0.4,0.22], duration:2200}
+      ],
+      draw:drawBackpropScene
     });
   }
 
@@ -2278,15 +2171,7 @@
   let __rt;window.addEventListener('resize',()=>{clearTimeout(__rt);__rt=setTimeout(()=>{if(typeof d3!=='undefined')try{renderTree();}catch(e){}},200);});
 
   /* ===================== 부트스트랩 ===================== */
-  window.addEventListener('load',()=>{initTree();initSims();initVizScenes();});
-  // 접힌 카드 안의 canvas는 폭 0으로 그려지므로, 카드/모듈이 열릴 때 해당 씬을 다시 그린다.
-  document.addEventListener('toggle',e=>{
-    const d=e.target;if(d.tagName!=='DETAILS'||!d.open)return;
-    d.querySelectorAll('.viz-scene[data-viz]').forEach(root=>{
-      const cv=root.querySelector('canvas');
-      if(cv&&cv.__repaint)cv.__repaint();
-    });
-  },true);
+  window.addEventListener('load',()=>{initTree();initSims();initRafScenes();});
 </script>
 </body>
 </html>

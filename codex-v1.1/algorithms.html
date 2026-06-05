@@ -159,37 +159,16 @@
   .sim{border:1px solid var(--line);border-radius:10px;padding:14px;margin:14px 0;background:var(--panel2)}
   .sim .sim-title{font-weight:700;color:var(--accent2);font-size:.95rem;margin-bottom:4px}
   .sim .sim-hint{color:var(--muted);font-size:.82rem;margin-bottom:10px}
-  .sim-stage{min-height:150px;display:flex;align-items:flex-end;gap:8px;padding:10px 4px;overflow-x:auto}
-  .bar{flex:0 0 34px;border-radius:5px 5px 0 0;background:var(--accent);display:flex;align-items:flex-end;justify-content:center;
-    color:#fff;font-size:.75rem;font-weight:700;padding-bottom:3px;transition:height .25s,background .2s}
-  [data-theme="light"] .bar{color:#fff}
-  .bar.cmp{background:var(--warn);color:#3a2c00}
-  .bar.swap{background:var(--hot)}
-  .bar.sorted{background:var(--ok);color:#06231a}
-  .dptable{border-collapse:collapse;font-size:.85rem}
-  .dptable td,.dptable th{border:1px solid var(--line);width:34px;height:30px;text-align:center;padding:0;transition:background .2s}
-  .dptable th{background:var(--panel);color:var(--muted);font-weight:700}
-  .dptable td.fill{background:rgba(91,157,255,.16)}
-  .dptable td.cur{background:var(--warn);color:#3a2c00;font-weight:800}
-  .dptable td.path{outline:2px solid var(--ok);outline-offset:-2px}
+  .algo-canvas{display:block;width:100%;height:auto;background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(0,0,0,.04));border:1px solid var(--line);border-radius:12px}
   .sim-ctrl{display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap}
-  .sim-step{color:var(--muted);font-size:.84rem;margin-left:4px}
+  .sim-progress{flex:1 1 160px;min-width:160px;height:10px;border-radius:999px;background:var(--panel);border:1px solid var(--line);overflow:hidden}
+  .sim-progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--ok))}
+  .sim-progress-text,.sim-step{color:var(--muted);font-size:.84rem}
   .sim-desc{margin:10px 0 0;font-size:.9rem;background:var(--panel);border-left:3px solid var(--accent2);padding:8px 12px;border-radius:6px}
-  @media(max-width:600px){ .sim-ctrl{flex-direction:column;align-items:stretch} .sim-ctrl .btn{width:100%} }
-  /* ===== v1.1 canvas 모핑 애니메이션 씬 ===== */
-  .vscene{border:1px solid var(--line);border-radius:10px;padding:14px;margin:14px 0;background:var(--panel2)}
-  .vscene .vsc-title{font-weight:700;color:var(--accent2);font-size:.95rem;margin-bottom:4px}
-  .vscene .vsc-hint{color:var(--muted);font-size:.82rem;margin-bottom:10px}
-  .vscene canvas{width:100%;height:260px;display:block;border-radius:8px;background:var(--panel)}
-  .vsc-meter-row{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
-  .vsc-metric{font-variant-numeric:tabular-nums;font-weight:800;color:var(--accent);font-size:.95rem;min-width:78px}
-  .vsc-meter{flex:1;min-width:120px;height:9px;border-radius:6px;background:var(--panel);overflow:hidden;border:1px solid var(--line)}
-  .vsc-meter-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--ok));transition:width .25s}
-  .vsc-cap{margin:10px 0 0;font-size:.9rem;background:var(--panel);border-left:3px solid var(--accent2);padding:8px 12px;border-radius:6px;min-height:1.2em}
-  .vsc-ctrl{display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap}
-  .vsc-ctrl .vsc-step{color:var(--muted);font-size:.84rem;margin-left:4px}
-  .vsc-ctrl input[type=range]{flex:1;min-width:120px;accent-color:var(--accent)}
-  @media(max-width:600px){ .vsc-ctrl{flex-direction:column;align-items:stretch} .vsc-ctrl .btn{width:100%} }
+  .layer-grid{display:grid;gap:10px}
+  .layer-card{border:1px solid var(--line);border-radius:10px;background:var(--panel2);padding:10px 12px}
+  .layer-card b{color:var(--accent2)}
+  @media(max-width:600px){ .sim-ctrl{flex-direction:column;align-items:stretch} .sim-ctrl .btn{width:100%} .sim-progress{width:100%} }
 </style>
 </head>
 <body data-theme="dark">
@@ -384,80 +363,48 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
       <div class="tm-sub">단계를 직접 전진/후진하며 상태를 관찰한다. 색은 현재 비교·교환·확정을 뜻한다. 복잡도 직관을 눈으로 잡는 게 목적.</div>
 
       <div class="sim" id="sim-sort">
-        <div class="sim-title">① 정렬 스테퍼 — 삽입 정렬 (막대 비교·삽입)</div>
-        <div class="sim-hint">막대 높이 = 값. <span style="color:var(--warn)">노랑</span>=비교 중 · <span style="color:var(--hot)">빨강</span>=이동(삽입) · <span style="color:var(--ok)">초록</span>=정렬 확정. 각 패스마다 앞쪽 정렬 구간에 한 원소를 끼워넣는다 — 최악 \(\Theta(n^2)\).</div>
-        <div class="sim-stage"></div>
-        <div class="sim-ctrl">
-          <button class="btn sim-prev">◀ 이전</button>
-          <button class="btn sim-next">다음 ▶</button>
-          <button class="btn sim-play">▶ 자동</button>
-          <span class="sim-step"></span>
+        <div class="sim-title">① Sorting Bar Slide-Morph(정렬 막대 슬라이드 모프) — Insertion Sort(삽입 정렬)</div>
+        <div class="sim-hint">막대가 실제 위치를 옮기며 비교(compare)와 이동(shift)을 보여준다. <span style="color:var(--warn)">노랑</span>=비교, <span style="color:var(--hot)">빨강</span>=이동 중, <span style="color:var(--ok)">초록</span>=정렬 확정. <code>prefers-reduced-motion</code>이면 마지막 상태를 바로 그린다.</div>
+        <canvas id="alg-sort-canvas-v11" class="algo-canvas" width="760" height="260"></canvas>
+        <div class="sim-ctrl" id="alg-sort-controls-v11">
+          <button class="btn" data-action="play">Play</button>
+          <button class="btn" data-action="step">Step</button>
+          <button class="btn" data-action="reset">Reset</button>
+          <div class="sim-progress"><div class="sim-progress-fill" id="alg-sort-progress-v11"></div></div>
+          <span class="sim-progress-text" id="alg-sort-progress-text-v11">0%</span>
+          <span class="sim-step" id="alg-sort-step-v11">0 / 0</span>
         </div>
-        <p class="sim-desc"></p>
+        <p class="sim-desc" id="alg-sort-desc-v11"></p>
       </div>
 
       <div class="sim" id="sim-dp">
-        <div class="sim-title">② DP 표 채우기 스테퍼 — LCS(ABCB, BDCAB)</div>
-        <div class="sim-hint">행=X(ABCB), 열=Y(BDCAB). 셀을 한 칸씩 채운다 — <span style="color:var(--warn)">노랑</span>=현재 계산 셀, 초록 테두리=최종 역추적 경로. 점화식이 위·왼쪽·대각선 값만 보므로 표를 한 번 훑어 \(\Theta(mn)\).</div>
-        <div class="sim-stage" style="align-items:flex-start"></div>
-        <div class="sim-ctrl">
-          <button class="btn sim-prev">◀ 이전</button>
-          <button class="btn sim-next">다음 ▶</button>
-          <button class="btn sim-play">▶ 자동</button>
-          <span class="sim-step"></span>
+        <div class="sim-title">② DP Table Fill(동적 계획 표 채우기) — LCS(최장 공통 부분수열)</div>
+        <div class="sim-hint">행 X=ABCB, 열 Y=BDCAB. 셀이 한 칸씩 밝혀지고, 마지막에 backtracking path(역추적 경로)가 표시된다. 점화식: \( c[i,j]=\begin{cases} c[i-1,j-1]+1 &amp; x_i=y_j\\ \max(c[i-1,j],\,c[i,j-1]) &amp; x_i\ne y_j\end{cases} \)</div>
+        <canvas id="alg-dp-canvas-v11" class="algo-canvas" width="760" height="320"></canvas>
+        <div class="sim-ctrl" id="alg-dp-controls-v11">
+          <button class="btn" data-action="play">Play</button>
+          <button class="btn" data-action="step">Step</button>
+          <button class="btn" data-action="reset">Reset</button>
+          <div class="sim-progress"><div class="sim-progress-fill" id="alg-dp-progress-v11"></div></div>
+          <span class="sim-progress-text" id="alg-dp-progress-text-v11">0%</span>
+          <span class="sim-step" id="alg-dp-step-v11">0 / 0</span>
         </div>
-        <p class="sim-desc"></p>
-        <div style="margin-top:8px;font-size:.88rem" id="dp-formula">점화식: \( c[i,j]=\begin{cases} c[i-1,j-1]+1 &amp; x_i=y_j\\ \max(c[i-1,j],\,c[i,j-1]) &amp; x_i\ne y_j\end{cases} \)</div>
-      </div>
-    </section>
-
-    <section class="simwrap" id="vscenes">
-      <h2>🎬 모핑 애니메이션 — 값이 부드럽게 변하는 시각</h2>
-      <div class="tm-sub">앞의 스테퍼가 "한 칸씩 정지화면"이라면, 이건 <b>막대·셀·거리값이 미끄러지듯 보간(interpolate)</b>되어 변화를 눈으로 따라가게 한다. ▶로 재생, ◀▶·슬라이더로 단계 이동. 변하는 핵심 수치는 <b>숫자 + 진행 막대</b>로. (순수 vanilla JS·canvas·오프라인, CDN 0. <i>prefers-reduced-motion</i>이면 모핑 없이 단계만.)</div>
-
-      <div class="vscene" id="vsc-sort">
-        <div class="vsc-title">① 병합 정렬 모핑 — 막대가 자리를 바꿔 미끄러진다 (merge sort)</div>
-        <div class="vsc-hint">막대 높이 = 값. <span style="color:var(--warn)">노랑</span>=현재 병합(merge) 중 비교 · <span style="color:var(--ok)">초록</span>=정렬 확정 구간. 변하는 양 = <b>정렬 진척도(sorted ratio)</b>. 비교정렬이라 최악 \(\Theta(n\lg n)\) — 결정트리 하한(C6)에 닿는 막대.</div>
-        <canvas id="vsc-sort-cv" role="img" aria-label="병합 정렬 막대 모핑 애니메이션"></canvas>
-        <div class="vsc-meter-row"><span class="vsc-metric" id="vsc-sort-metric">정렬 0%</span><div class="vsc-meter"><div class="vsc-meter-fill" id="vsc-sort-fill"></div></div></div>
-        <p class="vsc-cap" data-cap id="vsc-sort-cap"></p>
-        <div class="vsc-ctrl">
-          <button class="btn" data-prev aria-label="이전 단계">◀ 이전</button>
-          <button class="btn" data-play>▶ 재생</button>
-          <button class="btn" data-next aria-label="다음 단계">다음 ▶</button>
-          <input type="range" data-scrub min="0" step="1" value="0" aria-label="단계 이동">
-          <span class="vsc-step" data-stepnum></span>
-        </div>
+        <p class="sim-desc" id="alg-dp-desc-v11"></p>
       </div>
 
-      <div class="vscene" id="vsc-dpfill">
-        <div class="vsc-title">② DP 표 채워짐 모핑 — 셀이 페이드인되며 값이 솟는다 (LCS edit-distance류)</div>
-        <div class="vsc-hint">행=X(<b>ABCB</b>), 열=Y(<b>BDCAB</b>). 셀이 좌상→우하로 채워지며 값이 0에서 보간되어 올라온다. <span style="color:var(--warn)">노랑</span>=방금 계산한 셀 · 초록 테두리=최종 역추적(backtrack) 경로. 변하는 양 = <b>채운 셀 수 / mn</b> → 표를 한 번 훑어 \(\Theta(mn)\).</div>
-        <canvas id="vsc-dp-cv" role="img" aria-label="LCS DP 표 채워짐 모핑 애니메이션"></canvas>
-        <div class="vsc-meter-row"><span class="vsc-metric" id="vsc-dp-metric">0 / 20 셀</span><div class="vsc-meter"><div class="vsc-meter-fill" id="vsc-dp-fill"></div></div></div>
-        <p class="vsc-cap" data-cap id="vsc-dp-cap"></p>
-        <div class="vsc-ctrl">
-          <button class="btn" data-prev aria-label="이전 단계">◀ 이전</button>
-          <button class="btn" data-play>▶ 재생</button>
-          <button class="btn" data-next aria-label="다음 단계">다음 ▶</button>
-          <input type="range" data-scrub min="0" step="1" value="0" aria-label="단계 이동">
-          <span class="vsc-step" data-stepnum></span>
+      <div class="sim" id="sim-dijkstra-v11">
+        <div class="sim-title">③ Dijkstra Distance Relaxation(Dijkstra 거리 완화) — SSSP(단일 출발점 최단경로)</div>
+        <div class="sim-hint">정점의 distance estimate(거리 추정치)와 relax(완화) 간선이 단계마다 갱신된다. <span style="color:var(--ok)">초록</span>=settled set(확정 집합), <span style="color:var(--warn)">노랑</span>=현재 완화 간선, <span style="color:var(--hot)">빨강</span>=방금 갱신된 거리.</div>
+        <canvas id="alg-dijkstra-canvas-v11" class="algo-canvas" width="760" height="320"></canvas>
+        <div class="sim-ctrl" id="alg-dijkstra-controls-v11">
+          <button class="btn" data-action="play">Play</button>
+          <button class="btn" data-action="step">Step</button>
+          <button class="btn" data-action="reset">Reset</button>
+          <div class="sim-progress"><div class="sim-progress-fill" id="alg-dijkstra-progress-v11"></div></div>
+          <span class="sim-progress-text" id="alg-dijkstra-progress-text-v11">0%</span>
+          <span class="sim-step" id="alg-dijkstra-step-v11">0 / 0</span>
         </div>
-      </div>
-
-      <div class="vscene" id="vsc-dijkstra">
-        <div class="vsc-title">③ Dijkstra 거리 완화 모핑 — 노드 거리값이 ∞에서 줄어든다 (relaxation)</div>
-        <div class="vsc-hint">원 안 숫자 = 추정 거리 d[v]. relax(완화)될 때 <b>큰 값에서 작은 값으로 숫자가 굴러내린다</b>. <span style="color:var(--ok)">초록</span>=확정(EXTRACT-MIN) · <span style="color:var(--warn)">노랑</span>=이번에 완화된 노드. 변하는 양 = <b>확정된 노드 수</b>. 양수 가중이라 한 번 확정하면 안 바뀐다(C15 정당성).</div>
-        <canvas id="vsc-dij-cv" role="img" aria-label="Dijkstra 거리 완화 모핑 애니메이션"></canvas>
-        <div class="vsc-meter-row"><span class="vsc-metric" id="vsc-dij-metric">확정 0 / 5</span><div class="vsc-meter"><div class="vsc-meter-fill" id="vsc-dij-fill"></div></div></div>
-        <p class="vsc-cap" data-cap id="vsc-dij-cap"></p>
-        <div class="vsc-ctrl">
-          <button class="btn" data-prev aria-label="이전 단계">◀ 이전</button>
-          <button class="btn" data-play>▶ 재생</button>
-          <button class="btn" data-next aria-label="다음 단계">다음 ▶</button>
-          <input type="range" data-scrub min="0" step="1" value="0" aria-label="단계 이동">
-          <span class="vsc-step" data-stepnum></span>
-        </div>
+        <p class="sim-desc" id="alg-dijkstra-desc-v11"></p>
       </div>
     </section>
 
@@ -703,28 +650,29 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span>키가 작은 정수면 비교 없이 세기(counting)·자릿수(radix)로 <b>선형 시간</b>에 정렬 가능. 단, <b>비교만으로는 누구도 Ω(n lg n)을 못 깬다</b>(결정트리 하한).</div>
-          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span>
-            <p>병합·퀵·힙정렬은 모두 \(n\lg n\) 언저리에서 멈춘다. 우연일까? 시험에서 이 주제가 반복되는 이유가 여기 있다 — <b>"비교만으로 정렬하는 한, 누구도 \(\Omega(n\lg n)\) 밑으로 못 간다"는 하한(lower bound)을 증명할 수 있기 때문</b>이다. 그리고 그 벽을 깨려면 비교를 <b>안 하는</b> 정렬, 즉 counting sort(계수 정렬)·radix sort(기수 정렬)로 비켜가야 한다. 이 노드는 "왜 벽이 있는가"와 "어떻게 비켜가는가"를 한 쌍으로 묻는다.</p>
-            <p>직관은 스무고개로 잡는다. 친구가 \(n\)개를 어떤 순서로 섞었는지 내가 맞혀야 하는데, 물을 수 있는 건 오직 "이게 저것보다 큰가?"라는 <b>예/아니오 비교</b>뿐이라고 하자. 가능한 섞인 순서는 \(n!\)가지다. 질문 하나는 답 후보를 <b>많아야 절반으로</b> 줄이므로, \(n!\)가지를 1가지로 좁히려면 적어도 \(\log_2(n!)\)번은 물어야 한다. 그게 곧 \(n\lg n\)이다.</p>
-            <p>비유하자면 <b>이십 고개(20 questions) 게임의 질문 트리</b>다. 한 번 묻고 갈라지는 이진 트리를 끝까지 그리면, 잎(leaf)이 곧 가능한 정답이고 트리 높이가 곧 최악 질문 수다. <b>다만 이 비유가 깨지는 지점</b>은, counting/radix는 "큰가?"를 안 묻고 <b>값 자체를 배열 인덱스로 던져버린다</b> — 질문 게임 밖으로 나가버리니 이 하한이 적용되지 않는다. 그래서 선형이 가능하다.</p>
-            <p>정의로 옮기면, 비교정렬을 <b>decision tree(결정 트리)</b>로 모델링한다. 내부 노드(internal node)는 비교 \(i{:}j\), 두 가지(branch)는 \(\le\)/\(>\), 잎(leaf)은 하나의 출력 순열(permutation), 한 번의 실행은 root→leaf 경로, <b>트리 높이 \(h\) = 최악 비교 횟수</b>다. 한편 counting sort는 키 범위 \([0,k]\)에서 각 값의 개수를 세어 위치를 정하고, radix sort는 자릿수 \(d\)개를 LSD(최하위 자리)부터 안정 정렬(stable sort)로 반복한다.</p>
-            <p>하한 증명을 층층이 보면 이렇다. <b>(잎 수 층)</b> 정렬은 \(n!\)개 순열을 전부 구별해야 하므로 잎이 \(\ge n!\)개. <b>(높이 층)</b> 높이 \(h\)인 이진 트리의 잎은 \(\le 2^h\)개 ⇒ \(n!\le 2^h\). <b>(로그 층)</b> 양변에 \(\lg\)를 취하면 \(\lg(n!)\le h\). <b>(근사 층)</b> Stirling 근사로 \(\lg(n!)=\Theta(n\lg n)\) ⇒ \(h=\Omega(n\lg n)\). <b>(우회 층)</b> counting/radix는 비교 모델 밖이라 이 \(h\)에 묶이지 않아 \(\Theta(n+k)\)·\(\Theta(d(n+k))\) 선형. 한 문장으로: <b>비교는 \(n!\)가지를 가르는 데 최소 \(\lg(n!)\approx n\lg n\)번의 갈림이 필요하고, 비교를 안 하면 그 벽 밖에 산다.</b></p>
+          <div class="field"><span class="lbl">🧱 5-Layer Build-Up(5단 빌드업) — Sorting Lower Bound(정렬 하한) / Decision Tree(결정트리)</span>
+            <div class="layer-grid">
+              <div class="layer-card"><b>Layer 1 Hook(왜 중요한가)</b><br>비교 기반 정렬(comparison sort)이 아무리 영리해도 \(\Omega(n\lg n)\)보다 빨라질 수 없다는 사실이, 왜 counting sort(계수 정렬)와 radix sort(기수 정렬)가 따로 중요한지를 갈라준다.</div>
+              <div class="layer-card"><b>Layer 2 Intuition(직관)</b><br>비교(compare) 한 번은 질문 하나다. "a와 b 중 누가 작지?"라는 예/아니오 분기만으로는 가능한 정렬 결과 \(n!\)개를 충분히 빨리 구분할 수 없다. 반면 counting/radix는 비교 대신 키 값 자체를 직접 읽는다.</div>
+              <div class="layer-card"><b>Layer 3 Analogy(비유와 한계)</b><br>비교정렬은 스무고개처럼 yes/no 질문만 던져 정답 순열을 찾는 과정이고, counting/radix는 정답 카드함에 바로 꽂는 작업에 가깝다. 한계: 현실 정렬은 캐시(cache), 메모리, 문자열 비교 비용도 받으므로 이 비유는 <b>비교 횟수 하한</b>만 설명할 뿐 실제 실행시간 전체를 설명하지는 못한다.</div>
+              <div class="layer-card"><b>Layer 4 Definition(정의)</b><br><b>Decision tree(결정트리)</b> 모델에서 비교정렬은 full binary tree(포화 이진트리)로 표현된다. 내부 노드(internal node)는 비교, 잎(leaf)은 최종 순열, 루트(root)에서 잎까지 경로 길이는 해당 입력에서의 비교 횟수, 트리 높이 \(h\)는 최악 비교 횟수다. 정렬 결과는 \(n!\)개 순열이므로 잎 수는 적어도 \(n!\)개여야 하며, 따라서 \(h\ge \lg(n!)=\Omega(n\lg n)\).</div>
+              <div class="layer-card"><b>Layer 5 Mechanism(어떻게 작동하나)</b><br>1. 입력 \(n\)개에 대해 가능한 정렬 결과가 \(n!\)개임을 잡는다.<br>2. 비교 한 번은 이진 분기 한 번이므로 높이 \(h\)인 트리의 잎 수는 최대 \(2^h\)다.<br>3. 따라서 \(n!\le 2^h\), 즉 \(h\ge \lg(n!)\).<br>4. Stirling 근사로 \(\lg(n!)=\Theta(n\lg n)\)를 넣는다.<br>5. 결론: 임의의 comparison sort(비교정렬)는 최악에 \(\Omega(n\lg n)\) 비교가 필요하다. counting sort/radix sort는 비교 모델 밖이라 이 하한을 우회한다.</div>
+            </div>
           </div>
-          <div class="field"><span class="lbl">📖 정의</span>
+          <div class="field"><span class="lbl">📖 Definition(정의) / Formula(수식)</span>
             <ul>
-              <li><b>Counting sort</b>: 키 범위 [0,k]에서 각 값의 개수를 세어 위치 결정.</li>
-              <li><b>Radix sort</b>: 자릿수 d개를 LSD(최하위)부터 안정 정렬로 반복.</li>
-              <li><b>Decision-tree 모델</b>: 비교정렬을 full binary tree로 모델 — 잎=입력 순열, 내부노드 i:j=비교, 실행=루트→잎 경로, 최악 비교수=트리 높이 h.</li>
+              <li><b>Counting sort(계수 정렬)</b>: 키 범위 [0,k]에서 각 값의 개수를 세고 누적합(prefix sum)으로 위치를 정한다.</li>
+              <li><b>Radix sort(기수 정렬)</b>: 자릿수 d개를 LSD(least significant digit, 최하위 자릿수)부터 stable sort(안정 정렬)로 반복한다.</li>
+              <li><b>Decision tree(결정트리)</b>: 비교정렬을 full binary tree로 모델링한 것. 잎=출력 순열, 높이=최악 비교 수.</li>
             </ul>
+            <div class="callout">Counting \(\Theta(k+n)\), Radix \(\Theta(d(n+k))\), lower bound(하한) \(\Omega(n\lg n)\).</div>
           </div>
-          <div class="field"><span class="lbl">🧮 수식</span>Counting \(\Theta(k+n)\) (k=O(n)이면 선형). Radix \(\Theta(d(n+k))\). 하한 \(\Omega(n\lg n)\).</div>
-          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
-            <div class="scenario">우편번호·주민번호·1억 개의 32비트 정수처럼 <b>키 범위가 제한된</b> 데이터를 정렬할 때 비교정렬의 \(n\lg n\) 벽을 깨고 싶다. Radix sort는 자릿수별로 counting sort를 돌려 <b>선형 시간</b>에 끝낸다 — 실제 DB의 정수 키 정렬·GPU 정렬 라이브러리가 이 방식. 반대로 결정트리 하한은 "왜 범용 비교정렬은 \(n\lg n\) 밑으로 못 가나"를 증명한다 — 정렬 결과가 \(n!\)가지인데 비교 한 번이 갈림길 하나뿐이라, 최소 \(\lg(n!)\approx n\lg n\)번 갈라야 답에 도달. <b>그래서 counting/radix는 "비교를 안 해서"(키를 직접 인덱스로 써서) 이 하한 밖에 산다.</b></div>
+          <div class="field"><span class="lbl">🌍 Scenario(실전 장면)</span>
+            <div class="scenario">우편번호·학생번호·32비트 정수처럼 <b>키 범위가 제한된 데이터</b>는 counting sort/radix sort로 선형 시간대에 정렬할 수 있다. 반대로 범용 라이브러리 정렬은 대개 comparison sort라서, 설계자가 아무리 개선해도 decision-tree lower bound(결정트리 하한) 자체는 넘지 못한다.</div>
           </div>
-          <div class="field"><span class="lbl">🔍 작동 원리 / 유도 (단계별 — 2개)</span>
+          <div class="field"><span class="lbl">🔍 Mechanism Walkthrough(작동 단계) — 2개</span>
             <div class="stepper worked">
-              <div class="stp-title">Counting sort로 [2,5,3,0,2,3,0,3] (k=5) 정렬</div>
+              <div class="stp-title">Counting sort(계수 정렬)로 [2,5,3,0,2,3,0,3] (k=5) 정렬</div>
               <div class="step show"><div class="step-head">1. 직관</div>각 값이 몇 번 나오는지 세고, 누적합으로 "그 값의 마지막 자리"를 알아내 뒤에서부터 안정하게 배치한다.</div>
               <div class="step"><div class="step-head">2. 셋업</div>A=[2,5,3,0,2,3,0,3], n=8, 키 범위 [0,5]. C[0..5]=0으로 초기화.</div>
               <div class="step"><div class="step-head">3. 전개 1 — 개수 세기</div>각 값 카운트 → C = [2, 0, 2, 3, 0, 1] (0이 2개, 2가 2개, 3이 3개, 5가 1개).</div>
@@ -735,7 +683,7 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
               <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
             <div class="stepper">
-              <div class="stp-title">Theorem 8.1 — 비교정렬 하한 Ω(n lg n) 증명 (통째로 시험)</div>
+              <div class="stp-title">Theorem 8.1 — Sorting Lower Bound(정렬 하한) \(\Omega(n\lg n)\) 증명</div>
               <div class="step show"><div class="step-head">1. 직관</div>어떤 비교정렬이든 "비교 한 번 = 갈림길"인 <b>결정 트리</b>다. n개 원소의 정렬 결과는 n!가지 순열 중 하나여야 하니, 트리는 적어도 n!개의 잎(결말)을 가져야 한다. 잎이 많으려면 트리가 깊을 수밖에 없다.</div>
               <div class="step"><div class="step-head">2. 셋업</div>결정 트리 = full binary tree. 잎 = 가능한 출력 순열, 트리 높이 h = 최악 비교 횟수. 목표: \(h=\Omega(n\lg n)\).</div>
               <div class="step"><div class="step-head">3. 전개 1</div>정렬은 n개의 모든 순열을 구별해야 하므로 <b>잎 개수 ≥ n!</b>.</div>
@@ -746,18 +694,18 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
               <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
-          <div class="field"><span class="lbl">📊 표·그래프 인사이트</span>
+          <div class="field"><span class="lbl">📊 Comparison Table(비교표)</span>
             <div class="scrollx"><table>
-              <tr><th>정렬</th><th>복잡도</th><th>안정성</th><th>in-place</th><th>조건</th></tr>
-              <tr><td>Counting</td><td>Θ(k+n)</td><td>stable</td><td>✘</td><td>키 범위 [0,k] 작을 때</td></tr>
-              <tr><td>Radix</td><td>Θ(d(n+k))</td><td>stable(내부정렬 안정 必)</td><td>✘</td><td>자릿수 d 고정</td></tr>
+              <tr><th>방법</th><th>핵심 질문</th><th>시간복잡도</th><th>하한 적용?</th><th>조건</th></tr>
+              <tr><td>Comparison sort(비교정렬)</td><td>비교만으로 순열 구별</td><td>최악 \(\Omega(n\lg n)\)</td><td>적용됨</td><td>범용 입력</td></tr>
+              <tr><td>Counting sort(계수 정렬)</td><td>키 값을 직접 세기</td><td>\(\Theta(k+n)\)</td><td>적용 안 됨</td><td>키 범위 작음</td></tr>
+              <tr><td>Radix sort(기수 정렬)</td><td>자릿수별 stable sort</td><td>\(\Theta(d(n+k))\)</td><td>적용 안 됨</td><td>자릿수 d 제한</td></tr>
             </table></div>
-            <div class="callout">통찰: 둘 다 비교 안 하므로 Ω(n lg n) 하한을 <b>우회</b>(비교 모델 밖). 단 키 범위/자릿수 제약 필요.</div>
+            <div class="callout">핵심 통찰: lower bound(하한)은 "정렬 자체"가 아니라 <b>comparison model(비교 모델)</b>에 대한 하한이다.</div>
           </div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>위 첫 STEP "Counting sort로 [2,5,3,0,2,3,0,3]"이 count·prefix-sum 배열 상태변화 풀이 예제. 하한 증명은 두 번째 STEP.</div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">radix가 안정이려면 <b>각 자릿수 내부 정렬이 안정</b>해야 함(보통 counting sort 사용). counting/radix는 <b>in-place 아님</b>.</div></div>
+          <div class="field"><span class="lbl">⚠️ Common Trap(흔한 함정)</span><div class="trap">radix sort(기수 정렬)는 내부 자릿수 정렬이 stable(안정)해야 한다. 또한 "정렬 하한"을 모든 정렬에 대한 하한으로 외우면 틀린다. 정확히는 comparison sort(비교정렬)에 대한 하한이다.</div></div>
           <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高 · decision-tree 하한 통째</span></span>① counting/radix 안정성·복잡도, ② <b>decision-tree 하한 증명 재현</b>(잎 = n!, n!≤2^h, lg(n!)=Θ(n lg n) ⇒ h=Ω(n lg n)).</div>
-          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C3')">C3</a>,<a onclick="goNode('C4')">C4</a>,<a onclick="goNode('C5')">C5</a>(비교정렬들). 이 하한이 "왜 비교정렬은 n lg n이 한계인가"의 답.</div>
+          <div class="field"><span class="lbl">🔗 Link(연결)</span>선행 <a onclick="goNode('C3')">C3</a>,<a onclick="goNode('C4')">C4</a>,<a onclick="goNode('C5')">C5</a>. 이 노드는 "왜 heap/merge/quick을 잘 짜도 \(n\lg n\) 아래로는 못 내려가나?"의 답이다.</div>
         </div>
       </details>
     </section>
@@ -1036,18 +984,18 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span>가중 무방향 연결그래프에서 <b>모든 정점을 잇는 가장 싼 트리</b>(\(|E|=|V|-1\)). "안전한 간선(safe edge)만 골라 키우면 최적"이라는 그리디 정당성이 핵심.</div>
-          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span>
-            <p>그리디(greedy)는 보통 위험하다 — 매 순간 제일 좋아 보이는 걸 집고 되돌아보지 않으니, 전역 최적을 놓치기 쉽다. 그런데 MST(최소 신장 트리, Minimum Spanning Tree)에서는 <b>"지금 제일 싼 연결을 집어도 절대 후회하지 않는다"가 정리로 증명</b>된다. 그 보증서가 <b>cut property(절단 성질)</b>이고, 시험은 이 증명과 그것을 쓰는 Prim·Kruskal을 묶어 묻는다. 그리디가 왜 통하는지를 아는 게 이 노드의 전부다.</p>
-            <p>직관은 도시 연결로 잡는다. 여러 도시를 도로로 모두 잇되 총 부설 비용은 최소로 하고 싶다. 이미 일부 도시를 연결한 조각(부분 트리)이 있을 때, 그 조각의 "안쪽"과 "바깥쪽"을 가르는 선을 하나 그어 본다. 이 선을 건너는 도로 중 <b>가장 싼 것 하나</b>를 추가하면, 그건 어떤 최적해에도 들어가는 안전한 선택이다.</p>
-            <p>비유는 <b>섬들을 다리로 잇는 공사</b>다. 지금까지 이은 섬 무리(\(S\))와 아직 안 이은 섬 무리(\(V-S\)) 사이에 바다(cut)가 있고, 그 바다를 건너는 다리 후보 중 제일 싼 것을 놓으면 손해가 아니다. <b>이 비유가 깨지는 지점</b>: light edge(최소 간선)는 "전체에서 가장 싼 간선"이 아니라 <b>지금 이 cut을 건너는 것 중에서만</b> 최소다 — 더 싼 간선이 cut 안쪽에 있어도 그건 다른 얘기다.</p>
-            <p>정의로 옮기면, <b>cut(절단) \((S,V-S)\)</b>=정점을 두 덩이로 나눔. 간선이 cut을 <b>cross(횡단)</b>한다=양 끝이 서로 다른 덩이. cut이 간선 집합 \(A\)를 <b>respect(존중)</b>한다=\(A\)의 어떤 간선도 그 cut을 cross하지 않음. <b>light edge(경량 간선)</b>=그 cut을 cross하는 간선 중 최소 가중. <b>safe edge(안전 간선)</b>=\(A\)에 더해도 "여전히 어떤 MST의 부분집합"이 유지되는 간선. cut property는 "\(A\)를 respect하는 cut의 light edge는 \(A\)에 safe하다"이다.</p>
-            <p>증명 메커니즘을 층층이 보면 <b>교환 논법(exchange argument)</b>이다. <b>(가정 층)</b> \(A\)가 어떤 MST \(T\)의 부분집합인데 \(T\)가 light edge \((u,v)\)를 안 갖는다고 하자. <b>(사이클 층)</b> \(T\)에 \((u,v)\)를 더하면 유일한 사이클이 생기고, 그 사이클의 경로 \(p\)는 \((u,v)\)가 cut을 cross하므로 cut을 cross하는 다른 간선 \((x,y)\)를 반드시 하나 포함한다. <b>(교환 층)</b> \(T'=T-\{(x,y)\}\cup\{(u,v)\}\)는 다시 신장 트리. <b>(비용 층)</b> \((u,v)\)가 light이라 \(w(u,v)\le w(x,y)\) ⇒ \(w(T')\le w(T)\) ⇒ \(T'\)도 MST. <b>(결론 층)</b> \(A\cup\{(u,v)\}\subseteq T'\)이므로 \((u,v)\)는 safe. 한 문장: <b>가장 싼 횡단 간선을 안 쓴 트리가 있다면, 더 비싼 횡단 간선과 바꿔치기해도 비용이 안 늘어 — 그러니 싼 것을 써도 손해 없다.</b> Prim은 한 정점에서 트리를 키우며(힙으로 최근접) 매번 light edge를 고르고, Kruskal은 싼 간선부터 보며 사이클이 안 생기면(disjoint-set으로 판정) 채택해 같은 정리를 쓴다.</p>
+          <div class="field"><span class="lbl">🧱 5-Layer Build-Up(5단 빌드업) — Cut Property(컷 속성) / MST(Minimum Spanning Tree, 최소 신장 트리)</span>
+            <div class="layer-grid">
+              <div class="layer-card"><b>Layer 1 Hook(왜 중요한가)</b><br>MST는 가장 싼 연결망을 고르는 문제이고, cut property(컷 속성)는 Prim/Kruskal이 왜 맞는지를 보장하는 한 줄짜리 정당성이다.</div>
+              <div class="layer-card"><b>Layer 2 Intuition(직관)</b><br>이미 안전하게 모아 둔 숲(forest)이 있을 때, 그 숲과 바깥을 잇는 간선 중 가장 싼 것(light edge)을 추가하면 괜히 손해 볼 이유가 없다.</div>
+              <div class="layer-card"><b>Layer 3 Analogy(비유와 한계)</b><br>여러 섬을 다리로 잇는다고 생각하면, 현재 우리 쪽 섬 묶음과 바깥 섬을 잇는 가장 싼 다리를 먼저 놓아도 전체 최소 비용 해를 망치지 않는다는 그림이다. 한계: 현실 네트워크는 용량, 장애 내성 같은 조건이 있어 MST보다 더 복잡할 수 있다.</div>
+              <div class="layer-card"><b>Layer 4 Definition(정의)</b><br><b>MST(minimum spanning tree, 최소 신장 트리)</b>는 연결된 가중 무방향 그래프에서 모든 정점을 연결하면서 총 가중치가 최소인 spanning tree(신장 트리)다. <b>cut(컷)</b>은 \((S,V-S)\) 분할, <b>cross(가로지르다)</b>는 양 끝 정점이 서로 다른 쪽에 있는 간선, <b>respect(존중하다)</b>는 간선 집합 \(A\)가 그 cut을 가로지르지 않는 것, <b>light edge(경량 간선)</b>는 그 cut을 cross하는 최소 가중치 간선, <b>safe edge(안전 간선)</b>는 \(A\)에 더해도 어떤 MST의 부분집합 성질이 유지되는 간선이다.</div>
+              <div class="layer-card"><b>Layer 5 Mechanism(어떻게 작동하나)</b><br>1. 현재 \(A\)가 어떤 MST의 일부라고 둔다.<br>2. \(A\)를 respect하는 cut을 하나 잡는다.<br>3. 그 cut을 cross하는 light edge \((u,v)\)를 고른다.<br>4. 만약 기존 MST \(T\)에 \((u,v)\)가 없으면 \(T\)에 \((u,v)\)를 넣어 사이클을 만든다.<br>5. 그 사이클에서 같은 cut을 cross하는 간선 \((x,y)\)를 빼면 다시 트리가 되고, \(w(u,v)\le w(x,y)\)라 비용이 늘지 않는다. 그래서 \((u,v)\)는 safe edge다.</div>
+            </div>
           </div>
-          <div class="field"><span class="lbl">📖 정의·용어</span><b>cut</b> (S,V−S)=정점 분할. edge가 cut을 <b>cross</b>(양 끝 분리). cut이 A를 <b>respect</b>(A의 어떤 간선도 cut을 cross 안함). <b>light edge</b>=cut을 cross하는 최소 가중 간선. <b>safe edge</b>=A에 더해도 어떤 MST의 부분집합 유지.</div>
-          <div class="field"><span class="lbl">🧮 수식 / 복잡도</span>Prim, Kruskal 모두 <b>\(O(E\lg V)\)</b> (binary heap / 정렬).</div>
-          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
-            <div class="scenario">여러 도시를 광케이블·전력망·도로로 잇되 <b>총 부설 비용을 최소화</b>하는 것이 MST다 — 모든 도시가 연결되되 사이클(낭비되는 잉여 회선)은 없게. 통신망 설계, 클러스터 분석, 회로 배선이 대표 응용. <b>왜 그리디가 통하나?</b> cut property: "현재 트리 조각과 바깥을 잇는 가장 싼 간선(light edge)을 더해도 최적성이 깨지지 않는다"가 증명되기 때문 — 매 단계 가장 싼 연결을 골라도 전역 최적. Prim은 한 도시에서 트리를 키우고(힙으로 최근접 도시 선택), Kruskal은 싼 회선부터 깔되 이미 연결된 둘은 건너뛴다(disjoint-set으로 사이클 회피).</div>
+          <div class="field"><span class="lbl">📖 Definition(정의) / Complexity(복잡도)</span>Prim algorithm(Prim 알고리즘), Kruskal algorithm(Kruskal 알고리즘)은 모두 cut property를 기반으로 하며 binary heap(이진 힙) 또는 edge sorting(간선 정렬) 기준으로 <b>\(O(E\lg V)\)</b>다.</div>
+          <div class="field"><span class="lbl">🌍 Scenario(실전 장면)</span>
+            <div class="scenario">캠퍼스 건물들을 광케이블로 모두 잇되 총 공사비를 최소화하고 싶다면 MST를 푼다. Prim은 현재 연결망에서 가장 싸게 붙는 정점을 확장하고, Kruskal은 가장 싼 간선부터 보며 사이클이 생기면 버린다.</div>
           </div>
           <div class="field"><span class="lbl">🔍 작동 원리 / 유도 (단계별 — 2개)</span>
             <div class="stepper">
@@ -1075,7 +1023,7 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
               <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
-          <div class="field"><span class="lbl">📊 표·그래프 인사이트 (Prim vs Kruskal)</span>
+          <div class="field"><span class="lbl">📊 Comparison Table(비교표) — Prim vs Kruskal</span>
             <div class="scrollx"><table>
               <tr><th></th><th>성장 단위</th><th>자료구조</th><th>유리한 그래프</th><th>복잡도</th></tr>
               <tr><td>Prim</td><td>정점(단일 트리)</td><td>min-priority queue(heap)</td><td>dense</td><td>O(E lg V)</td></tr>
@@ -1083,10 +1031,9 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
             </table></div>
             <div class="callout">Corollary 23.2: forest \(G_A\)의 연결요소 C에서 다른 요소로 가는 light edge는 safe (Prim/Kruskal 근거).</div>
           </div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>위 두 번째 STEP에서 가중 그래프(a-b:4, a-c:1, b-c:2, b-d:5, c-d:8)에 Prim(root a)·Kruskal을 돌려 같은 MST 도출.</div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">light edge ≠ 항상 전역 최소 간선 — <b>특정 cut을 cross하는</b> 것 중 최소. Kruskal \(\lg E=O(\lg V)\)이므로 복잡도가 Prim과 같음.</div></div>
+          <div class="field"><span class="lbl">⚠️ Common Trap(흔한 함정)</span><div class="trap">light edge(경량 간선)는 그래프 전체의 최소 간선이 아니라 <b>선택한 cut을 cross하는 간선 중 최소</b>다. 이 말을 빼먹으면 정리 진술이 틀린다.</div></div>
           <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge hot">summary ⭐高 · Prim 강조 + 본강의</span></span>① <b>cut property 정의·증명</b>, ② Prim/Kruskal 단계 추적·복잡도, ③ safe/light/respect 정의.</div>
-          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C8')">C8(그리디)</a>,<a onclick="goNode('C4')">C4(heap)</a>,<a onclick="goNode('C10')">C10</a>. 응용 → <a onclick="goNode('C15')">C15(Dijkstra가 유사한 그리디 구조)</a>.</div>
+          <div class="field"><span class="lbl">🔗 Link(연결)</span>선행 <a onclick="goNode('C8')">C8(그리디)</a>,<a onclick="goNode('C4')">C4(heap)</a>,<a onclick="goNode('C10')">C10</a>. 응용 → <a onclick="goNode('C15')">C15(Dijkstra가 유사한 그리디 구조)</a>.</div>
         </div>
       </details>
 
@@ -1098,18 +1045,18 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span>한 source에서 모든 정점까지 <b>최소 가중 합 경로</b>를 구한다. 핵심 연산은 <b>relaxation</b>(더 짧은 길 발견 시 갱신) 하나, 그것을 언제·몇 번 적용하느냐가 알고리즘을 가른다.</div>
-          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span>
-            <p>한 출발점에서 모든 곳까지 가는 최단 경로를 구하는 세 알고리즘(Dijkstra·Bellman-Ford·DAG-SP)은, 사실 <b>relaxation(완화)</b>이라는 단 하나의 원자 연산을 공유한다. 그래서 시험의 핵심은 "세 알고리즘을 따로 외우는 것"이 아니라 <b>"같은 relaxation을 언제·몇 번 적용하느냐가 무엇을 가르는가"</b>를 아는 것이다. 그리고 Dijkstra의 그리디(greedy)가 <b>왜 음수 간선에서 깨지는가</b>가 단골 서술 문항이다.</p>
-            <p>직관은 내비게이션으로 잡는다. 출발지에서 물이 퍼지듯, "아직 확정 안 된 곳 중 가장 가까운 교차로"를 하나씩 확정해 나간다. 어떤 교차로를 확정하는 순간, 그 이웃들에게 "나를 거치면 더 빨리 올 수 있어?"를 물어 추정 거리를 갱신한다 — 이게 relaxation이다. 모든 도로 비용이 양수라, 한 번 "가장 가깝다"고 확정한 곳은 나중에 더 짧아질 수 없다.</p>
-            <p>비유는 <b>고무줄 망(elastic mesh)이 팽팽해지는 과정</b>이다. 처음엔 모든 거리가 \(\infty\)로 느슨한데, 짧은 길을 찾을 때마다 그 줄을 당겨 \(d[v]\)를 줄인다(완화=느슨함을 푼다). <b>이 비유가 깨지는 지점</b>: 음수 간선이 있으면 "당겼던 줄이 나중에 더 줄어드는" 일이 생겨, Dijkstra처럼 한 번 확정하면 끝이라는 가정이 무너진다 — 그래서 음수에는 Bellman-Ford가 필요하다.</p>
-            <p>정의로 옮기면, path weight(경로 가중)=간선 가중의 합, \(\delta(s,v)\)=최단경로 가중(진짜 최소값), \(d[v]\)=현재 추정치(estimate), \(\pi[v]\)=predecessor(직전 정점). <b>relaxation</b>은 <code>if d[u]+w(u,v) &lt; d[v]: d[v]=d[u]+w(u,v); π[v]=u</code> — "u를 거치는 우회로가 더 짧으면 갱신". Dijkstra는 비음수 가중 가정, Bellman-Ford는 음수 허용·음수 사이클 검출, DAG-SP는 사이클 없음을 전제로 위상 순서를 쓴다.</p>
-            <p>Dijkstra 정당성(왜 양수면 그리디가 옳은가)을 층층이 보면 <b>모순법(proof by contradiction)</b>이다. <b>(가정 층)</b> 처음으로 \(d[u]\ne\delta(s,u)\)인 \(u\)가 EXTRACT-MIN(최소 추출)된다고 하자. <b>(경계 층)</b> \(s{\to}u\) 최단경로가 확정 집합 \(S\)를 떠나는 첫 간선 \((x,y)\)(\(x\in S\), \(y\notin S\))를 잡으면, \(x\)는 이미 확정이라 \(d[y]=\delta(s,y)\). <b>(부등식 층)</b> 비음수라 \(\delta(s,y)\le\delta(s,u)<d[u]\) ⇒ \(d[y]<d[u]\). <b>(모순 층)</b> 그러면 EXTRACT-MIN이 \(u\)가 아니라 \(y\)를 먼저 뽑았어야 함 → 모순. <b>(붕괴 층)</b> 음수 간선이면 \(\delta(s,y)\le\delta(s,u)\)가 무너져(뒤에 음수 간선이 더 줄일 수 있어) 그리디 확정이 틀린다. 한 문장: <b>양수 세계에선 "지금 가장 가까운 미확정 노드"는 더 줄어들 여지가 없어 즉시 확정해도 안전하지만, 음수가 끼면 그 안전 보장이 깨진다.</b></p>
+          <div class="field"><span class="lbl">🧱 5-Layer Build-Up(5단 빌드업) — Dijkstra Shortest Path(Dijkstra 최단경로)</span>
+            <div class="layer-grid">
+              <div class="layer-card"><b>Layer 1 Hook(왜 중요한가)</b><br>내비게이션, 라우팅, 공정관리에서 "가장 먼저 믿어도 되는 최단거리"를 빠르게 확정하는 알고리즘이 Dijkstra다.</div>
+              <div class="layer-card"><b>Layer 2 Intuition(직관)</b><br>현재까지 알려진 거리 중 가장 작은 정점은, 모든 간선이 비음수라면 나중에 우회해서 더 싸질 수 없다. 그래서 그 정점을 확정(settled)해도 안전하다.</div>
+              <div class="layer-card"><b>Layer 3 Analogy(비유와 한계)</b><br>물이 높은 곳에서 낮은 곳으로 번지는 대신, 출발지에서부터 "가장 가까운 원"이 퍼져 나간다고 보면 된다. 한계: 음수 간선(negative edge)이 있으면 나중에 갑자기 더 싼 우회로가 생길 수 있어 이 비유가 깨진다.</div>
+              <div class="layer-card"><b>Layer 4 Definition(정의)</b><br><b>SSSP(single-source shortest paths, 단일 출발점 최단경로)</b>는 source \(s\)에서 모든 정점 \(v\)까지의 최단거리 \(\delta(s,v)\)를 구하는 문제다. <b>Dijkstra algorithm(Dijkstra 알고리즘)</b>은 모든 간선 가중치가 비음수일 때, 추정치 \(d[v]\)가 가장 작은 미확정 정점을 반복적으로 선택해 relaxation(완화)을 수행한다. <b>Relaxation(완화)</b>은 <code>if d[u]+w(u,v) &lt; d[v]: d[v]=d[u]+w(u,v); π[v]=u</code>.</div>
+              <div class="layer-card"><b>Layer 5 Mechanism(어떻게 작동하나)</b><br>1. \(d[s]=0\), 나머지 \(d[v]=\infty\)로 초기화한다.<br>2. 미확정 정점 집합에서 \(d\)가 가장 작은 정점 \(u\)를 EXTRACT-MIN한다.<br>3. \(u\)를 settled set(확정 집합)에 넣는다.<br>4. \(u\)의 모든 outgoing edge(나가는 간선)에 대해 relaxation을 수행한다.<br>5. 집합이 빌 때까지 반복하면 각 settled 정점은 그 순간 최단거리가 확정된다.</div>
+            </div>
           </div>
-          <div class="field"><span class="lbl">📖 정의</span>path weight=간선 가중 합, \(\delta(u,v)\)=최단경로 가중(최소), d[v]=추정치, π[v]=predecessor. <b>Relaxation</b>: <code>if d[u]+w(u,v) &lt; d[v]: d[v]=d[u]+w(u,v); π[v]=u</code>.</div>
-          <div class="field"><span class="lbl">🧮 수식 / 복잡도</span>Dijkstra: array \(O(V^2)\), binary heap \(O((V+E)\lg V)\), Fibonacci heap \(O(V\lg V+E)\). Bellman-Ford: <b>\(O(VE)\)</b>. DAG shortest paths: <b>\(\Theta(V+E)\)</b>.</div>
-          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
-            <div class="scenario"><b>자동차 내비게이션·지도 앱의 경로탐색</b>이 Dijkstra다 — 교차로=정점, 도로=가중치 간선(거리·시간), 출발지에서 매번 "확정 안 된 정점 중 가장 가까운 것"을 골라 확정하며 퍼진다. 모든 도로 비용이 양수라 그리디가 통한다. 그런데 <b>환율 차익거래</b>처럼 음수 비용(이득)이 섞이면 Dijkstra가 틀려 Bellman-Ford를 쓰고, "음수 사이클"(무한 이득 루프)을 검출. <b>PERT 공정 관리</b>(프로젝트 일정)는 작업=간선·소요시간=가중치로 보고 <b>임계경로=최장경로</b>를 구해 "프로젝트 최소 완료 시간"을 안다. <b>왜 relaxation 하나로 다 되나?</b> "더 짧은 길을 찾으면 갱신"이 공통 원자 연산이고, 그걸 <b>언제·몇 번</b> 적용하느냐(그리디 1회 vs |V|−1 패스 vs 위상순서)가 알고리즘을 가른다.</div>
+          <div class="field"><span class="lbl">📖 Definition(정의) / Complexity(복잡도)</span>path weight(경로 가중치)는 간선 가중 합, \(\delta(u,v)\)는 최단경로 가중치, \(d[v]\)는 distance estimate(거리 추정치), \(\pi[v]\)는 predecessor(부모 정점)다. Dijkstra: array \(O(V^2)\), binary heap \(O((V+E)\lg V)\), Fibonacci heap \(O(V\lg V+E)\). Bellman-Ford: <b>\(O(VE)\)</b>. DAG shortest paths: <b>\(\Theta(V+E)\)</b>.</div>
+          <div class="field"><span class="lbl">🌍 Scenario(실전 장면)</span>
+            <div class="scenario">지도 앱은 비음수 이동 시간 위에서 Dijkstra를 돌린다. 반대로 환율 차익거래처럼 음수 비용이 가능하면 Bellman-Ford가 필요하고, 프로젝트 일정처럼 DAG이면 위상정렬 기반 shortest path/longest path가 더 적절하다.</div>
           </div>
           <div class="field"><span class="lbl">🔍 작동 원리 / 유도 (단계별 — 3개)</span>
             <div class="stepper worked">
@@ -1149,7 +1096,7 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
               <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
-          <div class="field"><span class="lbl">📊 표·그래프 인사이트 (선택 기준)</span>
+          <div class="field"><span class="lbl">📊 Comparison Table(비교표) — Dijkstra vs Bellman-Ford vs DAG-SP</span>
             <div class="scrollx"><table>
               <tr><th>알고리즘</th><th>음수 간선</th><th>핵심</th><th>복잡도</th></tr>
               <tr><td>Dijkstra</td><td>✘(비음수만)</td><td>greedy EXTRACT-MIN</td><td>O((V+E)lg V)</td></tr>
@@ -1158,10 +1105,9 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
             </table></div>
             <div class="callout"><b>음수 가중 처리</b>: 음수 간선 자체는 OK, 문제는 <b>source 도달 가능한 음수 사이클</b>(→ −∞). 최단경로는 사이클 미포함(길이 ≤ |V|−1). <b>PERT chart</b>: 간선=작업, 가중=소요시간, <b>critical path = DAG의 최장 경로</b>. 가중 음수화 후 DAG-SP, 또는 ∞→−∞·max로 바꿔 최장.</div>
           </div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>위 첫 STEP "Dijkstra(s)"에서 Q/S/d 표를 단계별로 갱신.</div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">Dijkstra는 <b>음수 간선이 있으면 틀림</b>(greedy 가정 깨짐). Bellman-Ford는 음수 허용·느림. DAG는 사이클 없으니 음수도 안전.</div></div>
+          <div class="field"><span class="lbl">⚠️ Common Trap(흔한 함정)</span><div class="trap">Dijkstra는 <b>음수 간선이 하나라도 있으면</b> 정당성 증명이 무너질 수 있다. "음수 사이클만 없으면 된다"라고 쓰면 감점 포인트다. 그 조건은 Bellman-Ford 쪽이다.</div></div>
           <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge mid">본강의 출제 · summary 미포함</span></span>① <b>Dijkstra 단계 추적(Q/S/d 표)·비음수 제약·정당성</b>, ② Bellman-Ford |V|−1 패스·음수사이클 검출·\(O(VE)\), ③ DAG \(\Theta(V+E)\), ④ <b>PERT 임계경로=최장경로</b>, ⑤ Ex 22.4-2(simple path 개수).</div>
-          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C11')">C11</a>,<a onclick="goNode('C13')">C13</a>,<a onclick="goNode('C14')">C14</a>. 다음 → <a onclick="goNode('C16')">C16(All-pairs)</a>.</div>
+          <div class="field"><span class="lbl">🔗 Link(연결)</span>선행 <a onclick="goNode('C11')">C11</a>,<a onclick="goNode('C13')">C13</a>,<a onclick="goNode('C14')">C14</a>. 다음 → <a onclick="goNode('C16')">C16(All-pairs)</a>.</div>
         </div>
       </details>
 
@@ -1227,15 +1173,16 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span><b>곱셈은 쉽고 인수분해는 어렵다</b>는 비대칭이 공개키 암호의 토대. 그 수학(소수·서로소·Euler φ·Fermat/Euler 정리)을 갖춘다.</div>
-          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span>
-            <p>현대 암호의 안전성은 결국 단 하나의 비대칭에 기댄다 — <b>두 소수를 곱하기는 순식간이지만, 그 곱 \(n\)에서 원래 두 소수를 되찾기(factorization, 인수분해)는 천문학적으로 어렵다</b>. RSA(C19)는 이 비대칭을 정수론으로 묶어 만든다. 그래서 이 노드는 RSA를 떠받치는 도구 상자 — 소수(prime)·서로소(coprime)·Euler \(\phi\)·Fermat/Euler 정리·확률적 소수판정 — 를 먼저 갖추는 자리다.</p>
-            <p>직관은 시계 산수(modular arithmetic, 모듈러 산술)로 잡는다. 12시간 시계에서 \(10+5\)는 15가 아니라 3이듯, \(\bmod n\) 세계에서는 거듭제곱이 일정 주기로 돌아 <b>다시 1이 된다</b>. 예를 들어 \(3^4=81\equiv1\pmod{10}\). 이 "주기적으로 1로 돌아옴"이 나중에 RSA 복호가 원문으로 정확히 되돌아오는 보증의 씨앗이다.</p>
-            <p>비유는 <b>다이얼 자물쇠(돌아가는 다이얼)</b>다. 같은 방향으로 충분히 돌리면 출발점으로 돌아온다. <b>이 비유가 깨지는 지점</b>: 주기가 항상 \(\phi(n)\)인 건 밑(base) \(a\)가 \(n\)과 서로소일 때뿐이고(원시근이면 정확히 \(\phi(n)\)), 공약수가 있으면 다이얼이 출발점으로 안 돌아온다 — 그래서 Fermat/Euler 정리에 \(\gcd(a,n)=1\) 조건이 붙는다.</p>
-            <p>정의로 옮기면, 소수=1·자신만 약수. <b>relatively prime(서로소)</b>=공약수가 1뿐. <b>Euler totient \(\phi(n)\)(오일러 토션트)</b>=\([1,n-1]\) 중 \(n\)과 서로소인 수의 개수(\(\phi(p)=p-1\), \(\phi(pq)=(p-1)(q-1)\)). <b>primitive root(원시근)</b>=\(a^m\bmod n=1\)이 되는 최소 \(m\)이 \(\phi(n)\)인 \(a\). <b>discrete logarithm(이산로그)</b>=\(a^x\equiv b\pmod p\)의 \(x\)(구하기 어려움). 핵심 정리: <b>Fermat's little theorem</b> \(a^{p-1}\equiv1\pmod p\), 그 일반화 <b>Euler's theorem</b> \(a^{\phi(n)}\equiv1\pmod n\).</p>
-            <p>큰 소수를 빠르게 고르는 메커니즘(Miller-Rabin, 확률적 소수판정)을 층층이 보면 이렇다. <b>(분해 층)</b> \(n-1=2^k\cdot q\)(\(q\) 홀수)로 분해하고 무작위 밑 \(a\) 선택. <b>(Fermat 층)</b> \(a^q\bmod n\)이 1 또는 \(n-1\)이면 통과(maybe prime). <b>(제곱근 층)</b> 아니면 \(a^{2^jq}\)(\(j=1..k-1\))를 차례로 제곱하며 \(n-1\)이 나오는지 검사 — '1의 자명하지 않은 제곱근'에 속지 않으려는 추가 검문. <b>(판정 층)</b> 끝까지 \(n-1\)이 안 나오면 composite(합성수) 확정. <b>(확률 층)</b> 합성수를 소수로 오판할 확률 \(<1/4\), \(t\)회 반복하면 \(1-4^{-t}\)(\(t=10\)이면 \(>0.99999\)). 한 문장: <b>"곱은 쉽고 분해는 어렵다"는 벽 위에, \(\bmod\)의 주기성(Euler 정리)과 확률적 소수판정을 얹어 RSA의 재료를 만든다.</b></p>
+          <div class="field"><span class="lbl">🧱 5-Layer Build-Up(5단 빌드업) — Number Theory(정수론)</span>
+            <div class="layer-grid">
+              <div class="layer-card"><b>Layer 1 Hook(왜 중요한가)</b><br>RSA가 성립하는 이유는 프로그래밍 기술이 아니라 소수(prime), 서로소(coprime), Euler totient(오일러 파이 함수) 같은 정수론 구조 때문이다.</div>
+              <div class="layer-card"><b>Layer 2 Intuition(직관)</b><br>mod 연산 아래에서는 거듭제곱이 끝없이 커지지 않고 일정한 주기를 보인다. 그 주기를 잘 잡으면 "암호화한 것을 다시 되돌리는 지수"를 설계할 수 있다.</div>
+              <div class="layer-card"><b>Layer 3 Analogy(비유와 한계)</b><br>시계 산술(clock arithmetic)처럼 12를 넘으면 다시 0 부근으로 돌아온다고 생각하면 된다. 한계: 정수론의 핵심은 단순히 "돌아온다"가 아니라 어떤 수가 서로소인지, 주기가 정확히 얼마인지라서 시계 비유만으로는 RSA 증명까지 설명되지 않는다.</div>
+              <div class="layer-card"><b>Layer 4 Definition(정의)</b><br><b>Prime number(소수)</b>는 1과 자기 자신만 약수인 정수다. <b>Relatively prime / coprime(서로소)</b>는 최대공약수 gcd가 1인 수쌍이다. <b>Euler totient \(\phi(n)\)(오일러 파이 함수)</b>는 \(1\) 이상 \(n-1\) 이하 정수 중 \(n\)과 서로소인 수의 개수다. <b>Fermat's little theorem(페르마의 소정리)</b>와 <b>Euler's theorem(오일러 정리)</b>는 mod 거듭제곱의 주기 구조를 공식화한다.</div>
+              <div class="layer-card"><b>Layer 5 Mechanism(어떻게 작동하나)</b><br>1. 큰 소수 \(p,q\)를 잡는다.<br>2. \(n=pq\), \(\phi(n)=(p-1)(q-1)\)를 계산한다.<br>3. \(e\)가 \(\phi(n)\)과 서로소가 되게 고른다.<br>4. \(ed\equiv1\bmod\phi(n)\)인 \(d\)를 잡으면 지수 \(e,d\)가 서로 역이 되도록 설계할 수 있다.<br>5. 이 구조 전체를 보증하는 수학이 바로 Euler theorem(오일러 정리)다.</div>
+            </div>
           </div>
-          <div class="field"><span class="lbl">📖 정의</span>
+          <div class="field"><span class="lbl">📖 Definition(정의)</span>
             <ul>
               <li>소수 = 1·자신만 약수. 소인수분해 \(a=\prod_{p}p^{a_p}\).</li>
               <li><b>relatively prime(서로소)</b>: 공약수 1뿐. GCD = 소인수분해 최소 지수 곱.</li>
@@ -1251,7 +1198,7 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
               <li><b>φ(p)=p−1</b> (p 소수), <b>φ(pq)=(p−1)(q−1)</b> (p,q 소수).</li>
             </ul>
           </div>
-          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+          <div class="field"><span class="lbl">🌍 Scenario(실전 장면)</span>
             <div class="scenario">HTTPS·전자서명·블록체인이 모두 이 정수론 위에 선다. 특히 RSA(C19) 키를 만들려면 <b>수백 자리 소수</b>를 빠르게 찾아야 하는데, 큰 수의 진짜 소수 판정은 느리므로 <b>Miller-Rabin</b> 같은 확률적 판정으로 "거의 확실히 소수"를 골라낸다(t회 반복에 오판 확률 \(4^{-t}\)). Fermat/Euler 정리는 "거듭제곱을 mod로 돌리면 주기적으로 1이 된다"는 성질로, RSA 복호화가 원문으로 정확히 되돌아오는 보증의 핵심. <b>왜 인수분해가 안전성인가?</b> n=pq는 곱하기 쉽지만, n만 알고 p,q를 되찾기(인수분해)는 천문학적으로 어렵다 — 이 비대칭이 공개키를 공개해도 안전한 이유.</div>
           </div>
           <div class="field"><span class="lbl">🔍 작동 원리 (단계별)</span>
@@ -1267,13 +1214,20 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
               <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
-          <div class="field"><span class="lbl">📊 표·그래프 인사이트</span>
-            <div class="callout">예: gcd(18,300)=\(2^1{\cdot}3^1{\cdot}5^0=6\). φ(37)=36, φ(21)=2·6=12. \(3^4=81\equiv1\bmod10\).<br><b>소수 분포(Prime number theorem)</b>: 소수는 대략 ln n 간격, 짝수·5배수 제외하면 ≈0.4·ln(n)개 테스트면 소수 발견.<br><b>Miller-Rabin</b>: pseudo-prime 검출 확률 &lt;1/4, t회 반복 시 소수 확률 \(1-4^{-t}\) (t=10이면 &gt;0.99999).</div>
+          <div class="field"><span class="lbl">📊 Comparison Table(비교표)</span>
+            <div class="scrollx"><table>
+              <tr><th>개념</th><th>무엇을 말하나</th><th>RSA에서 역할</th></tr>
+              <tr><td>gcd / coprime(최대공약수 / 서로소)</td><td>역원이 존재하는지 판정</td><td>\(gcd(e,\phi(n))=1\)이어야 \(d\) 존재</td></tr>
+              <tr><td>Fermat theorem(페르마 소정리)</td><td>소수 mod에서의 주기</td><td>오일러 정리의 특수형</td></tr>
+              <tr><td>Euler theorem(오일러 정리)</td><td>일반 mod에서의 주기</td><td>\(M^{ed}\equiv M\) 정당성의 뼈대</td></tr>
+              <tr><td>Miller-Rabin(밀러-라빈)</td><td>확률적 소수 판정</td><td>큰 소수 후보를 빠르게 찾음</td></tr>
+            </table></div>
+            <div class="callout">예: gcd(18,300)=\(2^1{\cdot}3^1{\cdot}5^0=6\). \(\phi(37)=36\), \(\phi(21)=12\), \(3^4=81\equiv1\bmod10\).</div>
           </div>
           <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>① <b>φ(21) 계산</b>: 21=3·7(둘 다 소수) → φ(21)=(3−1)(7−1)=2·6=<b>12</b> (서로소: 1,2,4,5,8,10,11,13,16,17,19,20 — 12개 ✓). ② <b>Euler 정리 검산</b>: gcd(3,10)=1, φ(10)=4 → \(3^4=81=80+1\equiv\mathbf{1}\bmod10\) ✓. ③ <b>gcd(18,300)</b>: 18=2·3², 300=2²·3·5² → 공통 최소지수 \(2^1{\cdot}3^1=\mathbf{6}\).</div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">Fermat 정리는 <b>gcd(a,p)=1</b> 필요. pseudo-prime(일부 합성수)도 Fermat 성질 만족 → Miller-Rabin로 확률적 보완.</div></div>
+          <div class="field"><span class="lbl">⚠️ Common Trap(흔한 함정)</span><div class="trap">Fermat theorem(페르마 소정리)는 <b>gcd(a,p)=1</b> 조건이 빠지면 틀릴 수 있다. 또 Fermat 검사만으로 소수 판정을 끝내면 pseudoprime(위장 합성수)에 속을 수 있다.</div></div>
           <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge mid">본강의 출제</span></span>① <b>φ(pq)=(p−1)(q−1) 계산</b>, ② Fermat/Euler 정리 적용, ③ Miller-Rabin 절차·확률, ④ 이산로그 난해성.</div>
-          <div class="field"><span class="lbl">🔗 연결</span>응용 → <a onclick="goNode('C18')">C18(Diffie-Hellman, 이산로그)</a>, <a onclick="goNode('C19')">C19(RSA, Euler 정리가 정당성 핵심)</a>.</div>
+          <div class="field"><span class="lbl">🔗 Link(연결)</span>응용 → <a onclick="goNode('C18')">C18(Diffie-Hellman, 이산로그)</a>, <a onclick="goNode('C19')">C19(RSA, Euler 정리가 정당성 핵심)</a>.</div>
         </div>
       </details>
 
@@ -1307,22 +1261,23 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
           <span class="chev">▶</span>
         </summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 한 줄 직관</span>공개키로 잠그면 개인키로만 열린다. RSA는 "<b>큰 합성수 n의 인수분해가 어렵다</b>"는 사실 위에, Euler 정리로 암복호가 서로 역이 되도록 설계한 것.</div>
-          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span>
-            <p>대칭키(같은 열쇠로 잠그고 열기)에는 치명적 문제가 있다 — <b>열쇠를 어떻게 안전하게 건네지?</b> RSA는 발상을 뒤집는다. 잠그는 열쇠(public key, 공개키)는 온 세상에 뿌려도 되고, 여는 열쇠(private key, 개인키)만 나 혼자 갖는다. 시험은 이 RSA의 <b>키 생성 전 과정(\(n,\phi,e,d\))</b>·암복호 계산·그리고 <b>"왜 복호가 암호의 정확한 역인가"를 Euler 정리로 증명</b>하는 것을 한 묶음으로 묻는다.</p>
-            <p>직관은 자물쇠 우편함이다. 누구나 내 우편함에 편지를 <b>넣을</b> 수는 있지만(공개키로 잠금), <b>꺼내는</b> 건 열쇠 가진 나뿐이다(개인키로 복호). 공개키를 아무리 들여다봐도 개인키를 못 만든다 — 그 사이를 가르는 게 인수분해의 어려움이다.</p>
-            <p>비유는 <b>한 방향으로만 도는 회전문(trap-door one-way function)</b>이다. 들어가긴 쉽지만(곱셈·\(M^e\)) 거꾸로 나오긴 사실상 불가능한데, 단 <b>비밀 통로(trap-door=\(\phi(n)\)에서 얻은 \(d\))</b>를 아는 사람만 쉽게 되돌아온다. <b>이 비유가 깨지는 지점</b>: 회전문이 진짜로 한 방향인 건 \(n\)이 충분히 클 때(예: 1024비트)뿐 — 작은 \(n\)은 인수분해가 금방 되어 통로가 뚫린다. 즉 안전성은 절대적이 아니라 <b>계산량 가정</b>에 기댄다.</p>
-            <p>정의로 옮기면, public/private 키 쌍은 <b>trap-door one-way function</b>이어야 한다(정방향 easy, 역방향 infeasible, 단 trap-door 정보를 알면 역방향도 easy). 6요건: 키생성·암호·복호는 easy, 개인키 추론·평문 복구는 infeasible, 적용 순서 무관. 키 생성: 소수 \(p,q\) → \(n=pq\) → \(\phi(n)=(p-1)(q-1)\) → \(e\)(\(\gcd(e,\phi)=1\)) → \(d\equiv e^{-1}\bmod\phi\)(확장 유클리드). 암호 \(C=M^e\bmod n\), 복호 \(M=C^d\bmod n\).</p>
-            <p>정당성 메커니즘(복호가 암호의 역임)을 층층이 보면 C17의 Euler 정리가 그대로 뼈대다. <b>(설계 층)</b> \(d\)를 \(ed\equiv1\pmod{\phi(n)}\)이 되게 잡았으니 정수 \(k\)로 \(ed=k\phi(n)+1\). <b>(전개 층)</b> 복호 결과 \(C^d=M^{ed}=M^{k\phi(n)+1}=(M^{\phi(n)})^k\cdot M\). <b>(Euler 층)</b> Euler 정리 \(M^{\phi(n)}\equiv1\pmod n\) ⇒ \((1)^k\cdot M=M\). <b>(복귀 층)</b> 따라서 \(M'=M\) — 원문 복귀. <b>(보안 층)</b> 공격자가 \(d\)를 알려면 \(\phi(n)=(p-1)(q-1)\)이 필요하고, 그러려면 \(n\)을 소인수분해해야 하는데 그게 어렵다. 한 문장: <b>\(e\)제곱(암호)과 \(d\)제곱(복호)을 합치면 \(M^{ed}\)인데, \(ed\equiv1\bmod\phi\)로 잡아 Euler 정리가 \(M^{ed}\equiv M\)을 보장 — 정수론이 곧 정당성이자 보안이다.</b></p>
+          <div class="field"><span class="lbl">🧱 5-Layer Build-Up(5단 빌드업) — RSA(Public-Key Cryptosystem, 공개키 암호계)</span>
+            <div class="layer-grid">
+              <div class="layer-card"><b>Layer 1 Hook(왜 중요한가)</b><br>RSA는 "열쇠를 공개해도 안전한 암호"라는 아이디어를 처음으로 실용화한 대표 공개키 암호(public-key cryptosystem)다.</div>
+              <div class="layer-card"><b>Layer 2 Intuition(직관)</b><br>곱하기는 쉽지만 인수분해는 어렵다. 이 비대칭 위에 "암호화 지수 \(e\)"와 "복호 지수 \(d\)"를 맞물리게 설계하면 공개키로 잠근 것을 개인키만 열 수 있다.</div>
+              <div class="layer-card"><b>Layer 3 Analogy(비유와 한계)</b><br>누구나 넣을 수 있는 우체통(slot)은 공개키, 열쇠는 개인키라고 생각하면 된다. 한계: 실제 RSA는 단순 제곱만 쓰지 않고 padding, side-channel 방어, 인증서 체계가 함께 필요하므로 이 비유는 핵심 개념만 설명한다.</div>
+              <div class="layer-card"><b>Layer 4 Definition(정의)</b><br><b>RSA</b>는 두 소수 \(p,q\)로 \(n=pq\), \(\phi(n)=(p-1)(q-1)\)를 만들고, \(gcd(e,\phi(n))=1\)인 공개 지수 \(e\)와 \(ed\equiv1\bmod\phi(n)\)을 만족하는 비밀 지수 \(d\)를 잡는 공개키 암호다. 공개키(public key)는 \((e,n)\), 개인키(private key)는 \((d,n)\)이다. 보안 직관은 trap-door one-way function(덫문 단방향 함수)이며, 정당성은 Euler theorem(오일러 정리)에서 나온다.</div>
+              <div class="layer-card"><b>Layer 5 Mechanism(어떻게 작동하나)</b><br>1. 큰 소수 \(p,q\)를 고른다.<br>2. \(n=pq\), \(\phi(n)=(p-1)(q-1)\)를 계산한다.<br>3. \(e\)를 \(\phi(n)\)과 서로소가 되게 고른다.<br>4. \(d\equiv e^{-1}\bmod\phi(n)\)를 구한다.<br>5. 암호화는 \(C=M^e\bmod n\), 복호화는 \(M=C^d\bmod n\).<br>6. \(ed=k\phi(n)+1\)이므로 \(M^{ed}\equiv M\)가 되어 원문이 복원된다.</div>
+            </div>
           </div>
-          <div class="field"><span class="lbl">📖 정의 / 요건</span>public/private 키 쌍. <b>trap-door one-way function</b> 필요(한 방향 easy, 역방향 infeasible, 단 trap-door 정보 알면 easy). 6 요건(키생성·암호·복호 easy / private 추론·평문 복구 infeasible / 순서무관). 응용: 암복호(secrecy), 디지털 서명(authentication), 키 교환.</div>
-          <div class="field"><span class="lbl">🧮 수식 (RSA)</span>
+          <div class="field"><span class="lbl">📖 Definition(정의) / Requirement(요건)</span>public/private key pair(공개키/개인키 쌍)와 trap-door one-way function(덫문 단방향 함수)이 필요하다. 응용은 secrecy(기밀성), authentication(인증), digital signature(디지털 서명), key exchange(키 교환)로 이어진다.</div>
+          <div class="field"><span class="lbl">🧮 Formula(수식) — RSA</span>
             <ul>
               <li>키 생성: 소수 p,q → <b>n=pq</b> → <b>φ(n)=(p−1)(q−1)</b> → e (<b>gcd(e,φ(n))=1</b>, 1&lt;e&lt;φ(n)) → <b>d≡e⁻¹ mod φ(n)</b>(확장 유클리드). 공개키 {e,n}, 개인키 {d,n}.</li>
               <li>암호화 \(C=M^e\bmod n\), 복호화 \(M=C^d\bmod n=M^{ed}\bmod n\).</li>
             </ul>
           </div>
-          <div class="field"><span class="lbl">🌍 실세계 시나리오</span>
+          <div class="field"><span class="lbl">🌍 Scenario(실전 장면)</span>
             <div class="scenario">HTTPS 인증서·SSH·PGP 이메일·전자서명이 RSA로 동작한다 — 브라우저는 서버의 <b>공개키 {e,n}</b>로 세션 정보를 암호화하고, 서버만이 <b>개인키 {d}</b>로 복호한다. 누구나 공개키를 가져도 안전한 이유는, d를 알려면 φ(n)=(p−1)(q−1)이 필요하고 그러려면 n을 소인수분해해야 하는데 n=1024비트면 현존 컴퓨터로 불가능하기 때문. <b>왜 암호·복호가 정확히 역이 되나?</b> \(ed\equiv1\bmod\phi(n)\)이 되게 d를 잡으면 \(M^{ed}=M^{k\phi(n)+1}\equiv M\) (Euler 정리) — C17의 정수론이 그대로 정당성의 뼈대. timing attack(복호 시간 누출) 같은 부채널 공격은 blinding으로 막는다.</div>
           </div>
           <div class="field"><span class="lbl">🔍 작동 원리 / 유도 (단계별 ⭐핵심)</span>
@@ -1339,7 +1294,7 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
               <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
             </div>
           </div>
-          <div class="field"><span class="lbl">📊 표·그래프 인사이트 (보안 3공격)</span>
+          <div class="field"><span class="lbl">📊 Comparison Table(비교표) — RSA 핵심 위험과 대응</span>
             <div class="scrollx"><table>
               <tr><th>공격</th><th>대응</th></tr>
               <tr><td>brute force(키 전수)</td><td>키 공간 크게(n=1024 bits)</td></tr>
@@ -1348,10 +1303,9 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
             </table></div>
             <div class="callout">p,q 제약: 길이 비슷·(p−1)(q−1)에 큰 소인수·gcd(p−1,q−1) 작게·d&gt;n^(1/4).</div>
           </div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제</span>위 STEP에서 p=17,q=11로 n,φ,e,d를 구하고 M=88 암복호. 핵심 결과: n=187, φ=160, e=7, d=23, \(88^7\bmod187=11\), \(11^{23}\bmod187=88\).</div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">보안은 결국 <b>인수분해 난도</b>로 귀결(φ나 d를 직접 구하는 것도 인수분해와 동급 난도). e는 φ(n)과 서로소여야 d가 존재.</div></div>
+          <div class="field"><span class="lbl">⚠️ Common Trap(흔한 함정)</span><div class="trap">RSA 보안을 "오일러 정리 자체가 어렵기 때문"이라고 쓰면 틀린다. <b>정당성</b>은 오일러 정리, <b>안전성</b>은 인수분해 난도다. 또 \(gcd(e,\phi(n))=1\)을 빼먹으면 \(d\)가 존재하지 않을 수 있다.</div></div>
           <div class="exam-box"><span class="lbl">📝 시험 포인트 <span class="nbadge mid">본강의 출제</span></span>① <b>RSA 키 생성 전 과정(n,φ,e,d)</b>, ② 암복호 수식, ③ <b>Euler 정리로 정당성 증명</b>, ④ 예제 계산, ⑤ 인수분해=보안 근거, ⑥ trap-door one-way function.</div>
-          <div class="field"><span class="lbl">🔗 연결</span>선행 <a onclick="goNode('C17')">C17</a>. 다음 → <a onclick="goNode('C20')">C20(서명/PKI)</a>.</div>
+          <div class="field"><span class="lbl">🔗 Link(연결)</span>선행 <a onclick="goNode('C17')">C17</a>. 다음 → <a onclick="goNode('C20')">C20(서명/PKI)</a>.</div>
         </div>
       </details>
 
@@ -1415,9 +1369,9 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
         <div class="qa-q"><span class="qa-type">증명</span><span>Q3. 임의의 비교정렬은 최악의 경우 \(\Omega(n\lg n)\) 비교가 필요함을 증명하라(Theorem 8.1). <span style="color:var(--muted);font-weight:400">(summary PDF16 p.19~23 ⭐高)</span></span>
           <button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
         <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span>비교정렬을 <b>결정 트리</b>(full binary tree)로 모델 — 잎=출력 순열, 내부노드=비교, 트리 높이 h=최악 비교 횟수. (1) 정렬은 \(n!\)개 순열을 모두 구별해야 하므로 <b>잎 수 ≥ n!</b>. (2) 높이 h 이진트리의 잎 수 ≤ \(2^h\) ⇒ \(n!\le 2^h\). (3) 양변 lg: \(\lg(n!)\le h\). (4) Stirling(식 3.19) \(\lg(n!)=\Theta(n\lg n)\) ⇒ \(h=\Omega(n\lg n)\). ∎</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>① 결정트리 모델 정의(잎=순열, 높이=비교수) ② 잎 \(\ge n!\) ③ 잎 \(\le 2^h\) ⇒ \(n!\le2^h\) ④ \(\lg(n!)=\Theta(n\lg n)\)로 마무리. counting/radix가 이 하한을 "비교 모델 밖"이라 우회함을 덧붙이면 보너스.</div>
-          <div class="field"><span class="lbl">⚠️ 흔한 실수</span><div class="trap">① 잎 수를 \(2^n\)으로 적음 — <b>\(n!\)</b>가 맞다(구별할 순열 수). ② "\(O(n\lg n)\)을 증명하라"로 착각 — 이건 <b>하한 \(\Omega\)</b>(아무리 똑똑해도 이만큼은 필요)다. ③ counting/radix가 하한을 "위반"한다고 씀 — 위반이 아니라 <b>비교 모델 밖이라 적용 대상이 아님</b>. ④ Stirling 없이 \(\lg(n!)\le n\lg n\)만 보이고 끝냄 — \(\Theta\)(양방향)가 필요.</div></div>
+          <div class="field"><span class="lbl">✅ 모범답안 full-text(완성형 서술)</span>비교정렬(comparison sort)을 결정트리(decision tree)로 모델링하자. 내부 노드는 원소 두 개의 비교, 잎은 최종 출력 순열, 루트에서 잎까지의 경로 길이는 그 입력에 대한 비교 횟수이며 트리 높이 \(h\)는 최악 비교 횟수이다. 정렬 알고리즘은 서로 다른 입력 순열 \(n!\)개를 모두 구별해야 하므로 결정트리는 적어도 \(n!\)개의 잎을 가져야 한다. 한편 높이 \(h\)인 이진트리의 잎 수는 최대 \(2^h\)이므로 \(n!\le 2^h\)가 성립한다. 양변에 \(\lg\)를 취하면 \(\lg(n!)\le h\)이고, Stirling 근사로 \(\lg(n!)=\Theta(n\lg n)\)이므로 결국 \(h=\Omega(n\lg n)\)이다. 따라서 임의의 비교정렬은 최악의 경우 \(\Omega(n\lg n)\)번 이상의 비교를 필요로 한다. 또한 counting sort나 radix sort는 비교 모델 밖에서 동작하므로 이 하한의 직접 대상이 아님을 덧붙일 수 있다.</div>
+          <div class="field"><span class="lbl">📊 비교표</span><div class="scrollx"><table><tr><th>구분</th><th>비교정렬</th><th>비비교정렬</th></tr><tr><td>정보 획득 방식</td><td>비교 결과 yes/no</td><td>키 값 자체 사용</td></tr><tr><td>하한</td><td>\(\Omega(n\lg n)\)</td><td>직접 적용 안 됨</td></tr><tr><td>예</td><td>merge, heap, quick</td><td>counting, radix</td></tr></table></div></div>
+          <div class="field"><span class="lbl">⚠️ 흔한 실수</span><div class="trap">잎 수가 \(n\)개라고 쓰는 실수가 많다. 정확히는 <b>\(n!\)개 순열</b>를 구별해야 한다. 또 이 하한을 "모든 정렬"에 대한 하한이라고 쓰면 틀리고, <b>비교정렬 모델</b>에 대한 하한이라고 써야 한다.</div></div>
           <div style="color:var(--muted);font-size:.85rem">연결 노드: <a onclick="goNode('C6')">C6</a></div>
         </div>
       </div>
@@ -1426,9 +1380,9 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
         <div class="qa-q"><span class="qa-type">증명</span><span>Q4. MST의 cut property(Theorem 23.1)를 진술하고 교환 논법으로 증명하라. <span style="color:var(--muted);font-weight:400">(PDF11 + summary PDF16 p.53~58 ⭐高)</span></span>
           <button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
         <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span><b>진술</b> — A가 어떤 MST에 포함, cut (S,V−S)가 A를 respect(A의 간선이 cut을 cross 안 함), (u,v)가 그 cut의 light edge(최소 가중)이면 (u,v)는 A에 safe. <b>증명</b>: A⊆MST T. T가 (u,v)를 안 가지면, T에 (u,v)를 더해 생긴 사이클의 경로 p 위에 cut을 cross하는 간선 (x,y)가 존재. \(T'=T-\{(x,y)\}\cup\{(u,v)\}\)는 다시 트리이고, (u,v)가 light이라 \(w(u,v)\le w(x,y)\) ⇒ \(w(T')\le w(T)\) ⇒ T'도 MST. \(A\cup\{(u,v)\}\subseteq T'\)이므로 (u,v) safe. ∎</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>① respect·light·safe 정의 ② (u,v) 추가→사이클→경로 p의 cross 간선 (x,y) 존재 ③ 교환 \(T'\) 구성 ④ \(w(u,v)\le w(x,y)\)로 \(w(T')\le w(T)\) 비용 비교. Corollary 23.2(Prim/Kruskal 근거) 언급 보너스.</div>
-          <div class="field"><span class="lbl">⚠️ 흔한 실수</span><div class="trap">① light edge를 "그래프 전체의 최소 간선"으로 씀 — <b>그 cut을 cross하는 것 중</b> 최소다. ② 교환 간선 \((x,y)\)가 "반드시 존재"하는 이유를 안 밝힘 — \((u,v)\)가 cut을 cross하니 사이클 경로에도 cross하는 간선이 있어야 한다(채점 핵심). ③ \(w(T')\le w(T)\)만 보이고 멈춤 — \(T\)가 MST였으므로 \(T'\)도 MST임을 명시해야 safe 결론이 닫힌다. ④ respect 정의를 빠뜨려 cut과 \(A\)의 관계를 흐림.</div></div>
+          <div class="field"><span class="lbl">✅ 모범답안 full-text(완성형 서술)</span>정리의 진술은 다음과 같다. 간선 집합 \(A\)가 어떤 MST의 부분집합이고, cut \((S,V-S)\)가 \(A\)를 respect하며, 간선 \((u,v)\)가 그 cut을 cross하는 light edge라면 \((u,v)\)는 \(A\)에 safe하다. 이를 교환 논법(exchange argument)으로 증명한다. \(A\subseteq T\)인 어떤 MST \(T\)를 잡자. 만약 \(T\)가 이미 \((u,v)\)를 포함하면 바로 safe하다. 따라서 \(T\)가 \((u,v)\)를 포함하지 않는 경우만 보자. \(T\)는 트리이므로 \(u\)와 \(v\) 사이의 유일한 경로 \(p\)가 존재하고, 여기에 \((u,v)\)를 더하면 하나의 사이클이 생긴다. \((u,v)\)는 cut을 cross하므로 경로 \(p\) 위에도 같은 cut을 cross하는 간선 \((x,y)\)가 적어도 하나 존재한다. 이제 \(T'=T-\{(x,y)\}\cup\{(u,v)\}\)를 만들면 사이클 하나를 끊은 것이므로 다시 spanning tree가 된다. 또한 \((u,v)\)는 light edge이므로 \(w(u,v)\le w(x,y)\), 따라서 \(w(T')\le w(T)\)이다. 그런데 \(T\)가 이미 MST였으므로 \(T'\)도 MST여야 한다. 그리고 \(A\)의 간선은 cut을 cross하지 않으므로 \((x,y)\notin A\), 따라서 \(A\cup\{(u,v)\}\subseteq T'\)가 된다. 결국 \((u,v)\)는 \(A\)에 safe하다. 이것이 cut property이며 Prim과 Kruskal의 정당성 근거가 된다.</div>
+          <div class="field"><span class="lbl">📊 비교표</span><div class="scrollx"><table><tr><th>용어</th><th>뜻</th><th>증명에서 역할</th></tr><tr><td>respect</td><td>\(A\)의 간선이 cut을 cross하지 않음</td><td>\((x,y)\notin A\) 보장</td></tr><tr><td>light edge</td><td>cut을 cross하는 최소 가중 간선</td><td>\(w(u,v)\le w(x,y)\)</td></tr><tr><td>safe edge</td><td>더해도 MST 부분집합 유지</td><td>그리디 선택 정당화</td></tr></table></div></div>
+          <div class="field"><span class="lbl">⚠️ 흔한 실수</span><div class="trap">light edge를 "그래프 전체의 최소 간선"으로 쓰면 틀린다. 또한 \(T'\)가 트리인 이유와 \(A\cup\{(u,v)\}\subseteq T'\)를 분리해서 적지 않으면 논증이 비어 보인다.</div></div>
           <div style="color:var(--muted);font-size:.85rem">연결 노드: <a onclick="goNode('C14')">C14</a></div>
         </div>
       </div>
@@ -1437,9 +1391,9 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
         <div class="qa-q"><span class="qa-type">증명</span><span>Q5. Dijkstra에서 정점 u가 S에 추가될 때 \(d[u]=\delta(s,u)\)임을 증명하라. 왜 음수 간선이면 깨지는가? <span style="color:var(--muted);font-weight:400">(PDF13 본강의)</span></span>
           <button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
         <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span>비음수 가중 가정. 모순 가정 — 처음으로 \(d[u]&gt;\delta(s,u)\)인 u가 EXTRACT-MIN된다 하자. s→u 최단경로가 S를 떠나는 첫 간선 (x,y)(x∈S, y∉S). x가 이미 확정이라 RELAX로 \(d[y]=\delta(s,y)\). 비음수라 \(\delta(s,y)\le\delta(s,u)&lt;d[u]\) ⇒ \(d[y]&lt;d[u]\). 그러면 EXTRACT-MIN은 y를 먼저 뽑았어야 함 → 모순. ∴ \(d[u]=\delta(s,u)\). <b>음수 간선</b>: \(\delta(s,y)\le\delta(s,u)\)가 무너져(이후 간선이 음수면 더 줄 수 있음) 그리디 확정이 틀림.</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>① 모순 가정 세우기 ② 경계 간선 (x,y)·\(d[y]=\delta(s,y)\) ③ 비음수로 \(d[y]&lt;d[u]\) 부등식 ④ EXTRACT-MIN 모순 ⑤ 음수면 부등식 붕괴 설명.</div>
-          <div class="field"><span class="lbl">⚠️ 흔한 실수</span><div class="trap">① 비음수 가정을 안 쓰고 증명 — \(\delta(s,y)\le\delta(s,u)\)가 <b>전적으로 비음수에서 나오므로</b> 빠지면 증명이 성립 안 함. ② "음수 간선이 있으면 무한 루프"라고 적음 — 문제는 무한 루프가 아니라 <b>그리디 확정이 틀린 값을 확정</b>하는 것(음수 사이클이 있어야 \(-\infty\)). ③ 경계 간선 \((x,y)\)를 잡지 않고 막연히 "더 짧은 길이 있다"로 얼버무림 — \(S\)를 떠나는 첫 간선을 콕 집어야 \(d[y]=\delta(s,y)\)가 보장된다. ④ Bellman-Ford와 혼동해 \(|V|-1\) 패스를 끌어옴.</div></div>
+          <div class="field"><span class="lbl">✅ 모범답안 full-text(완성형 서술)</span>Dijkstra 알고리즘의 정당성은 모든 간선 가중치가 비음수라는 가정 위에서 증명된다. \(u\)가 EXTRACT-MIN으로 선택되어 확정 집합 \(S\)에 들어가는 순간 \(d[u]=\delta(s,u)\)임을 보이자. 반대로 처음으로 이 성질이 깨지는 정점 \(u\)가 존재한다고 가정하자. 그러면 \(d[u]&gt;\delta(s,u)\)이다. source \(s\)에서 \(u\)로 가는 실제 최단경로를 보았을 때, 그 경로가 \(S\)를 떠나는 첫 간선을 \((x,y)\)라 두면 \(x\in S\), \(y\notin S\)이다. \(x\)는 이미 이전에 확정되었으므로 그 시점까지의 relaxation에 의해 \(d[y]=\delta(s,y)\)가 성립한다. 이제 모든 가중치가 비음수이므로 최단경로 상에서 \(y\)까지의 거리는 \(u\)까지의 거리보다 클 수 없어서 \(\delta(s,y)\le \delta(s,u)\)이다. 따라서 \(d[y]=\delta(s,y)\le \delta(s,u)&lt;d[u]\)가 된다. 그런데 \(y\)는 아직 미확정 정점이므로, EXTRACT-MIN은 \(u\)보다 \(y\)를 먼저 뽑았어야 한다. 이는 \(u\)가 선택되었다는 사실과 모순이다. 따라서 모순 가정이 틀렸고, \(u\)가 확정될 때 \(d[u]=\delta(s,u)\)가 성립한다. 반면 음수 간선이 있으면 \(\delta(s,y)\le\delta(s,u)\)라는 비교가 무너질 수 있어서, 나중에 음수 간선을 거쳐 \(u\)의 거리가 더 작아지는 경우가 생긴다. 그래서 Dijkstra의 그리디 확정은 음수 간선에서 안전하지 않다.</div>
+          <div class="field"><span class="lbl">📊 비교표</span><div class="scrollx"><table><tr><th>항목</th><th>Dijkstra</th><th>Bellman-Ford</th></tr><tr><td>음수 간선</td><td>불가</td><td>가능</td></tr><tr><td>핵심 아이디어</td><td>greedy EXTRACT-MIN</td><td>|V|−1회 전체 RELAX</td></tr><tr><td>복잡도</td><td>O((V+E)lgV)</td><td>O(VE)</td></tr></table></div></div>
+          <div class="field"><span class="lbl">⚠️ 흔한 실수</span><div class="trap">"음수 사이클만 없으면 Dijkstra 가능"이라고 쓰면 틀린다. <b>음수 간선 하나만 있어도</b> 정당성 증명이 깨질 수 있다. 또한 \(d[y]=\delta(s,y)\)가 왜 성립하는지, 즉 \(x\)가 이미 확정되었다는 연결고리를 써야 한다.</div></div>
           <div style="color:var(--muted);font-size:.85rem">연결 노드: <a onclick="goNode('C15')">C15</a></div>
         </div>
       </div>
@@ -1448,9 +1402,9 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
         <div class="qa-q"><span class="qa-type">증명</span><span>Q6. RSA 복호가 암호의 역임을(\(M^{ed}\equiv M\bmod n\)) Euler 정리로 증명하라. <span style="color:var(--muted);font-weight:400">(PDF15 본강의)</span></span>
           <button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
         <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span>키 생성에서 \(ed\equiv1\bmod\phi(n)\)이므로 \(ed=k\phi(n)+1\) (정수 k). 따라서 \(M^{ed}=M^{k\phi(n)+1}=(M^{\phi(n)})^k\cdot M\). Euler 정리(gcd(M,n)=1일 때 \(M^{\phi(n)}\equiv1\bmod n\)) ⇒ \(\equiv 1^k\cdot M=M\bmod n\). (n=pq일 때는 일반화 형태 \(M^{k\phi(n)+1}\equiv M\bmod n\)이 M이 p나 q의 배수여도 성립.) ∴ 복호 \(C^d=M^{ed}\equiv M\). ∎</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>① \(ed\equiv1\bmod\phi\) ⇒ \(ed=k\phi(n)+1\) ② 지수 분해 \((M^{\phi})^k M\) ③ Euler 정리 적용 ④ \(\equiv M\) 결론. 보안=인수분해 난도 연결 보너스.</div>
-          <div class="field"><span class="lbl">⚠️ 흔한 실수</span><div class="trap">① \(ed\equiv1\bmod n\)으로 적음 — <b>\(\bmod\,\phi(n)\)</b>가 맞다(지수는 \(\phi\) 세계에서 1이어야 함). ② Euler 대신 Fermat(\(a^{p-1}\equiv1\))을 그대로 씀 — \(n=pq\)는 소수가 아니므로 일반화인 <b>Euler 정리</b> \(M^{\phi(n)}\equiv1\)이 필요. ③ \(ed=k\phi+1\)에서 \(k\)를 1로 단정 — 일반 정수 \(k\)로 둬야 한다. ④ \(\gcd(M,n)=1\) 조건을 언급 안 함(보너스로는 \(M\)이 \(p,q\) 배수여도 \(M^{k\phi+1}\equiv M\)이 성립함을 덧붙이면 완벽).</div></div>
+          <div class="field"><span class="lbl">✅ 모범답안 full-text(완성형 서술)</span>RSA에서 공개지수 \(e\)와 개인지수 \(d\)는 \(ed\equiv1\bmod\phi(n)\)를 만족하도록 선택된다. 따라서 어떤 정수 \(k\)가 존재하여 \(ed=k\phi(n)+1\)이라 쓸 수 있다. 이제 평문 \(M\)을 암호화한 뒤 다시 복호하면 \(C=M^e\bmod n\)이므로 \(C^d\equiv M^{ed}\bmod n\)이다. 여기에 \(ed=k\phi(n)+1\)을 대입하면 \(M^{ed}=M^{k\phi(n)+1}=(M^{\phi(n)})^k\cdot M\)이 된다. Euler 정리에 의해 \(gcd(M,n)=1\)이면 \(M^{\phi(n)}\equiv1\bmod n\)이므로, \(M^{ed}\equiv 1^k\cdot M\equiv M\bmod n\)이다. 따라서 복호 결과는 원래 평문 \(M\)과 같아져 RSA 복호가 암호의 역임이 증명된다. \(n=pq\)인 RSA 문맥에서는 일반화된 형태를 통해 \(M\)이 \(p\) 또는 \(q\)의 배수인 경우까지 포함해도 결론 \(M^{ed}\equiv M\bmod n\)이 유지된다. 즉 RSA의 <b>정당성</b>은 Euler 정리에서 나오고, <b>안전성</b>은 \(n\)의 인수분해가 어렵다는 점에서 나온다.</div>
+          <div class="field"><span class="lbl">📊 비교표</span><div class="scrollx"><table><tr><th>구분</th><th>정당성</th><th>안전성</th></tr><tr><td>근거</td><td>Euler theorem</td><td>factorization hardness(인수분해 난도)</td></tr><tr><td>시험에서 써야 할 말</td><td>\(ed=k\phi(n)+1\), \(M^{ed}\equiv M\)</td><td>\(n\to p,q\) 역산이 어려움</td></tr></table></div></div>
+          <div class="field"><span class="lbl">⚠️ 흔한 실수</span><div class="trap">오일러 정리로 <b>정당성</b>을 보인 뒤 곧바로 "그래서 안전하다"라고 넘기면 논점이 섞인다. 시험에서는 정당성과 안전성을 반드시 분리해서 써야 한다. 또 \(ed\equiv1\bmod\phi(n)\)에서 \(ed=\phi(n)+1\)로 단정하면 틀리고, 정확히는 \(ed=k\phi(n)+1\)이다.</div></div>
           <div style="color:var(--muted);font-size:.85rem">연결 노드: <a onclick="goNode('C19')">C19</a>, <a onclick="goNode('C17')">C17</a></div>
         </div>
       </div>
@@ -1704,422 +1658,321 @@ B5. 정수론·암호         C17 ──┬─&gt; C18
   window.addEventListener('load',initTree);
   window.addEventListener('resize',()=>{ clearTimeout(_treeRT); _treeRT=setTimeout(()=>{ if(typeof d3!=='undefined')renderTree(); },200); });
 
-  /* ===== 개념 시뮬레이션 (vanilla, 오프라인) ===== */
-  function makeStepper(root,frames){
-    let i=0,timer=null;
-    const stage=root.querySelector('.sim-stage'),
-          step=root.querySelector('.sim-step'),
-          desc=root.querySelector('.sim-desc'),
-          playBtn=root.querySelector('.sim-play');
-    function show(){
-      frames[i].render(stage);
-      desc.textContent=frames[i].desc;
-      step.textContent='단계 '+i+' / '+(frames.length-1);
-    }
-    root.querySelector('.sim-prev').onclick=()=>{ if(i>0){i--;show();} };
-    root.querySelector('.sim-next').onclick=()=>{ if(i<frames.length-1){i++;show();} };
-    playBtn.onclick=function(){
-      if(timer){ clearInterval(timer); timer=null; this.textContent='▶ 자동'; return; }
-      this.textContent='⏸ 정지';
-      timer=setInterval(()=>{
-        if(i<frames.length-1){ i++; show(); }
-        else{ clearInterval(timer); timer=null; playBtn.textContent='▶ 자동'; }
-      },800);
-    };
-    show();
+  /* ===== canvas 알고리즘 애니메이션(v1.1, requestAnimationFrame only) ===== */
+  const algoPlayersV11=[];
+  function clamp01(x){ return Math.max(0, Math.min(1, x)); }
+  function lerp(a,b,t){ return a + (b-a)*t; }
+  function easeInOutCubic(t){ return t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
+  function drawRoundRect(ctx,x,y,w,h,r){
+    const rr=Math.min(r,w/2,h/2);
+    ctx.beginPath();
+    ctx.moveTo(x+rr,y);
+    ctx.arcTo(x+w,y,x+w,y+h,rr);
+    ctx.arcTo(x+w,y+h,x,y+h,rr);
+    ctx.arcTo(x,y+h,x,y,rr);
+    ctx.arcTo(x,y,x+w,y,rr);
+    ctx.closePath();
   }
-
-  /* 정렬: 삽입 정렬 막대 스테퍼 */
-  function buildSortFrames(){
-    const init=[5,2,8,1,4,7,3];
-    const frames=[]; const a=init.slice();
-    const maxV=Math.max(...init);
-    function snap(arr,marks,sortedUpto,desc){
-      const copy=arr.slice();
-      frames.push({desc,render(stage){
-        stage.innerHTML='';
-        copy.forEach((v,idx)=>{
-          const bar=document.createElement('div');
-          bar.className='bar';
-          if(idx<=sortedUpto) bar.classList.add('sorted');
-          if(marks.cmp&&marks.cmp.includes(idx)) bar.classList.add('cmp');
-          if(marks.swap&&marks.swap.includes(idx)) bar.classList.add('swap');
-          bar.style.height=(28+v/maxV*110)+'px';
-          bar.textContent=v;
-          stage.appendChild(bar);
-        });
-      }});
+  function getCanvasPalette(canvas){
+    const cs=getComputedStyle(canvas);
+    return {
+      panel: cs.getPropertyValue('--panel').trim() || '#161b24',
+      panel2: cs.getPropertyValue('--panel2').trim() || '#1d2531',
+      ink: cs.getPropertyValue('--ink').trim() || '#e7ecf3',
+      muted: cs.getPropertyValue('--muted').trim() || '#9aa7b8',
+      line: cs.getPropertyValue('--line').trim() || '#2a3340',
+      accent: cs.getPropertyValue('--accent').trim() || '#5b9dff',
+      hot: cs.getPropertyValue('--hot').trim() || '#ff6b6b',
+      ok: cs.getPropertyValue('--ok').trim() || '#3ecf8e',
+      warn: cs.getPropertyValue('--warn').trim() || '#ffcf5c'
+    };
+  }
+  function clearCanvas(ctx,canvas,p){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle=p.panel;
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+  }
+  function createCanvasPlayer(opts){
+    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const playBtn=opts.controls.querySelector('[data-action="play"]');
+    const stepBtn=opts.controls.querySelector('[data-action="step"]');
+    const resetBtn=opts.controls.querySelector('[data-action="reset"]');
+    const state={index:reduced?opts.frames.length-1:0,from:reduced?opts.frames.length-1:0,to:reduced?opts.frames.length-1:0,alpha:1,playing:false,raf:0,startTs:0};
+    function updateMeta(alphaOverride){
+      const denom=Math.max(1,opts.frames.length-1);
+      const logical=(state.to===state.from)?state.index:(state.from+(alphaOverride==null?state.alpha:alphaOverride));
+      const pct=Math.round((logical/denom)*100);
+      opts.progressFill.style.width=pct+'%';
+      opts.progressText.textContent=pct+'%';
+      opts.stepText.textContent=Math.min(opts.frames.length-1,Math.round(logical))+' / '+(opts.frames.length-1);
+      opts.desc.textContent=opts.frames[Math.min(opts.frames.length-1,Math.round(logical))].desc + (reduced ? ' (reduced motion)' : '');
     }
-    snap(a,{},-1,'시작: 정렬 안 된 배열 [5,2,8,1,4,7,3]. 첫 원소는 그 자체로 정렬된 구간으로 본다.');
-    for(let j=1;j<a.length;j++){
-      const key=a[j];
-      snap(a,{cmp:[j]},j-1,'패스 '+j+': key='+key+' 를 앞의 정렬된 구간 [0..'+(j-1)+']에 끼워넣는다.');
+    function redraw(alphaOverride){
+      const palette=getCanvasPalette(opts.canvas);
+      clearCanvas(opts.ctx,opts.canvas,palette);
+      const t=state.to===state.from ? 1 : easeInOutCubic(alphaOverride==null ? state.alpha : alphaOverride);
+      opts.render(opts.ctx,opts.canvas,opts.frames[state.from],opts.frames[state.to],t,palette);
+      updateMeta(alphaOverride);
+    }
+    function stop(){
+      state.playing=false;
+      if(state.raf) cancelAnimationFrame(state.raf);
+      state.raf=0;
+      playBtn.textContent='Play';
+    }
+    function jump(index){
+      state.index=index;
+      state.from=index;
+      state.to=index;
+      state.alpha=1;
+      redraw(1);
+    }
+    function tick(ts){
+      if(!state.playing) return;
+      if(!state.startTs) state.startTs=ts;
+      const progress=clamp01((ts-state.startTs)/opts.duration);
+      state.alpha=progress;
+      redraw(progress);
+      if(progress>=1){
+        state.index=state.to;
+        state.from=state.index;
+        if(state.index>=opts.frames.length-1){
+          stop();
+          redraw(1);
+          return;
+        }
+        state.to=state.index+1;
+        state.startTs=ts;
+      }
+      state.raf=requestAnimationFrame(tick);
+    }
+    playBtn.addEventListener('click',function(){
+      if(reduced){ jump(opts.frames.length-1); return; }
+      if(state.playing){ stop(); return; }
+      if(state.index>=opts.frames.length-1) jump(0);
+      state.from=state.index;
+      state.to=Math.min(opts.frames.length-1,state.index+1);
+      state.alpha=0;
+      state.startTs=0;
+      state.playing=true;
+      playBtn.textContent='Pause';
+      state.raf=requestAnimationFrame(tick);
+    });
+    stepBtn.addEventListener('click',function(){ stop(); jump(Math.min(opts.frames.length-1,state.index+1)); });
+    resetBtn.addEventListener('click',function(){ stop(); jump(0); });
+    redraw(1);
+    const player={ redraw:()=>redraw(1) };
+    algoPlayersV11.push(player);
+    return player;
+  }
+  function buildSortFramesV11(){
+    const seed=[5,2,8,1,4,7,3].map((value,index)=>({id:'bar'+index,value}));
+    const arr=seed.slice(), frames=[];
+    function snapshot(items,meta){
+      frames.push({ items:items.map((item,slot)=>({id:item.id,value:item.value,slot})), compare:meta.compare||[], moving:meta.moving||[], sortedUntil:meta.sortedUntil==null?-1:meta.sortedUntil, desc:meta.desc });
+    }
+    snapshot(arr,{desc:'초기 상태. 삽입 정렬은 왼쪽 정렬 구간을 한 칸씩 확장한다.',sortedUntil:0});
+    for(let j=1;j<arr.length;j++){
+      const key=arr[j];
+      snapshot(arr,{compare:[key.id],sortedUntil:j-1,desc:'패스 '+j+'. key='+key.value+'의 삽입 위치를 찾는다.'});
       let k=j-1;
-      while(k>=0 && a[k]>key){
-        snap(a,{cmp:[k,k+1]},j-1,'비교: a['+k+']='+a[k]+' > key='+key+' → 한 칸 오른쪽으로 민다.');
-        a[k+1]=a[k];
-        snap(a,{swap:[k,k+1]},j-1,'이동: a['+k+'] 값을 a['+(k+1)+']로 복사. key 자리를 비운다.');
+      while(k>=0 && arr[k].value>key.value){
+        snapshot(arr,{compare:[arr[k].id,key.id],sortedUntil:j-1,desc:'비교: '+arr[k].value+' > '+key.value+'. 큰 값을 오른쪽으로 민다.'});
+        arr[k+1]=arr[k];
+        snapshot(arr,{moving:[arr[k+1].id],sortedUntil:j-1,desc:'이동: 값 '+arr[k+1].value+'가 한 칸 오른쪽 슬롯으로 이동한다.'});
         k--;
       }
-      a[k+1]=key;
-      snap(a,{swap:[k+1]},j,'삽입: key='+key+' 를 a['+(k+1)+']에 놓는다. 정렬 구간이 [0..'+j+']로 확장.');
+      arr[k+1]=key;
+      snapshot(arr,{moving:[key.id],sortedUntil:j,desc:'삽입: key='+key.value+'를 index '+(k+1)+'에 놓는다.'});
     }
-    snap(a,{},a.length-1,'완료: 전체 정렬. 최악(역순 입력)이면 매 패스 j번 비교 → 총 Θ(n²).');
+    snapshot(arr,{sortedUntil:arr.length-1,desc:'완료. 모든 막대가 오름차순으로 정렬되었다.'});
     return frames;
   }
-
-  /* DP: LCS 표 채우기 스테퍼 */
-  function buildDPFrames(){
-    const X="ABCB", Y="BDCAB", m=X.length, n=Y.length;
+  function renderSortFrameV11(ctx,canvas,fromFrame,toFrame,t,p){
+    const margin=36, baseY=canvas.height-34, plotH=canvas.height-86, barW=60, gap=22;
+    const ids=[...new Set(fromFrame.items.concat(toFrame.items).map(item=>item.id))];
+    const fromMap=Object.fromEntries(fromFrame.items.map(item=>[item.id,item]));
+    const toMap=Object.fromEntries(toFrame.items.map(item=>[item.id,item]));
+    const maxV=Math.max(...toFrame.items.map(item=>item.value));
+    ctx.fillStyle=p.muted;
+    ctx.font='14px Pretendard, sans-serif';
+    ctx.fillText('Sorting bar slide-morph(정렬 막대 슬라이드 모프)', margin, 24);
+    ids.forEach(id=>{
+      const a=fromMap[id]||toMap[id], b=toMap[id]||fromMap[id];
+      const slot=lerp(a.slot,b.slot,t);
+      const x=margin+slot*(barW+gap);
+      const h=34+(b.value/maxV)*plotH;
+      const y=baseY-h;
+      let fill=p.accent;
+      if((toFrame.compare||[]).includes(id)) fill=p.warn;
+      if((toFrame.moving||[]).includes(id)) fill=p.hot;
+      if((toFrame.sortedUntil||-1)>=b.slot) fill=p.ok;
+      ctx.fillStyle=fill;
+      drawRoundRect(ctx,x,y,barW,h,10);
+      ctx.fill();
+      ctx.fillStyle=(fill===p.warn)?'#3a2c00':(fill===p.ok?'#06231a':'#ffffff');
+      ctx.font='bold 15px Pretendard, sans-serif';
+      ctx.fillText(String(b.value),x+20,y+22);
+    });
+    ctx.strokeStyle=p.line;
+    ctx.beginPath();
+    ctx.moveTo(margin-10,baseY+1);
+    ctx.lineTo(canvas.width-margin+10,baseY+1);
+    ctx.stroke();
+  }
+  function buildDPFramesV11(){
+    const X='ABCB', Y='BDCAB', m=X.length, n=Y.length;
     const c=Array.from({length:m+1},()=>Array(n+1).fill(0));
-    const order=[]; // 채움 순서 좌표 + 설명
-    const frames=[];
-    // base
-    frames.push({fill:[],cur:null,path:[],desc:'경계 조건: 0행과 0열은 모두 0(빈 문자열과의 LCS=0).'});
+    const order=[], frames=[];
+    frames.push({filled:[],current:null,path:[],values:c.map(row=>row.slice()),desc:'경계 조건. 0행과 0열은 모두 0이다.'});
     for(let i=1;i<=m;i++){
       for(let j=1;j<=n;j++){
-        let d;
-        if(X[i-1]===Y[j-1]){ c[i][j]=c[i-1][j-1]+1;
-          d='x'+i+'='+X[i-1]+' = y'+j+'='+Y[j-1]+' (일치) → c['+i+','+j+']=c['+(i-1)+','+(j-1)+']+1='+c[i][j]+'.'; }
-        else{ c[i][j]=Math.max(c[i-1][j],c[i][j-1]);
-          d='x'+i+'='+X[i-1]+' ≠ y'+j+'='+Y[j-1]+' → max(위 '+c[i-1][j]+', 왼 '+c[i][j-1]+')='+c[i][j]+'.'; }
-        order.push({i,j,d});
+        if(X[i-1]===Y[j-1]) c[i][j]=c[i-1][j-1]+1;
+        else c[i][j]=Math.max(c[i-1][j],c[i][j-1]);
+        order.push({i,j});
+        frames.push({filled:order.map(pos=>pos.i+','+pos.j),current:i+','+j,path:[],values:c.map(row=>row.slice()),desc:'셀 c['+i+','+j+'] 계산. '+(X[i-1]===Y[j-1]?'문자 일치 → 대각선+1.':'불일치 → 위/왼쪽 최대.')});
       }
     }
-    // snapshot helper renders current c-state up to step
-    const snap=order.map((o,k)=>{
-      const filled=order.slice(0,k+1).map(p=>p.i+','+p.j);
-      return {fill:filled,cur:o.i+','+o.j,path:[],desc:'셀 c['+o.i+','+o.j+'] 계산 — '+o.d};
-    });
-    snap.forEach(s=>frames.push(s));
-    // backtrack path BCB: cells where match taken
-    const pathCells=[];
-    let pi=m,pj=n;
-    while(pi>0&&pj>0){
-      if(X[pi-1]===Y[pj-1]){ pathCells.push(pi+','+pj); pi--; pj--; }
-      else if(c[pi-1][pj]>=c[pi][pj-1]) pi--; else pj--;
+    let i=m,j=n, path=[];
+    while(i>0 && j>0){
+      if(X[i-1]===Y[j-1]){ path.push(i+','+j); i--; j--; }
+      else if(c[i-1][j]>=c[i][j-1]) i--; else j--;
     }
-    frames.push({fill:order.map(p=>p.i+','+p.j),cur:null,path:pathCells,
-      desc:'완성: c[4,5]=3. 우하에서 역추적(일치 셀=대각선)하면 LCS = BCB (길이 3). 표를 한 번 훑었으니 Θ(mn).'});
-    // renderer
-    function renderTable(stage,fr){
-      let html='<table class="dptable"><tr><th></th><th>∅</th>';
-      for(let j=0;j<n;j++) html+='<th>'+Y[j]+'</th>';
-      html+='</tr>';
-      for(let i=0;i<=m;i++){
-        html+='<tr><th>'+(i===0?'∅':X[i-1])+'</th>';
-        for(let j=0;j<=n;j++){
-          const key=i+','+j;
-          let cls='';
-          if(fr.path&&fr.path.includes(key)) cls+=' path';
-          if(fr.cur===key) cls+=' cur';
-          else if((i===0||j===0)||(fr.fill&&fr.fill.includes(key))) cls+=' fill';
-          const val=(i===0||j===0)?0:(fr.fill&&fr.fill.includes(key)||fr.cur===key?c[i][j]:'');
-          html+='<td class="'+cls.trim()+'">'+val+'</td>';
+    frames.push({filled:order.map(pos=>pos.i+','+pos.j),current:null,path:path,values:c.map(row=>row.slice()),desc:'완성. c[4,5]=3이고 역추적 결과 LCS는 BCB다.'});
+    return frames;
+  }
+  function renderDPFrameV11(ctx,canvas,fromFrame,toFrame,t,p){
+    const X='ABCB', Y='BDCAB', m=X.length, n=Y.length;
+    const cell=42, startX=96, startY=56;
+    ctx.fillStyle=p.muted;
+    ctx.font='14px Pretendard, sans-serif';
+    ctx.fillText('DP table fill(동적 계획 표 채우기)', 26, 26);
+    ctx.font='bold 16px Pretendard, sans-serif';
+    for(let col=0;col<=n;col++) ctx.fillText(col===0?'∅':Y[col-1], startX+col*cell+14, startY-12);
+    for(let row=0;row<=m;row++) ctx.fillText(row===0?'∅':X[row-1], startX-32, startY+row*cell+26);
+    const filled=new Set(toFrame.filled||[]), path=new Set(toFrame.path||[]);
+    for(let row=0;row<=m;row++){
+      for(let col=0;col<=n;col++){
+        const key=row+','+col, x=startX+col*cell, y=startY+row*cell;
+        ctx.fillStyle=p.panel2;
+        ctx.fillRect(x,y,cell,cell);
+        if(row===0 || col===0 || filled.has(key)){
+          ctx.fillStyle='rgba(91,157,255,0.18)';
+          ctx.fillRect(x,y,cell,cell);
         }
-        html+='</tr>';
+        if(toFrame.current===key){
+          ctx.fillStyle='rgba(255,207,92,'+(0.35+0.45*t)+')';
+          ctx.fillRect(x,y,cell,cell);
+        }
+        if(path.has(key)){
+          ctx.strokeStyle=p.ok;
+          ctx.lineWidth=3;
+          ctx.strokeRect(x+1.5,y+1.5,cell-3,cell-3);
+        }
+        ctx.strokeStyle=p.line;
+        ctx.lineWidth=1;
+        ctx.strokeRect(x,y,cell,cell);
+        if(row===0 || col===0 || filled.has(key) || toFrame.current===key){
+          ctx.fillStyle=p.ink;
+          ctx.font='bold 15px Pretendard, sans-serif';
+          ctx.fillText(String(toFrame.values[row][col]), x+15, y+25);
+        }
       }
-      html+='</table>';
-      stage.innerHTML=html;
     }
-    return frames.map(fr=>({desc:fr.desc,render(stage){renderTable(stage,fr);}}));
   }
-
-  window.addEventListener('load',function(){
-    const s1=document.getElementById('sim-sort'); if(s1)makeStepper(s1,buildSortFrames());
-    const s2=document.getElementById('sim-dp'); if(s2)makeStepper(s2,buildDPFrames());
-  });
-
-  /* ===== v1.1: CDN-free 3B1B-style 모핑 애니메이션 엔진 (offline-first) ===== */
-  const algoScene=(function(){
-    const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;  // easeInOutCubic
-    const lerp=(a,b,t)=>a+(b-a)*t;
-    function interp(a,b,t){
-      if(typeof a==='number') return lerp(a,b,t);
-      if(Array.isArray(a)) return a.map((x,i)=>interp(x,b[i],t));
-      if(a&&typeof a==='object'){const o={};for(const k in a)o[k]=interp(a[k],b[k],t);return o;}
-      return t<1?a:b;
-    }
-    // 상태 단계 보간: 연속 기하값만 tween, 이산/인덱스 필드는 목표 단계로 스냅.
-    //  opts.snap : 길이가 변할 수 있는 이산 인덱스 필드(예 cmp/sorted/settled/path) — 목표값으로 즉시 스냅.
-    //  opts.sentinel : 이 값(예 ∞)이 from 또는 to에 있으면 해당 스칼라를 보간하지 말고 스냅.
-    function interpState(from,to,t,opts){
-      opts=opts||{}; const snap=opts.snap||[], inf=opts.sentinel;
-      const o={};
-      for(const k in to){
-        if(snap.indexOf(k)>=0){o[k]=to[k];continue;}               // 이산 필드 → 스냅
-        const a=from[k],b=to[k];
-        if(typeof a==='number'&&typeof b==='number'){
-          o[k]=(inf!=null&&(a>=inf||b>=inf))?b:lerp(a,b,t);          // sentinel 포함 시 스냅
-        } else if(a&&b&&typeof a==='object'&&!Array.isArray(a)){
-          // 거리 맵 등 숫자 객체: 키별로 sentinel-aware lerp
-          const m={};for(const kk in b){const av=a[kk],bv=b[kk];
-            m[kk]=(typeof av==='number'&&typeof bv==='number')
-              ?((inf!=null&&(av>=inf||bv>=inf))?bv:lerp(av,bv,t)):interp(av,bv,t);}
-          o[k]=m;
-        } else o[k]=interp(a,b,t);
-      }
-      return o;
-    }
-    // 테마 변수는 캔버스 자신(body 하위)에서 읽어야 data-theme cascade가 반영된다.
-    function colorOf(el){return (name,fb)=>{const v=getComputedStyle(el).getPropertyValue('--'+name).trim();return v||fb;};}
-    const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function fit(cv){
-      const dpr=window.devicePixelRatio||1, r=cv.getBoundingClientRect();
-      cv.width=Math.max(1,r.width*dpr); cv.height=Math.max(1,r.height*dpr);
-      const ctx=cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
-      return {ctx,w:r.width,h:r.height};
-    }
-    function create(cv,{steps,draw,caption,meter,duration=750,interpOpts}){
-      let i=0,raf=0; const color=colorOf(cv);
-      const root=cv.closest('.vscene');
-      const capEl=root.querySelector('[data-cap]');
-      const metricEl=root.querySelector('.vsc-metric');
-      const fillEl=root.querySelector('.vsc-meter-fill');
-      const stepEl=root.querySelector('[data-stepnum]');
-      const scrub=root.querySelector('[data-scrub]'); if(scrub)scrub.max=steps.length-1;
-      function paintMeter(state){
-        if(!meter) return; const m=meter(state);
-        if(metricEl)metricEl.textContent=m.label;
-        if(fillEl)fillEl.style.width=Math.round(m.frac*100)+'%';
-      }
-      function render(state){const {ctx,w,h}=fit(cv); ctx.clearRect(0,0,w,h); draw(ctx,state,{w,h,color});}
-      // 단계 번호·캡션·메터는 클릭 즉시 목표 인덱스(cur)로 동기화 — 보간 state와 분리.
-      let cur=0;
-      function setMeta(idx){
-        cur=idx;
-        if(capEl&&caption)capEl.textContent=caption(idx);
-        if(stepEl)stepEl.textContent='단계 '+idx+' / '+(steps.length-1);
-        if(scrub)scrub.value=idx;
-        paintMeter(steps[idx]);   // 메터는 항상 목표 단계 값으로 즉시 동기화(옛 from 상태 안 읽음)
-      }
-      function show(idx){i=idx; render(steps[i]); setMeta(i);}
-      function go(idx){
-        idx=Math.max(0,Math.min(steps.length-1,idx));
-        if(reduced||idx===i){i=idx;return show(idx);}
-        cancelAnimationFrame(raf);
-        const from=steps[i],to=steps[idx],t0=performance.now(); setMeta(idx);
-        (function frame(now){
-          const p=Math.min(1,(now-t0)/duration);
-          render(interpState(from,to,ease(p),interpOpts));
-          if(p<1)raf=requestAnimationFrame(frame); else i=idx;
-        })(t0);
-      }
-      const api={next(){go(i+1);},prev(){go(i-1);},go,show,get index(){return i;},len:steps.length};
-      // 컨트롤 배선
-      root.querySelector('[data-next]').onclick=()=>api.next();
-      root.querySelector('[data-prev]').onclick=()=>api.prev();
-      if(scrub)scrub.oninput=e=>api.go(+e.target.value);
-      const playBtn=root.querySelector('[data-play]'); let timer=null;
-      playBtn.onclick=()=>{
-        if(timer){clearInterval(timer);timer=null;playBtn.textContent='▶ 재생';return;}
-        if(i>=steps.length-1)api.go(0);
-        playBtn.textContent='⏸ 일시정지';
-        timer=setInterval(()=>{
-          if(api.index>=steps.length-1){clearInterval(timer);timer=null;playBtn.textContent='▶ 재생';return;}
-          api.next();
-        },1000);
-      };
-      const repaint=()=>show(i);
-      window.addEventListener('resize',repaint);
-      const mo=new MutationObserver(repaint);
-      mo.observe(document.body,{attributes:true,attributeFilter:['data-theme','class']});
-      show(0);
-      return api;
-    }
-    return {create};
-  })();
-
-  /* 씬 ① 병합 정렬 모핑 — 막대 슬라이드 */
-  function buildMergeSortSteps(){
-    const init=[5,2,8,1,4,7,3]; const n=init.length, maxV=Math.max(...init);
-    const steps=[]; const total=n;
-    function push(arr,cmp,sortedSet,note){
-      steps.push({bars:arr.slice(),cmp:cmp?cmp.slice():[],sorted:[...sortedSet],note});
-    }
-    let confirmed=new Set();
-    push(init,[],confirmed,'시작: [5,2,8,1,4,7,3]. 병합 정렬은 반으로 쪼갠 뒤(divide) 정렬된 두 조각을 합치며(merge) 막대를 제자리로 미끄러뜨린다.');
-    // iterative bottom-up merge로 "정렬된 구간이 자라는" 프레임 생성
-    const a=init.slice();
-    for(let width=1;width<n;width*=2){
-      for(let lo=0;lo+width<n;lo+=2*width){
-        const mid=lo+width, hi=Math.min(lo+2*width,n);
-        const left=a.slice(lo,mid), right=a.slice(mid,hi);
-        push(a,[lo,hi-1],confirmed,'폭 '+width+' 병합: 구간 ['+lo+'..'+(hi-1)+']의 두 정렬 조각을 비교하며 합친다.');
-        let li=0,ri=0,k=lo; const merged=[];
-        while(li<left.length&&ri<right.length){ merged.push(left[li]<=right[ri]?left[li++]:right[ri++]); }
-        while(li<left.length)merged.push(left[li++]);
-        while(ri<right.length)merged.push(right[ri++]);
-        for(let t=0;t<merged.length;t++)a[lo+t]=merged[t];
-        confirmed=new Set(confirmed); for(let t=lo;t<hi;t++)confirmed.add(t);
-        push(a,[],confirmed,'합친 결과 정렬 — 막대들이 새 자리로 미끄러진다. 구간 ['+lo+'..'+(hi-1)+'] 정렬 확정.');
-      }
-    }
-    push(a,[],new Set([...Array(n).keys()]),'완료: 전체 정렬. 매 단계 비교는 Θ(n) · 레벨 lg n개 ⇒ 최악 Θ(n lg n). 비교정렬 하한 Ω(n lg n)에 정확히 닿는다(C6).');
-    return {steps,n,maxV,total};
+  function buildDijkstraFramesV11(){
+    return [
+      {settled:[], active:null, updated:[], dist:{s:0,a:'∞',b:'∞',c:'∞',d:'∞'}, desc:'초기화. source s만 0, 나머지는 ∞.'},
+      {settled:['s'], active:['s','a'], updated:['a'], dist:{s:0,a:10,b:'∞',c:'∞',d:'∞'}, desc:'s를 확정하고 s→a를 relax하여 d[a]=10.'},
+      {settled:['s'], active:['s','c'], updated:['c'], dist:{s:0,a:10,b:'∞',c:5,d:'∞'}, desc:'s→c를 relax하여 d[c]=5.'},
+      {settled:['s','c'], active:['c','a'], updated:['a'], dist:{s:0,a:8,b:'∞',c:5,d:'∞'}, desc:'c를 확정하고 c→a를 relax하여 d[a]=8로 감소.'},
+      {settled:['s','c'], active:['c','b'], updated:['b'], dist:{s:0,a:8,b:14,c:5,d:'∞'}, desc:'c→b를 relax하여 d[b]=14.'},
+      {settled:['s','c'], active:['c','d'], updated:['d'], dist:{s:0,a:8,b:14,c:5,d:7}, desc:'c→d를 relax하여 d[d]=7.'},
+      {settled:['s','c','d'], active:null, updated:[], dist:{s:0,a:8,b:14,c:5,d:7}, desc:'d를 확정. 더 줄어드는 간선이 없다.'},
+      {settled:['s','c','d','a'], active:['a','b'], updated:['b'], dist:{s:0,a:8,b:9,c:5,d:7}, desc:'a를 확정하고 a→b를 relax하여 d[b]=9.'},
+      {settled:['s','c','d','a','b'], active:null, updated:[], dist:{s:0,a:8,b:9,c:5,d:7}, desc:'완료. 최단거리: s=0, c=5, d=7, a=8, b=9.'}
+    ];
   }
-
-  /* 씬 ② DP 표 채워짐 모핑 */
-  function buildDPFillSteps(){
-    const X="ABCB",Y="BDCAB",m=X.length,n=Y.length;
-    const c=Array.from({length:m+1},()=>Array(n+1).fill(0));
-    const order=[];
-    for(let i=1;i<=m;i++)for(let j=1;j<=n;j++){
-      let note;
-      if(X[i-1]===Y[j-1]){c[i][j]=c[i-1][j-1]+1; note='x'+i+'='+X[i-1]+' = y'+j+'='+Y[j-1]+' 일치 → c['+i+','+j+']=대각+1='+c[i][j];}
-      else{c[i][j]=Math.max(c[i-1][j],c[i][j-1]); note='x'+i+'='+X[i-1]+' ≠ y'+j+'='+Y[j-1]+' → max(위 '+c[i-1][j]+', 왼 '+c[i][j-1]+')='+c[i][j];}
-      order.push({i,j,v:c[i][j],note});
-    }
-    // backtrack path
-    const path=new Set(); let pi=m,pj=n;
-    while(pi>0&&pj>0){ if(X[pi-1]===Y[pj-1]){path.add(pi+','+pj);pi--;pj--;} else if(c[pi-1][pj]>=c[pi][pj-1])pi--; else pj--; }
-    // grid value field: vals[i][j] = appear amount 0..v ; steps morph one cell up
-    const steps=[];
-    function gridSnap(filledCount,curKey,showPath,note){
-      const vals=[]; for(let i=0;i<=m;i++){vals.push([]); for(let j=0;j<=n;j++)vals[i].push(0);}
-      for(let t=0;t<filledCount;t++){const o=order[t]; vals[o.i][o.j]=o.v;}
-      steps.push({vals,cur:curKey,path:showPath?1:0,note});
-    }
-    gridSnap(0,'','경계: 0행·0열은 0(빈 문자열과의 LCS=0). 좌상→우하로 채운다.');
-    for(let t=0;t<order.length;t++){ const o=order[t]; gridSnap(t+1,o.i+','+o.j,false,'셀 c['+o.i+','+o.j+'] — '+o.note); }
-    gridSnap(order.length,'',true,'완성: c[4,5]=3. 우하에서 역추적(↖ 일치)하면 LCS = BCB(길이 3). 표를 한 번 훑었으니 Θ(mn).');
-    return {steps,X,Y,m,n,path,total:m*n};
-  }
-
-  /* 씬 ③ Dijkstra 거리 완화 모핑 */
-  function buildDijkstraSteps(){
-    // 노드 s,c,d,a,b 위치(상대좌표 0..1) + 거리값. C15 예제와 동일 결과.
-    const pos={s:[.10,.50],a:[.50,.18],c:[.50,.82],d:[.85,.82],b:[.90,.30]};
+  function renderDijkstraFrameV11(ctx,canvas,fromFrame,toFrame,t,p){
+    const pos={s:[90,150], c:[250,86], a:[256,228], d:[430,108], b:[592,170]};
     const edges=[['s','a',10],['s','c',5],['c','a',3],['a','b',1],['c','b',9],['c','d',2]];
-    const INF=999;
-    const steps=[];
-    function snap(d,settled,active,note){
-      steps.push({d:Object.assign({},d),settled:settled.slice(),active:active.slice(),note});
-    }
-    let d={s:0,a:INF,c:INF,d:INF,b:INF}; let settled=[];
-    snap(d,settled,[],'시작: d[s]=0, 나머지 ∞. 미확정 중 d가 가장 작은 노드를 골라 확정하고 이웃을 relax(완화)한다.');
-    // s 확정 → relax a,c
-    settled=['s']; d=Object.assign({},d,{a:10,c:5});
-    snap(d,settled,['a','c'],'s(0) 확정 → relax: d[a]=10, d[c]=5. ∞였던 값이 굴러내린다.');
-    // c 확정(5) → relax a:8, b:14, d:7
-    settled=['s','c']; d=Object.assign({},d,{a:8,b:14,d:7});
-    snap(d,settled,['a','b','d'],'최소 c(5) 확정 → relax: d[a]=min(10,5+3)=8, d[d]=7, d[b]=14. 우회로 s→c→a가 더 짧다.');
-    // d 확정(7)
-    settled=['s','c','d'];
-    snap(d,settled,[],'최소 d(7) 확정. d에서 나가는 간선 없음 → 갱신 없음.');
-    // a 확정(8) → relax b:9
-    settled=['s','c','d','a']; d=Object.assign({},d,{b:9});
-    snap(d,settled,['b'],'최소 a(8) 확정 → relax: d[b]=min(14,8+1)=9.');
-    // b 확정(9)
-    settled=['s','c','d','a','b'];
-    snap(d,settled,[],'최소 b(9) 확정 → 전부 확정. δ: s=0,c=5,d=7,a=8,b=9. 양수 가중이라 확정값은 안 바뀐다(C15 정당성).');
-    return {steps,pos,edges,INF};
+    ctx.fillStyle=p.muted;
+    ctx.font='14px Pretendard, sans-serif';
+    ctx.fillText('Dijkstra distance relaxation(Dijkstra 거리 완화)', 26, 26);
+    edges.forEach(([u,v,w])=>{
+      const [x1,y1]=pos[u], [x2,y2]=pos[v];
+      const active=toFrame.active && toFrame.active[0]===u && toFrame.active[1]===v;
+      ctx.strokeStyle=active ? p.warn : p.line;
+      ctx.lineWidth=active ? 4 : 2;
+      ctx.beginPath();
+      ctx.moveTo(x1,y1);
+      ctx.lineTo(x2,y2);
+      ctx.stroke();
+      ctx.fillStyle=active ? p.warn : p.muted;
+      ctx.font='13px Pretendard, sans-serif';
+      ctx.fillText(String(w),(x1+x2)/2+6,(y1+y2)/2-4);
+    });
+    Object.entries(pos).forEach(([id,[x,y]])=>{
+      const settled=(toFrame.settled||[]).includes(id);
+      const updated=(toFrame.updated||[]).includes(id);
+      ctx.fillStyle=settled ? p.ok : (updated ? p.hot : p.accent);
+      drawRoundRect(ctx,x-24,y-24,48,48,24);
+      ctx.fill();
+      ctx.fillStyle=settled ? '#06231a' : '#ffffff';
+      ctx.font='bold 16px Pretendard, sans-serif';
+      ctx.fillText(id,x-5,y+6);
+      ctx.fillStyle=p.panel2;
+      drawRoundRect(ctx,x-28,y+32,56,28,10);
+      ctx.fill();
+      ctx.strokeStyle=updated ? p.hot : p.line;
+      ctx.lineWidth=2;
+      ctx.stroke();
+      ctx.fillStyle=p.ink;
+      ctx.font='bold 14px Pretendard, sans-serif';
+      ctx.fillText('d='+toFrame.dist[id],x-20,y+51);
+    });
   }
-
-  /* 씬 그리기 + 초기화 */
-  function initVScenes(){
-    const cvSort=document.getElementById('vsc-sort-cv');
-    if(cvSort){
-      const S=buildMergeSortSteps();
-      algoScene.create(cvSort,{
-        steps:S.steps,
-        interpOpts:{snap:['cmp','sorted','note']},   // 인덱스 집합·note는 스냅, bars만 tween
-        caption:i=>S.steps[i].note,
-        meter:s=>{const frac=s.sorted.length/S.total; return {label:'정렬 '+Math.round(frac*100)+'%',frac};},
-        draw(ctx,s,{w,h,color}){
-          const n=S.n, pad=14, bw=(w-pad*2)/n*0.7, gap=(w-pad*2)/n;
-          const unit=(h-46)/S.maxV;
-          const cMuted=color('muted','#9aa7b8'),cAcc=color('accent','#5b9dff'),cWarn=color('warn','#ffcf5c'),cOk=color('ok','#3ecf8e'),cInk=color('ink','#e7ecf3');
-          const sortedSet=new Set(s.sorted), cmpSet=new Set(s.cmp);
-          s.bars.forEach((v,k)=>{
-            const x=pad+k*gap+(gap-bw)/2, bh=Math.max(2,v*unit), y=h-bh-26;
-            ctx.fillStyle=sortedSet.has(k)?cOk:(cmpSet.has(k)?cWarn:cMuted);
-            ctx.beginPath(); const rr=4;
-            ctx.moveTo(x,y+bh); ctx.lineTo(x,y+rr); ctx.arcTo(x,y,x+rr,y,rr);
-            ctx.lineTo(x+bw-rr,y); ctx.arcTo(x+bw,y,x+bw,y+rr,rr); ctx.lineTo(x+bw,y+bh); ctx.closePath(); ctx.fill();
-            ctx.fillStyle=cInk; ctx.font='600 12px Pretendard,sans-serif'; ctx.textAlign='center';
-            ctx.fillText(Math.round(v),x+bw/2,h-10);
-          });
-        }
-      });
-    }
-    const cvDP=document.getElementById('vsc-dp-cv');
-    if(cvDP){
-      const D=buildDPFillSteps();
-      algoScene.create(cvDP,{
-        steps:D.steps,
-        interpOpts:{snap:['cur','path','note']},   // 현재셀·경로플래그·note 스냅, vals(셀 값)만 tween
-        caption:i=>D.steps[i].note,
-        meter:s=>{let filled=0; for(let i=1;i<=D.m;i++)for(let j=1;j<=D.n;j++)if(s.vals[i][j]>0.001)filled++; const frac=filled/D.total; return {label:filled+' / '+D.total+' 셀',frac};},
-        draw(ctx,s,{w,h,color}){
-          const rows=D.m+1, cols=D.n+1, pad=8;
-          const cw=Math.min(46,(w-pad*2)/(cols+1)), ch=Math.min(36,(h-pad*2)/(rows+1));
-          const x0=pad+cw, y0=pad+ch;
-          const cLine=color('line','#2a3340'),cMuted=color('muted','#9aa7b8'),cInk=color('ink','#e7ecf3'),
-                cFill=color('accent','#5b9dff'),cWarn=color('warn','#ffcf5c'),cOk=color('ok','#3ecf8e'),cPanel=color('panel','#161b24');
-          ctx.font='600 12px Pretendard,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-          // headers (그리드 바깥: 위쪽 = Y 글자, 왼쪽 = X 글자)
-          ctx.fillStyle=cMuted;
-          for(let j=0;j<D.n;j++)ctx.fillText(D.Y[j],x0+(j+1)*cw+cw/2,pad+ch/2);
-          for(let i=0;i<D.m;i++)ctx.fillText(D.X[i],pad+cw/2,y0+(i+1)*ch+ch/2);
-          for(let i=0;i<=D.m;i++)for(let j=0;j<=D.n;j++){
-            const x=x0+j*cw, y=y0+i*ch;
-            const key=i+','+j, isCur=s.cur===key, onPath=s.path&&D.path.has(key);
-            const v=(i===0||j===0)?0:s.vals[i][j];
-            const appeared=(i===0||j===0)||v>0.001;
-            ctx.fillStyle=isCur?cWarn:(appeared?'rgba(91,157,255,'+(0.10+Math.min(0.18,v*0.06))+')':cPanel);
-            ctx.fillRect(x,y,cw-2,ch-2);
-            if(onPath){ctx.strokeStyle=cOk;ctx.lineWidth=2;ctx.strokeRect(x+1,y+1,cw-4,ch-4);}
-            else{ctx.strokeStyle=cLine;ctx.lineWidth=1;ctx.strokeRect(x,y,cw-2,ch-2);}
-            if(appeared){
-              ctx.fillStyle=isCur?'#3a2c00':cInk;
-              const shown=(i===0||j===0)?0:Math.round(v);
-              ctx.fillText(String(shown),x+(cw-2)/2,y+(ch-2)/2);
-            }
-          }
-        }
-      });
-    }
-    const cvDij=document.getElementById('vsc-dij-cv');
-    if(cvDij){
-      const G=buildDijkstraSteps();
-      algoScene.create(cvDij,{
-        steps:G.steps,
-        interpOpts:{snap:['settled','active','note'],sentinel:G.INF},   // 집합 스냅 + ∞ 거리는 보간 않고 스냅
-        caption:i=>G.steps[i].note,
-        meter:s=>{const frac=s.settled.length/5; return {label:'확정 '+s.settled.length+' / 5',frac};},
-        draw(ctx,s,{w,h,color}){
-          const pad=34, R=20;
-          const cLine=color('line','#2a3340'),cMuted=color('muted','#9aa7b8'),cInk=color('ink','#e7ecf3'),
-                cAcc=color('accent','#5b9dff'),cWarn=color('warn','#ffcf5c'),cOk=color('ok','#3ecf8e'),cPanel=color('panel2','#1d2531');
-          const P={}; for(const k in G.pos){P[k]=[pad+G.pos[k][0]*(w-pad*2),pad+G.pos[k][1]*(h-pad*2)];}
-          // edges
-          ctx.lineWidth=1.5; ctx.strokeStyle=cLine; ctx.font='600 11px Pretendard,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-          G.edges.forEach(([u,v,wt])=>{
-            const a=P[u],b=P[v];
-            ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.stroke();
-            const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2;
-            ctx.fillStyle=cPanel; ctx.fillRect(mx-9,my-8,18,16);
-            ctx.fillStyle=cMuted; ctx.fillText(String(wt),mx,my);
-          });
-          const settledSet=new Set(s.settled), activeSet=new Set(s.active);
-          for(const k in P){
-            const [x,y]=P[k]; const dv=s.d[k];
-            ctx.beginPath(); ctx.arc(x,y,R,0,7);
-            ctx.fillStyle=settledSet.has(k)?cOk:(activeSet.has(k)?cWarn:cPanel);
-            ctx.fill(); ctx.lineWidth=2; ctx.strokeStyle=settledSet.has(k)?cOk:(activeSet.has(k)?cWarn:cAcc); ctx.stroke();
-            // node label
-            ctx.fillStyle=(settledSet.has(k))?'#06231a':(activeSet.has(k)?'#3a2c00':cInk);
-            ctx.font='700 12px Pretendard,sans-serif'; ctx.fillText(k.toUpperCase(),x,y-5);
-            // distance
-            const shown=dv>=G.INF?'∞':String(Math.round(dv));
-            ctx.font='700 11px Pretendard,sans-serif'; ctx.fillText(shown,x,y+7);
-          }
-        }
-      });
-    }
+  function initAlgorithmAnimationsV11(){
+    createCanvasPlayer({
+      canvas: document.getElementById('alg-sort-canvas-v11'),
+      ctx: document.getElementById('alg-sort-canvas-v11').getContext('2d'),
+      controls: document.getElementById('alg-sort-controls-v11'),
+      progressFill: document.getElementById('alg-sort-progress-v11'),
+      progressText: document.getElementById('alg-sort-progress-text-v11'),
+      stepText: document.getElementById('alg-sort-step-v11'),
+      desc: document.getElementById('alg-sort-desc-v11'),
+      frames: buildSortFramesV11(),
+      duration: 650,
+      render: renderSortFrameV11
+    });
+    createCanvasPlayer({
+      canvas: document.getElementById('alg-dp-canvas-v11'),
+      ctx: document.getElementById('alg-dp-canvas-v11').getContext('2d'),
+      controls: document.getElementById('alg-dp-controls-v11'),
+      progressFill: document.getElementById('alg-dp-progress-v11'),
+      progressText: document.getElementById('alg-dp-progress-text-v11'),
+      stepText: document.getElementById('alg-dp-step-v11'),
+      desc: document.getElementById('alg-dp-desc-v11'),
+      frames: buildDPFramesV11(),
+      duration: 480,
+      render: renderDPFrameV11
+    });
+    createCanvasPlayer({
+      canvas: document.getElementById('alg-dijkstra-canvas-v11'),
+      ctx: document.getElementById('alg-dijkstra-canvas-v11').getContext('2d'),
+      controls: document.getElementById('alg-dijkstra-controls-v11'),
+      progressFill: document.getElementById('alg-dijkstra-progress-v11'),
+      progressText: document.getElementById('alg-dijkstra-progress-text-v11'),
+      stepText: document.getElementById('alg-dijkstra-step-v11'),
+      desc: document.getElementById('alg-dijkstra-desc-v11'),
+      frames: buildDijkstraFramesV11(),
+      duration: 700,
+      render: renderDijkstraFrameV11
+    });
+    const mo=new MutationObserver(()=>algoPlayersV11.forEach(player=>player.redraw()));
+    mo.observe(document.body,{attributes:true,attributeFilter:['data-theme']});
   }
-  window.addEventListener('load',initVScenes);
+  window.addEventListener('load',initAlgorithmAnimationsV11);
 </script>
 </body>
 </html>

@@ -162,6 +162,18 @@
   .rc-fp{background:rgba(255,207,92,.14)} .rc-fn{background:rgba(255,107,107,.14)}
   .roc-sim .sim-desc{color:var(--muted);font-size:.85rem;margin:10px 0 0}
   #tree-container svg{display:block}
+  /* ===== v1.1 canvas 모핑 씬 (CDN 0) ===== */
+  .viz-scene{border:1px solid var(--line);border-radius:10px;padding:14px;background:var(--panel2);margin:8px 0}
+  .viz-scene canvas{display:block;width:100%;background:var(--panel);border:1px solid var(--line);border-radius:8px}
+  .viz-caption{color:var(--ink);font-size:.9rem;margin:10px 0 4px;min-height:2.4em}
+  .viz-metric{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;font-size:.9rem;margin:6px 0}
+  .viz-metric b{color:var(--accent)}
+  .viz-meter{flex:1;min-width:120px;max-width:240px;height:9px;border-radius:6px;background:var(--panel);border:1px solid var(--line);overflow:hidden}
+  .viz-meter>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--ok));transition:width .3s}
+  .viz-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px}
+  .viz-controls input[type=range]{flex:1;min-width:120px}
+  .viz-controls .viz-step{color:var(--muted);font-size:.84rem;white-space:nowrap}
+  .viz-legend{font-size:.78rem;color:var(--muted);margin:6px 0 0}
 </style>
 </head>
 <body data-theme="dark">
@@ -328,7 +340,13 @@
       <details class="node-card hot" id="prereq-roc" data-node-id="prereq-roc" data-title="ROC AUC 곡선 임계값 threshold 슬라이더 시뮬레이션 trade-off">
         <summary>P4. ROC · AUC + 임계값 슬라이더<span class="nbadge hot">⭐핵심·인터랙티브</span><span class="chev">▶</span></summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">📖 정의</span><b>ROC 곡선</b> = 임계값을 0→1로 훑으며 (1−특이도, 민감도)를 찍은 곡선. x축 = 위양성률(FPR = 1−특이도), y축 = 민감도(TPR). <b>AUC</b> = 곡선 아래 면적(0.5=무작위, 1.0=완벽). 임계값과 무관하게 모델 전체 분별력을 한 숫자로 요약한다.</div>
+          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span>
+            <p><b>Hook.</b> 진단 모델은 "환자일 확률 0.73" 같은 점수를 낸다. 그런데 <b>몇 점부터 환자로 판정할지</b>(threshold, 임계값)에 따라 같은 모델이 사람을 더 많이 놓치기도, 더 많이 오진하기도 한다. <b>ROC(Receiver Operating Characteristic, 수신자 조작 특성) 곡선</b>은 이 임계값을 0에서 1까지 전부 훑어 모델의 <b>전체 분별력</b>을 한 그림에 담는다.</p>
+            <p><b>Intuition(직관).</b> 임계값을 낮추면 의심만 가도 환자로 부른다 → <b>sensitivity(민감도)↑</b>(환자를 잘 잡음) 대신 <b>specificity(특이도)↓</b>(정상을 오진). 높이면 반대. 즉 둘은 <b>맞교환(trade-off)</b> 관계이고, 임계값을 옮길 때마다 (FPR, TPR) 한 점이 곡선 위를 움직인다.</p>
+            <p><b>Analogy(비유).</b> 공항 금속탐지기의 <b>민감도 다이얼</b>이다. 너무 예민하게(임계값↓) 맞추면 동전 하나에도 울려 정상 승객을 다 세운다(FP↑). 둔하게(임계값↑) 맞추면 진짜 흉기를 놓친다(FN↑). <b>비유의 한계:</b> 다이얼을 어디 두든 <b>탐지기 자체의 성능</b>은 안 변한다 — 그게 곧 AUC다(곡선 모양은 고정, 임계값은 점만 옮김).</p>
+            <p><b>Definition(정의).</b> ROC 곡선 = 임계값을 0→1로 훑으며 가로축 <b>위양성률(FPR = 1−특이도, false positive rate)</b>, 세로축 <b>민감도(TPR = true positive rate)</b>를 찍은 곡선. <b>AUC(Area Under the Curve, 곡선하면적)</b> = 곡선 아래 넓이(0.5=무작위 동전던지기, 1.0=완벽). 임계값과 무관한 모델 고유의 분별력 한 숫자.</p>
+            <p><b>Mechanism(메커니즘).</b> ① 모든 임계값마다 <b>혼동행렬(confusion matrix)</b> 4칸(TP·FP·FN·TN)을 센다. ② TPR=TP/(TP+FN), FPR=FP/(FP+TN)을 계산해 점 하나를 찍는다. ③ 임계값을 쭉 옮기며 점들을 이으면 곡선. ④ 사다리꼴로 면적을 더하면 AUC. <b>아래 슬라이더를 끌어 ①~②가 실시간으로 반응하는 것을 직접 보라.</b></p></div>
+          <div class="field"><span class="lbl">📖 한 줄 정의</span><b>ROC 곡선</b> = 임계값을 0→1로 훑으며 (1−특이도, 민감도)를 찍은 곡선. x축 = 위양성률(FPR = 1−특이도), y축 = 민감도(TPR). <b>AUC</b> = 곡선 아래 면적(0.5=무작위, 1.0=완벽).</div>
           <div class="field"><span class="lbl">🎛️ 직접 조작 — 임계값(threshold)을 바꿔 보라</span>
             <div class="roc-sim" id="rocSim">
               <div class="roc-grid">
@@ -541,9 +559,25 @@
       <details class="node-card hot" id="C7" data-node-id="C7" data-title="ECG 심전도">
         <summary><input type="checkbox" class="nodechk" data-id="C7" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C7. ECG (심전도)<span class="nbadge hot">⭐⭐高</span><span class="nbadge">선행: C6</span><span class="chev">▶</span></summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span>심장의 전기 신호를 피부에서 읽어 부정맥·심근경색을 잡는다.</div>
-          <div class="field"><span class="lbl">📖 정의</span>심장의 전기적 활동을 피부 표면에서 측정·기록. 리듬·속도·전도이상·허혈·심근경색 정보.</div>
-          <div class="field"><span class="lbl">🔍 작동 원리 (전기 전파 경로)</span><b>동방결절(SA node)</b>에서 전기자극 시작 → 방실결절(AV node) → 히스속 → 푸르키네섬유로 심장 전체 전파. 피부 표면 전압차로 기록. 유도: 사지유도(I·II·III·aVR·aVL·aVF), 흉부유도(V1~V6).</div>
+          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span>
+            <p><b>Hook.</b> 흉통 환자가 응급실에 들어오면 의사가 가장 먼저 보는 그래프가 ECG(Electrocardiography, 심전도)다. 심장을 열어 보지 않고도 <b>피부에 붙인 전극만으로</b> "지금 심장의 어느 부위가, 어떤 순서로 전기를 켜고 끄는가"를 1초 안에 읽어 심근경색(myocardial infarction, 심근경색)을 잡아낸다. 그래서 시험에서도 <b>파형(waveform, 파형)의 의미 매칭</b>이 단골이다.</p>
+            <p><b>Intuition(직관).</b> 심장 근육은 전기로 수축한다. 세포가 전기를 띠는 것을 <b>depolarization(탈분극)</b>, 다시 휴식 전위로 돌아가는 것을 <b>repolarization(재분극)</b>이라 부른다. 한 번의 심박은 늘 <b>심방(atria) 먼저 → 심실(ventricles) 나중</b>, 각 방에서 <b>탈분극(수축) → 재분극(회복)</b> 순서로 일어난다. ECG의 봉우리들은 이 순서를 그대로 시간 축에 찍은 것이다.</p>
+            <p><b>Analogy(비유).</b> 심장을 <b>4박자로 도는 스프링클러</b>로 보면 쉽다. 먼저 위쪽 두 구역(심방)에 물(전기)이 돌고(P파), 잠시 멈췄다가 아래쪽 큰 두 구역(심실)이 세게 돈다(QRS). 다 돌면 큰 구역이 다시 잠긴다(T파). <b>다만 이 비유가 깨지는 지점:</b> 실제 ECG는 물의 양이 아니라 <b>체표면 두 지점의 전압차(voltage difference, 전압차)</b>를 본다 — 그래서 같은 사건이라도 어느 lead(유도)에서 보느냐에 따라 봉우리의 방향·크기가 달라진다.</p>
+            <p><b>Definition(정의).</b> ECG는 심장의 전기적 활동을 피부 표면에서 측정·기록해, 리듬(rhythm)·속도(rate)·전도이상(conduction)·허혈(ischemia)·심근경색 정보를 읽는 비침습 검사다. 측정 위치(lead)는 사지유도(limb leads: I·II·III·aVR·aVL·aVF)와 흉부유도(chest leads: V1~V6)로 나뉜다.</p>
+            <p><b>Mechanism(메커니즘) — 전기가 도는 경로를 한 겹씩.</b> ① <b>발화층:</b> <b>동방결절(SA node, sinoatrial node)</b>에서 전기자극이 시작된다(심장의 자연 박동조율기). ② <b>지연층:</b> <b>방실결절(AV node, atrioventricular node)</b>에서 잠깐 지연 — 심방이 다 짜낼 시간을 번다. ③ <b>전파층:</b> 히스속(His bundle) → 푸르키네섬유(Purkinje fibers)로 심실 전체에 빠르게 퍼진다. ④ <b>기록층:</b> 이 전파를 체표면 전압차로 잡아 P–QRS–T 파형으로 그린다. 아래 애니메이션이 이 ①→④를 한 박자로 보여준다.</p></div>
+          <div class="field"><span class="lbl">🎬 인터랙티브 — ECG 한 박자가 그려지는 과정 (P → QRS → T)</span>
+            <figure class="viz-scene" id="ecgWaveScene">
+              <canvas id="ecgWaveCanvas" style="height:230px" role="img" aria-label="ECG P-QRS-T 파형이 단계별로 그려지는 애니메이션"></canvas>
+              <figcaption data-caption class="viz-caption"></figcaption>
+              <div class="viz-controls">
+                <button class="btn" data-prev aria-label="이전 단계">◀ 이전</button>
+                <button class="btn" data-play>▶ 재생</button>
+                <button class="btn" data-next aria-label="다음 단계">다음 ▶</button>
+                <input type="range" data-scrub min="0" step="1" value="0" aria-label="ECG 단계 이동">
+                <span class="viz-step" data-stepidx>단계 0</span>
+              </div>
+              <p class="viz-legend">🟦 P파=심방 탈분극 · 🟥 QRS=심실 탈분극 · 🟩 T파=심실 재분극. 가로=시간, 세로=체표면 전압차.</p>
+            </figure></div>
           <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario">응급실에 흉통 환자가 오면 ECG에서 <b>ST분절 상승</b>을 보고 즉시 STEMI(심근경색)를 진단해 골든타임 내 시술로 보낸다.</div></div>
           <div class="field"><span class="lbl">📊 표 인사이트 — 파형 매칭 (Week2 p.9) ⭐ 시험 단골!</span>
             <div class="matchtable"><div class="mt-cap">⭐ 매칭 대조표: ECG 파형 P / QRS / T</div><div class="scrollx"><table>
@@ -663,7 +697,12 @@
       <details class="node-card hot3" id="C11" data-node-id="C11" data-title="의료영상 모달리티 11종 X-ray CT MRI US PET SPECT">
         <summary><input type="checkbox" class="nodechk" data-id="C11" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C11. 의료영상 모달리티 (11종)<span class="nbadge hot">⭐⭐⭐高</span><span class="nbadge">선행: 없음 · 출제 최다</span><span class="chev">▶</span></summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span>몸 속을 보는 11가지 "카메라". 각각 <b>원리·방사선 유무·주 대상·장단점</b>이 다르고, <b>이 매칭이 시험에서 가장 많이 나온다.</b></div>
+          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span>
+            <p><b>Hook.</b> 이 노드는 이 과목 객관식·매칭형에서 <b>출제 최다</b>다. 외울 게 11개라 막막해 보이지만, 사실 <b>딱 두 축</b>으로 줄이면 거의 다 풀린다 — "<b>방사선(ionizing radiation, 전리방사선)을 쓰나?</b>"와 "<b>무엇을 보나(구조 vs 기능)?</b>".</p>
+            <p><b>Intuition(직관).</b> 영상 모달리티(imaging modality, 영상 양식)는 모두 <b>"몸을 통과하거나 몸에서 나온 어떤 에너지를 받아 지도로 그리는 카메라"</b>다. 에너지가 X-ray(엑스선)면 뼈가 잘 보이고 방사선이 있다. 자기장+전파(MRI)나 음파(ultrasound, 초음파)·빛(OCT)이면 방사선이 없고 연조직·실시간에 강하다.</p>
+            <p><b>Analogy(비유).</b> 여러 종류의 <b>탐조등</b>이라고 보면 된다. 어떤 탐조등(X-ray)은 단단한 것(뼈)에 그림자를 만들고, 어떤 것(PET)은 대상이 스스로 내는 빛(대사 활동)을 본다. <b>비유의 한계:</b> 탐조등은 표면만 비추지만 의료영상은 <b>몸을 관통한 신호의 차이</b>를 재구성하므로 단면·3D까지 만든다(특히 CT).</p>
+            <p><b>Definition(정의).</b> 각 모달리티는 <b>원리(physics) · 방사선 유무 · 주 대상(structure vs function/metabolism) · 장단점</b>으로 정의된다. 이 4칸을 채운 표가 곧 시험 답이다.</p>
+            <p><b>Mechanism(메커니즘) — 두 축으로 분류.</b> ① <b>방사선 축:</b> 있음 = X-ray·CT·Mammography·Fluoroscopy·DSA·PET·SPECT / 없음 = <b>MRI·Ultrasound·OCT</b>. ② <b>보는 것 축:</b> 구조(anatomy) = X-ray·CT·MRI·US·OCT / 기능·대사(function·metabolism) = <b>PET·SPECT</b>. 이 두 축에 아래 11개를 꽂으면 매칭 문제가 거의 자동으로 풀린다.</p></div>
           <div class="field"><span class="lbl">📖 모달리티별 핵심</span>
             <ul>
               <li><b>X-ray</b>: 고에너지 전자파, 조직 밀도차 흡수(뼈=흰색). 골절·흉부·치과. 빠름·저렴·골격 탁월 / 연조직 해상도 낮음·방사선·2D.</li>
@@ -781,7 +820,12 @@
       <details class="node-card hot3" id="C15" data-node-id="C15" data-title="생체계측 시스템 5대 분류 Direct Indirect Invasive">
         <summary><input type="checkbox" class="nodechk" data-id="C15" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C15. 생체계측 시스템 5대 분류<span class="nbadge hot">⭐⭐⭐高</span><span class="nbadge">선행: C13, C14</span><span class="chev">▶</span></summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span>계측 시스템을 <b>5가지 잣대(dichotomy)</b>로 나눈다 — 각 잣대의 예시 매칭이 단골.</div>
+          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span>
+            <p><b>Hook.</b> "이 의료기기는 침습적인가? 직접 재는가?" 같은 질문에 답하려면 <b>분류 잣대</b>가 필요하다. 시험은 구체 기기(ECG·인슐린 펌프·HIFU)를 던지고 <b>"어느 분류에 속하나"</b>를 매칭하라고 묻는다.</p>
+            <p><b>Intuition(직관).</b> 모든 생체계측(biomedical instrumentation, 생체계측) 시스템은 <b>5쌍의 양자택일(dichotomy, 이분법)</b>로 한 줄 요약된다. 각 쌍은 "예/아니오 한 칸"이라 외우기 쉽다.</p>
+            <p><b>Analogy(비유).</b> 신상명세서의 <b>체크박스 5개</b>라고 보면 된다 — 직접/간접, 침습/비침습, 접촉/원격, 읽기/작동, 동적/정적. 기기 하나가 들어오면 박스 다섯 개에 체크하면 분류 끝. <b>비유의 한계:</b> 박스끼리 독립이 아니다 — 예컨대 HIFU는 "작동(actuate)"이면서 동시에 "원격(remote)"이라 한 기기가 여러 축에 동시에 걸린다.</p>
+            <p><b>Definition(정의).</b> 5 dichotomy = <b>Direct/Indirect(직접/간접)</b> · <b>Invasive/Noninvasive(침습/비침습)</b> · <b>Contact/Remote(접촉/원격)</b> · <b>Sense/Actuate(감지/작동)</b> · <b>Dynamic/Static(동적/정적)</b>. 각 축은 측정 방식의 한 성질을 가른다.</p>
+            <p><b>Mechanism(메커니즘) — 헷갈리는 축만 콕.</b> ① <b>Direct/Indirect:</b> 재려는 양 자체를 재면 직접, 관련된 다른 양으로 추정하면 간접 → <b>ECG는 간접</b>(체표면 전압은 심장 활동전위 전파와 "관련될 뿐"). ② <b>Sense/Actuate:</b> 읽기만 하면 sense, 몸에 작용을 가하면 actuate → 인슐린 펌프·HIFU는 actuate. ③ <b>Contact/Remote:</b> 닿으면 contact(인슐린 펌프), 안 닿으면 remote(HIFU·MRI). ④ <b>Dynamic/Static:</b> 실시간 시계열 변화를 따라가면 dynamic(Doppler 혈류), 시간 평균(temporal average)이면 static.</p></div>
           <div class="field"><span class="lbl">📊 표 인사이트 — 5 dichotomy + 예시 (Week3) ⭐⭐ 매칭 핵심!</span>
             <div class="matchtable"><div class="mt-cap">⭐⭐ 매칭 대조표: 생체계측 5대 분류 + 예시</div><div class="scrollx"><table>
               <tr><th>분류</th><th>정의</th><th>대표 예시</th></tr>
@@ -892,9 +936,30 @@
       <details class="node-card hot" id="C19" data-node-id="C19" data-title="CNN 합성곱 신경망 이미지 분석 filter kernel 데이터 증강">
         <summary><input type="checkbox" class="nodechk" data-id="C19" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C19. CNN (합성곱 신경망) / 이미지 분석<span class="nbadge hot">⭐⭐高</span><span class="nbadge">선행: C18, C11</span><span class="chev">▶</span></summary>
         <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span>이미지는 평평하게 펴면 공간 정보가 깨진다 → <b>필터를 슬라이드하며 공간 구조를 보존</b>하는 게 CNN.</div>
-          <div class="field"><span class="lbl">📖 왜 CNN? (Week3 p.45–48)</span>이미지를 1D로 펴서 FC(완전연결)에 넣으면 <b>FC는 공간 구조를 무시</b>한다(픽셀을 permute해도 가중치만 permute되고 결과 동일). → 공간 보존 위해 CNN.</div>
-          <div class="field"><span class="lbl">🔍 합성곱 메커니즘 (Week3 p.49–53)</span>입력=color channels(RGB, <b>zero-padding</b>) → <b>kernels(필터)</b>와 합성곱 + bias → output channel. 여러 kernel → 여러 output channel. CNN은 뉴런을 <b>3차원(width·height·depth)</b>으로 배열(일반 NN은 1D).</div>
+          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span>
+            <p><b>Hook.</b> 흉부 X-ray 한 장은 224×224만 해도 5만 픽셀이다. 이걸 일렬로 펴서 일반 <b>fully-connected(완전연결)</b> 신경망에 넣으면 파라미터가 폭발하고, 결정적으로 <b>"옆 픽셀이 옆에 있다"는 공간 정보가 사라진다.</b> CNN(Convolutional Neural Network, 합성곱 신경망)은 바로 이 문제를 푼다.</p>
+            <p><b>Intuition(직관).</b> 핵심 동작 하나만 보면 된다. 작은 격자(필터)를 이미지 위에 올려놓고 <b>겹친 칸끼리 곱해서 더한 한 숫자</b>를 만든다. 그 격자를 한 칸씩 오른쪽·아래로 밀면서 같은 계산을 반복하면, 이미지가 <b>특징맵(feature map, 특징맵)</b>이라는 새 격자로 변환된다. "세로선이 있는 자리"에서 큰 값이 나오는 필터를 쓰면, 특징맵은 곧 "세로선 지도"가 된다.</p>
+            <p><b>Analogy(비유).</b> <b>손전등(필터)을 들고 어두운 사진을 훑는</b> 장면을 떠올려라. 손전등이 비추는 작은 영역만 보고 "여기 내가 찾는 무늬(가장자리·선)가 얼마나 있나"를 점수로 적는다. 손전등을 격자처럼 한 칸씩 옮기며 점수표를 채우면, 그 점수표가 특징맵이다. <b>비유가 깨지는 지점:</b> 손전등은 밝기만 보지만, 실제 필터는 <b>음수 가중치(negative weight)</b>도 가져 "특정 무늬가 있으면 더하고 반대 무늬면 빼는" 식으로 동작한다. 그래서 결과에 음수도 나온다.</p>
+            <p><b>Definition(정의).</b> <b>convolution(합성곱)</b> = 입력 채널(color channels, 보통 RGB에 <b>zero-padding(영 채움)</b>)에 <b>kernel(=filter, 커널/필터)</b>를 슬라이드하며 원소별 곱의 합 + bias(편향)를 계산해 output channel(출력 채널)을 만드는 연산. 필터 하나가 출력 채널 하나를 만들고, 필터를 여러 개 쓰면 여러 출력 채널이 쌓인다.</p>
+            <p><b>Mechanism(메커니즘) — 한 겹씩.</b> ① <b>윈도우층:</b> 필터를 입력 좌상단에 정렬한다. ② <b>곱-합층:</b> 겹친 칸끼리 곱하고 모두 더한 뒤 bias를 더해 특징맵의 한 칸을 채운다. ③ <b>슬라이드층:</b> 필터를 stride(보폭)만큼 옮겨 ②를 반복 — 전체를 훑으면 특징맵 한 장 완성. ④ <b>다채널층:</b> 다른 필터(가로선·코너 검출기)로 ①~③을 반복해 출력 채널을 쌓는다. ⑤ <b>깊이층:</b> CNN은 이렇게 뉴런을 <b>3차원(width·height·depth, 너비·높이·깊이)</b>으로 배열해, 얕은 층이 가장자리를, 깊은 층이 폐 음영 같은 큰 패턴을 잡는다. 아래 애니메이션이 ①~③을 직접 보여준다.</p></div>
+          <div class="field"><span class="lbl">🎬 인터랙티브 — convolution(합성곱) 슬라이딩 윈도우가 특징맵을 만든다</span>
+            <figure class="viz-scene" id="cnnConvScene">
+              <canvas id="cnnConvCanvas" style="height:260px" role="img" aria-label="3x3 필터가 입력 위를 슬라이드하며 특징맵을 채우는 합성곱 애니메이션"></canvas>
+              <figcaption data-caption class="viz-caption"></figcaption>
+              <div class="viz-metric">
+                <span>현재 합성곱 값 <b id="cnnConvVal">0</b></span>
+                <span>채운 칸 <b><span id="cnnConvFilled">0</span> / 9</b></span>
+                <div class="viz-meter" aria-hidden="true"><i id="cnnConvMeter"></i></div>
+              </div>
+              <div class="viz-controls">
+                <button class="btn" data-prev aria-label="이전 단계">◀ 이전</button>
+                <button class="btn" data-play>▶ 재생</button>
+                <button class="btn" data-next aria-label="다음 단계">다음 ▶</button>
+                <input type="range" data-scrub min="0" step="1" value="0" aria-label="합성곱 단계 이동">
+                <span class="viz-step" data-stepidx>단계 0</span>
+              </div>
+              <p class="viz-legend">🟧 노란 테두리=현재 필터 윈도우 · 오른쪽 격자=특징맵(feature map). 이 필터는 <b>세로선 검출기(vertical line detector)</b>다 — 세로 경계에서 값이 커진다.</p>
+            </figure></div>
           <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario">흉부 X-ray 폐렴 진단 — 첫 층 필터가 가장자리·선을 잡고, 깊은 층이 폐의 음영 패턴을 잡아 "폐렴" 분류. <b>C11의 영상이 그대로 CNN 입력</b>이 된다.</div></div>
           <div class="field"><span class="lbl">📊 표 인사이트 — 필터 예시 (Week3 p.54)</span><div class="callout">Vertical Line Detector / Horizontal Line Detector / Corner Detector (각 3×3). <b>Filter(kernel) = 입력과 합성곱되는 가중치 집합.</b></div></div>
           <div class="field"><span class="lbl">🔍 과적합 감소 (Week3 p.55)</span><b>데이터 증강(data augmentation)</b> — rotation·flip·crop·stretch·translate·resize·contrast·blur·RGB↔BGR·color inversion.</div>
@@ -1059,6 +1124,26 @@
           <div style="color:var(--muted);font-size:.85rem">연결 노드: C1</div>
         </div>
       </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">선다</span><span>Q16. <b>convolution(합성곱)</b> 연산과 특징맵(feature map)에 대한 설명으로 <b>옳은 것</b>은?<div class="qopts">① 필터를 슬라이드하며 겹친 칸끼리 곱해 더한 값으로 특징맵을 채운다 ② 필터 하나가 여러 출력 채널을 동시에 만든다 ③ 필터 값은 모두 양수여야 한다 ④ zero-padding은 출력 채널 수를 늘리려고 쓴다</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span><b>① 필터를 슬라이드하며 원소별 곱의 합(+ bias)으로 특징맵 한 칸씩을 채운다.</b> 위 C19 애니메이션이 보여주는 그 동작이다.</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>"필터 1개 = 출력 채널 1개", "여러 필터 → 여러 채널", "CNN 뉴런은 3D(W·H·depth) 배열"을 함께 쓰면 가점.</div>
+          <div class="field"><span class="lbl">❌ 오답 해설</span>② <b>필터 1개는 출력 채널 1개</b>만 만든다(여러 채널은 여러 필터 필요) — 오답. ③ 필터는 <b>음수 가중치</b>도 가진다(세로선 검출기처럼 한쪽은 더하고 반대쪽은 뺌) — 오답. ④ <b>zero-padding(영 채움)</b>은 가장자리를 보존해 출력 크기를 맞추려는 것이지 채널 수와 무관 — 오답.</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: C19</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">매칭</span><span>Q17. ECG 전기전도 경로 요소를 기능에 매칭하라.<div class="qopts">(가) 박동의 출발점(자연 박동조율기) (나) 전도를 잠깐 지연해 심방이 짜낼 시간을 줌 (다) 심실 전체로 빠르게 전파</div><div class="qopts" style="margin-top:2px">요소: SA node(동방결절) · AV node(방실결절) · Purkinje fibers(푸르키네섬유)</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">✅ 모범 답변</span>(가) <b>SA node(동방결절)</b> / (나) <b>AV node(방실결절)</b> / (다) <b>Purkinje fibers(푸르키네섬유)</b>.</div>
+          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>P파=심방 탈분극, QRS=심실 탈분극, T파=심실 재분극 매칭을 함께 쓰면 가점. 전도 순서 SA→AV→His→Purkinje를 적어도 됨.</div>
+          <div class="field"><span class="lbl">❌ 오답 해설</span>SA node와 AV node를 바꿔 쓰면 오답 — <b>출발은 SA, 지연은 AV</b>다. Purkinje를 "출발점"으로 보면 오답(전파 담당).</div>
+          <div style="color:var(--muted);font-size:.85rem">연결 노드: C7</div>
+        </div>
+      </div>
     </section>
 
     <!-- ===== 누락·확인 필요 ===== -->
@@ -1074,7 +1159,7 @@
   </main>
 </div>
 
-<footer>생성: 시험대비 학습자료 하네스 · 1차 자료(강의 PDF Week1~3 + Notion Day1~3) 기반 · 단일 HTML, 오프라인 동작 · 노드 20개(C1~C20) + 선행지식 6(P1~P6) · D3 탐색 트리(트리맵 폴백) · ROC·임계값 슬라이더 · 매칭 대조표(노드 9종 / 표 14개) · 예상문제 15(매칭 8·선다 7) · 출처: AAI0035 김정희 교수</footer>
+<footer>생성: 시험대비 학습자료 하네스 · 1차 자료(강의 PDF Week1~3 + Notion Day1~3) 기반 · 단일 HTML, 오프라인 동작 · 노드 20개(C1~C20) + 선행지식 6(P1~P6) · D3 탐색 트리(트리맵 폴백) · 인터랙티브 3종(ROC 임계값 슬라이더 · CNN 합성곱 슬라이딩윈도우 · ECG P-QRS-T 파형) · 매칭 대조표(노드 9종 / 표 14개) · 예상문제 17(매칭 9·선다 8) · 출처: AAI0035 김정희 교수</footer>
 
 <!-- D3 (탐색 트리용; 없으면 트리맵 폴백) -->
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
@@ -1344,7 +1429,212 @@
     render();
   })();
 
-  window.addEventListener('load',initTree);
+  /* ===== sceneEngine: CDN-free 모핑 애니메이션 (offline-first) ===== */
+  const sceneEngine = (function () {
+    const easings = { smooth: t => t*t*(3-2*t), linear: t => t };
+    const lerp = (a,b,t) => a + (b-a)*t;
+    function interp(a,b,t){
+      if(typeof a==='number') return lerp(a,b,t);
+      if(Array.isArray(a)) return a.map((x,i)=>interp(x,b[i],t));
+      if(a && typeof a==='object'){ const o={}; for(const k in a) o[k]=interp(a[k],b[k],t); return o; }
+      return t<1 ? a : b;
+    }
+    function makeColor(el){
+      return (name,fallback)=>{ const v=getComputedStyle(el).getPropertyValue('--'+name).trim(); return v||fallback; };
+    }
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function fitCanvas(cv){
+      const dpr=window.devicePixelRatio||1, r=cv.getBoundingClientRect();
+      cv.width=Math.max(1,r.width*dpr); cv.height=Math.max(1,r.height*dpr);
+      const ctx=cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
+      return { ctx, w:r.width, h:r.height };
+    }
+    function create(cv, { steps, draw, caption, onState, duration=700, easing='smooth' }){
+      let i=0, raf=0;
+      const color=makeColor(cv);
+      const capEl=cv.parentElement.querySelector('[data-caption]');
+      function render(state){ const {ctx,w,h}=fitCanvas(cv); ctx.clearRect(0,0,w,h); draw(ctx,state,{w,h,color}); }
+      function show(idx){ i=idx; render(steps[i]); if(capEl&&caption) capEl.textContent=caption(i); if(onState) onState(steps[i],i); }
+      function go(idx){
+        idx=Math.max(0,Math.min(steps.length-1,idx));
+        if(reduced||idx===i) return show(idx);
+        cancelAnimationFrame(raf);
+        const from=steps[i], to=steps[idx], t0=performance.now();
+        if(capEl&&caption) capEl.textContent=caption(idx);
+        if(onState) onState(to,idx);
+        (function frame(now){
+          const p=Math.min(1,(now-t0)/duration);
+          render(interp(from,to,easings[easing](p)));
+          if(p<1) raf=requestAnimationFrame(frame); else i=idx;
+        })(t0);
+      }
+      const repaint=()=>show(i);
+      window.addEventListener('resize',repaint);
+      const mo=new MutationObserver(repaint);
+      mo.observe(document.body,{attributes:true,attributeFilter:['data-theme','class']});
+      show(0);
+      return { next:()=>go(i+1), prev:()=>go(i-1), go, show, get index(){return i;}, len:steps.length };
+    }
+    return { create };
+  })();
+
+  function wireScene(scene, root){
+    const scrub=root.querySelector('[data-scrub]'); if(scrub) scrub.max=scene.len-1;
+    const idxEl=root.querySelector('[data-stepidx]');
+    // cur = 클릭 즉시 목표 인덱스(라벨/캡션 동기화용). scene.index는 tween 끝에야 갱신되므로 직접 추적한다.
+    let cur=scene.index;
+    const clamp=n=>Math.max(0,Math.min(scene.len-1,n));
+    const sync=()=>{ if(scrub) scrub.value=cur; if(idxEl) idxEl.textContent='단계 '+cur; };
+    const nb=root.querySelector('[data-next]'); if(nb) nb.onclick=()=>{ cur=clamp(cur+1); scene.go(cur); sync(); };
+    const pb=root.querySelector('[data-prev]'); if(pb) pb.onclick=()=>{ cur=clamp(cur-1); scene.go(cur); sync(); };
+    if(scrub) scrub.oninput=e=>{ cur=clamp(+e.target.value); scene.go(cur); sync(); };
+    const play=root.querySelector('[data-play]'); let timer=null;
+    if(play) play.onclick=()=>{
+      if(timer){ clearInterval(timer); timer=null; play.textContent='▶ 재생'; return; }
+      play.textContent='⏸ 일시정지';
+      timer=setInterval(()=>{
+        if(cur>=scene.len-1){ clearInterval(timer); timer=null; play.textContent='▶ 재생'; return; }
+        cur=clamp(cur+1); scene.go(cur); sync();
+      }, 950);
+    };
+    // 접힌 <details> 안에서는 캔버스 폭이 0 → blank로 그려진다. open 시 현재 단계로 다시 그린다.
+    const det=root.closest('details'); if(det) det.addEventListener('toggle',()=>{ if(det.open) scene.show(cur); });
+    sync();
+  }
+
+  /* ===== ECG 파형 씬 (P → QRS → T 누적 등장) ===== */
+  function initEcgScene(){
+    const cv=document.getElementById('ecgWaveCanvas'); if(!cv) return;
+    // 한 박자 파형: 시간 0..1 → 전압. seg=얼마나 그릴지(0..1 누적).
+    function volt(x){
+      // baseline, P(작은 양), PR평탄, Q(작은 음), R(큰 양), S(음), ST평탄, T(완만한 양)
+      const g=(c,w,a)=>a*Math.exp(-((x-c)*(x-c))/(2*w*w));
+      return g(0.18,0.022,0.22)            // P
+           - g(0.40,0.010,0.12)            // Q
+           + g(0.44,0.012,1.00)            // R
+           - g(0.48,0.012,0.34)            // S
+           + g(0.72,0.045,0.30);           // T
+    }
+    const steps=[
+      {seg:0.06,note:'기준선(baseline) — 전기적으로 조용한 상태. 여기서 한 박자가 시작된다.'},
+      {seg:0.30,note:'🟦 P파(P wave) — 심방 탈분극(atrial depolarization). 작은 봉우리 하나.'},
+      {seg:0.52,note:'PR 간격 — AV node(방실결절)가 전도를 잠깐 지연(심방이 짜낼 시간 확보).'},
+      {seg:0.66,note:'🟥 QRS 복합파 — 심실 탈분극(ventricular depolarization). 가장 크고 뾰족하다.'},
+      {seg:1.00,note:'🟩 T파(T wave) — 심실 재분극(ventricular repolarization). 심실이 휴식으로 복귀 → 한 박자 끝.'}
+    ];
+    const PAD=34;
+    const scene=sceneEngine.create(cv,{
+      steps, caption:i=>steps[i].note,
+      draw(ctx,s,{w,h,color}){
+        const ink=color('ink','#e7ecf3'), muted=color('muted','#9aa7b8'),
+              line=color('line','#2a3340'), accent=color('accent','#5b9dff'),
+              hot=color('hot','#ff6b6b'), ok=color('ok','#3ecf8e');
+        const x0=PAD, x1=w-12, mid=h*0.62, amp=h*0.40;
+        ctx.strokeStyle=line; ctx.lineWidth=1;
+        ctx.beginPath(); ctx.moveTo(x0,mid); ctx.lineTo(x1,mid); ctx.stroke(); // baseline grid
+        // 색 구간을 위해 3색으로 나눠 그린다: P(<=0.33 accent), QRS(0.33..0.55 hot), T(>0.55 ok)
+        const seg=s.seg, N=240;
+        function drawBand(lo,hi,col){
+          ctx.strokeStyle=col; ctx.lineWidth=2.4; ctx.beginPath(); let started=false;
+          for(let k=0;k<=N;k++){
+            const t=k/N; if(t>seg) break; if(t<lo||t>hi) { started=false; continue; }
+            const px=x0+t*(x1-x0), py=mid-volt(t)*amp;
+            if(!started){ ctx.moveTo(px,py); started=true; } else ctx.lineTo(px,py);
+          }
+          ctx.stroke();
+        }
+        drawBand(0,0.33,accent); drawBand(0.33,0.55,hot); drawBand(0.55,1,ok);
+        // 진행 커서
+        if(seg<1){ const px=x0+seg*(x1-x0); ctx.strokeStyle=muted; ctx.setLineDash([3,3]);
+          ctx.beginPath(); ctx.moveTo(px,12); ctx.lineTo(px,h-8); ctx.stroke(); ctx.setLineDash([]); }
+        // 라벨
+        ctx.fillStyle=muted; ctx.font='12px Pretendard,sans-serif';
+        if(seg>=0.30){ ctx.fillStyle=accent; ctx.fillText('P', x0+0.18*(x1-x0)-3, mid-volt(0.18)*amp-8); }
+        if(seg>=0.66){ ctx.fillStyle=hot; ctx.fillText('QRS', x0+0.44*(x1-x0)-10, mid-volt(0.44)*amp-8); }
+        if(seg>=1){ ctx.fillStyle=ok; ctx.fillText('T', x0+0.72*(x1-x0)-3, mid-volt(0.72)*amp-8); }
+        ctx.fillStyle=muted; ctx.fillText('시간 →', x1-44, h-4);
+      }
+    });
+    wireScene(scene, cv.closest('.viz-scene'));
+  }
+
+  /* ===== CNN convolution 슬라이딩 윈도우 씬 ===== */
+  function initCnnScene(){
+    const cv=document.getElementById('cnnConvCanvas'); if(!cv) return;
+    // 5x5 입력(왼쪽 절반=0, 오른쪽=1 → 세로 경계). 3x3 세로선 검출 필터. valid conv → 3x3 특징맵.
+    const IN=[
+      [0,0,1,1,1],
+      [0,0,1,1,1],
+      [0,0,1,1,1],
+      [0,0,1,1,1],
+      [0,0,1,1,1]
+    ];
+    const K=[[1,0,-1],[1,0,-1],[1,0,-1]];     // vertical line detector
+    function conv(r,c){ let s=0; for(let i=0;i<3;i++)for(let j=0;j<3;j++) s+=IN[r+i][c+j]*K[i][j]; return s; }
+    const out=[]; for(let r=0;r<3;r++){ out[r]=[]; for(let c=0;c<3;c++) out[r][c]=conv(r,c); }
+    // steps: 0=소개, 그다음 9칸을 한 칸씩(row-major)
+    // intro 단계도 step과 동일한 수치 스키마(r/c/val)를 가져야 보간 시 lerp(number,undefined)=NaN을 피한다.
+    const steps=[{idx:-1,r:0,c:0,val:0,note:'3×3 필터(노란 윈도우)를 입력 좌상단에 올린다. 겹친 칸끼리 곱해 더하면 특징맵 한 칸이 채워진다.'}];
+    for(let r=0;r<3;r++)for(let c=0;c<3;c++){
+      const v=out[r][c];
+      const desc = v>0 ? `값 ${v} (양수) — 이 위치에 왼쪽 어둡고 오른쪽 밝은 세로 경계가 있다.`
+                 : v<0 ? `값 ${v} (음수) — 반대 방향 경계.`
+                 : `값 0 — 좌우가 같아 경계 없음(필터 반응 0).`;
+      steps.push({idx:r*3+c, r, c, val:v, note:`윈도우를 (행 ${r+1}, 열 ${c+1})로 → 합성곱 ${desc}`});
+    }
+    const filledEl=document.getElementById('cnnConvFilled'),
+          valEl=document.getElementById('cnnConvVal'),
+          meterEl=document.getElementById('cnnConvMeter');
+    const scene=sceneEngine.create(cv,{
+      steps, caption:i=>steps[i].note,
+      onState(s){
+        const filled = s.idx<0 ? 0 : s.idx+1;
+        if(filledEl) filledEl.textContent=filled;
+        if(valEl) valEl.textContent = s.idx<0 ? '–' : s.val;
+        if(meterEl) meterEl.style.width=Math.round(filled/9*100)+'%';
+      },
+      draw(ctx,s,{w,h,color}){
+        const ink=color('ink','#e7ecf3'), muted=color('muted','#9aa7b8'),
+              line=color('line','#2a3340'), accent=color('accent','#5b9dff'),
+              warn=color('warn','#ffcf5c'), ok=color('ok','#3ecf8e'), hot=color('hot','#ff6b6b');
+        const cell=Math.min((w*0.42)/5,(h-30)/5,40);
+        const gx=10, gy=14;                       // 입력 격자 원점
+        const ox=gx+5*cell+Math.max(28,w*0.08);   // 출력 격자 원점
+        // 입력 격자
+        ctx.font=Math.round(cell*0.42)+'px Pretendard,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+        for(let r=0;r<5;r++)for(let c=0;c<5;c++){
+          const x=gx+c*cell, y=gy+r*cell, v=IN[r][c];
+          ctx.fillStyle = v? 'rgba(91,157,255,.20)':'rgba(154,167,184,.10)';
+          ctx.fillRect(x,y,cell,cell);
+          ctx.strokeStyle=line; ctx.strokeRect(x,y,cell,cell);
+          ctx.fillStyle=muted; ctx.fillText(v, x+cell/2, y+cell/2);
+        }
+        // 현재 윈도우(보간된 r,c 사용)
+        const rr = s.idx<0?0:s.r, cc = s.idx<0?0:s.c;
+        ctx.strokeStyle=warn; ctx.lineWidth=3;
+        ctx.strokeRect(gx+cc*cell, gy+rr*cell, 3*cell, 3*cell);
+        ctx.lineWidth=1;
+        // 출력 특징맵
+        const filled = s.idx<0 ? -1 : Math.round(s.idx);
+        ctx.fillStyle=muted; ctx.textAlign='left'; ctx.fillText('특징맵', ox, gy-4); ctx.textAlign='center';
+        for(let r=0;r<3;r++)for(let c=0;c<3;c++){
+          const x=ox+c*cell, y=gy+r*cell, fi=r*3+c, shown=fi<=filled;
+          ctx.fillStyle = !shown ? 'rgba(154,167,184,.06)'
+                        : out[r][c]>0 ? 'rgba(62,207,142,.25)'
+                        : out[r][c]<0 ? 'rgba(255,107,107,.22)' : 'rgba(154,167,184,.18)';
+          ctx.fillRect(x,y,cell,cell);
+          ctx.strokeStyle=(fi===filled)?accent:line; ctx.lineWidth=(fi===filled)?2.5:1;
+          ctx.strokeRect(x,y,cell,cell); ctx.lineWidth=1;
+          ctx.fillStyle = shown?ink:'transparent';
+          if(shown) ctx.fillText(out[r][c], x+cell/2, y+cell/2);
+        }
+        ctx.textAlign='start'; ctx.textBaseline='alphabetic';
+      }
+    });
+    wireScene(scene, cv.closest('.viz-scene'));
+  }
+
+  window.addEventListener('load',function(){ initTree(); initEcgScene(); initCnnScene(); });
 </script>
 </body>
 </html>

@@ -1,0 +1,1967 @@
+﻿<!DOCTYPE html>
+<!-- generated: ?섎즺吏꾨떒???꾪븳 AI | nodes: 20 -->
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>?섎즺吏꾨떒???꾪븳 AI ???쒗뿕?鍮??숈뒿?먮즺</title>
+<style>
+  :root{
+    --bg:#0f1218; --panel:#161b24; --panel2:#1d2531; --ink:#e7ecf3; --muted:#9aa7b8;
+    --line:#2a3340; --accent:#5b9dff; --accent2:#7c5cff; --hot:#ff6b6b; --ok:#3ecf8e;
+    --warn:#ffcf5c; --radius:14px; --maxw:1280px;
+  }
+  [data-theme="light"]{
+    --bg:#f6f8fb; --panel:#ffffff; --panel2:#eef2f7; --ink:#16202c; --muted:#5a6675;
+    --line:#dde4ec; --accent:#2563eb; --accent2:#6d28d9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Pretendard",-apple-system,"Segoe UI",Roboto,"Malgun Gothic",sans-serif;line-height:1.7}
+  a{color:var(--accent)}
+  header{position:sticky;top:0;z-index:20;background:rgba(15,18,24,.85);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  [data-theme="light"] header{background:rgba(255,255,255,.85)}
+  .hwrap{max-width:var(--maxw);margin:0 auto;padding:10px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .htitle{font-weight:800;font-size:1.05rem}
+  .htitle small{color:var(--muted);font-weight:500}
+  .grow{flex:1}
+  .search{background:var(--panel2);border:1px solid var(--line);color:var(--ink);
+    padding:8px 12px;border-radius:10px;min-width:180px}
+  .btn{background:var(--panel2);border:1px solid var(--line);color:var(--ink);
+    padding:8px 12px;border-radius:10px;cursor:pointer;font-size:.9rem}
+  .btn:hover{border-color:var(--accent)}
+  .progwrap{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.85rem}
+  .progbar{width:120px;height:8px;border-radius:6px;background:var(--panel2);overflow:hidden;border:1px solid var(--line)}
+  .progfill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--ok));transition:width .3s}
+  .layout{max-width:var(--maxw);margin:0 auto;padding:20px;display:grid;
+    grid-template-columns:300px 1fr;gap:24px;align-items:start}
+  @media(max-width:900px){.layout{grid-template-columns:1fr}.roadmap{position:static!important}}
+  .roadmap{position:sticky;top:72px;background:var(--panel);border:1px solid var(--line);
+    border-radius:var(--radius);padding:16px;max-height:calc(100vh - 96px);overflow:auto}
+  .roadmap h2{margin:.2em 0 .6em;font-size:.95rem;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+  .rm-stem{margin:0 0 14px}
+  .rm-stem>.rm-stem-name{font-weight:700;margin-bottom:6px;font-size:.92rem}
+  .rm-node{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:9px;
+    cursor:pointer;font-size:.88rem;color:var(--ink);border:1px solid transparent}
+  .rm-node:hover{background:var(--panel2)}
+  .rm-node.active{border-color:var(--accent);background:var(--panel2)}
+  .rm-node .dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex:none}
+  .rm-node.hot .dot{background:var(--hot)}
+  .rm-node.hot3 .dot{background:var(--hot);box-shadow:0 0 0 3px rgba(255,107,107,.3)}
+  .rm-node.done .dot{background:var(--ok)}
+  .rm-node .badge-hot{margin-left:auto;font-size:.66rem;color:var(--hot);border:1px solid var(--hot);
+    border-radius:6px;padding:0 5px;white-space:nowrap}
+  .pathpanel{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px;margin-top:6px}
+  .pathpanel h3{margin:.1em 0 .5em;font-size:.82rem;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+  .pstep{display:flex;gap:6px;align-items:flex-start;font-size:.82rem;padding:3px 4px;border-radius:6px;cursor:pointer}
+  .pstep:hover{background:var(--panel)}
+  .pstep input{margin-top:3px;flex:none}
+  .pstep .pn{color:var(--accent);font-weight:700;flex:none}
+  .content{min-width:0}
+  .intro{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:22px}
+  .intro h1{margin:.1em 0 .3em;font-size:1.5rem}
+  .examnote{border:1px solid var(--warn);background:rgba(255,207,92,.1);border-radius:10px;padding:10px 14px;margin-top:12px;font-size:.92rem}
+  .examnote b{color:var(--warn)}
+  .stem-sec{margin:0 0 28px}
+  .stem-sec>h2{font-size:1.2rem;padding-bottom:6px;border-bottom:2px solid var(--line)}
+  .node-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    margin:14px 0;overflow:hidden;scroll-margin-top:84px}
+  .node-card.hot3{border-color:var(--hot);box-shadow:0 0 0 1px rgba(255,107,107,.25)}
+  .node-card>summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;align-items:center;gap:10px;font-weight:700}
+  .node-card>summary::-webkit-details-marker{display:none}
+  .node-card>summary .chev{margin-left:auto;color:var(--muted);transition:transform .2s}
+  .node-card[open]>summary .chev{transform:rotate(90deg)}
+  .node-card[open]>summary{border-bottom:1px solid var(--line)}
+  .nbadge{font-size:.66rem;padding:1px 7px;border-radius:6px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+  .nbadge.hot{color:var(--hot);border-color:var(--hot)}
+  .nbody{padding:16px 18px}
+  .field{margin:0 0 14px}
+  .field .lbl{font-weight:700;color:var(--accent);font-size:.92rem;display:block;margin-bottom:3px}
+  .callout{border-left:4px solid var(--accent2);background:var(--panel2);padding:10px 14px;border-radius:8px;margin:8px 0}
+  .scenario{border-left:4px solid var(--ok);background:rgba(62,207,142,.07);padding:10px 14px;border-radius:8px;margin:8px 0}
+  .exam-box{border:1px solid var(--warn);background:rgba(255,207,92,.08);border-radius:10px;padding:12px 14px;margin:10px 0}
+  .exam-box .lbl{color:var(--warn)}
+  .trap{border-left:4px solid var(--hot);background:rgba(255,107,107,.07);padding:10px 14px;border-radius:8px}
+  .miss{color:var(--muted);font-style:italic;border:1px dashed var(--line);border-radius:8px;padding:8px 12px;background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(154,167,184,.05) 8px,rgba(154,167,184,.05) 16px)}
+  table{border-collapse:collapse;width:100%;margin:8px 0;font-size:.9rem}
+  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+  th{background:var(--panel2)}
+  .matchtable{border:2px solid var(--warn);border-radius:10px;overflow:hidden;margin:10px 0}
+  .matchtable .mt-cap{background:rgba(255,207,92,.15);color:var(--warn);font-weight:700;font-size:.82rem;padding:5px 12px}
+  .matchtable table{margin:0}
+  code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-size:.88em}
+  .katex-fallback{color:var(--muted);font-family:ui-monospace,monospace}
+  .stepper{border:1px solid var(--line);border-radius:10px;padding:12px;margin:10px 0;background:var(--panel2)}
+  .stepper .step{display:none}
+  .stepper .step.show{display:block}
+  .stepper .step-head{font-weight:700;color:var(--accent2);margin-bottom:4px}
+  .stepper-nav{display:flex;align-items:center;gap:10px;margin-top:10px}
+  .dots{display:flex;gap:5px;margin-left:auto}
+  .dots i{width:8px;height:8px;border-radius:50%;background:var(--line);display:inline-block}
+  .dots i.on{background:var(--accent)}
+  .hidden{display:none!important}
+  .scrollx{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .treemap{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:22px}
+  .treemap h2{margin:.1em 0 .2em;font-size:1.15rem}
+  .treemap .tm-sub{color:var(--muted);font-size:.88rem;margin-bottom:12px}
+  .tree, .tree ul{list-style:none;margin:0;padding-left:18px}
+  .tree>li{margin:4px 0}
+  .tm-root{font-weight:800;font-size:1rem}
+  .tm-branch{cursor:pointer;font-weight:700;padding:4px 8px;border-radius:8px;display:inline-flex;align-items:center;gap:6px;border:1px solid transparent}
+  .tm-branch:hover{background:var(--panel2)}
+  .tm-branch .tw{color:var(--muted);transition:transform .2s;font-size:.8rem}
+  .tm-branch.collapsed .tw{transform:rotate(-90deg)}
+  .tm-branch.collapsed + ul{display:none}
+  .tm-desc{color:var(--muted);font-weight:400;font-size:.85rem}
+  .tm-leaf{cursor:pointer;padding:3px 8px;border-radius:7px;border:1px solid var(--line);display:inline-block;margin:2px 0;font-size:.86rem}
+  .tm-leaf:hover{background:var(--panel2);border-color:var(--accent)}
+  .tm-leaf.hot{border-color:var(--hot);color:var(--hot)}
+  .tree li{position:relative}
+  .tree ul{border-left:1px dashed var(--line);margin-left:6px}
+  .qa-item{border:1px solid var(--line);border-radius:10px;margin:10px 0;overflow:hidden}
+  .qa-q{padding:12px 14px;font-weight:700;display:flex;gap:10px;align-items:flex-start}
+  .qa-type{font-size:.66rem;padding:2px 7px;border-radius:6px;border:1px solid var(--accent);color:var(--accent);flex:none;margin-top:2px;white-space:nowrap}
+  .qa-a{padding:0 14px;max-height:0;overflow:hidden;transition:max-height .35s;background:var(--panel2)}
+  .qa-a.open{max-height:2400px;padding:12px 14px}
+  .qa-toggle{margin-left:auto;flex:none}
+  .qopts{font-weight:400;margin:4px 0 0;color:var(--muted)}
+  .navtoggle{display:none}
+  .scrim{display:none}
+  @media(max-width:900px){
+    .navtoggle{display:inline-block}
+    .roadmap{position:fixed;top:0;left:0;bottom:0;width:84%;max-width:320px;z-index:40;border-radius:0;
+      transform:translateX(-105%);transition:transform .25s;max-height:100vh}
+    .roadmap.open{transform:translateX(0)}
+    .scrim.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:35}
+  }
+  @media(max-width:600px){
+    body{line-height:1.6}
+    .hwrap{padding:8px 12px;gap:8px}
+    .htitle{font-size:.95rem}
+    .search{min-width:120px;flex:1}
+    .layout{padding:12px}
+    .intro h1{font-size:1.25rem}
+    .node-card>summary{padding:12px 14px;flex-wrap:wrap}
+    .nbody{padding:12px 14px}
+  }
+  footer{max-width:var(--maxw);margin:0 auto;padding:30px 20px;color:var(--muted);font-size:.85rem}
+  /* ROC ?꾧퀎媛??щ씪?대뜑 ?쒕??덉씠??*/
+  .roc-sim{border:1px solid var(--line);border-radius:10px;padding:14px;background:var(--panel2);margin:8px 0}
+  .roc-grid{display:grid;grid-template-columns:300px 1fr;gap:18px;align-items:start}
+  @media(max-width:700px){.roc-grid{grid-template-columns:1fr}}
+  .roc-th{display:block;font-weight:700;margin-bottom:6px}
+  .roc-hint{color:var(--muted);font-size:.84rem;margin:4px 0 10px}
+  .roc-metrics{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.9rem;margin-bottom:10px}
+  .roc-metrics b{color:var(--accent)}
+  .roc-metrics .roc-auc b{color:var(--accent2)}
+  .roc-conf{display:grid;grid-template-columns:1fr 1fr;gap:6px;max-width:240px}
+  .rc-cell{border:1px solid var(--line);border-radius:8px;padding:8px;text-align:center;font-size:.8rem;color:var(--muted)}
+  .rc-cell b{display:block;font-size:1.15rem;color:var(--ink)}
+  .rc-tp{background:rgba(62,207,142,.14)} .rc-tn{background:rgba(91,157,255,.14)}
+  .rc-fp{background:rgba(255,207,92,.14)} .rc-fn{background:rgba(255,107,107,.14)}
+  .roc-sim .sim-desc{color:var(--muted);font-size:.85rem;margin:10px 0 0}
+  #tree-container svg{display:block}
+  .buildup{display:grid;gap:10px}
+  .build-card{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--panel2)}
+  .build-card b{color:var(--accent)}
+  .pair-table table td:first-child{white-space:nowrap;font-weight:700}
+  .anim-shell{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--panel2);margin:10px 0}
+  .anim-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+  .anim-head .tag{font-size:.74rem;color:var(--accent2);border:1px solid var(--accent2);border-radius:999px;padding:2px 9px}
+  .anim-stage{display:grid;grid-template-columns:minmax(260px,360px) 1fr;gap:16px;align-items:start}
+  @media(max-width:780px){.anim-stage{grid-template-columns:1fr}}
+  .anim-canvas{width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+  .anim-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+  .anim-progress{flex:1 1 180px;height:10px;border-radius:999px;background:var(--panel);border:1px solid var(--line);overflow:hidden}
+  .anim-progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--ok));transition:width .2s ease}
+  .anim-status{font-size:.84rem;color:var(--muted)}
+  .metric-grid{display:grid;grid-template-columns:repeat(2,minmax(120px,1fr));gap:8px;margin:8px 0 0}
+  .metric-card{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--panel)}
+  .metric-card b{display:block;font-size:1.05rem;color:var(--ink)}
+  .eq-chip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 8px;margin:2px 6px 2px 0;background:var(--panel);font-size:.8rem}
+  .ecg-hotspots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}
+  .ecg-hotspot{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--panel);cursor:pointer;text-align:left;color:var(--ink)}
+  .ecg-hotspot.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+  .option-list{margin:8px 0 0;padding-left:20px}
+  .option-list li{margin:4px 0}
+  .concept-flow{display:grid;gap:10px}
+  .concept-step{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--panel2)}
+  .concept-step b{color:var(--accent)}
+  .concept-step em{color:var(--muted);font-style:normal}
+  .compare-note{color:var(--muted);font-size:.84rem;margin-top:6px}
+  .formula-strip{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0}
+  .formula-strip .eq-chip{font-size:.82rem}
+  .scene-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:.84rem;margin-bottom:6px}
+  .scene-meta b{color:var(--ink)}
+  .scene-grid{display:grid;grid-template-columns:minmax(260px,360px) 1fr;gap:16px;align-items:start}
+  @media(max-width:780px){.scene-grid{grid-template-columns:1fr}}
+  .scene-panel{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--panel2);margin:10px 0}
+  .scene-panel canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+  .scene-side{display:grid;gap:10px}
+  .scene-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .scene-progress{height:10px;border-radius:999px;background:var(--panel);border:1px solid var(--line);overflow:hidden}
+  .scene-progress > span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--ok));transition:width .2s ease}
+  .scene-readout{display:grid;grid-template-columns:repeat(2,minmax(120px,1fr));gap:8px}
+  .scene-readout .metric-card{min-height:76px}
+  .scene-caption{font-size:.88rem;color:var(--muted)}
+  .answer-table{border:1px solid var(--warn);border-radius:10px;overflow:hidden;margin:10px 0}
+  .answer-table .cap{background:rgba(255,207,92,.15);color:var(--warn);font-weight:700;font-size:.82rem;padding:6px 12px}
+  .answer-table table{margin:0}
+  .wrong-list{display:grid;gap:8px}
+  .wrong-item{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--panel)}
+  .wrong-item b{color:var(--hot)}
+  .reduced-note{font-size:.82rem;color:var(--muted)}
+</style>
+</head>
+<body data-theme="dark">
+<a href="index.html" class="__homebtn" style="position:fixed;left:12px;bottom:12px;z-index:9999;background:#5b9dff;color:#04122e;font-weight:800;padding:8px 14px;border-radius:999px;text-decoration:none;font-family:sans-serif;font-size:.82rem;box-shadow:0 4px 14px rgba(0,0,0,.45)">?룧 ?듯빀 ??/a>
+<header>
+  <div class="hwrap">
+    <button class="btn navtoggle" onclick="toggleNav()" title="濡쒕뱶留?紐⑹감" aria-label="濡쒕뱶留??닿린">??/button>
+    <div class="htitle">?섎즺吏꾨떒???꾪븳 AI <small>쨌 ?쒗뿕?鍮??숈뒿?먮즺</small></div>
+    <div class="grow"></div>
+    <input class="search" id="search" placeholder="媛쒕뀗 寃?됤? oninput="filterNodes(this.value)">
+    <div class="progwrap"><span id="progtxt">0%</span><div class="progbar"><div class="progfill" id="progfill"></div></div></div>
+    <button class="btn" onclick="toggleTheme()">?뙎</button>
+  </div>
+</header>
+
+<div class="scrim" id="scrim" onclick="toggleNav()"></div>
+<div class="layout">
+  <!-- ===== 濡쒕뱶留?+ 異붿쿇 ?숈뒿 寃쎈줈 ===== -->
+  <nav class="roadmap" id="roadmap" aria-label="濡쒕뱶留?>
+    <h2>?뿺截?濡쒕뱶留?/h2>
+    <div class="rm-stem">
+      <div class="rm-stem-name">?럳 ?좏뻾吏??/div>
+      <div class="rm-node" data-target="prereq" onclick="goNode('prereq')"><span class="dot"></span>P1~P6 ?곸긽쨌?좏샇쨌誘쇨컧?꽷룻듅?대룄쨌ROC</div>
+    </div>
+    <div class="rm-stem">
+      <div class="rm-stem-name">B1. AI/ML/DL 湲곗큹 & ?숈뒿 ?⑤윭?ㅼ엫</div>
+      <div class="rm-node" data-target="C1" onclick="goNode('C1')"><span class="dot"></span>C1 ?섎즺AI쨌Ability-based</div>
+      <div class="rm-node hot" data-target="C2" onclick="goNode('C2')"><span class="dot"></span>C2 AI/ML/DL<span class="badge-hot">狩먥춴</span></div>
+      <div class="rm-node hot" data-target="C3" onclick="goNode('C3')"><span class="dot"></span>C3 ?숈뒿 ?⑤윭?ㅼ엫<span class="badge-hot">狩먥춴</span></div>
+      <div class="rm-node hot" data-target="C4" onclick="goNode('C4')"><span class="dot"></span>C4 遺꾨쪟/?뚭?/援곗쭛<span class="badge-hot">狩먥춴</span></div>
+      <div class="rm-node" data-target="C5" onclick="goNode('C5')"><span class="dot"></span>C5 ?섎즺AI 4? ?μ젏</div>
+      <div class="rm-node" data-target="C12" onclick="goNode('C12')"><span class="dot"></span>C12 ?붿????꾪솚</div>
+      <div class="rm-node" data-target="C20" onclick="goNode('C20')"><span class="dot"></span>C20 Tremor ?곌뎄</div>
+    </div>
+    <div class="rm-stem">
+      <div class="rm-stem-name">B2. ?앹껜?좏샇 (Biosignals)</div>
+      <div class="rm-node" data-target="C6" onclick="goNode('C6')"><span class="dot"></span>C6 ?앹껜?좏샇泥섎━ 媛쒖슂</div>
+      <div class="rm-node hot" data-target="C7" onclick="goNode('C7')"><span class="dot"></span>C7 ECG(?ъ쟾??<span class="badge-hot">狩먥춴</span></div>
+      <div class="rm-node hot" data-target="C8" onclick="goNode('C8')"><span class="dot"></span>C8 EEG(?뚰뙆)<span class="badge-hot">狩먥춴</span></div>
+      <div class="rm-node" data-target="C9" onclick="goNode('C9')"><span class="dot"></span>C9 EMG(洹쇱쟾??</div>
+      <div class="rm-node" data-target="C10" onclick="goNode('C10')"><span class="dot"></span>C10 EOG/ENG/PCG/VAG</div>
+    </div>
+    <div class="rm-stem">
+      <div class="rm-stem-name">B3. ?섎즺?곸긽 紐⑤떖由ы떚</div>
+      <div class="rm-node hot3" data-target="C11" onclick="goNode('C11')"><span class="dot"></span>C11 ?곸긽 11醫?span class="badge-hot">狩먥춴狩?/span></div>
+    </div>
+    <div class="rm-stem">
+      <div class="rm-stem-name">B4. 怨꾩륫 ?쒖뒪??/div>
+      <div class="rm-node hot3" data-target="C13" onclick="goNode('C13')"><span class="dot"></span>C13 怨꾩륫 3釉붾줉<span class="badge-hot">狩먥춴狩?/span></div>
+      <div class="rm-node" data-target="C14" onclick="goNode('C14')"><span class="dot"></span>C14 痢≪젙쨌怨꾩륫 ?뺤쓽</div>
+      <div class="rm-node hot3" data-target="C15" onclick="goNode('C15')"><span class="dot"></span>C15 5? 遺꾨쪟<span class="badge-hot">狩먥춴狩?/span></div>
+    </div>
+    <div class="rm-stem">
+      <div class="rm-stem-name">B5. ?좉꼍留?& CNN</div>
+      <div class="rm-node hot" data-target="C16" onclick="goNode('C16')"><span class="dot"></span>C16 ?대윴쨌?쒖꽦?붋룻띁?됲듃濡?span class="badge-hot">狩먥춴</span></div>
+      <div class="rm-node hot" data-target="C17" onclick="goNode('C17')"><span class="dot"></span>C17 援ъ“쨌?뚮씪誘명꽣??span class="badge-hot">狩먥춴</span></div>
+      <div class="rm-node hot" data-target="C18" onclick="goNode('C18')"><span class="dot"></span>C18 forward/backprop<span class="badge-hot">狩먥춴</span></div>
+      <div class="rm-node hot" data-target="C19" onclick="goNode('C19')"><span class="dot"></span>C19 CNN<span class="badge-hot">狩먥춴</span></div>
+    </div>
+
+    <div class="pathpanel">
+      <h3>?㎛ 異붿쿇 ?숈뒿 寃쎈줈 (?섏〈?꾩닚)</h3>
+      <div id="pathlist"></div>
+    </div>
+  </nav>
+
+  <!-- ===== 肄섑뀗痢?===== -->
+  <main class="content">
+    <section class="intro">
+      <h1>?섎즺吏꾨떒???꾪븳 AI <small style="font-size:.9rem;color:var(--muted)">쨌 AAI0035 쨌 源?뺥씗 援먯닔</small></h1>
+      <p>??怨쇰ぉ???듭떖? <b>?좉꼍怨?吏덊솚??吏꾨떒쨌?ы솢?섍린 ?꾪빐 ?앹껜?좏샇쨌?섎즺?곸긽??怨꾩륫?섍퀬 AI(ML/DL쨌CNN)濡??댁꽍?섎뒗 ?꾩껜 ?뚯씠?꾨씪??/b>?대떎. ??洹몃┝: <b>臾댁뾿???좏샇쨌?곸긽) ???대뼸寃??щ뒗媛(怨꾩륫) ??臾댁뾿?쇰줈 ?댁꽍?섎굹(AI/?좉꼍留?</b>.</p>
+      <div class="examnote">?뱥 <b>?쒗뿕 ?뱀꽦</b>: 媛앷???70~80%쨌<b>留ㅼ묶??以묒떖</b>쨌?쒖씠????쓬(Notion Day1 援먯닔 媛뺤“). ??源딆? ?좊룄蹂대떎 <b>?뺤쓽쨌鍮꾧탳쨌留ㅼ묶 ?붽린</b>媛 ?듭떖?대떎. ?룰컝由щ뒗 ?띿? ?꾨옒 <b>二쇳솴 ?議고몴</b>濡?諛섎났?섍퀬, 留??꾨옒 <b>?덉긽 臾몄젣(留ㅼ묶??</b>濡??먭? ?먭??쒕떎. (?좑툘 Week4 ?쒓퀎쨌?ㅻ━쨌洹쒖젣 諛?援ъ껜 湲곗텧? ?먮즺 誘몄젣怨???蹂??먮즺??Week1~3 踰붿쐞.)</div>
+    </section>
+
+    <!-- ===== 泥??붾㈃: D3 ?먯깋 ?몃━ (CDN) + ?몃━留??대갚 ===== -->
+    <section class="treemap" id="treeview">
+      <h2>?㎛ ?쒕늿??蹂대뒗 ?꾩껜 援ъ“ (?먯깋 ?몃━)</h2>
+      <div class="tm-sub">?몃뱶瑜??대┃?섎㈃ ?섏쐞 媛吏媛 ?묓엳怨??쇱퀜吏꾨떎. ??媛쒕뀗)???대┃?섎㈃ ?대떦 移대뱶濡??대룞?쒕떎. ?졖룻?移섎줈 ?뺣?쨌異뺤냼, ?쒕옒洹몃줈 ?대룞. 5? 媛吏 = Week1~3 援ъ“? 1:1, ??20媛?= ?몃뱶 C1~C20(?좏뻾吏??6媛??ы븿).</div>
+      <div id="tree-container" style="width:100%;min-height:380px"></div>
+    </section>
+
+    <!-- ===== MECE ?몃━留?(D3 誘몃줈?????대갚) ===== -->
+    <section class="treemap" id="treemap" data-fallback="1" style="display:none">
+      <h2>?㎛ ?쒕늿??蹂대뒗 ?꾩껜 援ъ“ (MECE ?몃━留?</h2>
+      <div class="tm-sub">??媛吏(二쇱감/二쇱젣)瑜?癒쇱? 蹂닿퀬, ??媛쒕뀗)???대┃?섎㈃ ?대떦 移대뱶濡??대룞?쒕떎. 5? 媛吏 = 異붿텧蹂?Week1~3 援ъ“? 1:1, ??20媛?= ?몃뱶 C1~C20.</div>
+      <ul class="tree">
+        <li><span class="tm-root">?섎즺吏꾨떒???꾪븳 AI</span>
+          <ul>
+            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">??/span>媛吏 1. AI/ML/DL 湲곗큹 & ?숈뒿 ?⑤윭?ㅼ엫 <span class="tm-desc">???곗씠?곕줈 吏꾨떒???먮룞?뷀븯???먮뇤 (Week1/Day1)</span></span>
+              <ul>
+                <li><span class="tm-leaf" data-target="C1" onclick="goNode('C1')">?섎즺AI 諛곌꼍쨌Ability-based (C1)</span></li>
+                <li><span class="tm-leaf hot" data-target="C2" onclick="goNode('C2')">AI?긎L?귾L 怨꾩링 狩먥춴 (C2)</span></li>
+                <li><span class="tm-leaf hot" data-target="C3" onclick="goNode('C3')">吏??鍮꾩???媛뺥솕 狩먥춴 (C3)</span></li>
+                <li><span class="tm-leaf hot" data-target="C4" onclick="goNode('C4')">遺꾨쪟/?뚭?/援곗쭛 狩먥춴 (C4)</span></li>
+                <li><span class="tm-leaf" data-target="C5" onclick="goNode('C5')">?섎즺AI 4? ?μ젏 (C5)</span></li>
+                <li><span class="tm-leaf" data-target="C12" onclick="goNode('C12')">?붿????꾪솚 (C12)</span></li>
+                <li><span class="tm-leaf" data-target="C20" onclick="goNode('C20')">Tremor ?곌뎄 (C20)</span></li>
+              </ul>
+            </li>
+            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">??/span>媛吏 2. ?앹껜?좏샇 (Biosignals) <span class="tm-desc">??紐몄씠 ?대뒗 ?꾧린쨌?뚮━쨌吏꾨룞???쎈뒗??(Week2/Day2)</span></span>
+              <ul>
+                <li><span class="tm-leaf" data-target="C6" onclick="goNode('C6')">?앹껜?좏샇泥섎━ 媛쒖슂 (C6)</span></li>
+                <li><span class="tm-leaf hot" data-target="C7" onclick="goNode('C7')">ECG ?ъ쟾??狩먥춴 (C7)</span></li>
+                <li><span class="tm-leaf hot" data-target="C8" onclick="goNode('C8')">EEG ?뚰뙆 狩먥춴 (C8)</span></li>
+                <li><span class="tm-leaf" data-target="C9" onclick="goNode('C9')">EMG 洹쇱쟾??(C9)</span></li>
+                <li><span class="tm-leaf" data-target="C10" onclick="goNode('C10')">EOG/ENG/PCG/VAG (C10)</span></li>
+              </ul>
+            </li>
+            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">??/span>媛吏 3. ?섎즺?곸긽 紐⑤떖由ы떚 <span class="tm-desc">??紐??띿쓣 蹂대뒗 11媛吏 移대찓??(異쒖젣 理쒕떎, Week2/Day2)</span></span>
+              <ul>
+                <li><span class="tm-leaf hot" data-target="C11" onclick="goNode('C11')">X-ray/CT/MRI/US/PET/SPECT/Mammo/Fluoro/DSA/OCT/Dermato 狩먥춴狩?(C11)</span></li>
+              </ul>
+            </li>
+            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">??/span>媛吏 4. 怨꾩륫 ?쒖뒪??(Instrumentation) <span class="tm-desc">???좏샇瑜??대뼸寃?痢≪젙/?쒖뼱?섎굹, ?섎뱶?⑥뼱 (Week3/Day3)</span></span>
+              <ul>
+                <li><span class="tm-leaf hot" data-target="C13" onclick="goNode('C13')">怨꾩륫 3釉붾줉 紐⑤뜽 狩먥춴狩?(C13)</span></li>
+                <li><span class="tm-leaf" data-target="C14" onclick="goNode('C14')">痢≪젙쨌怨꾩륫???뺤쓽 (C14)</span></li>
+                <li><span class="tm-leaf hot" data-target="C15" onclick="goNode('C15')">?앹껜怨꾩륫 5? 遺꾨쪟 狩먥춴狩?(C15)</span></li>
+              </ul>
+            </li>
+            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">??/span>媛吏 5. ?좉꼍留?& CNN <span class="tm-desc">??AI媛 ?ㅼ젣濡??숈뒿?섎뒗 硫붿빱?덉쬁 (Week3/Day3)</span></span>
+              <ul>
+                <li><span class="tm-leaf hot" data-target="C16" onclick="goNode('C16')">?대윴쨌?쒖꽦?붋룻띁?됲듃濡?狩먥춴 (C16)</span></li>
+                <li><span class="tm-leaf hot" data-target="C17" onclick="goNode('C17')">?좉꼍留?援ъ“쨌?뚮씪誘명꽣??狩먥춴 (C17)</span></li>
+                <li><span class="tm-leaf hot" data-target="C18" onclick="goNode('C18')">forward/backprop쨌?숈뒿?덉감 狩먥춴 (C18)</span></li>
+                <li><span class="tm-leaf hot" data-target="C19" onclick="goNode('C19')">CNN쨌?대?吏 遺꾩꽍 狩먥춴 (C19)</span></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ================= ?좏뻾吏??(Prerequisites) ================= -->
+    <section class="stem-sec" id="prereq">
+      <h2>?럳 ?좏뻾吏????蹂몃Ц ??理쒖냼 ?좊?</h2>
+      <p style="color:var(--muted)">蹂몃Ц 媛쒕뀗(?좏샇쨌?곸긽쨌怨꾩륫쨌?좉꼍留????쎄린 ?꾩뿉 ?뚯븘?????⑹뼱. 媛??뺤쓽 1~3以?+ <i>?곗엫</i>?쇰줈 蹂몃Ц怨??곌껐?쒕떎. 吏꾨떒 ?깅뒫吏??誘쇨컧?꽷룻듅?대룄쨌ROC/AUC)??媛앷???留ㅼ묶?뺤뿉 吏곴껐?섎땲 ?꾨옒 <b>?꾧퀎媛??щ씪?대뜑</b>濡?吏곸젒 議곗옉??泥대뱷?섎씪.</p>
+
+      <details class="node-card" id="prereq-signal" data-node-id="prereq-signal" data-title="?곸긽 ?좏샇 ?뺤쓽 modality ?쎌? ?섑뵆留?>
+        <summary>P1. ?곸긽 / ?좏샇<span class="nbadge">?좏뻾</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?뱰 ?뺤쓽</span><b>?좏샇(signal)</b> = ?쒓컙???곕씪 蹂?섎뒗 1李⑥썝 痢≪젙媛?ECG쨌EEG쨌EMG ???앹껜?꾧린). <b>?곸긽(image)</b> = 怨듦컙??諛곗뿴??2D/3D ?쎌?媛?X-ray쨌CT쨌MRI ??. ????吏꾨떒???먯옄猷?raw data)??</div>
+          <div class="field"><span class="lbl">?뵕 ?곗엫</span>B2(?앹껜?좏샇)??1D ?좏샇, B3(?섎즺?곸긽)? 2D/3D ?곸긽???ㅻ，?? CNN(C19)? ?곸긽??怨듦컙 援ъ“瑜? ?좏샇泥섎━(C6)???쒓컙 援ъ“瑜?蹂댁〈?쒕떎.</div>
+        </div>
+      </details>
+
+      <details class="node-card" id="prereq-feature" data-node-id="prereq-feature" data-title="?뱀쭠異붿텧 feature extraction engineering ?쒗쁽?숈뒿">
+        <summary>P2. ?뱀쭠異붿텧 (Feature Extraction)<span class="nbadge">?좏뻾</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?뱰 ?뺤쓽</span>raw ?곗씠?곗뿉??遺꾨쪟쨌?덉륫???몃え ?덈뒗 ?섏튂(?뱀쭠, feature)瑜?戮묐뒗 怨쇱젙. ?щ엺???ㅺ퀎?섎㈃ <b>feature engineering</b>, 紐⑤뜽???ㅼ뒪濡?戮묒쑝硫?<b>?쒗쁽?숈뒿(representation learning)</b>?대떎.</div>
+          <div class="field"><span class="lbl">?뵕 ?곗엫</span>ML怨?DL??媛瑜대뒗 ?듭떖 異?C2): ML? ?щ엺??feature瑜??ㅺ퀎, DL? ?먮룞 異붿텧. CNN(C19)???곸긽???뱀쭠???먮룞?쇰줈 ?〓뒗 寃껋씠 ????덈떎.</div>
+        </div>
+      </details>
+
+      <details class="node-card hot" id="prereq-sensspec" data-node-id="prereq-sensspec" data-title="誘쇨컧???뱀씠??sensitivity specificity ?쇰룞?됰젹 TP FP TN FN">
+        <summary>P3. 誘쇨컧??쨌 ?뱀씠??(Sensitivity 쨌 Specificity)<span class="nbadge hot">狩먰빑??/span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?뱰 ?뺤쓽</span>吏꾨떒 紐⑤뜽???섏옄/?뺤긽?쇰줈 ?먯젙???뚯쓽 ???곸쨷瑜?<br><b>誘쇨컧??Sensitivity, ?ы쁽??</b> = ?ㅼ젣 ?섏옄瑜??섏옄濡?留욏엺 鍮꾩쑉 = TP / (TP + FN).<br><b>?뱀씠??Specificity)</b> = ?ㅼ젣 ?뺤긽???뺤긽?쇰줈 留욏엺 鍮꾩쑉 = TN / (TN + FP).</div>
+          <div class="field"><span class="lbl">?뱤 ?쇰룞?됰젹(Confusion Matrix)</span>TP(吏꾩뼇??쨌FP(?꾩뼇??쨌TN(吏꾩쓬??쨌FN(?꾩쓬?? ??移? 誘쇨컧?꾨뒗 <b>?볦튇 ?섏옄(FN)</b>瑜? ?뱀씠?꾨뒗 <b>?ㅼ쭊???뺤긽(FP)</b>??以꾩씪?섎줉 ?щ씪媛꾨떎.</div>
+          <div class="field"><span class="lbl">?뵕 ?곗엫</span>?섎즺 吏꾨떒???쒖? ?됯?吏?? ?꾧퀎媛믪쓣 ??텛硫?誘쇨컧?꾟넁쨌?뱀씠?꾟넃濡?<b>留욊탳??trade-off)</b>???앷릿?????꾨옒 P4 ?щ씪?대뜑濡?吏곸젒 ?뺤씤?섎씪.</div>
+        </div>
+      </details>
+
+      <details class="node-card hot" id="prereq-roc" data-node-id="prereq-roc" data-title="ROC AUC 怨≪꽑 ?꾧퀎媛?threshold ?щ씪?대뜑 ?쒕??덉씠??trade-off">
+        <summary>P4. ROC 쨌 AUC + ?꾧퀎媛??щ씪?대뜑<span class="nbadge hot">狩먰빑??룹씤?곕옓?곕툕</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">媛쒕뀗 ?ㅻ챸 Hook Intuition Analogy Definition Mechanism in Korean: 媛쒕뀗 ?ㅻ챸 Hook Intuition Analogy Definition Mechanism</span>
+            <div class="concept-flow">
+              <div class="concept-step"><b>Hook</b> <em>???닿쾶 ?쒗뿕怨??꾩긽?먯꽌 以묒슂?쒓?</em><br>媛숈? 紐⑤뜽?대씪??<b>?꾧퀎媛?threshold, ?꾧퀎媛?</b>???대뵒???먮뒓?먯뿉 ?곕씪 ?섏옄瑜??볦튂??<b>?꾩쓬??false negative, ?꾩쓬??</b>怨??뺤긽?몄쓣 ?섏옄濡??ㅼ쭊?섎뒗 <b>?꾩뼇??false positive, ?꾩뼇??</b>??洹좏삎??諛붾먮떎. ROC? AUC??洹?洹좏삎?????μ쓽 吏?꾩쿂??蹂댁뿬 以??</div>
+              <div class="concept-step"><b>Intuition</b> <em>?뺤쓽 ?꾩뿉 ?〓뒗 媛먭컖</em><br>誘쇨컧??sensitivity, 誘쇨컧??瑜??믪씠?ㅻ㈃ 臾명꽦????떠 ??留롮씠 ?섏옄濡??↔퀬, ?뱀씠??specificity, ?뱀씠??瑜??믪씠?ㅻ㈃ 臾명꽦???щ젮 ???꾧꺽?섍쾶 ?듦낵?쒗궓?? ?쒖そ???щ━硫??ㅻⅨ 履쎌씠 ?붾뱾由щ뒗 留욊탳??trade-off, ?곸땐愿怨??대떎.</div>
+              <div class="concept-step"><b>Analogy</b> <em>?듭닕??鍮꾩쑀? ?쒓퀎</em><br>怨듯빆 蹂댁븞寃?됰?瑜??먯뒯?섍쾶 ?섎㈃ ?꾪뿕臾쇱쓣 ???볦튂吏留?以꾩씠 湲몄뼱吏怨?遺덊븘?뷀븳 異붽?寃?ш? ?섏뼱?쒕떎. ?ㅻ쭔 ??鍮꾩쑀媛 源⑥???吏?먯? ROC媛 ?⑥씪 寃??寃곌낵媛 ?꾨땲??<b>紐⑤뱺 ?꾧퀎媛?/b>?????誘쇨컧?꽷룻듅?대룄 沅ㅼ쟻???④퍡 蹂몃떎???먯씠??</div>
+              <div class="concept-step"><b>Definition</b> <em>?뺤떇 ?뺤쓽</em><br><b>ROC(Receiver Operating Characteristic)</b> 怨≪꽑? 紐⑤뱺 ?꾧퀎媛믪뿉??<b>TPR(true positive rate, 誘쇨컧??</b>??y異? <b>FPR(false positive rate, ?꾩뼇?깅쪧 = 1?뭩pecificity, 1?믫듅?대룄)</b>瑜?x異뺤뿉 李띿? 怨≪꽑?대떎. <b>AUC(area under the curve, 怨≪꽑 ?꾨옒 硫댁쟻)</b>??洹??꾩껜 遺꾨퀎?μ쓣 0.5~1.0 ?ъ씠 ?レ옄濡??붿빟?쒕떎.</div>
+              <div class="concept-step"><b>Mechanism</b> <em>痢듭링???묐룞 ?먮━</em><br>1) 紐⑤뜽???섏옄 ?뺣쪧 score瑜??몃떎. 2) threshold瑜??뺥빐 score ?댁긽???묒꽦?쇰줈 ?먯젙?쒕떎. 3) ?쇰룞?됰젹(confusion matrix, ?쇰룞?됰젹)?먯꽌 TP쨌FP쨌FN쨌TN???쇰떎. 4) TPR怨?FPR??怨꾩궛??ROC ???섎굹瑜??삳뒗?? 5) threshold瑜??곗냽?쇰줈 ?吏곸씠硫??먯씠 怨≪꽑???곕씪 ?대룞?섍퀬, 洹??꾩껜 硫댁쟻??AUC媛 ?쒕떎.</div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?뱤 鍮꾧탳????ROC 쨌 AUC 쨌 ?꾧퀎媛?threshold)</span>
+            <div class="scrollx"><table>
+              <tr><th>??ぉ</th><th>?곸뼱(English)</th><th>?쒓?</th><th>臾댁뾿??蹂?섎굹</th><th>?쒗뿕 ?ъ씤??/th></tr>
+              <tr><td><b>誘쇨컧??/b></td><td>sensitivity / TPR</td><td>誘쇨컧??/ 吏꾩뼇?깅쪧</td><td>threshold?볥㈃ ?泥대줈 利앷?</td><td>TP / (TP + FN)</td></tr>
+              <tr><td><b>?뱀씠??/b></td><td>specificity / TNR</td><td>?뱀씠??/ 吏꾩쓬?깅쪧</td><td>threshold?묐㈃ ?泥대줈 利앷?</td><td>TN / (TN + FP)</td></tr>
+              <tr><td><b>?꾩뼇?깅쪧</b></td><td>FPR</td><td>?꾩뼇?깅쪧</td><td>?뱀씠?꾩? 諛섎?</td><td>1 ??specificity</td></tr>
+              <tr><td><b>ROC ??/b></td><td>ROC point</td><td>ROC 怨≪꽑 ????/td><td>threshold媛 諛붾뚮㈃ ?대룞</td><td>??threshold???깅뒫</td></tr>
+              <tr><td><b>AUC</b></td><td>area under the curve</td><td>怨≪꽑 ?꾨옒 硫댁쟻</td><td>threshold瑜?諛붽퓭??洹몃?濡?/td><td>紐⑤뜽 ?꾩껜 遺꾨퀎??/td></tr>
+            </table></div>
+          </div>
+          <div class="field"><span class="lbl">?럾截??명꽣?숉떚釉?罹붾쾭??Scene 1 ??ROC threshold slider</span>
+            <div class="scene-panel" id="rocScene">
+              <div class="scene-meta">
+                <span><b>Scene 1</b> ROC(Receiver Operating Characteristic) 쨌 AUC(area under the curve)</span>
+                <span class="reduced-note" id="rocReducedNote"></span>
+              </div>
+              <div class="scene-grid">
+                <div>
+                  <canvas id="rocCanvas" class="anim-canvas" width="360" height="300" role="img" aria-label="ROC 怨≪꽑怨??꾩옱 ?꾧퀎媛???></canvas>
+                  <div class="scene-controls" style="margin-top:10px">
+                    <label style="flex:1 1 220px">threshold(?꾧퀎媛? = <b id="thVal">0.50</b>
+                      <input type="range" id="thSlider" min="0" max="1" step="0.01" value="0.50" style="width:100%">
+                    </label>
+                    <button class="btn" type="button" id="rocPlayBtn">?먮룞 ?ъ깮</button>
+                  </div>
+                  <div class="scene-progress" aria-hidden="true" style="margin-top:8px"><span id="rocProgress"></span></div>
+                </div>
+                <div class="scene-side">
+                  <p class="roc-hint">threshold(?꾧퀎媛?????specificity(?뱀씠???? sensitivity(誘쇨컧???? threshold(?꾧퀎媛?????sensitivity(誘쇨컧???? specificity(?뱀씠????</p>
+                  <div class="scene-readout">
+                    <div class="metric-card">sensitivity(誘쇨컧?? / TPR<b id="mSens">??/b></div>
+                    <div class="metric-card">specificity(?뱀씠?? / TNR<b id="mSpec">??/b></div>
+                    <div class="metric-card">FPR(false positive rate, ?꾩뼇?깅쪧)<b id="mFpr">??/b></div>
+                    <div class="metric-card">accuracy(?뺥솗??<b id="mAcc">??/b></div>
+                    <div class="metric-card">AUC(area under the curve)<b id="mAuc">??/b></div>
+                    <div class="metric-card">ROC point<b id="rocPointLabel">??/b></div>
+                  </div>
+                  <div class="roc-conf" aria-label="?쇰룞?됰젹 confusion matrix">
+                    <div class="rc-cell rc-tp">TP 吏꾩뼇??br><b id="cTP">0</b></div>
+                    <div class="rc-cell rc-fp">FP ?꾩뼇??br><b id="cFP">0</b></div>
+                    <div class="rc-cell rc-fn">FN ?꾩쓬??br><b id="cFN">0</b></div>
+                    <div class="rc-cell rc-tn">TN 吏꾩쓬??br><b id="cTN">0</b></div>
+                  </div>
+                  <p class="scene-caption" id="rocDesc">?щ씪?대뜑瑜??吏곸씠硫?confusion matrix(?쇰룞?됰젹), sensitivity(誘쇨컧??, specificity(?뱀씠??, ROC ?먯씠 ?④퍡 媛깆떊?쒕떎.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?좑툘 ?⑥젙</span><div class="trap">ROC??x異뺤? <b>?뱀씠?꾧? ?꾨땲???꾩뼇?깅쪧(1?믫듅?대룄)</b>?? ?꾧퀎媛믪쓣 諛붽퓭??AUC(怨≪꽑 ?먯껜)??諛붾뚯? ?딅뒗????AUC??紐⑤뜽 怨좎쑀 媛? ?꾧퀎媛믪? 怨≪꽑 ?꾩쓽 ???먯쓣 怨좊? 肉먯씠??</div></div>
+          <div class="field"><span class="lbl">?뵕 ?곗엫</span>遺꾨쪟(C4)쨌?좉꼍留?C18) ?깅뒫 ?됯????쒖?. 留ㅼ묶?뺤쑝濡?"誘쇨컧?꾟넄TP/(TP+FN)", "?꾧퀎媛믠넃?믩?媛먮룄?뫢룻듅?대룄?? 愿怨꾨? 臾산린 醫뗫떎.</div>
+        </div>
+      </details>
+
+      <details class="node-card" id="prereq-overfit" data-node-id="prereq-overfit" data-title="怨쇱쟻??overfitting ?쇰컲??寃利??곗씠??利앷컯">
+        <summary>P5. 怨쇱쟻??(Overfitting)<span class="nbadge">?좏뻾</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?뱰 ?뺤쓽</span>紐⑤뜽???숈뒿 ?곗씠?곗뿉 吏?섏튂寃?留욎떠?????곗씠??寃利씲룹떆???먯꽌 ?깅뒫???⑥뼱吏???꾩긽. ?숈뒿 ?뺥솗?꾨뒗 ?믪???寃利??뺥솗?꾧? ?ш쾶 ?ㅼ쿂吏硫?怨쇱쟻?⑹씠??</div>
+          <div class="field"><span class="lbl">?뵕 ?곗엫</span>?숈뒿怨≪꽑 吏꾨떒(C18)???듭떖 ??train?뫢톢alidation ?뺤껜硫?strong overfitting. CNN(C19)? ?곗씠??利앷컯?쇰줈 怨쇱쟻?⑹쓣 以꾩씤?? DL????긽 ?곗썡?섏? ?딆? ?댁쑀(C2)?닿린???섎떎.</div>
+        </div>
+      </details>
+
+      <details class="node-card" id="prereq-cv" data-node-id="prereq-cv" data-title="援먯감寃利?cross validation k-fold ?숈뒿 寃利?遺꾪븷 ?쇰컲??>
+        <summary>P6. 援먯감寃利?(Cross-Validation)<span class="nbadge">?좏뻾</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?뱰 ?뺤쓽</span>?곗씠?곕? ?щ윭 臾띠쓬(fold)?쇰줈 ?섎닠, 踰덇컝???숈뒿/寃利앹뿉 ?⑥꽌 ?깅뒫???됯퇏?대뒗 諛⑸쾿. k-fold媛 ??쒖쟻?대떎. ?⑥씪 遺꾪븷????????以꾩뿬 <b>?쇰컲???깅뒫</b>????誘우쓣 留뚰븯寃?異붿젙?쒕떎.</div>
+          <div class="field"><span class="lbl">?뵕 ?곗엫</span>怨쇱쟻??P5) ?щ?瑜??덉젙?곸쑝濡??먮떒?섍퀬 紐⑤뜽쨌?섏씠?쇳뙆?쇰??곕? 怨좊? ???대떎. ?섎즺泥섎읆 ?곗씠?곌? ?곸쓣 ???뱁엳 以묒슂?섎떎.</div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= 以꾧린 B1 ================= -->
+    <section class="stem-sec" id="B1">
+      <h2>B1. AI/ML/DL 湲곗큹 & ?숈뒿 ?⑤윭?ㅼ엫</h2>
+
+      <details class="node-card" id="C1" data-node-id="C1" data-title="?섎즺 AI 諛곌꼍 Ability-based Design">
+        <summary><input type="checkbox" class="nodechk" data-id="C1" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C1. ?섎즺 AI 諛곌꼍 / Human-centered AI / Ability-based Design<span class="nbadge">狩먧릎</span><span class="nbadge">?좏뻾: ?놁쓬</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?렞 吏곴?</span>"?щ엺???쒖뒪?쒖뿉 留욎텛吏 留먭퀬, ?쒖뒪?쒖쓣 ?щ엺???λ젰??留욎떠?? ???닿쾬??Ability-based Design.</div>
+          <div class="field"><span class="lbl">?뱰 ?뺤쓽</span><b>Ability-based Design (Edwards 1995)</b> ???쇰컲 ?쒖뒪?쒖? ????ъ슜?먮? ?곸젙??<b>?ъ슜?먭? ?쒖뒪?쒖뿉 ?곸쓳</b>(User?뭓daptation?뭆ystem)?쒕떎. 諛섎㈃ <b>Ability-Based System(+AI)</b>? <b>?쒖뒪?쒖씠 ?ъ슜?먯쓽 ?λ젰???곸쓳</b>?쒕떎. ?곌뎄 3異? Custom Hardware + Signal Processing & AI + Human-centered Evaluation.</div>
+          <div class="field"><span class="lbl">?뙇 ?ㅼ꽭怨??쒕굹由ъ삤</span><div class="scenario">"?먭??쎌씠 10媛??녿뒗 ?ъ슜?먭? QWERTY ?ㅻ낫?쒕? ?대떎." ?쇰컲 ?ㅺ퀎???ъ슜?먭? ?ㅻ낫?쒖뿉 留욎떠 ?곸쓳?댁빞 ?섏?留?User-adaptation-System), Ability-Based System? AI媛 洹??ъ슜?먯쓽 ?붿〈 ?λ젰??留욎떠 ?낅젰 諛⑹떇??諛붽퓭以??</div></div>
+          <div class="field"><span class="lbl">?뵇 ?묐룞 ?먮━</span>?곌뎄 諛⑺뼢??<b>Diagnosis(吏꾨떒)</b> ??<b>Treatment(移섎즺)</b>濡??댁뼱吏? 移섎즺???ㅼ떆 <b>Therapeutic(鍮꾩묠???좉꼍議곗젅)</b> / <b>Assistive(蹂댁“湲곗닠)</b>濡??섎돏?????좉꼍怨?吏덊솚 以묒떖.</div>
+          <div class="field"><span class="lbl">?좑툘 ?⑥젙</span><div class="trap">User-adaptation-System(?ъ슜?먭? ?곸쓳) ??Ability-Based System(?쒖뒪?쒖씠 ?곸쓳)??<b>諛섎?濡??몄슦湲??쎈떎.</b></div></div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??<small>(異쒖젣 媛?대뱶 쨌 Notion Day1)</small></span>"Ability-based Design" ?뺤쓽쨌?ㅻ낫???덉떆 媛앷??? 吏꾨떒 vs 移섎즺(therapeutic=鍮꾩묠???좉꼍議곗젅 / assistive=蹂댁“) 援щ텇.</div>
+          <div class="field" style="color:var(--muted);font-size:.85rem">?뵕 ?곌껐: ?묒슜 C20(Tremor ?곌뎄媛 ???ъ긽???곸슜)</div>
+        </div>
+      </details>
+
+      <details class="node-card hot" id="C2" data-node-id="C2" data-title="AI ML DL 怨꾩링 援ъ“">
+        <summary><input type="checkbox" class="nodechk" data-id="C2" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C2. AI / ML / DL 怨꾩링 援ъ“<span class="nbadge hot">狩먥춴遙?/span><span class="nbadge">?좏뻾: ?놁쓬 쨌 愿臾?/span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?렞 吏곴?</span>?ъ떆???명삎泥섎읆 <b>AI ??ML ??DL</b>. 諛붽묑?쇱닔濡??ш큵?? ?덉そ?쇱닔濡??곗씠?곕줈 ?먮룞 ?숈뒿.</div>
+          <div class="field"><span class="lbl">?뱰 ?뺤쓽</span><b>AI</b>: ?멸컙???몄??λ젰(?숈뒿쨌異붾줎쨌?먮떒쨌臾몄젣?닿껐)??湲곌퀎媛 ?섑뻾. 洹쒖튃湲곕컲~?먭??숈뒿 ?ш큵.<br><b>ML</b>: ?곗씠?곕줈 ?쒖뒪?쒖씠 ?ㅼ뒪濡?洹쒖튃쨌?⑦꽩 ?숈뒿(?꾨줈洹몃옒諛띾맂 洹쒖튃 ?놁씠). 吏??鍮꾩???媛뺥솕濡?遺꾨쪟.<br><b>DL</b>: ?ㅼ링 ?멸났?좉꼍留?湲곕컲. 鍮꾩젙???곗씠???곸긽쨌?뚯꽦쨌?먯뿰????媛뺣젰. <b>?뱀쭠(feature) ?먮룞 異붿텧</b>(End-to-End). CNN/RNN/Transformer.</div>
+          <div class="field"><span class="lbl">?뙇 ?ㅼ꽭怨??쒕굹由ъ삤</span><div class="scenario">?묎툒?ㅼ뿉????<b>AI</b>=?섏옄 ?곗꽑?쒖쐞 遺꾨쪟쨌梨쀫큸 / <b>ML</b>=?덉븸寃???섏튂濡?吏덈퀝 ?덉륫 / <b>DL</b>=?됰? X-ray瑜?CNN??吏곸젒 蹂닿퀬 ?먮졃 吏꾨떒. ????"AI"吏留??덉そ?쇰줈 媛덉닔濡??곗씠?곕? ??留롮씠 癒밴퀬 ?щ엺 媛쒖엯??以꾩뼱?좊떎.</div></div>
+          <div class="field"><span class="lbl">?뵇 ?묐룞 ?먮━ (ML vs DL ?듭떖, Week1 p.26)</span><b>ML = Feature engineering</b> ??Raw ?곗씠?곕? <b>?щ엺??feature ?ㅺ퀎</b> ??ML紐⑤뜽 ??異쒕젰. <b>DL = feature engineering 遺덊븘??/b> ??Raw ??DNN???쒗쁽?숈뒿 ??異쒕젰.</div>
+          <div class="field"><span class="lbl">?뱤 ???몄궗?댄듃 (SUMMARY, Week1 p.27) ??留ㅼ묶 ?듭떖!</span>
+            <div class="matchtable"><div class="mt-cap">狩?留ㅼ묶 ?議고몴: AI vs ML vs DL</div><div class="scrollx"><table>
+              <tr><th>鍮꾧탳異?/th><th>AI</th><th>ML</th><th>DL</th></tr>
+              <tr><td>?곗씠???꾩슂??/td><td>?곸쓬</td><td>以묎컙</td><td><b>留ㅼ슦 留롮쓬</b></td></tr>
+              <tr><td>?ㅻ챸媛?μ꽦</td><td>?믪쓬</td><td>蹂댄넻</td><td><b>??쓬 (black box)</b></td></tr>
+              <tr><td>泥섎━ ?곗씠??/td><td>?뺥삎/鍮꾩젙??/td><td>?뺥삎 ?꾩＜</td><td><b>鍮꾩젙?뺤뿉 媛뺥븿</b></td></tr>
+              <tr><td>?뱀쭠 異붿텧</td><td>??/td><td>?щ엺???ㅺ퀎</td><td><b>?먮룞(End-to-End)</b></td></tr>
+            </table></div></div>
+            <div class="callout">"?곗씠???곴쾶 ?꾩슂 / black box / 鍮꾩젙?뺤뿉 媛뺥븿 / feature ?먮룞" ?뱀꽦??AI쨌ML쨌DL??留ㅼ묶?섎뒗 媛앷??앹씠 ?④낏.</div>
+          </div>
+          <div class="field"><span class="lbl">?륅툘 ?④퀎蹂?????덉젣 (留ㅼ묶??</span>
+            <i>"?ㅼ쓬 ?뱀꽦??AI/ML/DL??留ㅼ묶: ???됰? X-ray瑜?raw濡??ｌ뼱 ?먮졃 吏꾨떒 ???덉븸寃???섏튂濡?吏덈퀝 ?덉륫 ??black box???ㅻ챸 ?대젮? ??feature engineering ?꾩슂"</i>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1?④퀎</div>??"raw ?곸긽 吏곸젒 + 鍮꾩젙?? ??鍮꾩젙?뺤뿉 媛뺥븯怨?feature ?먮룞 = <b>DL</b></div>
+              <div class="step"><div class="step-head">2?④퀎</div>??"?뺥삎 ?섏튂 + ?щ엺??feature ?ㅺ퀎" = <b>ML</b></div>
+              <div class="step"><div class="step-head">3?④퀎</div>??"?ㅻ챸媛?μ꽦 ??쓬 = black box" = <b>DL</b></div>
+              <div class="step"><div class="step-head">4?④퀎 ????/div>??"feature engineering ?꾩슂 = ?щ엺???ㅺ퀎" = <b>ML</b>. ???잻L ?좲L ?줔L ?쥿L</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">???댁쟾</button><button class="btn" onclick="stepMove(this,1)">?ㅼ쓬 ??/button><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?좑툘 ?⑥젙</span><div class="trap">DL? ML??<b>?섏쐞</b> 媛쒕뀗(AI?긎L?귾L). <b>DL????긽 ?곗썡??寃??꾨땲??/b> ???곗씠?걔룹뿰?곗쓣 留롮씠 癒밴퀬, 怨쇱쟻?㈑룹꽕紐낅젰 ??쓬.</div></div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??/span>狩??뱀꽦?볾I/ML/DL 留ㅼ묶. ?ы븿愿怨?AI?긎L?귾L. ML=feature engineering / DL=遺덊븘??</div>
+          <div class="field" style="color:var(--muted);font-size:.85rem">?뵕 ?곌껐: ?묒슜 C3쨌C16~C19(?좉꼍留?DL), ?議?C5</div>
+        </div>
+      </details>
+
+      <details class="node-card hot" id="C3" data-node-id="C3" data-title="?숈뒿 ?⑤윭?ㅼ엫 吏??鍮꾩???媛뺥솕">
+        <summary><input type="checkbox" class="nodechk" data-id="C3" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C3. ?숈뒿 ?⑤윭?ㅼ엫 ??吏??/ 鍮꾩???/ 媛뺥솕?숈뒿<span class="nbadge hot">狩먥춴遙?/span><span class="nbadge">?좏뻾: C2</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?렞 吏곴?</span><b>?뺣떟 ?덉쓬</b>(吏?? / <b>援ъ“ 諛쒓껄</b>(鍮꾩??? / <b>蹂댁긽 理쒖쟻??/b>(媛뺥솕).</div>
+          <div class="field"><span class="lbl">?뱰 ?뺤쓽쨌硫붿빱?덉쬁</span><b>吏?꾪븰??/b>: ?낅젰 X + ?뺣떟 y(label) ?????먯떎(Loss) 理쒖냼?붾줈 ?뚮씪誘명꽣 議곗젙. 遺꾨쪟(SVM쨌Logistic쨌RF쨌k-NN쨌NN), ?뚭?(Linear쨌Ridge/Lasso쨌XGBoost).<br><b>鍮꾩??꾪븰??/b>: ?낅젰留? ?뺣떟 ?놁쓬 ??嫄곕━쨌?좎궗?꽷룸텇?щ줈 ?댁옱 援ъ“ 諛쒓껄. ?대윭?ㅽ꽣留?K-means쨌DBSCAN쨌Hierarchical), 李⑥썝異뺤냼(PCA쨌t-SNE쨌Autoencoder).<br><b>媛뺥솕?숈뒿(RL)</b>: Agent媛 Environment? ?곹샇?묒슜 ??Reward濡?理쒖쟻 policy ?숈뒿. 湲곕낯 Q-learning쨌SARSA, ?ы솕 DQN쨌PPO쨌A3C.</div>
+          <div class="field"><span class="lbl">?뙇 ?ㅼ꽭怨??쒕굹由ъ삤</span><div class="scenario"><b>吏??/b>=X-ray濡??먮졃 ?먮떒(?뺣떟???덉쓬) / <b>鍮꾩???/b>=?뺤긽 ?앹껜?좏샇留?紐⑥븘?먭퀬 嫄곌린??踰쀬뼱?섎뒗 鍮꾩젙???먯?(?뺣떟 ?놁씠 援ъ“濡? / <b>媛뺥솕</b>=?ы솢 濡쒕큸???쒗뻾李⑹삤濡?蹂댁긽???볦쑝硫??숈옉 ?숈뒿.</div></div>
+          <div class="field"><span class="lbl">?뱤 ???몄궗?댄듃 (Week1 p.29) ???쒗뿕 ?듭떖 留ㅼ묶??</span>
+            <div class="matchtable"><div class="mt-cap">狩?留ㅼ묶 ?議고몴: 吏??vs 鍮꾩???vs 媛뺥솕</div><div class="scrollx"><table>
+              <tr><th>鍮꾧탳異?/th><th>吏?꾪븰??/th><th>鍮꾩??꾪븰??/th><th>媛뺥솕?숈뒿</th></tr>
+              <tr><td>?낅젰 ?곗씠??/td><td>?낅젰 + <b>?뺣떟(label)</b></td><td><b>?낅젰留?/b></td><td>?곹깭쨌?됰룞쨌蹂댁긽</td></tr>
+              <tr><td>?숈뒿 諛⑹떇</td><td>?ㅼ감 理쒖냼??/td><td>?좎궗?꾨줈 援곗쭛</td><td><b>?꾩쟻蹂댁긽 理쒕???/b></td></tr>
+              <tr><td>?⑥젏</td><td><b>?쇰꺼留?鍮꾩슜 ??/b></td><td><b>?됯? ?대젮?(?뺣떟 ?놁쓬)</b></td><td>?먮━怨?蹂듭옟쨌?섎즺???ㅽ뿕쨌?ㅻ━ ?대젮?</td></tr>
+            </table></div></div>
+          </div>
+          <div class="field"><span class="lbl">?륅툘 ?④퀎蹂?????덉젣 (留ㅼ묶??</span>
+            <i>"?⑥젏???숈뒿?좏삎??留ㅼ묶: (媛) ?쇰꺼留?鍮꾩슜 ??(?? 寃곌낵 ?됯? ?대젮? (?? ?먮━怨??ㅽ뿕쨌?ㅻ━ ?대젮?"</i>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1?④퀎</div>(媛) "?쇰꺼=?뺣떟 ?꾩슂" ???뺣떟?????ъ븘???섎땲 = <b>吏?꾪븰??/b></div>
+              <div class="step"><div class="step-head">2?④퀎</div>(?? "?뺣떟???놁뼱 ?섑뻽?붿? 紐⑤쫫" = <b>鍮꾩??꾪븰??/b></div>
+              <div class="step"><div class="step-head">3?④퀎 ????/div>(?? "?섍꼍 ?곹샇?묒슜쨌?쒗뻾李⑹삤" = <b>媛뺥솕?숈뒿</b>. ??媛-吏?? ??鍮꾩??? ??媛뺥솕</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">???댁쟾</button><button class="btn" onclick="stepMove(this,1)">?ㅼ쓬 ??/button><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?좑툘 ?⑥젙</span><div class="trap">媛뺥솕?숈뒿? "?뺣떟?쒓? ?녿뒗?곕룄" ?숈뒿?쒕떎(蹂댁긽?쇰줈). 鍮꾩??꾩쓽 ?듭떖 ?⑥젏? "<b>?됯?媛 ?대젮?</b>"(?뺣떟???놁뼱??.</div></div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??/span>狩??낅젰?곗씠?걔룻븰?듬갑?씲룸떒??3異?留ㅼ묶.</div>
+          <div class="field" style="color:var(--muted);font-size:.85rem">?뵕 ?곌껐: ?좏뻾 C2, ?묒슜 C4</div>
+        </div>
+      </details>
+
+      <details class="node-card hot" id="C4" data-node-id="C4" data-title="遺꾨쪟 ?뚭? ?대윭?ㅽ꽣留?>
+        <summary><input type="checkbox" class="nodechk" data-id="C4" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C4. 遺꾨쪟 / ?뚭? / ?대윭?ㅽ꽣留?span class="nbadge hot">狩먥춴遙?/span><span class="nbadge">?좏뻾: C3</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?렞 吏곴?</span>異쒕젰??<b>踰붿＜硫?遺꾨쪟</b>, <b>?곗냽媛믪씠硫??뚭?</b>, <b>?쇰꺼 ?놁씠 洹몃９?붾㈃ 援곗쭛</b>.</div>
+          <div class="field"><span class="lbl">?뱤 ???몄궗?댄듃 (Week1 p.34) ??留ㅼ묶 ?듭떖!</span>
+            <div class="matchtable"><div class="mt-cap">狩?留ㅼ묶 ?議고몴: 遺꾨쪟 vs ?뚭? vs ?대윭?ㅽ꽣留?/div><div class="scrollx"><table>
+              <tr><th></th><th>遺꾨쪟</th><th>?뚭?</th><th>?대윭?ㅽ꽣留?/th></tr>
+              <tr><td>臾몄젣?좏삎</td><td>吏??/td><td>吏??/td><td><b>鍮꾩???/b></td></tr>
+              <tr><td>異쒕젰</td><td>踰붿＜??label, <b>?댁궛 discrete</b>)</td><td>?곗냽???レ옄, <b>continuous</b>)</td><td>洹몃９(援곗쭛 踰덊샇)</td></tr>
+              <tr><td>?됯?吏??/td><td>?뺥솗????/td><td><b>MSE, MAE</b></td><td>援곗쭛 ?덉쭏</td></tr>
+              <tr><td>????뚭퀬由ъ쬁</td><td>SVM쨌Decision Tree쨌CNN</td><td>Linear Regression쨌XGBoost</td><td>K-means쨌DBSCAN쨌Autoencoder</td></tr>
+            </table></div></div>
+          </div>
+          <div class="field"><span class="lbl">?뙇 ?ㅼ꽭怨??쒕굹由ъ삤</span><div class="scenario"><b>遺꾨쪟</b>=??CT ?먯븫 ?좊Т, 蹂묐━?щ씪?대뱶 ?묒꽦/?낆꽦 / <b>?뚭?</b>=?덈떦쨌?앹〈湲곌컙(媛쒖썡)쨌?щ컯異쒕웾(ml/beat) ?덉륫 / <b>援곗쭛</b>=?좎쟾泥?諛쒗쁽?쇰줈 ?섏옄 洹몃９??</div></div>
+          <div class="field"><span class="lbl">?륅툘 ?④퀎蹂?????덉젣 (異쒕젰?믪쑀??留ㅼ묶)</span>
+            <i>"媛?怨쇱젣瑜?遺꾨쪟/?뚭?/援곗쭛??留ㅼ묶: ??5???앹〈湲곌컙??媛쒖썡濡??덉륫 ??X-ray媛 ?먮졃?몄? ?꾨땶吏 ???쇰꺼 ?놁씠 ?좎쟾泥대줈 ?섏옄 臾띔린"</i>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1?④퀎</div>??異쒕젰 "媛쒖썡=?곗냽 ?レ옄" ??<b>?뚭?</b> (?됯? MSE/MAE)</div>
+              <div class="step"><div class="step-head">2?④퀎</div>??異쒕젰 "?먮졃/?꾨떂=?댁궛 踰붿＜" ??<b>遺꾨쪟</b></div>
+              <div class="step"><div class="step-head">3?④퀎 ????/div>??"?쇰꺼 ?놁쓬 + 洹몃９?? ??<b>?대윭?ㅽ꽣留?鍮꾩???</b>. ???좏쉶洹 ?〓텇瑜???뎔吏?/div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">???댁쟾</button><button class="btn" onclick="stepMove(this,1)">?ㅼ쓬 ??/button><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?좑툘 ?⑥젙</span><div class="trap">遺꾨쪟쨌?뚭???<b>????吏?꾪븰??/b>(李⑥씠??異쒕젰???댁궛/?곗냽). 援곗쭛留?鍮꾩???</div></div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??/span>狩?"?댁궛 vs ?곗냽 vs 洹몃９" ??遺꾨쪟/?뚭?/援곗쭛 留ㅼ묶. <b>?뚭? ?됯?吏??= MSE/MAE ?붽린.</b></div>
+          <div class="field" style="color:var(--muted);font-size:.85rem">?뵕 ?곌껐: ?좏뻾 C3</div>
+        </div>
+      </details>
+
+      <details class="node-card" id="C5" data-node-id="C5" data-title="?섎즺 AI 4? ?μ젏">
+        <summary><input type="checkbox" class="nodechk" data-id="C5" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C5. ?섎즺 AI??4? ?μ젏<span class="nbadge">狩먧릎</span><span class="nbadge">?좏뻾: C2</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?렞 吏곴?</span>AI媛 吏꾨떒???꾩슱 ??醫뗭? ????媛吏.</div>
+          <div class="field"><span class="lbl">?뱰 ?뺤쓽</span><b>?띾룄 / ?뺥솗??/ ?쇨???/ ?덉륫</b> (4媛吏).</div>
+          <div class="field"><span class="lbl">?좑툘 ?먮즺 ?놁쓬</span><div class="miss">媛???ぉ???곸꽭 ?ㅻ챸? PDF쨌Notion 紐⑤몢 Blank. ?ㅼ썙??4媛쒕쭔 ?몄텧?섍퀬 ?곸꽭??鍮덉뭏 泥섎━(?꾩쓽 蹂닿컯 湲덉?).</div></div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??/span>4? ?μ젏 ?섏뿴???⑤떟 媛??</div>
+          <div class="field" style="color:var(--muted);font-size:.85rem">?뵕 ?곌껐: ?좏뻾 C2</div>
+        </div>
+      </details>
+
+      <details class="node-card" id="C12" data-node-id="C12" data-title="?붿????꾪솚 ?섎즺">
+        <summary><input type="checkbox" class="nodechk" data-id="C12" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C12. ?붿????꾪솚 (Digital Transformation) ???섎즺<span class="nbadge">狩먧퐥</span><span class="nbadge">?좏뻾: ?놁쓬 쨌 ?낅┰</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?렞 吏곴?</span>?붿???湲곗닠濡??섎즺 ?댁쁺쨌?섏옄媛移섎? 洹쇰낯?곸쑝濡?諛붽씀湲?</div>
+          <div class="field"><span class="lbl">?뱰 ?뺤쓽</span>?붿???湲곗닠??議곗쭅 ?꾨컲???듯빀???댁쁺諛⑹떇쨌怨좉컼媛移섎? 洹쇰낯遺??諛붽씀??寃? ?섎즺 誘몃옒湲곗닠 = 媛쒖씤留욎땄?섑븰쨌?붿??명뿬???뚮옯?셋룹썾?대윭釉붋텮I/ML 吏꾨떒쨌?먭꺽吏꾨즺쨌3D?꾨┛??濡쒕큸쨌釉붾줉泥댁씤 蹂댁븞.</div>
+          <div class="field"><span class="lbl">?뵇 ?묐룞 ?먮━ (?뚰겕?뚮줈?? p.5)</span>?좎궗?꾪룊媛쨌?꾨왂 ???≪씠?닿?怨꾩옄 李몄뿬 ????린?좊룄??EHR쨌?먭꺽吏꾨즺쨌?⑥뼱?щ툝) ???ｊ탳?≤룹콈?????ㅻえ?덊꽣留겶룻뵾?쒕갚 ???λ컲蹂듦컻??</div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??/span>誘몃옒 ?ъ뒪耳??湲곗닠 ?섏뿴??媛??(鍮꾩쨷 ??쓬).</div>
+        </div>
+      </details>
+
+      <details class="node-card" id="C20" data-node-id="C20" data-title="援먯닔 Tremor ?곌뎄 吏꾨떒 移섎즺 蹂댁“">
+        <summary><input type="checkbox" class="nodechk" data-id="C20" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C20. 援먯닔 ?곌뎄 ?щ? ??Tremor 吏꾨떒쨌移섎즺쨌蹂댁“<span class="nbadge">狩먧퐥</span><span class="nbadge">?좏뻾: C1</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?렞 吏곴?</span>?먮뼥由?tremor)??醫낆씠 ?섏꽑 ???而댄벂?곕줈 ?뺣웾?뷀븯怨? ?꾧린?먭레?쇰줈 ?듭젣?섎뒗 ?곌뎄.</div>
+          <div class="field"><span class="lbl">?뱰 ?댁슜</span><b>吏꾨떒</b>: 湲곗〈=醫낆씠 ?섏꽑/?꾧린(二쇨??? ???좉퇋=?쒖???怨쇱젣(Gyration Air Mouse쨌Wrist Device)濡??뺣웾?? <b>TETRAS 0~4 ?깃툒</b>蹂?沅ㅼ쟻 ?낇솕. ?깅뒫吏?? Movement time, Path efficiency, Error rate, <b>Throughput</b>, Outside area.<br><b>移섎즺(Therapeutic)</b>: 鍮꾩묠??E-Stim?쇰줈 ?⑤┝ ?듭젣, ?먮（??phase-locked ?먭레 理쒖쟻??Amplitude쨌Frequency쨌Duty Cycle쨌Phase).<br><b>移섎즺(Assistive)</b>: 留덈퉬 ?섏옄??? ?吏곸엫 ??<b>Tongue Pattern Recognition</b>(PCA 遺꾨쪟), MORA濡??좎껜?는룸줈遊??쒖뼱.</div>
+          <div class="field"><span class="lbl">?뱤 洹몃옒???몄궗?댄듃 (Week1 p.19)</span><div class="callout">Path Efficiency vs Tremor Power = <b>?뚯쓽 ?곴?</b>(R짼=0.48, ?⑤┝ 媛뺥븷?섎줉 ?⑥쑉??. Throughput vs Tremor Frequency = <b>?묒쓽 ?곴?</b>(R짼=0.70).</div></div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??/span>鍮꾩쨷 ??쓬. Throughput쨌Path efficiency ???깅뒫吏???⑹뼱 ?뺣룄.</div>
+          <div class="field" style="color:var(--muted);font-size:.85rem">?뵕 ?곌껐: ?좏뻾 C1(Ability-based ?ъ긽???곸슜)</div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= 以꾧린 B2 ================= -->
+    <section class="stem-sec" id="B2">
+      <h2>B2. ?앹껜?좏샇 (Biosignals)</h2>
+
+      <details class="node-card" id="C6" data-node-id="C6" data-title="?앹껜?좏샇 泥섎━ 媛쒖슂">
+        <summary><input type="checkbox" class="nodechk" data-id="C6" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C6. ?앹껜?좏샇 泥섎━ 媛쒖슂<span class="nbadge">狩먧릎</span><span class="nbadge">?좏뻾: ?놁쓬 쨌 愿臾?/span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?렞 吏곴?</span>紐몄씠 ?대뒗 ?꾧린쨌?뚮━쨌吏꾨룞 ?좏샇瑜??ㅻ벉??吏꾨떒?????뺣낫濡?諛붽씀???뚯씠?꾨씪??</div>
+          <div class="field"><span class="lbl">?뱰 ?뺤쓽</span>?좏샇泥섎━ = ?뚮━쨌?대?吏쨌?앹껜?좏샇瑜?遺꾩꽍쨌蹂?빧룻빀?깊빐 ?좎슜 ?뺣낫 異붿텧쨌?덉쭏 ?μ긽. <b>?앹껜?좏샇泥섎━</b> = ?몄껜 ?앸━?좏샇瑜?遺꾩꽍???꾩긽 吏꾨떒쨌紐⑤땲?곕쭅쨌移섎즺???쒖슜. ????좏샇: ECG쨌EEG쨌EMG, 洹???EOG쨌ENG쨌PCG쨌VAG.</div>
+          <div class="field"><span class="lbl">?뙇 ?ㅼ꽭怨??쒕굹由ъ삤</span><div class="scenario">ECG ?먯떆 ?뚰삎? 洹쇱쑁 ?≪쓬쨌湲곗????붾뱾由쇱씠 ?욎뿬 ?덈떎. ?꾪꽣留곣넂?뺢퇋?붴넂R-?쇳겕 ?먯??뭆VM/DL 遺꾨쪟瑜?嫄곗퀜??"遺?뺣㎘"?대씪??吏꾨떒 ?뺣낫媛 ?섏삩??</div></div>
+          <div class="field"><span class="lbl">?뵇 ?묐룞 ?먮━ (?뚯씠?꾨씪?? Week2 p.27)</span>?곗씠?곗닔吏???<b>?꾩쿂由?/b>(?꾪꽣留겶룹젙洹쒗솕쨌湲곗??좊낫?? ??<b>?몃텇??Segmentation)</b> ??<b>?몄씠利덉젣嫄?Artifact Removal: ICA, PCA)</b> ??<b>?쇳겕?먯?</b>(?? ECG R-?쇳겕) ??<b>遺꾨쪟쨌?⑦꽩?몄떇</b>(SVM쨌DL) ??紐⑤뜽留겶룹삁痢????쒓컖??</div>
+          <div class="field"><span class="lbl">?뱤 ???몄궗?댄듃 (?곌뎄 4遺꾩빞, Week2 p.27)</span><div class="callout">?μ긽(Enhancement, ?≪쓬?쒓굅) / ?먯?쨌異붿텧(Detection &amp; Extraction) / ?댁꽍쨌遺꾩꽍(Interpretation) / 遺꾨쪟쨌?덉륫(Classification &amp; Prediction).</div></div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??/span>泥섎━ ?뚯씠?꾨씪???쒖꽌. Artifact Removal = ICA/PCA. ?쇱씠釉뚮윭由?SciPy=scipy.signal ?꾪꽣, Scikit-learn=SVM/PCA).</div>
+          <div class="field" style="color:var(--muted);font-size:.85rem">?뵕 ?곌껐: ?묒슜 C7쨌C8쨌C9쨌C10(媛쒕퀎 ?좏샇), C13(怨꾩륫 ?쒖뒪??</div>
+        </div>
+      </details>
+
+      <details class="node-card hot" id="C7" data-node-id="C7" data-title="ECG ?ъ쟾??>
+        <summary><input type="checkbox" class="nodechk" data-id="C7" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C7. ECG (?ъ쟾??<span class="nbadge hot">狩먥춴遙?/span><span class="nbadge">?좏뻾: C6</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">媛쒕뀗 ?ㅻ챸 Hook Intuition Analogy Definition Mechanism in Korean: 媛쒕뀗 ?ㅻ챸 Hook Intuition Analogy Definition Mechanism</span>
+            <div class="concept-flow">
+              <div class="concept-step"><b>Hook</b><br>ECG(electrocardiogram, ?ъ쟾????"?ъ옣??吏湲??대뼸寃??꾧린瑜??섎━怨??덈뒗媛"瑜?媛??鍮좊Ⅴ寃?蹂대뒗 寃?щ씪?? 遺?뺣㎘(arrhythmia, 遺?뺣㎘)怨?STEMI瑜?紐?珥??덉뿉 媛瑜대뒗 泥??붾㈃???쒕떎.</div>
+              <div class="concept-step"><b>Intuition</b><br>?ъ옣????踰????뚮뒗 <b>?щ갑 癒쇱?, ?ъ떎 ?섏쨷</b>?대씪???쒖꽌媛 ?덈떎. ECG ?뚰삎? 洹??쒖꽌瑜??쒓컙異?time axis, ?쒓컙異????뺥???蹂댁뿬 以?? ?묒? ?몃뜒(P) ?ㅼ뿉 ??泥⑤몢(QRS), 留덉?留??뚮났(T)???곕씪?⑤떎.</div>
+              <div class="concept-step"><b>Analogy</b><br>?대룞???묒썝 ?뚮룄泥섎읆 ?쒖そ?먯꽌 ?쒖옉???꾧린?뚭? ?ъ옣 ?꾩껜濡?踰덉쭊?? ?ㅻ쭔 鍮꾩쑀媛 源⑥???吏?먯? ?ㅼ젣 ECG媛 ?щ엺 ?덉쑝濡??뚮룄瑜?吏곸젒 蹂대뒗 寃껋씠 ?꾨땲???쇰? ?꾧레(electrode, ?꾧레) ?ъ씠???꾩븬李?voltage difference, ?꾩븬李?瑜??쎈뒗?ㅻ뒗 ?먯씠??</div>
+              <div class="concept-step"><b>Definition</b><br>ECG(electrocardiogram, ?ъ쟾?????ъ옣???꾧린???쒕룞(electrical activity, ?꾧린?쒕룞)??泥댄몴硫?surface, 泥댄몴硫? ?꾧레?쇰줈 痢≪젙??湲곕줉?대떎. P wave(P?????щ갑 ?덈텇洹?atrial depolarization, ?щ갑 ?덈텇洹?, QRS complex(QRS 蹂듯빀?????ъ떎 ?덈텇洹?ventricular depolarization, ?ъ떎 ?덈텇洹?, T wave(T?????ъ떎 ?щ텇洹?ventricular repolarization, ?ъ떎 ?щ텇洹??대떎.</div>
+              <div class="concept-step"><b>Mechanism</b><br>1) SA node(?숇갑寃곗젅)?먯꽌 ?먭레 ?쒖옉. 2) ?щ갑???덈텇洹뱁븯硫?P wave ?앹꽦. 3) AV node(諛⑹떎寃곗젅) 吏?????덉뒪-?몃Ⅴ?ㅻ꽕(His-Purkinje)濡??꾨룄. 4) ?ъ떎 ?덈텇洹뱀씠 QRS complex濡??ш쾶 ?섑??? 5) ?ъ떎 ?щ텇洹뱀씠 T wave濡?湲곕줉?섍퀬, ???먮쫫???댁긽???덊삁(ischemia, ?덊삁)쨌寃쎌깋(infarction, 寃쎌깋)쨌?꾨룄?μ븷瑜??쒖궗?쒕떎.</div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?렞 吏곴?</span>?ъ옣???꾧린 ?좏샇瑜??쇰??먯꽌 ?쎌뼱 遺?뺣㎘쨌?ш렐寃쎌깋???〓뒗??</div>
+          <div class="field"><span class="lbl">?뱰 ?뺤쓽</span>?ъ옣???꾧린???쒕룞???쇰? ?쒕㈃?먯꽌 痢≪젙쨌湲곕줉. 由щ벉쨌?띾룄쨌?꾨룄?댁긽쨌?덊삁쨌?ш렐寃쎌깋 ?뺣낫.</div>
+          <div class="field"><span class="lbl">?뵇 ?묐룞 ?먮━ (?꾧린 ?꾪뙆 寃쎈줈)</span><b>?숇갑寃곗젅(SA node)</b>?먯꽌 ?꾧린?먭레 ?쒖옉 ??諛⑹떎寃곗젅(AV node) ???덉뒪?????몃Ⅴ?ㅻ꽕?ъ쑀濡??ъ옣 ?꾩껜 ?꾪뙆. ?쇰? ?쒕㈃ ?꾩븬李⑤줈 湲곕줉. ?좊룄: ?ъ??좊룄(I쨌II쨌III쨌aVR쨌aVL쨌aVF), ?됰??좊룄(V1~V6).</div>
+          <div class="field"><span class="lbl">?뙇 ?ㅼ꽭怨??쒕굹由ъ삤</span><div class="scenario">?묎툒?ㅼ뿉 ?됲넻 ?섏옄媛 ?ㅻ㈃ ECG?먯꽌 <b>ST遺꾩젅 ?곸듅</b>??蹂닿퀬 利됱떆 STEMI(?ш렐寃쎌깋)瑜?吏꾨떒??怨⑤뱺??????쒖닠濡?蹂대궦??</div></div>
+          <div class="field"><span class="lbl">?뱤 鍮꾧탳????ECG waveform(ECG ?뚰삎)怨?interval(媛꾧꺽)</span>
+            <div class="scrollx"><table>
+              <tr><th>?붿냼</th><th>?곸뼱(English)</th><th>?쒓?</th><th>臾댁뾿???삵븯??/th><th>?쒗뿕 ?⑥젙</th></tr>
+              <tr><td><b>P wave</b></td><td>atrial depolarization</td><td>?щ갑 ?덈텇洹?/td><td>?щ갑 ?섏텞???꾪븳 ?꾧린 ?쒖꽦??/td><td>T? ?룰컝由щ㈃ ?ㅻ떟</td></tr>
+              <tr><td><b>QRS complex</b></td><td>ventricular depolarization</td><td>?ъ떎 ?덈텇洹?/td><td>?ъ떎 ?섏텞 ?쒖옉</td><td>?щ텇洹뱀씠 ?꾨떂</td></tr>
+              <tr><td><b>T wave</b></td><td>ventricular repolarization</td><td>?ъ떎 ?щ텇洹?/td><td>?ъ떎 ?뚮났</td><td>QRS? ??븷 諛섎?</td></tr>
+              <tr><td><b>PR interval</b></td><td>PR interval</td><td>PR 媛꾧꺽</td><td>?щ갑?먯꽌 ?ъ떎濡??꾨룄?섎뒗 ?쒓컙</td><td>0.12??.20s</td></tr>
+              <tr><td><b>QRS duration</b></td><td>QRS duration</td><td>QRS ??/td><td>?ъ떎 ?덈텇洹?吏?띿떆媛?/td><td>?볦쑝硫??꾨룄?μ븷 ?섏떖</td></tr>
+            </table></div>
+          </div>
+          <div class="field"><span class="lbl">?뱤 ???몄궗?댄듃 ???뚰삎 留ㅼ묶 (Week2 p.9) 狩??쒗뿕 ?④낏!</span>
+            <div class="matchtable"><div class="mt-cap">狩?留ㅼ묶 ?議고몴: ECG ?뚰삎 P / QRS / T</div><div class="scrollx"><table>
+              <tr><th>?뚰삎</th><th>?섎?</th><th>?ㅻ챸</th></tr>
+              <tr><td><b>P??/b></td><td>?щ갑 <b>?덈텇洹?/b></td><td>?щ갑 ?섏텞 ?꾪븳 ?꾧린?먭레</td></tr>
+              <tr><td><b>QRS 蹂듯빀??/b></td><td>?ъ떎 <b>?덈텇洹?/b></td><td>?ъ떎 ?섏텞 ?꾪븳 ?꾧린?먭레</td></tr>
+              <tr><td><b>T??/b></td><td>?ъ떎 <b>?щ텇洹?/b></td><td>?ъ떎???댁떇?곹깭濡?蹂듦?</td></tr>
+              <tr><td>U???쒕Ь)</td><td>?ъ떎 留덉?留??щ텇洹?/td><td>紐낇솗?섏? ?딆쓬</td></tr>
+            </table></div></div>
+            <div class="callout">?뺣웾: 1???щ컯??0.8~1珥? 遺꾨떦 60~80?? PR interval 0.12??.20s, QRS 0.06??.10s, QTc ??.44s.</div>
+          </div>
+          <div class="field"><span class="lbl">?륅툘 ?④퀎蹂?????덉젣 (?뚰삎 留ㅼ묶)</span>
+            <i>"P?뙿텿RS쨌T?뚮? '?щ갑 ?덈텇洹?/ ?ъ떎 ?덈텇洹?/ ?ъ떎 ?щ텇洹???留ㅼ묶?섎씪."</i>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1?④퀎</div>?쒖꽌: ?ъ옣? <b>?щ갑 癒쇱? ???ъ떎 ?섏쨷</b>, 媛곴컖 <b>?덈텇洹??섏텞) ???щ텇洹??뚮났)</b>.</div>
+              <div class="step"><div class="step-head">2?④퀎</div>P = 媛??癒쇱? = ?щ갑???덈텇洹?</div>
+              <div class="step"><div class="step-head">3?④퀎</div>QRS = ?ш퀬 媛?대뜲 = ?ъ떎???덈텇洹??섏텞).</div>
+              <div class="step"><div class="step-head">4?④퀎 ????/div>T = 留덉?留?= ?ъ떎???щ텇洹??뚮났). ??P=?щ갑?덈텇洹? QRS=?ъ떎?덈텇洹? T=?ъ떎?щ텇洹?/div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">???댁쟾</button><button class="btn" onclick="stepMove(this,1)">?ㅼ쓬 ??/button><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?럾截??명꽣?숉떚釉?罹붾쾭??Scene 3 ??ECG waveform(?ъ쟾???뚰삎)</span>
+            <div class="scene-panel" id="ecgScene">
+              <div class="scene-meta">
+                <span><b>Scene 3</b> P wave 쨌 QRS complex 쨌 T wave</span>
+                <span class="reduced-note" id="ecgReducedNote"></span>
+              </div>
+              <div class="scene-grid">
+                <div>
+                  <canvas id="ecgCanvas" width="360" height="220" role="img" aria-label="ECG ?뚰삎 ?좊땲硫붿씠??></canvas>
+                  <div class="scene-controls" style="margin-top:10px">
+                    <button class="btn" type="button" id="ecgPlayBtn">?먮룞 ?ъ깮</button>
+                    <button class="btn" type="button" id="ecgResetBtn">泥섏쓬?쇰줈</button>
+                  </div>
+                  <div class="scene-progress" aria-hidden="true" style="margin-top:8px"><span id="ecgProgress"></span></div>
+                </div>
+                <div class="scene-side">
+                  <div class="ecg-hotspots">
+                    <button class="ecg-hotspot active" type="button" data-ecg-focus="P">P wave<br><small>?щ갑 ?덈텇洹?/small></button>
+                    <button class="ecg-hotspot" type="button" data-ecg-focus="QRS">QRS complex<br><small>?ъ떎 ?덈텇洹?/small></button>
+                    <button class="ecg-hotspot" type="button" data-ecg-focus="T">T wave<br><small>?ъ떎 ?щ텇洹?/small></button>
+                  </div>
+                  <div class="scene-readout">
+                    <div class="metric-card">?꾩옱 focus<b id="ecgFocusLabel">P wave(?щ갑 ?덈텇洹?</b></div>
+                    <div class="metric-card">phase(?꾩긽)<b id="ecgPhaseLabel">0%</b></div>
+                    <div class="metric-card">?섎?<b id="ecgMeaningLabel">atrial depolarization</b></div>
+                    <div class="metric-card">?꾩긽 ?곌껐<b id="ecgClinicalLabel">P-QRS-T ?쒖꽌 ?뺤씤</b></div>
+                  </div>
+                  <p class="scene-caption" id="ecgDesc">?뚰삎???쇱そ?먯꽌 ?ㅻⅨ履쎌쑝濡?吏꾪뻾?섎㈃???꾩옱 媛뺤“??wave媛 臾댁뾿???삵븯?붿? 蹂댁뿬 以??</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?뵇 ?꾩긽 ?쒖슜 (Week2 p.10)</span>?좊??뺣㎘ ??b>?ш렐寃쎌깋(MI): ST?곸듅=STEMI / 鍮껾T?곸듅=NSTEMI</b> ??쟾?꾩옣??諛⑹떎李⑤떒쨌媛곸감??LBBB/RBBB) ?ｌ쟾?댁쭏?댁긽(<b>怨좎뭡瑜ⓥ넂T??怨좎텧?? ?移쇱뒛?뭂T?곗옣</b>) ?ㅼ떖?λ퉬?.</div>
+          <div class="field"><span class="lbl">?좑툘 ?⑥젙</span><div class="trap">QRS??"?ъ떎 <b>?덈텇洹?/b>"?댁? ?щ텇洹??꾨떂. <b>?щ텇洹?T??/b>. ?щ갑 ?щ텇洹뱀? QRS??臾삵? ??蹂댁엫.</div></div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??/span>狩?P/QRS/T ???щ갑?덈텇洹??ъ떎?덈텇洹??ъ떎?щ텇洹?留ㅼ묶. STEMI vs NSTEMI. ?꾪빐吏덉씠??ECG 蹂??</div>
+          <div class="field" style="color:var(--muted);font-size:.85rem">?뵕 ?곌껐: ?좏뻾 C6, ?議?C8(EEG)</div>
+        </div>
+      </details>
+
+      <details class="node-card hot" id="C8" data-node-id="C8" data-title="EEG ?뚰뙆">
+        <summary><input type="checkbox" class="nodechk" data-id="C8" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C8. EEG (?뚰뙆)<span class="nbadge hot">狩먥춴遙?/span><span class="nbadge">?좏뻾: C6</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?렞 吏곴?</span>?먰뵾?먯꽌 ?뚯쓽 ?꾧린 ?쒕룞???쎌뼱, <b>二쇳뙆?????쑝濡??섏떇 ?곹깭</b>瑜?援щ텇?쒕떎.</div>
+          <div class="field"><span class="lbl">?뱰 ?뺤쓽</span>?뚯쓽 ?꾧린???쒕룞???먰뵾 ?꾧레?쇰줈 痢≪젙. ?대윴 ?숆린 ?쒕룞 ???꾩쐞李⑤? 利앺룺 湲곕줉. <b>10-20 ?쒖뒪??/b>?쇰줈 ?꾧레 諛곗튂. ?좏샇媛 留ㅼ슦 ?쏀빐 ?몄씠利?誘쇨컧.</div>
+          <div class="field"><span class="lbl">?뙇 ?ㅼ꽭怨??쒕굹由ъ삤</span><div class="scenario">?섎㈃寃?ъ떎?먯꽌 EEG 二쇳뙆?섎? 蹂닿퀬 ?섏옄媛 源딆? ?섎㈃(灌)?몄? 議몃┝(罐)?몄? ?먯젙?섍퀬, 媛꾩쭏 ?섏옄??諛쒖옉?뚮? ?≪븘?몃떎.</div></div>
+          <div class="field"><span class="lbl">?뱤 ???몄궗?댄듃 ??5? 二쇳뙆?????(Week2 p.12) 狩먥춴 ?쒗뿕 ?④낏 留ㅼ묶!</span>
+            <div class="matchtable"><div class="mt-cap">狩먥춴 留ㅼ묶 ?議고몴: EEG 5???灌罐慣棺款 ???곹깭</div><div class="scrollx"><table>
+              <tr><th>?뚰삎</th><th>二쇳뙆??/th><th>?곹깭</th></tr>
+              <tr><td><b>Delta (灌)</b></td><td>0.5?? Hz</td><td><b>源딆? ?섎㈃</b></td></tr>
+              <tr><td><b>Theta (罐)</b></td><td>4?? Hz</td><td>議몃┝쨌源딆? 紐낆긽</td></tr>
+              <tr><td><b>Alpha (慣)</b></td><td>8??3 Hz</td><td>?덉젙쨌源⑥뼱?덉쓬(<b>??媛먯쓬</b>)</td></tr>
+              <tr><td><b>Beta (棺)</b></td><td>13??0 Hz</td><td><b>吏묒쨷쨌臾몄젣?닿껐</b></td></tr>
+              <tr><td><b>Gamma (款)</b></td><td>&gt;30 Hz</td><td>怨좎감???몄?쨌湲곗뼲</td></tr>
+            </table></div></div>
+            <div class="callout">?몄슦湲? 二쇳뙆??<b>??쓣?섎줉 ??/b>(灌?섎㈃), <b>?믪쓣?섎줉 媛곸꽦쨌?몄?</b>(款). ?뚰뙆踰???灌?믊멤넂慣?믊꿎넂款 = 二쇳뙆???ㅻ쫫李⑥닚.</div>
+          </div>
+          <div class="field"><span class="lbl">?륅툘 ?④퀎蹂?????덉젣 (???넄?곹깭 留ㅼ묶)</span>
+            <i>"?ㅼ쓬 ?곹깭瑜?EEG ???뿉 留ㅼ묶: ??源딆? ?섎㈃ ????媛먭퀬 ?덉젙 ??吏묒쨷??臾몄젣 ???</i>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1?④퀎</div>洹쒖튃: 二쇳뙆????쓬=?섎㈃, ?믪쓬=媛곸꽦쨌吏묒쨷.</div>
+              <div class="step"><div class="step-head">2?④퀎</div>??源딆? ?섎㈃ = 媛????? = <b>Delta(灌, 0.5??Hz)</b></div>
+              <div class="step"><div class="step-head">3?④퀎</div>????媛먭퀬 ?덉젙 = <b>Alpha(慣, 8??3Hz)</b></div>
+              <div class="step"><div class="step-head">4?④퀎 ????/div>??吏묒쨷쨌臾몄젣?닿껐 = <b>Beta(棺, 13??0Hz)</b>. ???졢??♂??☏?/div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">???댁쟾</button><button class="btn" onclick="stepMove(this,1)">?ㅼ쓬 ??/button><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?뵇 P300 (ERP)</span>?먭레 ??~300ms???섑??섎뒗 <b>??positive) ?꾩쐞</b>. ?쒖슜: ?몄?湲곕뒫 ?됯?(?뚯툩?섏씠癒맞텮DHD), 議고쁽蹂뫢룹슦?몄쬆(吏꾪룺 媛먯냼), <b>BCI P300 Speller</b>.</div>
+          <div class="field"><span class="lbl">?좑툘 ?⑥젙</span><div class="trap"><b>慣=??媛먭퀬 ?덉젙</b>(媛곸꽦 ?곹깭?대릺 ?댁떇), 棺=吏묒쨷. ?섏쓣 ?룰컝由ш린 ?쎈떎. P300? "?????꾨땲??<b>??positive)</b> ?꾩쐞.</div></div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??/span>狩?5???二쇳뙆?섃넄?곹깭 留ㅼ묶(灌?섎㈃, 慣?덉젙쨌?덇컧?? 棺吏묒쨷). P300=300ms positive ERP.</div>
+          <div class="field" style="color:var(--muted);font-size:.85rem">?뵕 ?곌껐: ?좏뻾 C6, ?議?C7(ECG)</div>
+        </div>
+      </details>
+
+      <details class="node-card" id="C9" data-node-id="C9" data-title="EMG 洹쇱쟾??>
+        <summary><input type="checkbox" class="nodechk" data-id="C9" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C9. EMG (洹쇱쟾??<span class="nbadge">狩먧릎</span><span class="nbadge">?좏뻾: C6</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?렞 吏곴?</span>洹쇱쑁???섏텞?????섎뒗 ?꾧린瑜??쎌뼱 洹쇱쑁쨌?좉꼍 嫄닿컯???됯??섍퀬, ?섏닔쨌?멸낏寃⑹쓣 ?쒖뼱?쒕떎.</div>
+          <div class="field"><span class="lbl">?뱰 ?뺤쓽</span>洹쇱쑁 ?섏텞 ???꾧린???쒕룞 痢≪젙 ??洹쇱쑁쨌?좉꼍怨??곹깭 ?됯?(?좉꼍洹??묓빀遺쨌留먯큹?좉꼍쨌洹쇱쑁吏덊솚).</div>
+          <div class="field"><span class="lbl">?뱤 ???몄궗?댄듃 ??痢≪젙諛⑹떇 留ㅼ묶</span>
+            <div class="matchtable"><div class="mt-cap">留ㅼ묶 ?議고몴: sEMG vs needle EMG</div><div class="scrollx"><table>
+              <tr><th>諛⑹떇</th><th>?뱀쭠</th><th>?⑸룄</th></tr>
+              <tr><td><b>?쒕㈃ EMG (sEMG)</b></td><td><b>鍮꾩묠??/b>, ?꾧레???쇰???/td><td>?ы솢쨌濡쒕큸?쒖뼱쨌?대룞遺꾩꽍</td></tr>
+              <tr><td><b>移⑥뒿 EMG (needle)</b></td><td>諛붾뒛 ?꾧레, ?뺥솗???믪쓬</td><td>?꾩긽 吏꾨떒??/td></tr>
+            </table></div></div>
+          </div>
+          <div class="field"><span class="lbl">?뵇 ?좏샇 ?뱀꽦 4?붿냼 (Week2 p.16)</span>Amplitude(關V~mV, ???멸린), Frequency(20~500Hz), Duration(?꾨룄?쒓컙), Recruitment pattern(?먯쭊???쒖꽦??.</div>
+          <div class="field"><span class="lbl">?뙇 ?ㅼ꽭怨??쒕굹由ъ삤</span><div class="scenario">?덈떒 ?섏옄???붿〈 洹쇱쑁??sEMG ?쇱꽌瑜?遺숈뿬 "伊먮젮???섎룄"瑜??쎄퀬 濡쒕큸 ?섏닔瑜??吏곸씤?? ??<b>EMG Controlled Car</b>泥섎읆 怨꾩륫 3釉붾줉 ?쒖뒪?쒖쓽 ?ㅼ젣 ??</div></div>
+          <div class="field"><span class="lbl">?뱤 洹몃옒???몄궗?댄듃 (Delsys, Week2 p.18??9)</span><div class="callout"><b>?곸젅???쇱꽌 ?꾩튂 ???좏샇?뫢톁NR?뫢톍ross-talk 媛먯냼.</b> ?꾧레 spacing?뫢톌ar width????cross-talk(%)?? ?꾪꽣留????<b>20??50 Hz</b>.</div></div>
+          <div class="field"><span class="lbl">?뵇 ?꾩긽 (Week2 p.17)</span>留먯큹?좉꼍吏덊솚(洹쇱쐞異뺤쬆쨌<b>猷④쾶由?퀝 ALS</b>), ?ы솢쨌蹂댄뻾遺꾩꽍(?뚯「以뫢룹쿃?섏넀??, 濡쒕큸쨌?⑥뼱?щ툝 ?쒖뼱.</div>
+          <div class="field"><span class="lbl">?좑툘 ?⑥젙</span><div class="trap">sEMG=<b>鍮꾩묠??/b>(?ы솢쨌?쒖뼱??, needle=移⑥뒿(吏꾨떒 ?뺥솗). ?곸젅???쇱꽌 ?꾩튂??cross-talk??<b>以꾩씤????</b>.</div></div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??/span>sEMG vs needle EMG. ?좏샇 ?뱀꽦 4?붿냼. ?쇱꽌 ?꾩튂 ?④낵(SNR?? cross-talk??.</div>
+          <div class="field" style="color:var(--muted);font-size:.85rem">?뵕 ?곌껐: ?좏뻾 C6, ?묒슜 C13(EMG car = 怨꾩륫 3釉붾줉 ?ㅻ?)</div>
+        </div>
+      </details>
+
+      <details class="node-card" id="C10" data-node-id="C10" data-title="EOG ENG PCG VAG 湲고? ?앹껜?좏샇">
+        <summary><input type="checkbox" class="nodechk" data-id="C10" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C10. 湲고? ?앹껜?좏샇 ??EOG / ENG / PCG / VAG<span class="nbadge">狩먧퐥</span><span class="nbadge">?좏뻾: C6</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?렞 吏곴?</span>?댟룻룊?빧룹떖?뙿룰??덉쓬??媛곴컖 ?쎈뒗 ??媛吏 ?뱀닔 ?앹껜?좏샇.</div>
+          <div class="field"><span class="lbl">?뱤 ???몄궗?댄듃 ???대쫫?붿륫?????留ㅼ묶 (?쒗뿕 ?듭떖)</span>
+            <div class="matchtable"><div class="mt-cap">狩?留ㅼ묶 ?議고몴: EOG / ENG / PCG / VAG ??痢≪젙 ???/div><div class="scrollx"><table>
+              <tr><th>?좏샇</th><th>??ㅼ엫</th><th>痢≪젙 ???/th><th>?쒖슜</th></tr>
+              <tr><td><b>EOG</b></td><td>Electrooculography</td><td><b>???吏곸엫</b>(?덇뎄 ?꾩쐞李?</td><td>gaze tracking, ?섎㈃쨌?덇낵, ?μ븷???듭떊, VR/AR</td></tr>
+              <tr><td><b>ENG</b></td><td>Electronystagmography</td><td><b>?꾩젙湲곌?(?됲삎媛먭컖)</b>쨌?덉쭊</td><td>?댁??쇱쬆쨌硫붾땲?먮Ⅴ蹂?/td></tr>
+              <tr><td><b>PCG</b></td><td>Phonocardiography</td><td><b>?ъ쓬</b>(heart sounds, 留덉씠??</td><td>?ъ옟???먮쭑) ?먯?, AI ?ъ쓬遺꾩꽍</td></tr>
+              <tr><td><b>VAG</b></td><td>Vibroarthrography</td><td><b>愿??吏꾨룞쨌?뚮━</b></td><td>臾대쫷쨌<b>?깃???TMJ)</b>쨌?댄뻾??愿?덉뿼</td></tr>
+            </table></div></div>
+          </div>
+          <div class="field"><span class="lbl">?륅툘 ?④퀎蹂?????덉젣 (留ㅼ묶??</span>
+            <i>"EOG쨌ENG쨌PCG쨌VAG瑜?'??/ ?됲삎 / ?ъ쓬 / 愿?덉쓬'??留ㅼ묶."</i>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1?④퀎</div>?닿렐 ?뚰듃: oculo=?? nystagmo=?덉쭊(?됲삎), phono=?뚮━(?ъ쓬), arthro=愿??</div>
+              <div class="step"><div class="step-head">2?④퀎 ????/div>EOG=<b>??/b>, ENG=<b>?꾩젙/?됲삎</b>, PCG=<b>?ъ쓬</b>, VAG=<b>愿?덉쓬</b>.</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">???댁쟾</button><button class="btn" onclick="stepMove(this,1)">?ㅼ쓬 ??/button><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?좑툘 ?⑥젙</span><div class="trap">EOG(??? ENG(?됲삎)???먮━媛 鍮꾩듂(?????덇뎄 愿?????룰컝由곕떎 ??ENG??<b>臾댁쓽?앹쟻 ?덉쭊?믪쟾?뺢린愿 ?됯?</b> ?뱁솕.</div></div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??/span>媛??좏샇 ?대쫫?붿륫?????留ㅼ묶.</div>
+          <div class="field" style="color:var(--muted);font-size:.85rem">?뵕 ?곌껐: ?좏뻾 C6</div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= 以꾧린 B3 ================= -->
+    <section class="stem-sec" id="B3">
+      <h2>B3. ?섎즺?곸긽 紐⑤떖由ы떚</h2>
+
+      <details class="node-card hot3" id="C11" data-node-id="C11" data-title="?섎즺?곸긽 紐⑤떖由ы떚 11醫?X-ray CT MRI US PET SPECT">
+        <summary><input type="checkbox" class="nodechk" data-id="C11" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C11. ?섎즺?곸긽 紐⑤떖由ы떚 (11醫?<span class="nbadge hot">狩먥춴狩먬쳵</span><span class="nbadge">?좏뻾: ?놁쓬 쨌 異쒖젣 理쒕떎</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">媛쒕뀗 ?ㅻ챸 Hook Intuition Analogy Definition Mechanism in Korean: 媛쒕뀗 ?ㅻ챸 Hook Intuition Analogy Definition Mechanism</span>
+            <div class="concept-flow">
+              <div class="concept-step"><b>Hook</b><br>媛숈? ?섏옄?쇰룄 堉덈? 蹂쇱?, ?곕?議곗쭅(soft tissue, ?곕?議곗쭅)??蹂쇱?, ?덈쪟(blood flow, ?덈쪟)瑜?蹂쇱?, ???metabolism, ???瑜?蹂쇱????곕씪 ?좏깮?댁빞 ?섎뒗 移대찓?쇨? ?꾩쟾???ㅻⅤ?? ???좏깮??怨??곸긽 紐⑤떖由ы떚(modality, 紐⑤떖由ы떚) 臾몄젣??</div>
+              <div class="concept-step"><b>Intuition</b><br>X-ray???ш낵 洹몃┝?? CT???섎씪 蹂대뒗 3D ?⑥링, MRI??臾?遺꾩옄??諛섏쓳, ultrasound(珥덉쓬????諛섏궗?섎뒗 ?뚮━, PET?????hotspot??蹂몃떎怨??앷컖?섎㈃ 泥?媛먭컖???≫엺??</div>
+              <div class="concept-step"><b>Analogy</b><br>媛숈? ?꾩떆瑜?蹂대뜑?쇰룄 ???ъ쭊, ?쇨컙 ?댁??? 援먰넻 CCTV, 吏???⑤㈃?꾨뒗 ?쒕줈 ?ㅻⅨ ?뺣낫瑜?以?? ?ㅻ쭔 鍮꾩쑀媛 源⑥???吏?먯? ?섎즺?곸긽???덉걶 ?띻꼍 珥ъ쁺???꾨땲??媛?modality留덈떎 <b>?먮꼫吏 source? tissue interaction</b>???щ씪 ?꾩긽 ?곸쓳利앷낵 ?꾪뿕???щ씪吏꾨떎???먯씠??</div>
+              <div class="concept-step"><b>Definition</b><br>image modality(?곸긽 紐⑤떖由ы떚)???몄껜 ?대?瑜??쒓컖?뷀븯湲??꾪빐 ?ъ슜?섎뒗 <b>臾쇰━ ?먮━(physical principle, 臾쇰━ ?먮━)</b>? <b>?먮꼫吏 source(?먮꼫吏??</b>媛 ?ㅻⅨ ?곸긽 ?띾뱷 諛⑹떇?대떎. ??쒖쟻?쇰줈 X-ray, CT, MRI, ultrasound(US, 珥덉쓬??, PET, SPECT, mammography, fluoroscopy, DSA, OCT, dermatoscopy媛 ?덈떎.</div>
+              <div class="concept-step"><b>Mechanism</b><br>1) modality媛 ?뱀젙 ?먮꼫吏(X?? ?먭린?? ?뚰뙆, 愿묒옄)瑜?議곗쭅??蹂대궦?? 2) 議곗쭅???≪닔쨌諛섏궗쨌怨듬챸쨌諛⑹텧濡??쒕줈 ?ㅻⅨ 諛섏쓳??蹂댁씤?? 3) detector(寃異쒓린)媛 洹?諛섏쓳???섏쭛?쒕떎. 4) reconstruction(?ш뎄?? ?먮뒗 signal processing(?좏샇泥섎━)濡??곸긽?쇰줈 蹂?섑븳?? 5) ?댁긽??resolution, ?댁긽??, 諛⑹궗??radiation, 諛⑹궗?? ?좊Т, ?ㅼ떆媛꾩꽦(real-time, ?ㅼ떆媛꾩꽦), ??ъ젙蹂??쒓났 ?щ?媛 modality ?좏깮 湲곗????쒕떎.</div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?렞 吏곴?</span>紐??띿쓣 蹂대뒗 11媛吏 "移대찓??. 媛곴컖 <b>?먮━쨌諛⑹궗???좊Т쨌二???겶룹옣?⑥젏</b>???ㅻⅤ怨? <b>??留ㅼ묶???쒗뿕?먯꽌 媛??留롮씠 ?섏삩??</b></div>
+          <div class="field"><span class="lbl">?뱰 紐⑤떖由ы떚蹂??듭떖</span>
+            <ul>
+              <li><b>X-ray</b>: 怨좎뿉?덉? ?꾩옄?? 議곗쭅 諛?꾩감 ?≪닔(堉??곗깋). 怨⑥젅쨌?됰?쨌移섍낵. 鍮좊쫫쨌??는룰낏寃??곸썡 / ?곗“吏??댁긽????쓬쨌諛⑹궗?졖?D.</li>
+              <li><b>CT</b>: ?щ윭 諛⑺뼢 X-ray瑜?而댄벂???ш뎄?????⑤㈃쨌<b>3D</b>. ?뚯텧?댟룻쓨蹂듬?. 怨좏빐?곷룄쨌3D쨌鍮좊쫫 / 諛⑹궗?졖룹“?곸젣쨌怨좉?.</li>
+              <li><b>MRI</b>: 媛뺥븳 ?먭린??RF, <b>?섏냼 ?먯옄???꾨줈??</b> ?좏샇. <b>?곗“吏??뺣?</b>(?뙿룹쿃?샕룰???. ?뺤옣 fMRI/DWI/DTI. <b>諛⑹궗???놁쓬</b> / 怨좉?쨌?뚯쓬쨌湲덉냽 ?쒗븳.</li>
+              <li><b>Ultrasound</b>: 怨좎＜???뚰뙆 諛섏궗. <b>?ㅼ떆媛?/b>쨌?쒖븘쨌?덈쪟(Doppler). <b>諛⑹궗???놁쓬</b>쨌?ㅼ떆媛꽷룻쑕?쨌???/ 怨듦린쨌堉??듦낵 ?대젮?쨌?숇젴 ?섏〈.</li>
+              <li><b>PET</b>: 諛⑹궗???숈쐞?먯냼(<b>FDG=?щ룄???좎궗</b>) ??????쒕컻??遺??吏묒쨷 ???묒쟾?먥넂媛먮쭏?? <b>???룰린???곸긽</b>. 議곌린?먯?쨌?꾩씠 ?곸썡 / 怨좉?쨌諛⑹궗?굿룹떆媛?源.</li>
+              <li><b>SPECT</b>: 媛먮쭏??諛⑹텧泥?Tc-99m, I-123) ??<b>?⑥씪 愿묒옄</b> ??媛먮쭏移대찓???뚯쟾. ?ш렐愿瑜샕룸뇤?덈쪟. 蹂댄렪쨌???/ ?댁긽????쓬(PET蹂대떎).</li>
+              <li><b>Mammography</b>: ?좊갑 ?꾩슜 ??⑸웾 X-ray. 誘몄꽭?앺쉶??議곌린諛쒓껄. <b>?딆? ?ъ꽦 移섎??좊갑 誘쇨컧????쓬</b>.</li>
+              <li><b>Fluoroscopy</b>: X-ray <b>?ㅼ떆媛??곗냽</b> 議곗궗(C-arm). 議곗쁺?쒕줈 ?뚰솕湲걔룻삁愿. <b>諛⑹궗???몄텧?쒓컙 利앷?</b>.</li>
+              <li><b>DSA</b>: 議곗쁺 ?꽷룻썑 ?곸긽??<b>?붿???媛먯궛</b> ??<b>?덇?留??좊챸</b>. ?뚮룞留λ쪟쨌AVM. 怨좉툒 fluoroscopy.</li>
+              <li><b>OCT</b>: 洹쇱쟻?몄꽑 鍮쏆쓽 <b>媛꾩꽠</b> ??<b>關m ?⑥쐞</b> 珥덇퀬?댁긽?꽷룸퉬移⑥뒿. ?덇낵(留앸쭑)쨌?덇??댁떆寃? 源딆? 議곗쭅 ?대젮?.</li>
+              <li><b>Dermatoscopy</b>: ?쇰? 蹂묐? 怨좊같??10~20諛?+?멸킅. <b>ABCD Rule</b>, AI 硫쒕씪?몄궗?댄듃 遺꾨쪟. ?쇰???媛먮퀎.</li>
+            </ul>
+          </div>
+          <div class="field"><span class="lbl">?뱤 鍮꾧탳???몄궗?댄듃 ???쒗뿕 ?④낏 5醫??議?</span>
+            <div class="scrollx"><table>
+              <tr><th>紐⑤떖由ы떚</th><th>?먮━</th><th>諛⑹궗??radiation)</th><th>媛뺤젏</th><th>?쎌젏</th></tr>
+              <tr><td><b>X-ray</b></td><td>X???ш낵 媛먯뇿</td><td>?덉쓬</td><td>鍮좊쫫, 堉댟룻쓨遺 湲곕낯</td><td>?곕?議곗쭅 ?鍮??쏀븿</td></tr>
+              <tr><td><b>CT</b></td><td>?ㅺ컖??X-ray + reconstruction(?ш뎄??</td><td>?덉쓬</td><td>?⑥링쨌3D, ?묎툒 媛뺥븿</td><td>諛⑹궗?? 議곗쁺??遺??/td></tr>
+              <tr><td><b>MRI</b></td><td>?먭린??+ RF 怨듬챸</td><td>?놁쓬</td><td>?곕?議곗쭅 ?鍮??곗닔</td><td>鍮꾩슜쨌?쒓컙, 湲덉냽 ?쒗븳</td></tr>
+              <tr><td><b>US</b></td><td>珥덉쓬??諛섏궗</td><td>?놁쓬</td><td>?ㅼ떆媛? ?쒖븘쨌Doppler</td><td>怨듦린쨌堉덉뿉 ?쏀븿</td></tr>
+              <tr><td><b>PET</b></td><td>?묒쟾??諛⑹텧 + ?띻컧留덉꽑</td><td>?덉쓬</td><td>??ъ쁺?? 議곌린 湲곕뒫?댁긽</td><td>怨좉?, ?대? ?댁긽???쒗븳</td></tr>
+              <tr><td><b>SPECT</b></td><td>?⑥씪 媛먮쭏??寃異?/td><td>?덉쓬</td><td>蹂댄렪?? ?곷????鍮꾩슜</td><td>PET蹂대떎 ?댁긽????쓬</td></tr>
+            </table></div>
+            <div class="compare-note">?듭떖: anatomy(?대?) 以묒떖? X-ray쨌CT쨌MRI, real-time(?ㅼ떆媛?? US쨌fluoroscopy, metabolism(???? PET쨌SPECT, micro-resolution(誘몄꽭?댁긽??? OCT??</div>
+            <div class="matchtable"><div class="mt-cap">??X-ray vs CT vs MRI vs US (Week2 p.41)</div><div class="scrollx"><table>
+              <tr><th></th><th>X-ray</th><th>CT</th><th>MRI</th><th>US</th></tr>
+              <tr><td>諛⑹궗??/td><td><b>?덉쓬</b></td><td><b>?덉쓬</b></td><td>?놁쓬</td><td>?놁쓬</td></tr>
+              <tr><td>?ㅼ떆媛?/td><td>??/td><td>??/td><td>??/td><td><b>??/b></td></tr>
+              <tr><td>媛뺤젏</td><td>怨④꺽</td><td>3D ?⑤㈃</td><td>?곗“吏?/td><td>?ㅼ떆媛꽷룻깭??/td></tr>
+              <tr><td>湲덇린</td><td>??/td><td>議곗쁺??/td><td><b>湲덉냽 ?댁떇臾?/b></td><td>?쇰??곸쿂쨌怨듦린</td></tr>
+            </table></div></div>
+            <div class="matchtable"><div class="mt-cap">??CT vs MRI vs PET (Week2 p.44)</div><div class="scrollx"><table>
+              <tr><th></th><th>CT</th><th>MRI</th><th>PET</th></tr>
+              <tr><td>紐⑹쟻</td><td><b>?대?援ъ“</b></td><td><b>?곗“吏??댁긽??/b></td><td><b>???룰린??/b></td></tr>
+              <tr><td>議곌린吏꾨떒</td><td>?쒗븳</td><td>?쒗븳</td><td><b>媛????ъ씠???ъ갑)</b></td></tr>
+            </table></div></div>
+            <div class="matchtable"><div class="mt-cap">??PET vs SPECT (Week2 p.46)</div><div class="scrollx"><table>
+              <tr><th></th><th>PET</th><th>SPECT</th></tr>
+              <tr><td>諛⑹텧泥?/td><td>?묒쟾??F-18, Ga-68)</td><td>媛먮쭏??Tc-99m, I-123)</td></tr>
+              <tr><td>寃異?/td><td><b>?띻컧留덉꽑 ?숈떆</b></td><td><b>?⑥씪 媛먮쭏??/b></td></tr>
+              <tr><td>?댁긽??媛寃?/td><td>怨좏빐?곷룄쨌怨좉?</td><td>??댁긽?꽷룹??는룸낫??/td></tr>
+            </table></div></div>
+            <div class="matchtable"><div class="mt-cap">???좊갑???곹빀 ?꾧뎄 (Week2 p.47)</div><div class="scrollx"><table>
+              <tr><th>?꾧뎄</th><th>??븷</th></tr>
+              <tr><td>Mammography</td><td>1李??ㅽ겕由щ떇(??⑸웾 X-ray)</td></tr>
+              <tr><td>Ultrasound</td><td>蹂댁셿(移섎??좊갑)</td></tr>
+              <tr><td>MRI</td><td>怨좎쐞?섍뎔</td></tr>
+              <tr><td>PET</td><td>?꾩씠 ?됯?</td></tr>
+            </table></div></div>
+            <div class="matchtable"><div class="mt-cap">??CT vs MRI vs OCT (Week2 p.52) ???댁긽??/div><div class="scrollx"><table>
+              <tr><th></th><th>CT</th><th>MRI</th><th>OCT</th></tr>
+              <tr><td>?댁긽??/td><td><b>mm</b></td><td><b>mm~sub-mm</b></td><td><b>關m</b></td></tr>
+              <tr><td>?뱀쭠</td><td>??/td><td>??/td><td>留앸쭑쨌?덇? 鍮꾩젒珥?/td></tr>
+            </table></div></div>
+          </div>
+          <div class="field"><span class="lbl">?륅툘 ?④퀎蹂?????덉젣 (利앹긽?믩え?щ━???좏깮)</span>
+            <i>"媛??곹솴??媛???곹빀??紐⑤떖由ы떚?? ???꾩떊遺 ?쒖븘 ?ㅼ떆媛???臾대쫷 ?몃?(?곗“吏? ?????꾩씠(??? ???뚮룞留λ쪟 ?덇?留??좊챸"</i>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1?④퀎</div>??"?ㅼ떆媛?+ 諛⑹궗???놁뼱???쒖븘)" ??<b>Ultrasound</b></div>
+              <div class="step"><div class="step-head">2?④퀎</div>??"?곗“吏??뺣?" ??<b>MRI</b> (臾대갑?ъ꽑쨌?곗“吏??곸썡)</div>
+              <div class="step"><div class="step-head">3?④퀎</div>??"???룰린??+ ?꾩씠" ??<b>PET</b> (??ъ쁺?? 議곌린吏꾨떒)</div>
+              <div class="step"><div class="step-head">4?④퀎 ????/div>??"?덇?留?遺꾨━" ???붿???媛먯궛 = <b>DSA</b>. ???쟖S ?좲RI ?줡ET ?쥵SA</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">???댁쟾</button><button class="btn" onclick="stepMove(this,1)">?ㅼ쓬 ??/button><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?륅툘 ?뱀꽦?믩え?щ━??鍮좊Ⅸ 留ㅼ묶</span>
+            <div class="callout">"諛⑹궗???녿뒗 寃껋??" ??<b>MRI 쨌 US 쨌 OCT</b> 쨌 "?ㅼ떆媛꾩씤 寃껋??" ??<b>US 쨌 Fluoroscopy</b> 쨌 "????곸긽??" ??<b>PET</b> 쨌 "關m ?댁긽?꾨뒗?" ??<b>OCT</b> 쨌 "?덇?留?蹂대뒗 寃껋??" ??<b>DSA</b></div>
+          </div>
+          <div class="field"><span class="lbl">?좑툘 ?⑥젙</span><div class="trap">CT??X-ray 湲곕컲?대씪 <b>諛⑹궗???덉쓬</b>(MRI? ?룰컝由ъ? 留?寃?. PET=?묒쟾???띻컧留덉꽑, SPECT=?⑥씪媛먮쭏????<b>諛섎?濡??몄슦湲??ъ?.</b> MRI 湲덇린=湲덉냽, US 湲덇린=怨듦린/?곸쿂.</div></div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??/span>狩먥춴狩?紐⑤떖由ы떚?붿썝由?諛⑹궗?좎쑀臾?二쇰????λ떒??留ㅼ묶. "諛⑹궗???녿뒗 寃?", "?ㅼ떆媛?", "???", "?덇?留?", "關m ?댁긽??"</div>
+          <div class="field" style="color:var(--muted);font-size:.85rem">?뵕 ?곌껐: ?묒슜 C19(?곸긽=CNN ?낅젰)</div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= 以꾧린 B4 ================= -->
+    <section class="stem-sec" id="B4">
+      <h2>B4. 怨꾩륫 ?쒖뒪??(Instrumentation)</h2>
+
+      <details class="node-card hot3" id="C13" data-node-id="C13" data-title="怨꾩륫 ?쒖뒪??3釉붾줉 紐⑤뜽 Transducer">
+        <summary><input type="checkbox" class="nodechk" data-id="C13" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C13. 怨꾩륫 ?쒖뒪??3釉붾줉 紐⑤뜽<span class="nbadge hot">狩먥춴狩먬쳵</span><span class="nbadge">?좏뻾: C6</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?렞 吏곴?</span>紐몄쓽 ?좏샇瑜?痢≪젙/?쒖뼱?섎뒗 <b>3釉붾줉 ?뚯씠?꾨씪??/b>: 蹂?????꾩옄 ?명꽣?섏씠?????곗궛.</div>
+          <div class="field"><span class="lbl">?뱰 ?뺤쓽 (3 Primary Subsystems)</span>(1) <b>Transducer</b> ??(2) <b>Electronics Interface</b> ??(3) <b>Computation Unit</b>. (Tissue/?앸━?좏샇? Energy source ?ы븿)</div>
+          <div class="field"><span class="lbl">?뙇 ?ㅼ꽭怨??쒕굹由ъ삤</span><div class="scenario">EMG Controlled Car ??洹쇱쑁 ?좏샇(Muscle)瑜?EMG ?쇱꽌(<b>Transducer</b>)媛 ?꾩븬?쇰줈 諛붽씀怨? 利앺룺쨌?꾪꽣쨌?뺣쪟(<b>Electronics Interface</b>)瑜?嫄곗퀜 ADC濡??붿??명솕, 而댄벂??MCU(<b>Computation Unit</b>)媛 泥섎━??紐⑦꽣瑜??쒖뼱?쒕떎.</div></div>
+          <div class="field"><span class="lbl">?뵇 釉붾줉蹂??몃?</span>
+            <ul>
+              <li><b>Transducer (Sensor + Actuator)</b>: ?쇱꽌=?앸━?좏샇 媛먯?, ?≪텛?먯씠???먭레/?쒖뼱. ?遺遺?<b>voltage ?좏샇</b> ?앹꽦.</li>
+              <li><b>Electronics Interface (Pre-amplifier ??Signal Conditioning ??Buffer)</b>: A/D 蹂??媛?ν븳 ?좏샇濡? <b>SNR쨌???룺 蹂댁〈</b>. ??Pre-amp: ??≪쓬쨌differential, <b>?쒖뒪???≪쓬 吏諛?/b> / Signal Conditioning: ?꾩븬蹂?샕룹쬆??룻븘?곕쭅쨌?뺣쪟쨌蹂議?/ Buffer: 湲?耳?대툝 援щ룞, <b>front-end쨌back-end 1~2m ?댁긽 ?⑥뼱吏??뚮쭔</b> ?꾩슂.</li>
+              <li><b>Computation Unit</b>: UI쨌?꾩껜 ?쒖뼱쨌??Β룹떊?몄쿂由?룹븞?? (Data converter쨌DSP쨌Storage쨌UI쨌Comms쨌Control)</li>
+            </ul>
+          </div>
+          <div class="field"><span class="lbl">?뵇 STEP-BY-STEP: ?좏샇媛 3釉붾줉???듦낵?섎뒗 寃쎈줈</span>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1. 吏곴?</div>紐몄쓽 ?좏샇???쏀븯怨??≪쓬?ъ꽦?????④퀎?곸쑝濡??ㅻ벉??而댄벂?곌? ?쎄쾶 ?쒕떎.</div>
+              <div class="step"><div class="step-head">2. ?뗭뾽</div>?낅젰 = ?앸━?좏샇(bioelectric ??. 紐⑺몴 = ?붿????곗씠???쒖뼱 紐낅졊.</div>
+              <div class="step"><div class="step-head">3. ?꾧컻 1</div><b>Transducer</b>媛 ?앸━?좏샇瑜??꾩븬?쇰줈 蹂???쇱꽌) ??modality쨌source쨌dynamic range瑜?留욎땄.</div>
+              <div class="step"><div class="step-head">4. ?꾧컻 2</div><b>Pre-amplifier</b>媛 ??≪쓬?쇰줈 利앺룺(?ш린???쒖뒪???≪쓬??寃곗젙??.</div>
+              <div class="step"><div class="step-head">5. ?꾧컻 3</div><b>Signal Conditioning</b>???꾪꽣쨌?뺣쪟쨌蹂議곕줈 A/D 媛?ν븯寃??ㅻ벉??</div>
+              <div class="step"><div class="step-head">6. ?꾧컻 4</div>(?먭굅由щ㈃) <b>Buffer</b>媛 耳?대툝 援щ룞. ??ADC.</div>
+              <div class="step"><div class="step-head">7. 寃곕줎</div><b>Computation Unit</b>???붿????좏샇瑜?泥섎━쨌??Β룻몴?쑣룹젣??</div>
+              <div class="step"><div class="step-head">8. ?쒗뿕 蹂??/div>"?≪쓬??吏諛고븯??釉붾줉??"?뭁re-amp. "Buffer媛 ?꾩슂??議곌굔?"?뭚ront/back-end 1~2m??</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">???댁쟾</button><button class="btn" onclick="stepMove(this,1)">?ㅼ쓬 ??/button><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?좑툘 ?⑥젙</span><div class="trap"><b>?≪쓬? pre-amp媛 吏諛?/b>(?꾪꽣媛 ?꾨떂). <b>Buffer????긽 ?꾩슂??寃??꾨땲??/b> ?먭굅由?1~2m???먯꽌留?</div></div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??/span>狩?3釉붾줉 ?대쫫쨌?쒖꽌, 媛?湲곕뒫. Pre-amp=?≪쓬 吏諛? Buffer=?먭굅由ъ뿉?쒕쭔.</div>
+          <div class="field" style="color:var(--muted);font-size:.85rem">?뵕 ?곌껐: ?좏뻾 C6, ?덉떆 C9(EMG car), ?묒슜 C14쨌C15</div>
+        </div>
+      </details>
+
+      <details class="node-card" id="C14" data-node-id="C14" data-title="痢≪젙 怨꾩륫???뺤쓽 Measurement Instrumentation">
+        <summary><input type="checkbox" class="nodechk" data-id="C14" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C14. 痢≪젙쨌怨꾩륫???뺤쓽<span class="nbadge">狩먧릎</span><span class="nbadge">?좏뻾: C13</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?렞 吏곴?</span>"痢≪젙 紐삵븯硫??쒖뼱 紐삵븳?? ???щ뒗 寃껋씠 紐⑤뱺 ?섎즺湲곌린??異쒕컻??</div>
+          <div class="field"><span class="lbl">?뱰 ?뺤쓽</span><b>Measurement system</b> = 臾쇰━쨌?꾧린??吏덈웾쨌?⑤룄쨌?뺣젰쨌?꾩븬) 痢≪젙, ?ш굔/?꾩튂 ?먯?, 媛앹껜 ?앸퀎쨌怨꾩닔(?곹삁援?. <b>Instrumentation</b> = 痢≪젙湲곌린濡??꾨줈?몄뒪瑜?monitor쨌control ?섎뒗 湲곗닠. <b>Biomedical Instrumentation</b> = 紐몄쑝濡쒕???紐몄쑝濡??곗씠?곕? 痢≪젙쨌湲곕줉쨌?꾩넚?섎뒗 湲곌린 遺꾩빞.</div>
+          <div class="field"><span class="lbl">?뵇 ?붽뎄?ы빆</span>?뺥솗?꽷룻빐?곷룄쨌臾닿쾶쨌遺?셋룸퉬?㈑룻솚寃?</div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??/span>痢≪젙 ?쒖뒪???붽뎄?ы빆. <b>"痢≪젙 紐삵븯硫??쒖뼱 紐삵븳??</b> 紐낆젣. Measurement vs Instrumentation vs Biomedical Instrumentation 援щ텇.</div>
+          <div class="field" style="color:var(--muted);font-size:.85rem">?뵕 ?곌껐: ?좏뻾 C13, ?묒슜 C15</div>
+        </div>
+      </details>
+
+      <details class="node-card hot3" id="C15" data-node-id="C15" data-title="?앹껜怨꾩륫 ?쒖뒪??5? 遺꾨쪟 Direct Indirect Invasive">
+        <summary><input type="checkbox" class="nodechk" data-id="C15" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C15. ?앹껜怨꾩륫 ?쒖뒪??5? 遺꾨쪟<span class="nbadge hot">狩먥춴狩먬쳵</span><span class="nbadge">?좏뻾: C13, C14</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">媛쒕뀗 ?ㅻ챸 Hook Intuition Analogy Definition Mechanism in Korean: 媛쒕뀗 ?ㅻ챸 Hook Intuition Analogy Definition Mechanism</span>
+            <div class="concept-flow">
+              <div class="concept-step"><b>Hook</b><br>?앹껜怨꾩륫(biomedical instrumentation, ?앹껜怨꾩륫) 臾몄젣???λ퉬 ?대쫫留??몄슦??怨쇰ぉ???꾨땲??"???λ퉬媛 臾댁뾿???대뼸寃?痢≪젙?섍굅???묐룞?쒗궎?붽?"瑜?遺꾨쪟異뺤쑝濡??섎늻??怨쇰ぉ?대떎. ?쒗뿕? ??遺꾨쪟異뺢낵 ?덉떆 留ㅼ묶??媛???먯＜ 臾삳뒗??</div>
+              <div class="concept-step"><b>Intuition</b><br>吏덈Ц???ㅼ꽢 媛쒕줈 ?섎늻硫??쒕떎. 吏곸젒 蹂대굹 媛꾩젒 蹂대굹? 紐??덉뿉 ?ㅼ뼱媛?? 紐몄뿉 ?용굹? ?쎄린留??섎굹, ?묐룞???섎굹? ?쒓컙???곕씪 蹂?섎뒗 媛믪쓣 蹂대굹 ?됯퇏媛믪쓣 蹂대굹?</div>
+              <div class="concept-step"><b>Analogy</b><br>痢≪젙 ?쒖뒪?쒖쓣 遺꾨쪟?섎뒗 ?쇱? ?먮룞李⑤? ?몃떒/SUV媛 ?꾨땲???곕즺, 援щ룞諛⑹떇, ?묒?諛⑹떇, ?먮룞???섏??쇰줈 ?섎늻??寃껉낵 鍮꾩듂?섎떎. ?ㅻ쭔 鍮꾩쑀媛 源⑥???吏?먯? ?앹껜怨꾩륫 遺꾨쪟媛 ?⑥닚 紐⑥뼇???꾨땲??<b>?섏옄????곹샇?묒슜 諛⑹떇</b>??湲곗??쇰줈 ?쒕떎???먯씠??</div>
+              <div class="concept-step"><b>Definition</b><br>measurement classification(痢≪젙 遺꾨쪟, 怨꾩륫 遺꾨쪟)? ?λ퉬瑜?<b>Direct/Indirect(吏곸젒/媛꾩젒)</b>, <b>Invasive/Noninvasive(移⑥뒿/鍮꾩묠??</b>, <b>Contact/Remote(?묒큺/?먭꺽)</b>, <b>Sense/Actuate(媛먯?/?묐룞)</b>, <b>Dynamic/Static(?숈쟻/?뺤쟻)</b> 異뺤쑝濡??섎늻??泥닿퀎??</div>
+              <div class="concept-step"><b>Mechanism</b><br>1) 臾댁뾿??痢≪젙?섎뒗吏 蹂몃떎. 2) 紐⑺몴?됱쓣 吏곸젒 ?쎈뒗吏 proxy(?由щ???濡??쎈뒗吏 ?먮퀎?쒕떎. 3) ?쇱꽌媛 泥대궡???ㅼ뼱媛?붿?, ?쇰????용뒗吏 援щ텇?쒕떎. 4) ?쎄린(sense)?몄? ?묐룞(actuate)?몄? 蹂몃떎. 5) ?쒓컙蹂??dynamic, ?숈쟻)?몄? ?쒓컙?됯퇏(static, ?뺤쟻)?몄? ?뺥븯硫??덉떆瑜?異뺤뿉 留ㅼ묶?????덈떎.</div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?렞 吏곴?</span>怨꾩륫 ?쒖뒪?쒖쓣 <b>5媛吏 ?ｋ?(dichotomy)</b>濡??섎늿????媛??ｋ????덉떆 留ㅼ묶???④낏.</div>
+          <div class="field"><span class="lbl">?뱤 鍮꾧탳????measurement classification(怨꾩륫 遺꾨쪟) 異?/span>
+            <div class="scrollx"><table>
+              <tr><th>異?/th><th>?곸뼱(English)</th><th>?쒓?</th><th>吏덈Ц</th><th>????덉떆</th></tr>
+              <tr><td><b>Direct / Indirect</b></td><td>direct / indirect</td><td>吏곸젒 / 媛꾩젒</td><td>紐⑺몴?됱쓣 諛붾줈 ?щ굹?</td><td>ECG??indirect(媛꾩젒)</td></tr>
+              <tr><td><b>Invasive / Noninvasive</b></td><td>invasive / noninvasive</td><td>移⑥뒿 / 鍮꾩묠??/td><td>泥대궡 ?쎌엯???덈굹?</td><td>needle EMG vs surface EMG</td></tr>
+              <tr><td><b>Contact / Remote</b></td><td>contact / remote</td><td>?묒큺 / ?먭꺽</td><td>紐몄뿉 ?용굹?</td><td>strain gauge vs MRI</td></tr>
+              <tr><td><b>Sense / Actuate</b></td><td>sense / actuate</td><td>媛먯? / ?묐룞</td><td>?쎄린?멸?, 蹂???좊컻?멸??</td><td>ECG vs HIFU</td></tr>
+              <tr><td><b>Dynamic / Static</b></td><td>dynamic / static</td><td>?숈쟻 / ?뺤쟻</td><td>?쒓컙蹂???먯껜瑜?蹂대굹?</td><td>Doppler ?덈쪟?띾룄 vs ?됯퇏 ?덉븬</td></tr>
+            </table></div>
+          </div>
+          <div class="field"><span class="lbl">?뱤 ???몄궗?댄듃 ??5 dichotomy + ?덉떆 (Week3) 狩먥춴 留ㅼ묶 ?듭떖!</span>
+            <div class="matchtable"><div class="mt-cap">狩먥춴 留ㅼ묶 ?議고몴: ?앹껜怨꾩륫 5? 遺꾨쪟 + ?덉떆</div><div class="scrollx"><table>
+              <tr><th>遺꾨쪟</th><th>?뺤쓽</th><th>????덉떆</th></tr>
+              <tr><td><b>Direct / Indirect</b></td><td>吏곸젒 vs 愿???뚮씪誘명꽣濡?/td><td>吏곸젒=?숇㎘ ?됯퇏 ?덈쪟??/ <b>媛꾩젒=ECG</b>(泥댄몴硫?湲곕줉? ?쒕룞?꾩쐞 ?꾪뙆? 愿?⑤맆 肉?</td></tr>
+              <tr><td><b>Invasive / Noninvasive</b></td><td>?μ튂 ?쎌엯 ?щ?</td><td>移⑥뒿=?좉꼍?ъ쑀 ?쒕룞?꾩쐞 吏곸젒 湲곕줉 / 鍮꾩묠??珥덉쓬??color flow</td></tr>
+              <tr><td><b>Contact / Remote</b></td><td>????묒큺 ?щ?</td><td>?묒큺=洹쇱꽟??strain gauge / ?먭꺽=MRI쨌珥덉쓬??/td></tr>
+              <tr><td><b>Sense / Actuate</b></td><td>?쎄린 vs ?≪뀡</td><td>actuator(?묒큺)=<b>?먮룞 ?몄뒓由??뚰봽</b> / actuator(?먭꺽)=<b>HIFU</b>(吏묒냽珥덉쓬???섏닠)</td></tr>
+              <tr><td><b>Dynamic / Static</b></td><td>?쒓퀎??蹂???뺣룄</td><td>Dynamic=珥덉쓬??Doppler(?ъ＜湲????덉냽) / Static=<b>?쒓컙 ?됯퇏(temporal average)</b> 痢≪젙</td></tr>
+            </table></div></div>
+          </div>
+          <div class="field"><span class="lbl">?륅툘 ?④퀎蹂?????덉젣 (?덉떆?믩텇瑜?留ㅼ묶)</span>
+            <i>"媛??덉떆瑜?5遺꾨쪟 異빧룰컪??留ㅼ묶: ??ECG ???먮룞 ?몄뒓由??뚰봽 ??HIFU ?섏닠 ??珥덉쓬??Doppler ?덈쪟?띾룄"</i>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1?④퀎</div>??ECG = ?ъ옣 ?쒕룞?꾩쐞 ?먯껜媛 ?꾨땲??泥댄몴硫??좏샇 = <b>Indirect(媛꾩젒)</b></div>
+              <div class="step"><div class="step-head">2?④퀎</div>???몄뒓由??뚰봽 = ?쎄린媛 ?꾨땲???쎈Ъ 二쇱엯(?≪뀡)+紐??묒큺 = <b>Actuate / Contact</b></div>
+              <div class="step"><div class="step-head">3?④퀎</div>??HIFU = 珥덉쓬?뚮줈 ?섏닠(?≪뀡)+鍮꾩젒珥?= <b>Actuate / Remote</b></div>
+              <div class="step"><div class="step-head">4?④퀎 ????/div>??Doppler ?덈쪟?띾룄 = ?ㅼ떆媛??쒓퀎??蹂??= <b>Dynamic</b>. ???쟅ndirect ?좥ctuate쨌Contact ?줐ctuate쨌Remote ?쥵ynamic</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">???댁쟾</button><button class="btn" onclick="stepMove(this,1)">?ㅼ쓬 ??/button><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?좑툘 ?⑥젙</span><div class="trap"><b>ECG=媛꾩젒(Indirect)</b> 痢≪젙(吏곸젒 ?꾨떂!). Dynamic=?ㅼ떆媛?蹂???쒓컙?묐떟 ???앸━ ?쒖긽??, <b>Static=?쒓컙 ?됯퇏(temporal average)</b>.</div></div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??/span>狩먥춴 5遺꾨쪟 ?덉떆 留ㅼ묶(ECG=媛꾩젒, ?몄뒓由고럩??actuator/contact, HIFU=actuator/remote). ?숈쟻 vs ?뺤쟻 ?뺤쓽.</div>
+          <div class="field" style="color:var(--muted);font-size:.85rem">?뵕 ?곌껐: ?좏뻾 C13쨌C14</div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= 以꾧린 B5 ================= -->
+    <section class="stem-sec" id="B5">
+      <h2>B5. ?좉꼍留?& CNN (Neural Networks)</h2>
+
+      <details class="node-card hot" id="C16" data-node-id="C16" data-title="?멸났?대윴 ?쒖꽦?뷀븿???쇱뀎?몃줎 Sigmoid TanH ReLU">
+        <summary><input type="checkbox" class="nodechk" data-id="C16" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C16. ?멸났?대윴 / ?쒖꽦?뷀븿??/ ?쇱뀎?몃줎<span class="nbadge hot">狩먥춴遙?/span><span class="nbadge">?좏뻾: C2</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?렞 吏곴?</span>?대윴 = "?낅젰??媛以묒튂 怨깊빐 ?뷀븯怨?媛以묓빀) + 鍮꾩꽑???⑥닔濡?援쏀엳湲?.</div>
+          <div class="field"><span class="lbl">?㎜ ?섏떇 (?대윴, Week3 p.30)</span><div>\[ z = w_1 x_1 + w_2 x_2 + w_3 x_3 + b = \sum_i w_i x_i + b \]</div><div style="color:var(--muted);font-size:.88rem">?낅젰 媛以묓빀 + ?명뼢(bias). ?댄썑 ?쒖꽦?뷀븿???듦낵.</div></div>
+          <div class="field"><span class="lbl">?뱰 ?쒖꽦?뷀븿??(Week3 p.31)</span>痢?異쒕젰???곸슜??<b>鍮꾩꽑?뺤꽦 遺??/b>. <b>?놁쑝硫?NN???좏삎?뚭?濡?異뺤냼</b>?쒕떎(?꾨Т由?痢듭쓣 ?볦븘??.</div>
+          <div class="field"><span class="lbl">?뱤 ???몄궗?댄듃 ???쒖꽦?뷀븿??3醫?留ㅼ묶</span>
+            <div class="matchtable"><div class="mt-cap">狩?留ㅼ묶 ?議고몴: ?쒖꽦?뷀븿??3醫??씲룹튂??/div><div class="scrollx"><table>
+              <tr><th>?⑥닔</th><th>?섏떇</th><th>移섏뿭</th></tr>
+              <tr><td><b>Sigmoid</b></td><td>\( f(x)=\dfrac{1}{1+e^{-x}} \)</td><td><b>(0, 1)</b></td></tr>
+              <tr><td><b>TanH</b></td><td>\( \tanh(x)=\dfrac{2}{1+e^{-2x}}-1 \)</td><td><b>(??, 1)</b></td></tr>
+              <tr><td><b>ReLU</b></td><td>\( f(x)=\max(0,x) \)</td><td><b>[0, ??</b></td></tr>
+            </table></div></div>
+          </div>
+          <div class="field"><span class="lbl">?뵇 ?쇱뀎?몃줎 (Week3 p.32)</span>?대윴 + 怨꾨떒???쒖꽦??\( \sum wx+b\ge 0 \)?대㈃ 1, ?꾨땲硫?0). 媛以묒튂 ?묒? 蹂?붽? ??異쒕젰 蹂???좊컻 ???ㅻⅨ(遺?쒕윭?? ?쒖꽦?뷀븿???ъ슜. <b>?⑥씪 ?쇱뀎?몃줎? XOR ?쒗쁽 遺덇?.</b> <b>MLP</b> = ?щ윭 ?쇱뀎?몃줎쨌?꾩쟾?곌껐痢?+ ?ㅼ뼇???쒖꽦?뷀븿??</div>
+          <div class="field"><span class="lbl">?뙇 ?ㅼ꽭怨??쒕굹由ъ삤</span><div class="scenario">?먮졃 ?먮퀎 ?대윴 ??X-ray ?뱀쭠??x)??媛以묒튂(w)瑜?怨깊빐 ?⑹튂怨? Sigmoid濡?0~1 ?뺣쪧濡?援쏀? "?먮졃???뺣쪧 0.87"???몃떎.</div></div>
+          <div class="field"><span class="lbl">?좑툘 ?⑥젙</span><div class="trap"><b>?쒖꽦?뷀븿?섍? ?놁쑝硫??좏삎?뚭?</b>(鍮꾩꽑?뺤꽦???듭떖 ?댁쑀). <b>?⑥씪 ?쇱뀎?몃줎? XOR 遺덇?</b> ??MLP媛 ?꾩슂?덈뜕 ??궗???댁쑀. Sigmoid 移섏뿭=(0,1), TanH=(??,1) ?룰컝由ъ? 留?寃?</div></div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??/span>狩??쒖꽦?뷀븿??紐⑹쟻(鍮꾩꽑?뺤꽦, ?놁쑝硫??좏삎?뚭?). Sigmoid/TanH/ReLU ?씲룹튂??留ㅼ묶. ?⑥씪 ?쇱뀎?몃줎 XOR 遺덇?.</div>
+          <div class="field" style="color:var(--muted);font-size:.85rem">?뵕 ?곌껐: ?좏뻾 C2, ?묒슜 C17</div>
+        </div>
+      </details>
+
+      <details class="node-card hot" id="C17" data-node-id="C17" data-title="?좉꼍留?援ъ“ ?뚮씪誘명꽣 ??怨꾩궛 ?됰젹?쒗쁽 softmax">
+        <summary><input type="checkbox" class="nodechk" data-id="C17" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C17. ?좉꼍留?援ъ“ / ?뚮씪誘명꽣 ??怨꾩궛 / ?됰젹?쒗쁽<span class="nbadge hot">狩먥춴遙?/span><span class="nbadge">?좏뻾: C16</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?렞 吏곴?</span>媛?痢듭쓽 ?뚮씪誘명꽣 ??= <b>(異쒕젰?몃뱶 ?? 횞 (?낅젰?몃뱶 ??+ 1)</b> ??+1? bias.</div>
+          <div class="field"><span class="lbl">?㎜ ?섏떇 (?뚮씪誘명꽣 ?? Week3 p.34)</span><div>\[ \text{params per layer} = n_{out} \times (n_{in} + 1) \]</div><div style="color:var(--muted);font-size:.88rem">?꾩껜 = 媛?痢???</div></div>
+          <div class="field"><span class="lbl">?륅툘 ?④퀎蹂?????덉젣 (?뚮씪誘명꽣 ??怨꾩궛 ???쒗뿕 怨꾩궛??)</span>
+            <i>?낅젰 6?몃뱶 ??1st hidden 4 ??2nd hidden 3 ??output 1. 珥??뚮씪誘명꽣 ?섎뒗?</i>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1?④퀎</div>1st hidden: 異쒕젰 4 횞 (?낅젰 6 + 1) = 4 횞 7 = <b>28</b></div>
+              <div class="step"><div class="step-head">2?④퀎</div>2nd hidden: 異쒕젰 3 횞 (?낅젰 4 + 1) = 3 횞 5 = <b>15</b></div>
+              <div class="step"><div class="step-head">3?④퀎</div>output: 異쒕젰 1 횞 (?낅젰 3 + 1) = 1 횞 4 = <b>4</b></div>
+              <div class="step"><div class="step-head">4?④퀎 ????/div>?⑹궛: 28 + 15 + 4 = <b>47</b> (bias瑜?鍮쇰㉨?쇰㈃ ????)</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">???댁쟾</button><button class="btn" onclick="stepMove(this,1)">?ㅼ쓬 ??/button><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?㎜ ?됰젹?쒗쁽 (Week3 p.35)</span><div>\[ x=[x_1,x_2,x_3]=a^{(1)},\quad z^{(2)}=xW^{(1)},\quad a^{(2)}=f(z^{(2)}),\ \dots\ y=\text{softmax}(z^{(4)}) \]</div><div style="color:var(--muted);font-size:.88rem"><b>softmax</b>??留덉?留?痢??좏샇(媛믪쓣 <b>?뺣쪧</b>濡??댁꽍 媛??.</div></div>
+          <div class="field"><span class="lbl">?좑툘 ?⑥젙</span><div class="trap"><b>bias??+1??鍮쇰㉨??寃?/b>??媛???뷀븳 怨꾩궛 ?ㅼ닔. softmax????됱링???꾨땲??<b>異쒕젰痢?/b>.</div></div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??/span>狩??뚮씪誘명꽣 ??= 誇 (異쒕젰 횞 (?낅젰+1)). softmax=異쒕젰痢??뺣쪧 ?댁꽍).</div>
+          <div class="field" style="color:var(--muted);font-size:.85rem">?뵕 ?곌껐: ?좏뻾 C16, ?묒슜 C18</div>
+        </div>
+      </details>
+
+      <details class="node-card hot" id="C18" data-node-id="C18" data-title="Forward Backward Propagation ?숈뒿 ?덉감 Loss 怨≪꽑">
+        <summary><input type="checkbox" class="nodechk" data-id="C18" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C18. Forward / Backward Propagation / ?숈뒿 ?덉감<span class="nbadge hot">狩먥춴遙?/span><span class="nbadge">?좏뻾: C17</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">?렞 吏곴?</span><b>?욎쑝濡?forward)</b> 媛???덉륫?섍퀬, ?由?留뚰겮 <b>?ㅻ줈(backward)</b> ?뚯븘媛硫?媛以묒튂瑜?怨좎튇??</div>
+          <div class="field"><span class="lbl">?뱰 ?뺤쓽</span><b>Forward propagation</b>: ?낅젰 X ????됱링 \( a^{(2)},a^{(3)},a^{(4)} \) ?쒖감 怨꾩궛 ??異쒕젰 \( \hat{y} \).<br><b>Backward propagation</b>: ?먯떎 \( J(y,\hat{y}) \) ??異쒕젰痢?媛以묒튂遺????닚?쇰줈 gradient \( \frac{\partial J}{\partial W_4}, \dots, \frac{\partial J}{\partial W_1} \) 怨꾩궛(泥댁씤猷? ??닚 ?꾪뙆).</div>
+          <div class="field"><span class="lbl">?뵇 STEP-BY-STEP: ?숈뒿 5?④퀎 (Week3 p.43 TRAINING STEPS)</span>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1. Feed network</div>?낅젰쨌batch쨌epoch ?ㅼ젙, 媛以묒튂 珥덇린??/div>
+              <div class="step"><div class="step-head">2. Make prediction</div>forward濡?異쒕젰 \( \hat{y} \) ?앹꽦</div>
+              <div class="step"><div class="step-head">3. Compare with ground truth</div><b>?먯떎?⑥닔 J 怨꾩궛</b> (\( y \) vs \( \hat{y} \))</div>
+              <div class="step"><div class="step-head">4. Calculate gradients & Update</div>\( \partial J/\partial w_i \) 怨꾩궛, <b>backpropagation</b>?쇰줈 媛以묒튂 媛깆떊</div>
+              <div class="step"><div class="step-head">5. Iterate & monitor</div>諛섎났?섎ŉ ?섎졃쨌怨쇱쟻??媛먯떆</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">???댁쟾</button><button class="btn" onclick="stepMove(this,1)">?ㅼ쓬 ??/button><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?뱤 洹몃옒???몄궗?댄듃 (Week3 p.44) ??吏꾨떒??異쒖젣!</span>
+            <div class="callout"><b>Loss vs epoch (?숈뒿瑜?吏꾨떒)</b>: very high LR ??<b>諛쒖궛(?곸듅)</b> / low LR ??<b>?덈Т ?먮┝</b> / high LR ??<b>?뺤껜(?뚮옒??</b> / <b>good LR ??遺?쒕읇寃??섎졃</b>.<br><b>Accuracy vs epoch (怨쇱쟻??吏꾨떒)</b>: training?묒씤??validation??<b>?ш쾶 ?ㅼ쿂吏硫?strong overfitting</b>, ?쎄컙 ?ㅼ쿂吏硫?little overfitting.</div>
+          </div>
+          <div class="field"><span class="lbl">?륅툘 ?④퀎蹂?????덉젣 (Loss 怨≪꽑 吏꾨떒)</span>
+            <i>"Loss媛 epoch ?곕씪 ?꾨줈 移섏넖?쇰㈃ 臾댁뾿??臾몄젣?"</i>
+            <div class="stepper">
+              <div class="step show"><div class="step-head">1?④퀎</div>Loss??以꾩뼱???뺤긽?몃뜲 ?щ씪媛?= 諛쒖궛.</div>
+              <div class="step"><div class="step-head">2?④퀎 ????/div>諛쒖궛???먯씤 = <b>?숈뒿瑜좎씠 ?덈Т ??very high LR)</b> ???숈뒿瑜좎쓣 ??떠????</div>
+              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">???댁쟾</button><button class="btn" onclick="stepMove(this,1)">?ㅼ쓬 ??/button><span class="dots"></span></div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?좑툘 ?⑥젙</span><div class="trap">forward=?낅젰?믪텧?? backward=?먯떎?뭛radient(諛섎? 諛⑺뼢). ?먯떎 J??4?④퀎媛 ?꾨땲??<b>3?④퀎</b>?먯꽌 怨꾩궛(?덉륫 吏곹썑 鍮꾧탳).</div></div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??/span>狩?forward/backward 諛⑺뼢. ?숈뒿 5?④퀎 ?쒖꽌. Loss 怨≪꽑?믫븰?듬쪧, Accuracy 怨≪꽑?믨낵?곹빀 吏꾨떒.</div>
+          <div class="field" style="color:var(--muted);font-size:.85rem">?뵕 ?곌껐: ?좏뻾 C17, ?묒슜 C19</div>
+        </div>
+      </details>
+
+      <details class="node-card hot" id="C19" data-node-id="C19" data-title="CNN ?⑹꽦怨??좉꼍留??대?吏 遺꾩꽍 filter kernel ?곗씠??利앷컯">
+        <summary><input type="checkbox" class="nodechk" data-id="C19" onclick="event.stopPropagation();markDone(this)" title="?숈뒿 ?꾨즺">C19. CNN (?⑹꽦怨??좉꼍留? / ?대?吏 遺꾩꽍<span class="nbadge hot">狩먥춴遙?/span><span class="nbadge">?좏뻾: C18, C11</span><span class="chev">??/span></summary>
+        <div class="nbody">
+          <div class="field"><span class="lbl">媛쒕뀗 ?ㅻ챸 Hook Intuition Analogy Definition Mechanism in Korean: 媛쒕뀗 ?ㅻ챸 Hook Intuition Analogy Definition Mechanism</span>
+            <div class="concept-flow">
+              <div class="concept-step"><b>Hook</b><br>?됰? X-ray??CT瑜?1李⑥썝 ?レ옄?대줈 ?댁꽌 fully connected network(?꾩쟾?곌껐留????ｌ쑝硫??꾩튂 ?뺣낫媛 臾대꼫吏꾨떎. CNN(convolutional neural network, ?⑹꽦怨??좉꼍留?? "?대뵒???대뼡 ?⑦꽩???덈굹"瑜?蹂댁〈?섎젮怨??깆옣?덈떎.</div>
+              <div class="concept-step"><b>Intuition</b><br>?묒? filter(kernel, ?꾪꽣/而ㅻ꼸)???곸긽 ?꾩뿉 誘몃걚?щ쑉由щŉ 媛숈? 紐⑥뼇??諛섎났 ?먯깋?쒕떎怨?蹂대㈃ ?쒕떎. 諛앹? ?몃줈?좎뿉 諛섏쓳?섎뒗 ?꾪꽣???몃줈 寃쎄퀎(edge, 寃쎄퀎)留?媛뺥븯寃??꾩슫??</div>
+              <div class="concept-step"><b>Analogy</b><br>?뗫낫湲?????ъ쭊 ?꾩뿉????移몄뵫 ?吏곸씠硫?"?ш린 紐⑥꽌由ш? ?덈굹, ?좎씠 ?덈굹"瑜?泥댄겕?섎뒗 寃껉낵 鍮꾩듂?섎떎. ?ㅻ쭔 鍮꾩쑀媛 源⑥???吏?먯? CNN???덉쑝濡??뱀쭠??怨좊Ⅴ??寃껋씠 ?꾨땲???숈뒿?쇰줈 filter weight(?꾪꽣 媛以묒튂)瑜??먮룞 議곗젙?쒕떎???먯씠??</div>
+              <div class="concept-step"><b>Definition</b><br>CNN(convolutional neural network, ?⑹꽦怨??좉꼍留?? ?낅젰 image(?곸긽)?????<b>convolution(?⑹꽦怨?</b> ?곗궛???섑뻾?섎뒗 filter(kernel, 而ㅻ꼸) 吏묓빀?쇰줈 feature map(?뱀쭠留???留뚮뱾怨? ?대? ?щ윭 痢듭뿉??議고빀??遺꾨쪟(classification, 遺꾨쪟)??寃異?detection, 寃異????섑뻾?섎뒗 ?좉꼍留앹씠??</div>
+              <div class="concept-step"><b>Mechanism</b><br>1) input channel(?낅젰 梨꾨꼸) ?꾩뿉 ?묒? kernel???붾떎. 2) local receptive field(援?냼 ?섏슜?곸뿭)? kernel??怨깊빐 ?뷀븳?? 3) bias? activation function(?쒖꽦?뷀븿?????곸슜????異쒕젰媛믪쓣 留뚮뱺?? 4) kernel??stride(蹂댄룺)留뚰겮 ?대룞??feature map ?꾩껜瑜?梨꾩슫?? 5) ?щ윭 kernel怨??щ윭 痢듭씠 edge?뭪exture?뭩hape?뭠esion pattern ?쒖쑝濡???異붿긽?곸씤 ?쒗쁽??留뚮뱺??</div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?렞 吏곴?</span>?대?吏???됲룊?섍쾶 ?대㈃ 怨듦컙 ?뺣낫媛 源⑥쭊????<b>?꾪꽣瑜??щ씪?대뱶?섎ŉ 怨듦컙 援ъ“瑜?蹂댁〈</b>?섎뒗 寃?CNN.</div>
+          <div class="field"><span class="lbl">?뱤 鍮꾧탳????CNN vs FC, convolution(?⑹꽦怨? ?듭떖</span>
+            <div class="scrollx"><table>
+              <tr><th>??ぉ</th><th>FC(?꾩쟾?곌껐)</th><th>CNN(?⑹꽦怨??좉꼍留?</th><th>?섎?</th></tr>
+              <tr><td><b>?낅젰 泥섎━</b></td><td>1D vector</td><td>2D/3D tensor</td><td>怨듦컙 援ъ“ 蹂댁〈 ?щ?</td></tr>
+              <tr><td><b>媛以묒튂 ?ъ슜</b></td><td>紐⑤뱺 ?낅젰怨?媛쒕퀎 ?곌껐</td><td>local shared weights(援?냼 怨듭쑀媛以묒튂)</td><td>?뚮씪誘명꽣 ?덇컧</td></tr>
+              <tr><td><b>?⑦꽩 ?먯깋</b></td><td>?꾩튂 ?뺣낫 ?쏀븿</td><td>filter sliding(?꾪꽣 ?щ씪?대뵫)</td><td>寃쎄퀎쨌紐⑥꽌由??먯?</td></tr>
+              <tr><td><b>?듭떖 ?곗궛</b></td><td>matrix multiply</td><td>convolution(?⑹꽦怨?</td><td>?뱀쭠留??앹꽦</td></tr>
+              <tr><td><b>????낅젰</b></td><td>???곗씠??/td><td>X-ray, CT slice, MRI image</td><td>?섎즺?곸긽 遺꾩꽍 ?곹빀</td></tr>
+            </table></div>
+          </div>
+          <div class="field"><span class="lbl">?뱰 ??CNN? (Week3 p.45??8)</span>?대?吏瑜?1D濡??댁꽌 FC(?꾩쟾?곌껐)???ｌ쑝硫?<b>FC??怨듦컙 援ъ“瑜?臾댁떆</b>?쒕떎(?쎌???permute?대룄 媛以묒튂留?permute?섍퀬 寃곌낵 ?숈씪). ??怨듦컙 蹂댁〈 ?꾪빐 CNN.</div>
+          <div class="field"><span class="lbl">?뵇 ?⑹꽦怨?硫붿빱?덉쬁 (Week3 p.49??3)</span>?낅젰=color channels(RGB, <b>zero-padding</b>) ??<b>kernels(?꾪꽣)</b>? ?⑹꽦怨?+ bias ??output channel. ?щ윭 kernel ???щ윭 output channel. CNN? ?대윴??<b>3李⑥썝(width쨌height쨌depth)</b>?쇰줈 諛곗뿴(?쇰컲 NN? 1D).</div>
+          <div class="field"><span class="lbl">?뙇 ?ㅼ꽭怨??쒕굹由ъ삤</span><div class="scenario">?됰? X-ray ?먮졃 吏꾨떒 ??泥?痢??꾪꽣媛 媛?μ옄由?룹꽑???↔퀬, 源딆? 痢듭씠 ?먯쓽 ?뚯쁺 ?⑦꽩???≪븘 "?먮졃" 遺꾨쪟. <b>C11???곸긽??洹몃?濡?CNN ?낅젰</b>???쒕떎.</div></div>
+          <div class="field"><span class="lbl">?뱤 ???몄궗?댄듃 ???꾪꽣 ?덉떆 (Week3 p.54)</span><div class="callout">Vertical Line Detector / Horizontal Line Detector / Corner Detector (媛?3횞3). <b>Filter(kernel) = ?낅젰怨??⑹꽦怨깅릺??媛以묒튂 吏묓빀.</b></div></div>
+          <div class="field"><span class="lbl">?럾截??명꽣?숉떚釉?罹붾쾭??Scene 2 ??convolution(?⑹꽦怨? sliding window</span>
+            <div class="scene-panel" id="cnnScene">
+              <div class="scene-meta">
+                <span><b>Scene 2</b> convolution(?⑹꽦怨? 쨌 feature map(?뱀쭠留?</span>
+                <span class="reduced-note" id="cnnReducedNote"></span>
+              </div>
+              <div class="scene-grid">
+                <div>
+                  <canvas id="cnnCanvas" width="360" height="280" role="img" aria-label="CNN ?⑹꽦怨??щ씪?대뵫 ?덈룄???좊땲硫붿씠??></canvas>
+                  <div class="scene-controls" style="margin-top:10px">
+                    <button class="btn" type="button" id="cnnPlayBtn">?먮룞 ?ъ깮</button>
+                    <button class="btn" type="button" id="cnnStepBtn">??移??대룞</button>
+                  </div>
+                  <div class="scene-progress" aria-hidden="true" style="margin-top:8px"><span id="cnnProgress"></span></div>
+                </div>
+                <div class="scene-side">
+                  <div class="formula-strip">
+                    <span class="eq-chip">kernel(而ㅻ꼸) = 3횞3</span>
+                    <span class="eq-chip">stride(蹂댄룺) = 1</span>
+                    <span class="eq-chip">output = 3횞3 feature map</span>
+                  </div>
+                  <div class="scene-readout">
+                    <div class="metric-card">?꾩옱 ?꾩튂<b id="cnnPosLabel">(0,0)</b></div>
+                    <div class="metric-card">window sum<b id="cnnValueLabel">0</b></div>
+                    <div class="metric-card">?꾩옱 ?섎?<b id="cnnMeaning">?몃줈 寃쎄퀎 媛뺤“</b></div>
+                    <div class="metric-card">吏꾪뻾瑜?b id="cnnPercentLabel">0%</b></div>
+                  </div>
+                  <p class="scene-caption" id="cnnDesc">filter(kernel, 而ㅻ꼸)媛 ?낅젰 寃⑹옄瑜???移몄뵫 誘몃걚?ъ?硫?convolution(?⑹꽦怨? 媛믪쓣 怨꾩궛?섍퀬, 洹?寃곌낵媛 feature map(?뱀쭠留???梨꾩슫??</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field"><span class="lbl">?뵇 怨쇱쟻??媛먯냼 (Week3 p.55)</span><b>?곗씠??利앷컯(data augmentation)</b> ??rotation쨌flip쨌crop쨌stretch쨌translate쨌resize쨌contrast쨌blur쨌RGB?볿GR쨌color inversion.</div>
+          <div class="field"><span class="lbl">?좑툘 ?⑥젙</span><div class="trap"><b>FC媛 怨듦컙 援ъ“瑜?臾댁떆</b>?섎뒗 寃껋씠 CNN??議댁옱 ?댁쑀(諛섎?濡??몄슦吏 留?寃?. ?곗씠??利앷컯? 怨쇱쟻?⑹쓣 <b>以꾩씤??/b>. CNN ?대윴? <b>3D 諛곗뿴</b>.</div></div>
+          <div class="exam-box"><span class="lbl">?뱷 ?쒗뿕 ?ъ씤??/span>狩?"FC??怨듦컙 臾댁떆 ??CNN ?꾩슂". Filter=?⑹꽦怨?媛以묒튂 吏묓빀. CNN=3D(W쨌H쨌depth). ?곗씠??利앷컯=怨쇱쟻??媛먯냼.</div>
+          <div class="field" style="color:var(--muted);font-size:.85rem">?뵕 ?곌껐: ?좏뻾 C18쨌C11(?곸긽 ?낅젰)</div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===== ?덉긽 臾몄젣 + 紐⑤쾾 ?듬? ===== -->
+    <section class="stem-sec" id="examqs">
+      <h2>?뱷 ?덉긽 臾몄젣 &amp; 紐⑤쾾 ?듬?</h2>
+      <p style="color:var(--muted)">癒쇱? ?ㅼ뒪濡??듯븳 ??<b>"??蹂닿린"</b>濡??뺤씤?쒕떎. ?쒗뿕 ?뺥깭: <b>媛앷???留ㅼ묶??以묒떖</b>(留ㅼ묶 8 + ?좊떎/怨꾩궛 7). ?좑툘 援ъ껜 湲곗텧???놁뼱 PDF 援ъ“ 湲곕컲 <b>異쒖젣 異붿젙</b>?대떎. Week4(?쒓퀎쨌?ㅻ━쨌洹쒖젣)???먮즺 誘몄젣怨듭씠???쒖쇅?덈떎.</p>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">留ㅼ묶</span><span>Q1. ?ㅼ쓬 ?뱀꽦??<b>AI / ML / DL</b>??留ㅼ묶?섎씪.<div class="qopts">???곗씠?곌? 媛??留롮씠 ?꾩슂 ??black box???ㅻ챸媛?μ꽦 ??쓬 ??feature engineering ?꾩슂 ??鍮꾩젙???곗씠?곗뿉 媛??媛뺥븿 ??媛???곸? ?곗씠?곕줈 ?숈옉</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">??蹂닿린</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">??紐⑤쾾 ?듬?</span>?잻L ?좩L ?줞L ?쥵L ?짞I. (?곗씠???꾩슂??AI &lt; ML &lt; DL, ?ㅻ챸媛?μ꽦 AI &gt; ML &gt; DL, DL=feature ?먮룞쨌鍮꾩젙??媛뺥븿, ML=?щ엺??feature ?ㅺ퀎.)</div>
+          <div class="field"><span class="lbl">?렞 遺遺꾩젏???ъ씤??/span>?△몿瑜?DL, ??쓣 ML濡?留욏엳硫??듭떖 ?앹젏. ?졻뫀(?곗씠?곕웾 ?묎레??源뚯? 留욏엳硫?留뚯젏.</div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁꽕</span>??쓣 DL濡?怨좊Ⅴ硫??ㅻ떟 ??DL? feature engineering 遺덊븘???먮룞 異붿텧). ?ｋ? ML濡?怨좊Ⅴ硫??ㅻ떟.</div>
+          <div style="color:var(--muted);font-size:.85rem">?곌껐 ?몃뱶: C2</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">留ㅼ묶</span><span>Q2. ?숈뒿 ?⑤윭?ㅼ엫 <b>吏??鍮꾩???媛뺥솕</b>? 媛?"?⑥젏"???곌껐?섎씪.<div class="qopts">(媛) ?쇰꺼留?鍮꾩슜 ??(?? 寃곌낵 ?됯? ?대젮?(?뺣떟 ?놁쓬) (?? ?먮━怨?蹂듭옟쨌?ㅽ뿕쨌?ㅻ━ ?대젮?</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">??蹂닿린</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">??紐⑤쾾 ?듬?</span>(媛)-吏?꾪븰??/ (??-鍮꾩??꾪븰??/ (??-媛뺥솕?숈뒿.</div>
+          <div class="field"><span class="lbl">?렞 遺遺꾩젏???ъ씤??/span>"?뺣떟 ?놁쓬?믫룊媛 ?대젮?=鍮꾩???媛 ?듭떖. ?낅젰?곗씠??異?吏???낅젰+?뺣떟 / 鍮꾩????낅젰留?/ 媛뺥솕=?곹깭쨌?됰룞쨌蹂댁긽)???곕㈃ 媛??</div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁꽕</span>媛뺥솕?숈뒿??"?뺣떟???덉뼱???숈뒿"?쇰줈 蹂대㈃ ?ㅻ떟 ??媛뺥솕??蹂댁긽(reward)?쇰줈 ?숈뒿(?뺣떟 ?쇰꺼 ?놁쓬).</div>
+          <div style="color:var(--muted);font-size:.85rem">?곌껐 ?몃뱶: C3, C4</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">?좊떎</span><span>Q3. 異쒕젰??<b>?곗냽媛?/b>?닿퀬 ?됯?吏?쒕줈 <b>MSE/MAE</b>瑜??곕뒗 ML 臾몄젣 ?좏삎??<div class="qopts">??遺꾨쪟 ???뚭? ???대윭?ㅽ꽣留???媛뺥솕?숈뒿</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">??蹂닿린</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">??紐⑤쾾 ?듬?</span><b>???뚭?.</b> 異쒕젰=?곗냽??continuous), ?됯?=MSE/MAE. ?? ?앹〈湲곌컙(媛쒖썡)쨌?덈떦쨌?щ컯異쒕웾 ?덉륫.</div>
+          <div class="field"><span class="lbl">?렞 遺遺꾩젏???ъ씤??/span>"?댁궛=遺꾨쪟 / ?곗냽=?뚭? / ?쇰꺼?녿뒗 洹몃９??援곗쭛" 3遺?援щ텇???곕㈃ 媛??</div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁꽕</span>?좊텇瑜섎뒗 異쒕젰???댁궛 踰붿＜(label), ??뎔吏묒? 鍮꾩????쇰꺼 ?놁쓬). 遺꾨쪟쨌?뚭???????吏?꾪븰?듭씠??異쒕젰?뺤씠 ?ㅻ쫫.</div>
+          <div style="color:var(--muted);font-size:.85rem">?곌껐 ?몃뱶: C4</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">留ㅼ묶</span><span>Q4. ECG ?뚰삎 <b>P / QRS / T</b>瑜??섎???留ㅼ묶?섎씪.<div class="qopts">(媛) ?ъ떎 ?덈텇洹?(?? ?щ갑 ?덈텇洹?(?? ?ъ떎 ?щ텇洹?/div></span><button class="btn qa-toggle" onclick="toggleQA(this)">??蹂닿린</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">??紐⑤쾾 ?듬?</span>P-(?? ?щ갑 ?덈텇洹?/ QRS-(媛) ?ъ떎 ?덈텇洹?/ T-(?? ?ъ떎 ?щ텇洹?</div>
+          <div class="field"><span class="lbl">?렞 遺遺꾩젏???ъ씤??/span>"?щ갑 癒쇱??믪떖???섏쨷, ?덈텇洹??섏텞)?믪옱遺꾧레(?뚮났)" ?쒖꽌 ?쇰━瑜??곕㈃ 媛??</div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁꽕</span>QRS瑜?"?щ텇洹??쇰줈 怨좊Ⅴ硫??ㅻ떟 ???щ텇洹뱀? T?? ?щ갑 ?щ텇洹뱀? QRS??臾삵? ??蹂댁엫.</div>
+          <div style="color:var(--muted);font-size:.85rem">?곌껐 ?몃뱶: C7</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">留ㅼ묶</span><span>Q5. EEG ???<b>灌/罐/慣/棺/款</b>? ?곹깭瑜??곌껐?섎씪.<div class="qopts">??源딆? ?섎㈃ ??議몃┝쨌紐낆긽 ???덉젙쨌??媛먯쓬 ??吏묒쨷쨌臾몄젣?닿껐 ??怨좎감???몄?쨌湲곗뼲</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">??蹂닿린</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">??紐⑤쾾 ?듬?</span>灌-??/ 罐-??/ 慣-??/ 棺-??/ 款-?? (二쇳뙆???ㅻ쫫李⑥닚 灌 &lt; 罐 &lt; 慣 &lt; 棺 &lt; 款, ??쓣?섎줉 ?섎㈃쨌?믪쓣?섎줉 媛곸꽦쨌?몄?.)</div>
+          <div class="field"><span class="lbl">?렞 遺遺꾩젏???ъ씤??/span>灌=?섎㈃(媛????쓬), 慣=?덇컧怨??덉젙, 棺=吏묒쨷 3媛쒕쭔 留욏????듭떖 ?앹젏.</div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁꽕</span>慣(?덉젙쨌?덇컧??? 棺(吏묒쨷)瑜?諛붽씀硫??ㅻ떟 ??慣??源⑥뼱?덈릺 ?댁떇, 棺媛 ?λ룞??吏묒쨷.</div>
+          <div style="color:var(--muted);font-size:.85rem">?곌껐 ?몃뱶: C8</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">留ㅼ묶</span><span>Q6. ?앹껜?좏샇 <b>EOG/ENG/PCG/VAG</b>瑜?痢≪젙 ??곸뿉 留ㅼ묶?섎씪.<div class="qopts">(媛) 愿??吏꾨룞쨌?뚮━ (?? ???吏곸엫 (?? ?ъ쓬 (?? ?꾩젙湲곌?쨌?됲삎(?덉쭊)</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">??蹂닿린</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">??紐⑤쾾 ?듬?</span>EOG-(?? ??/ ENG-(?? ?꾩젙쨌?됲삎 / PCG-(?? ?ъ쓬 / VAG-(媛) 愿?덉쓬.</div>
+          <div class="field"><span class="lbl">?렞 遺遺꾩젏???ъ씤??/span>?닿렐 ?⑥꽌(oculo=?? nystagmo=?덉쭊, phono=?뚮━, arthro=愿??瑜??곸쑝硫?媛??</div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁꽕</span>EOG? ENG???먮━媛 鍮꾩듂(?덇뎄 愿?????쇰룞 ??ENG??臾댁쓽?앹쟻 ?덉쭊?믪쟾?뺢린愿 ?됯? ?뱁솕.</div>
+          <div style="color:var(--muted);font-size:.85rem">?곌껐 ?몃뱶: C10</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">?좊떎</span><span>Q7. <b>諛⑹궗?좎쓣 ?ъ슜?섏? ?딅뒗</b> ?곸긽 紐⑤떖由ы떚留?臾띠? 寃껋??<div class="qopts">??X-ray, CT ??MRI, Ultrasound, OCT ??CT, PET ??Mammography, Fluoroscopy</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">??蹂닿린</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">??紐⑤쾾 ?듬?</span><b>??MRI, Ultrasound, OCT.</b> (MRI=?먭린??RF, US=?뚰뙆, OCT=洹쇱쟻?몄꽑 鍮?媛꾩꽠 ??紐⑤몢 臾대갑?ъ꽑.)</div>
+          <div class="field"><span class="lbl">?렞 遺遺꾩젏???ъ씤??/span>"X-ray쨌CT쨌Mammo쨌Fluoro쨌DSA쨌PET쨌SPECT=諛⑹궗???덉쓬 / MRI쨌US쨌OCT=?놁쓬" 湲곗????곕㈃ 媛??</div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁꽕</span>?졻몾?ｋ뒗 諛⑹궗??紐⑤떖由ы떚(X-ray쨌CT쨌PET쨌Mammo쨌Fluoro) ?ы븿 ???ㅻ떟. CT??X-ray 湲곕컲?대씪 諛⑹궗???덉쓬(MRI? ?쇰룞 二쇱쓽).</div>
+          <div style="color:var(--muted);font-size:.85rem">?곌껐 ?몃뱶: C11</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">留ㅼ묶</span><span>Q8. 紐⑤떖由ы떚 <b>PET쨌SPECT쨌DSA쨌OCT쨌US</b>瑜??뱀쭠??留ㅼ묶?섎씪.<div class="qopts">(媛) 關m 媛꾩꽠 (?? ?묒쟾?먥넂?띻컧留덉꽑쨌???(?? ?⑥씪媛먮쭏?졖룹??는룸낫??(?? ?붿???媛먯궛쨌?덇?留?(留? ?ㅼ떆媛꽷룻깭?꽷텱oppler쨌臾대갑?ъ꽑</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">??蹂닿린</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">??紐⑤쾾 ?듬?</span>PET-(?? / SPECT-(?? / DSA-(?? / OCT-(媛) / US-(留?.</div>
+          <div class="field"><span class="lbl">?렞 遺遺꾩젏???ъ씤??/span>PET=?띻컧留덉꽑, SPECT=?⑥씪媛먮쭏??援щ텇???듭떖(媛???룰컝由?. DSA=?덇?留? OCT=關m???④낏.</div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁꽕</span>PET怨?SPECT瑜?諛섎?濡?留ㅼ묶?섍린 ?ъ? ??PET=?묒쟾???띻컧留덉꽑/怨좏빐?곷룄쨌怨좉?, SPECT=?⑥씪媛먮쭏????댁긽?꽷룹???</div>
+          <div style="color:var(--muted);font-size:.85rem">?곌껐 ?몃뱶: C11</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">?좊떎</span><span>Q9. 怨꾩륫 3釉붾줉 以?<b>?쒖뒪???꾩껜 ?≪쓬 ?뱀꽦??二쇰줈 吏諛?/b>?섎뒗 ?붿냼??<div class="qopts">??Transducer ??Pre-amplifier ??Signal Conditioning ?꾪꽣 ??Computation Unit</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">??蹂닿린</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">??紐⑤쾾 ?듬?</span><b>??Pre-amplifier.</b> ??≪쓬쨌differential ?ㅺ퀎媛 ?쒖뒪???≪쓬 ?뱀꽦??醫뚯슦.</div>
+          <div class="field"><span class="lbl">?렞 遺遺꾩젏???ъ씤??/span>"Buffer??front/back-end媛 1~2m ?댁긽 ?⑥뼱吏??뚮쭔 ?꾩슂"源뚯? ?뚮㈃ 異붽? ?앹젏.</div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁꽕</span>???꾪꽣媛 ?≪쓬??以꾩씠湲??섎굹 ?쒖뒪???≪쓬 ?쒓퀎??pre-amp媛 寃곗젙. ?뷀븳 ?⑥젙.</div>
+          <div style="color:var(--muted);font-size:.85rem">?곌껐 ?몃뱶: C13</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">留ㅼ묶</span><span>Q10. ?앹껜怨꾩륫 5? 遺꾨쪟 <b>?덉떆</b>瑜?異빧룰컪??留ㅼ묶?섎씪.<div class="qopts">??ECG ???먮룞 ?몄뒓由??뚰봽 ??HIFU ?섏닠 ??珥덉쓬??Doppler ?덈쪟?띾룄</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">??蹂닿린</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">??紐⑤쾾 ?듬?</span>??ECG=<b>Indirect(媛꾩젒)</b> / ???몄뒓由고럩??<b>Actuate쨌Contact</b> / ??HIFU=<b>Actuate쨌Remote</b> / ??Doppler=<b>Dynamic</b>.</div>
+          <div class="field"><span class="lbl">?렞 遺遺꾩젏???ъ씤??/span>"ECG=媛꾩젒(吏곸젒 ?꾨떂)"怨?"Static=?쒓컙 ?됯퇏(temporal average)" ?뺤쓽瑜??곕㈃ 媛??</div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁꽕</span>ECG瑜?Direct濡?怨좊Ⅴ硫??ㅻ떟 ??泥댄몴硫?湲곕줉? ?쒕룞?꾩쐞 ?꾪뙆? 愿?⑤맆 肉?吏곸젒 痢≪젙???꾨떂. ?몄뒓由고럩?꽷텵IFU??????Actuate吏留?Contact?봕emote濡?媛덈┝.</div>
+          <div style="color:var(--muted);font-size:.85rem">?곌껐 ?몃뱶: C15</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">?좊떎쨌怨꾩궛</span><span>Q11. ?낅젰 6 ??hidden 4 ??hidden 3 ??output 1 ?꾩쟾?곌껐留앹쓽 <b>珥??뚮씪誘명꽣 ??/b>(bias ?ы븿)??<div class="qopts">??40 ??43 ??47 ??50</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">??蹂닿린</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">??紐⑤쾾 ?듬?</span><b>??47.</b> 痢듬퀎 異쒕젰횞(?낅젰+1): 4횞(6+1)=28, 3횞(4+1)=15, 1횞(3+1)=4 ??28+15+4=47.</div>
+          <div class="field"><span class="lbl">?렞 遺遺꾩젏???ъ씤??/span>痢듬퀎 ??\( n_{out}\times(n_{in}+1) \)???몄슦硫?媛??</div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁꽕</span>bias??+1??鍮쇰㉨?쇰㈃(4횞6+3횞4+1횞3=39) ?ㅻ떟 ??媛???뷀븳 ?ㅼ닔. bias ??쓣 諛섎뱶???뷀븷 寃?</div>
+          <div style="color:var(--muted);font-size:.85rem">?곌껐 ?몃뱶: C17</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">?좊떎</span><span>Q12. ?쒖꽦?뷀븿???ㅻ챸?쇰줈 <b>?녹? 寃?/b>??<div class="qopts">???놁쑝硫???媛뺣젰 ??Sigmoid 移섏뿭? (??,1) ???놁쑝硫??좏삎?뚭?濡?異뺤냼 ???⑥씪 ?쇱뀎?몃줎?쇰줈 XOR ?쒗쁽 媛??/div></span><button class="btn qa-toggle" onclick="toggleQA(this)">??蹂닿린</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">??紐⑤쾾 ?듬?</span><b>???쒖꽦?뷀븿?섍? ?놁쑝硫??좉꼍留앹? ?좏삎?뚭?濡?異뺤냼?쒕떎.</b> 鍮꾩꽑?뺤꽦???쒖꽦?뷀븿?섏쓽 ?듭떖 紐⑹쟻.</div>
+          <div class="field"><span class="lbl">?렞 遺遺꾩젏???ъ씤??/span>Sigmoid (0,1) / TanH (??,1) / ReLU [0,?? 移섏뿭???뺥솗???곕㈃ 媛??</div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁꽕</span>?〓뒗 TanH??移섏뿭(Sigmoid??(0,1)). ???⑥씪 ?쇱뀎?몃줎? XOR ?쒗쁽 遺덇?(MLP ?꾩슂). ?좎? ?뺣컲?.</div>
+          <div style="color:var(--muted);font-size:.85rem">?곌껐 ?몃뱶: C16</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">?좊떎</span><span>Q13. CNN??FC蹂대떎 <b>?대?吏 遺꾩꽍???곹빀???댁쑀</b>濡?媛???녹? 寃껋??<div class="qopts">???곗궛?됱씠 ??留롮븘????FC??怨듦컙 援ъ“瑜?臾댁떆(?쎌? ?욎뼱??寃곌낵 ?숈씪) ???쒖꽦?뷀븿?섍? ?꾩슂 ?놁뼱?????곗씠??利앷컯??遺덇??ν빐??/div></span><button class="btn qa-toggle" onclick="toggleQA(this)">??蹂닿린</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">??紐⑤쾾 ?듬?</span><b>??FC??怨듦컙 援ъ“瑜?臾댁떆?섍린 ?뚮Ц.</b> CNN? ?꾪꽣瑜??щ씪?대뱶?섎ŉ 怨듦컙 援ъ“瑜?蹂댁〈?섍퀬, ?대윴??3D(W쨌H쨌depth)濡?諛곗뿴?쒕떎.</div>
+          <div class="field"><span class="lbl">?렞 遺遺꾩젏???ъ씤??/span>"Filter=?⑹꽦怨깅릺??媛以묒튂 吏묓빀", "?곗씠??利앷컯??怨쇱쟻??媛먯냼"瑜??④퍡 ?곕㈃ 媛??</div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁꽕</span>?ｋ뒗 諛섎?(?곗씠??利앷컯? CNN 怨쇱쟻??媛먯냼 湲곕쾿). ??룄 ?由?CNN???쒖꽦?뷀븿???ъ슜).</div>
+          <div style="color:var(--muted);font-size:.85rem">?곌껐 ?몃뱶: C19</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">留ㅼ묶쨌吏꾨떒</span><span>Q14. ?숈뒿 怨≪꽑 吏꾨떒. 媛??꾩긽???먯씤/泥섎갑??留ㅼ묶?섎씪.<div class="qopts">(媛) Loss媛 epoch???곕씪 ?꾨줈 移섏넖??(?? training accuracy?묒씤??validation???ш쾶 ?ㅼ쿂吏?/div></span><button class="btn qa-toggle" onclick="toggleQA(this)">??蹂닿린</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">??紐⑤쾾 ?듬?</span>(媛) <b>?숈뒿瑜좎씠 ?덈Т ??very high LR)</b> ???숈뒿瑜좎쓣 ??텣?? (?? <b>strong overfitting</b> ???곗씠??利앷컯쨌?뺢퇋???깆쑝濡??꾪솕.</div>
+          <div class="field"><span class="lbl">?렞 遺遺꾩젏???ъ씤??/span>?숈뒿 5?④퀎(Feed?뭁redict?묬ompare(?먯떎 J)?묰radient/Update?묲terate) ?쒖꽌瑜??곕㈃ 媛?? ?먯떎 J 怨꾩궛? 3?④퀎.</div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁꽕</span>(媛)瑜?"?숈뒿瑜좎씠 ?덈Т ?묒쓬"?쇰줈 蹂대㈃ ?ㅻ떟 ???묒쑝硫?諛쒖궛???꾨땲???덈Т ?먮┝. ?뺤껜(?뚮옒????high LR.</div>
+          <div style="color:var(--muted);font-size:.85rem">?곌껐 ?몃뱶: C18</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">?좊떎</span><span>Q15. <b>Ability-based Design</b>(Edwards 1995) ?ㅻ챸?쇰줈 ?녹? 寃껋??<div class="qopts">???ъ슜?먭? ?쒖뒪?쒖뿉 ?곸쓳 ???쒖뒪?쒖씠 ?ъ슜???λ젰???곸쓳 ??????ъ슜??1紐??곸젙 ?ㅺ퀎 ??AI瑜????곕뒗 ?꾪넻 ?ㅺ퀎</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">??蹂닿린</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">??紐⑤쾾 ?듬?</span><b>???쒖뒪?쒖씠 ?ъ슜?먯쓽 ?λ젰??留욎떠 ?곸쓳?쒕떎.</b> ?? ?먭????녿뒗 ?ъ슜?먯뿉寃?AI媛 ?낅젰 諛⑹떇??留욎떠以? ?쇰컲 ?ㅺ퀎??User?뭆ystem ?곸쓳怨?諛섎?.</div>
+          <div class="field"><span class="lbl">?렞 遺遺꾩젏???ъ씤??/span>吏꾨떒(Diagnosis)?믪튂猷?Treatment: therapeutic 鍮꾩묠???좉꼍議곗젅 / assistive 蹂댁“) 諛⑺뼢???곕㈃ 媛??</div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁꽕</span>?졻몾? ?쇰컲 ?쒖뒪??User-adaptation-System) ?ㅻ챸 ??諛섎?濡??몄슦湲??ъ슫 ?⑥젙. ?ｋ룄 ?由?AI瑜??곴레 ?쒖슜).</div>
+          <div style="color:var(--muted);font-size:.85rem">?곌껐 ?몃뱶: C1</div>
+        </div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">?좊떎</span><span>Q16. ROC(Receiver Operating Characteristic)? AUC(area under the curve)??????ㅻ챸?쇰줈 <b>?녹? 寃?/b>??<div class="qopts">??ROC??x異뺤? specificity(?뱀씠?? ?먯껜????threshold(?꾧퀎媛?瑜?諛붽씀硫?AUC媛 ?④퍡 蹂?쒕떎 ??AUC媛 0.5??媛源뚯슦硫?臾댁옉??遺꾨쪟湲곗? 鍮꾩듂?섎떎 ??sensitivity(誘쇨컧??=TN/(TN+FP)</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">??蹂닿린</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">???뺣떟</span><b>??AUC媛 0.5??媛源뚯슦硫?臾댁옉??遺꾨쪟湲곗? 鍮꾩듂?섎떎.</b></div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁쑀</span>x異뺤? specificity(?뱀씠??媛 ?꾨땲??<b>FPR(false positive rate, ?꾩뼇?깅쪧) = 1 ??specificity(?뱀씠??</b>??</div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁쑀</span>threshold(?꾧퀎媛???ROC 怨≪꽑 <b>?꾩쓽 ????/b>留?諛붽씔?? AUC??紐⑤뜽??留뚮뱺 怨≪꽑 ?꾩껜 硫댁쟻?대씪 threshold瑜?諛붽퓭??洹몃?濡쒕떎.</div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁쑀</span>sensitivity(誘쇨컧????<b>TP / (TP + FN)</b>?대떎. TN / (TN + FP)??specificity(?뱀씠????</div>
+          <div class="field"><span class="lbl">?렞 遺遺꾩젏???ъ씤??/span>ROC??異뺤쓣 "x=FPR, y=TPR"濡??뺥솗???곌퀬, AUC???꾧퀎媛??낅┰?곸씤 ?꾩껜 遺꾨퀎??吏?쒕씪怨??곸쑝硫?留뚯젏.</div>
+          <div style="color:var(--muted);font-size:.85rem">?곌껐 ?몃뱶: P3, P4</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">?좊떎</span><span>Q17. CNN(convolutional neural network, ?⑹꽦怨??좉꼍留???????ㅻ챸?쇰줈 <b>?녹? 寃?/b>??<div class="qopts">??FC(?꾩쟾?곌껐)??怨듦컙 援ъ“瑜?????蹂댁〈?섎?濡??곸긽???좊━?섎떎 ??convolution(?⑹꽦怨? filter???낅젰 ?꾩껜留덈떎 ?ㅻⅨ 媛以묒튂瑜??⑥빞 ?쒕떎 ??data augmentation(?곗씠??利앷컯)? 怨쇱쟻?⑹쓣 ?섎┛?????묒? filter(kernel, 而ㅻ꼸)瑜??щ씪?대뱶?섎ŉ feature map(?뱀쭠留???留뚮뱺??/div></span><button class="btn qa-toggle" onclick="toggleQA(this)">??蹂닿린</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">???뺣떟</span><b>???묒? filter(kernel, 而ㅻ꼸)瑜??щ씪?대뱶?섎ŉ feature map(?뱀쭠留???留뚮뱺??</b></div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁쑀</span>諛섎??? FC???대?吏瑜?1D濡??댁꽌 <b>怨듦컙 援ъ“瑜?臾댁떆</b>?섍린 ?뚮Ц???곸긽?먮뒗 CNN?????곹빀?섎떎.</div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁쑀</span>CNN???듭떖? shared weights(怨듭쑀 媛以묒튂)?? 媛숈? filter瑜??щ윭 ?꾩튂??諛섎났 ?곸슜?쒕떎.</div>
+          <div class="field"><span class="lbl">???ㅻ떟 ?댁쑀</span>data augmentation(?곗씠??利앷컯)? 蹂댄넻 ?쇰컲???깅뒫???믪뿬 <b>怨쇱쟻?⑹쓣 以꾩씠??/b> 履쎌쑝濡??묐룞?쒕떎.</div>
+          <div class="field"><span class="lbl">?렞 遺遺꾩젏???ъ씤??/span>"convolution(?⑹꽦怨? = local receptive field(援?냼 ?섏슜?곸뿭)? kernel??怨깆뀍-?????곸쑝硫?媛??</div>
+          <div style="color:var(--muted);font-size:.85rem">?곌껐 ?몃뱶: C19</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">留ㅼ묶</span><span>Q18. image modality(?곸긽 紐⑤떖由ы떚)? ????뱀쭠???곌껐?섎씪.<div class="qopts">A. MRI / B. Ultrasound / C. PET / D. OCT &nbsp;&nbsp; ????ъ쁺?????ㅼ떆媛꽷텱oppler ??關m ?댁긽????媛뺥븳 ?먭린??RF</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">??蹂닿린</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">??紐⑤쾾 ?듬?</span>A-??/ B-??/ C-??/ D-??</div>
+          <div class="answer-table"><div class="cap">醫?????묓몴</div><table>
+            <tr><th>?쇱そ</th><th>?ㅻⅨ履?/th><th>洹쇨굅</th></tr>
+            <tr><td>MRI</td><td>媛뺥븳 ?먭린??+ RF</td><td>臾대갑?ъ꽑 ?곕?議곗쭅 ?곸긽</td></tr>
+            <tr><td>Ultrasound</td><td>?ㅼ떆媛꽷텱oppler</td><td>諛섏궗 珥덉쓬?뚯? ?덈쪟?띾룄</td></tr>
+            <tr><td>PET</td><td>??ъ쁺??/td><td>FDG ??tracer ???異붿쟻</td></tr>
+            <tr><td>OCT</td><td>關m ?댁긽??/td><td>愿?媛꾩꽠 湲곕컲 珥덇퀬?댁긽??/td></tr>
+          </table></div>
+          <div class="field"><span class="lbl">?렞 遺遺꾩젏???ъ씤??/span>PET?붾??? US?붿떎?쒓컙, OCT?붞펛 ??媛쒕쭔 留욏????듭떖 ?앹젏.</div>
+          <div style="color:var(--muted);font-size:.85rem">?곌껐 ?몃뱶: C11</div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="qa-type">留ㅼ묶</span><span>Q19. measurement classification(怨꾩륫 遺꾨쪟) 異뺢낵 ?덉떆瑜??곌껐?섎씪.<div class="qopts">A. Indirect(媛꾩젒) / B. Actuate쨌Remote(?묐룞쨌?먭꺽) / C. Dynamic(?숈쟻) / D. Invasive(移⑥뒿) &nbsp;&nbsp; ??HIFU ?섏닠 ??Doppler ?덈쪟?띾룄 ??needle EMG ??ECG</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">??蹂닿린</button></div>
+        <div class="qa-a">
+          <div class="field"><span class="lbl">??紐⑤쾾 ?듬?</span>A-??/ B-??/ C-??/ D-??</div>
+          <div class="answer-table"><div class="cap">醫?????묓몴</div><table>
+            <tr><th>遺꾨쪟異?/th><th>?덉떆</th><th>?먮떒 ?댁쑀</th></tr>
+            <tr><td>Indirect(媛꾩젒)</td><td>ECG</td><td>泥댄몴硫??꾩븬?쇰줈 ?ъ옣 ?꾧린?쒕룞??媛꾩젒 異붿젙</td></tr>
+            <tr><td>Actuate쨌Remote(?묐룞쨌?먭꺽)</td><td>HIFU</td><td>珥덉쓬???먮꼫吏瑜??먭꺽?쇰줈 ?꾨떖??議곗쭅 蹂???좊컻</td></tr>
+            <tr><td>Dynamic(?숈쟻)</td><td>Doppler ?덈쪟?띾룄</td><td>?쒓컙???곕Ⅸ ?좎냽 蹂?붾? 痢≪젙</td></tr>
+            <tr><td>Invasive(移⑥뒿)</td><td>needle EMG</td><td>諛붾뒛 ?꾧레 ?쎌엯 ?꾩슂</td></tr>
+          </table></div>
+          <div class="field"><span class="lbl">?렞 遺遺꾩젏???ъ씤??/span>ECG=direct媛 ?꾨땲??indirect?쇰뒗 ?먯쓣 遺꾨챸???곸쑝硫?媛??</div>
+          <div style="color:var(--muted);font-size:.85rem">?곌껐 ?몃뱶: C15</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ?꾨씫쨌?뺤씤 ?꾩슂 ===== -->
+    <section class="stem-sec">
+      <h2>?좑툘 ?꾨씫쨌?뺤씤 ?꾩슂 (?먮즺 誘몄젣怨?</h2>
+      <div class="miss">
+        <b>Week4 (?섎즺 AI ?쒓퀎쨌?ㅻ━쨌洹쒖젣)</b>: PDF쨌Notion 紐⑤몢 誘몄젣怨????쒗뿕 踰붿쐞 ?ы븿 ??蹂꾨룄 蹂닿컯 ?꾩슂. 蹂??먮즺??異붿륫 ?놁씠 鍮덉뭏 泥섎━.<br>
+        <b>C5 ?섎즺AI 4? ?μ젏</b>: ?ㅼ썙???띾룄쨌?뺥솗?꽷룹씪愿?굿룹삁痢?留??덇퀬 媛??ㅻ챸 Blank.<br>
+        <b>援ъ껜 湲곗텧 臾명빆 ?놁쓬</b>: "媛앷???70~80%쨌???대졄?? 媛뺤“留? C1쨌C11쨌C13쨌C15 鍮꾧탳?쒓? ?듭떖??媛?μ꽦? PDF 援ъ“ 湲곕컲 異붿젙.<br>
+        <b>Week1 ?쇰? SUMMARY ?щ씪?대뱶</b>: ?쒕ぉ留?Blank) ??蹂듭썝 遺덇?.
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer>?앹꽦: ?쒗뿕?鍮??숈뒿?먮즺 ?섎꽕??쨌 1李??먮즺(媛뺤쓽 PDF Week1~3 + Notion Day1~3) 湲곕컲 쨌 ?⑥씪 HTML, ?ㅽ봽?쇱씤 ?숈옉 쨌 ?몃뱶 20媛?C1~C20) + ?좏뻾吏??6(P1~P6) 쨌 D3 ?먯깋 ?몃━(?몃━留??대갚) 쨌 ROC쨌?꾧퀎媛??щ씪?대뜑 쨌 留ㅼ묶 ?議고몴(?몃뱶 9醫?/ ??14媛? 쨌 ?덉긽臾몄젣 15(留ㅼ묶 8쨌?좊떎 7) 쨌 異쒖쿂: AAI0035 源?뺥씗 援먯닔</footer>
+
+<!-- D3 (?먯깋 ?몃━?? ?놁쑝硫??몃━留??대갚) -->
+<!-- KaTeX (?덉쑝硫??뚮뜑, ?놁쑝硫??대갚) -->
+<script>
+  function katexFallback(){ document.body.classList.add('katex-fallback'); }
+  function initMath(){
+    if(typeof renderMathInElement==='function'){
+      renderMathInElement(document.body,{
+        delimiters:[{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],
+        throwOnError:false
+      });
+      return;
+    }
+    katexFallback();
+  }
+  function toggleTheme(){
+    const b=document.body, t=b.getAttribute('data-theme')==='dark'?'light':'dark';
+    b.setAttribute('data-theme',t); localStorage.setItem('theme',t);
+  }
+  (function(){const t=localStorage.getItem('theme'); if(t)document.body.setAttribute('data-theme',t);})();
+  function toggleNav(){
+    const rm=document.getElementById('roadmap'), sc=document.getElementById('scrim');
+    const open=rm.classList.toggle('open'); sc.classList.toggle('show',open);
+  }
+  function closeNav(){
+    const rm=document.getElementById('roadmap'), sc=document.getElementById('scrim');
+    if(rm)rm.classList.remove('open'); if(sc)sc.classList.remove('show');
+  }
+  function goNode(id){
+    const card=document.getElementById(id); if(!card)return;
+    if(card.tagName==='DETAILS')card.open=true; card.scrollIntoView({behavior:'smooth',block:'start'});
+    document.querySelectorAll('.rm-node').forEach(n=>n.classList.remove('active'));
+    const rn=document.querySelector('.rm-node[data-target="'+id+'"]'); if(rn)rn.classList.add('active');
+    if(window.matchMedia('(max-width:900px)').matches)closeNav();
+  }
+  function toggleBranch(el){ el.classList.toggle('collapsed'); }
+  function toggleQA(btn){
+    const a=btn.closest('.qa-item').querySelector('.qa-a');
+    const open=a.classList.toggle('open'); btn.textContent=open?'답 숨기기':'답 보기';
+  }
+  function stepMove(btn,dir){
+    const sp=btn.closest('.stepper'), steps=[...sp.querySelectorAll('.step')];
+    let i=steps.findIndex(s=>s.classList.contains('show'));
+    i=Math.max(0,Math.min(steps.length-1,i+dir));
+    steps.forEach((s,k)=>s.classList.toggle('show',k===i));
+    syncDots(sp,i,steps.length);
+  }
+  function syncDots(sp,i,n){
+    const d=sp.querySelector('.dots'); if(!d)return;
+    d.innerHTML=Array.from({length:n},(_,k)=>'<i class="'+(k===i?'on':'')+'"></i>').join('');
+  }
+  document.querySelectorAll('.stepper').forEach(sp=>{
+    const n=sp.querySelectorAll('.step').length; syncDots(sp,0,n);
+  });
+  // 異붿쿇 ?숈뒿 寃쎈줈 ?앹꽦 (?섏〈?꾩닚 ?꾩긽?뺣젹)
+  const PATH=[
+    ['C2','AI/ML/DL 핵심'],['C1','의료AI·Ability-based'],['C3','학습 패러다임 핵심'],['C4','분류/회귀/군집 핵심'],
+    ['C5','의료AI 4대 장점'],['C6','생체신호처리 개요'],['C7','ECG 핵심'],['C8','EEG 핵심'],['C9','EMG'],['C10','EOG/ENG/PCG/VAG'],
+    ['C11','의료영상 11종 핵심'],['C12','디지털 전환'],['C13','계측 3블록 핵심'],['C14','측정·계측 정의'],['C15','5대 분류 핵심'],
+    ['C16','뉴런·활성화 핵심'],['C17','파라미터 수 핵심'],['C18','forward/backprop 핵심'],['C19','CNN 핵심'],['C20','Tremor 연구']
+  ];
+  (function(){
+    const box=document.getElementById('pathlist');
+    box.innerHTML=PATH.map((p,i)=>'<div class="pstep" onclick="goNode(\''+p[0]+'\')"><input type="checkbox" class="pchk" data-id="'+p[0]+'" onclick="event.stopPropagation();pathCheck(this)"><span class="pn">'+(i+1)+'.</span><span>'+p[1]+'</span></div>').join('');
+  })();
+  const PKEY='studyprog:'+document.title;
+  function loadProg(){try{return JSON.parse(localStorage.getItem(PKEY)||'{}')}catch(e){return {}}}
+  function saveProg(p){localStorage.setItem(PKEY,JSON.stringify(p))}
+  function syncOne(id,done){
+    const rn=document.querySelector('.rm-node[data-target="'+id+'"]'); if(rn)rn.classList.toggle('done',done);
+    const nc=document.querySelector('.nodechk[data-id="'+id+'"]'); if(nc)nc.checked=done;
+    const pc=document.querySelector('.pchk[data-id="'+id+'"]'); if(pc)pc.checked=done;
+  }
+  function pathCheck(chk){
+    const p=loadProg(); p[chk.dataset.id]=chk.checked; saveProg(p);
+    syncOne(chk.dataset.id,chk.checked); updateProg();
+  }
+  function markDone(chk){
+    const p=loadProg(); p[chk.dataset.id]=chk.checked; saveProg(p);
+    syncOne(chk.dataset.id,chk.checked); updateProg();
+  }
+  function updateProg(){
+    const all=document.querySelectorAll('.nodechk'), done=[...all].filter(c=>c.checked).length;
+    const pct=all.length?Math.round(done/all.length*100):0;
+    document.getElementById('progfill').style.width=pct+'%';
+    document.getElementById('progtxt').textContent=pct+'%';
+  }
+  (function(){const p=loadProg();
+    document.querySelectorAll('.nodechk').forEach(c=>{c.checked=!!p[c.dataset.id];
+      if(c.checked)syncOne(c.dataset.id,true);});
+    updateProg();})();
+  function filterNodes(q){
+    q=q.trim().toLowerCase();
+    document.querySelectorAll('.node-card').forEach(card=>{
+      const hit=!q||card.dataset.title.toLowerCase().includes(q)||card.textContent.toLowerCase().includes(q);
+      card.classList.toggle('hidden',!hit);
+    });
+  }
+
+  /* ===== D3 collapsible ?먯깋 ?몃━ (CDN + ?몃━留??대갚) ===== */
+  const TREE = {
+    name:"의료진단 AI", id:null, children:[
+      { name:"선행지식", id:"prereq", children:[
+        { name:"P1 영상/신호", id:"prereq-signal" },
+        { name:"P2 특징추출", id:"prereq-feature" },
+        { name:"P3 민감도·특이도", id:"prereq-sensspec" },
+        { name:"P4 ROC·AUC 슬라이더", id:"prereq-roc" },
+        { name:"P5 과적합", id:"prereq-overfit" },
+        { name:"P6 교차검증", id:"prereq-cv" } ] },
+      { name:"B1 AI/ML/DL·패러다임", id:"B1", children:[
+        { name:"C1 의료AI·Ability-based", id:"C1" },
+        { name:"C2 AI/ML/DL 핵심", id:"C2" },
+        { name:"C3 학습 패러다임 핵심", id:"C3" },
+        { name:"C4 분류/회귀/군집 핵심", id:"C4" },
+        { name:"C5 의료AI 4대 장점", id:"C5" },
+        { name:"C12 디지털 전환", id:"C12" },
+        { name:"C20 Tremor 연구", id:"C20" } ] },
+      { name:"B2 생체신호", id:"B2", children:[
+        { name:"C6 생체신호 개요", id:"C6" },
+        { name:"C7 ECG 핵심", id:"C7" },
+        { name:"C8 EEG 핵심", id:"C8" },
+        { name:"C9 EMG", id:"C9" },
+        { name:"C10 EOG/ENG/PCG/VAG", id:"C10" } ] },
+      { name:"B3 의료영상", id:"B3", children:[
+        { name:"C11 영상 11종 핵심", id:"C11" } ] },
+      { name:"B4 계측 시스템", id:"B4", children:[
+        { name:"C13 계측 3블록 핵심", id:"C13" },
+        { name:"C14 측정·계측 정의", id:"C14" },
+        { name:"C15 5대 분류 핵심", id:"C15" } ] },
+      { name:"B5 신경망 & CNN", id:"B5", children:[
+        { name:"C16 뉴런·활성화 핵심", id:"C16" },
+        { name:"C17 파라미터 수 핵심", id:"C17" },
+        { name:"C18 forward/backprop 핵심", id:"C18" },
+        { name:"C19 CNN 핵심", id:"C19" } ] },
+      { name:"예상문제", id:"examqs" }
+    ]
+  };
+  function initTree(){
+    const cont=document.getElementById('tree-container'), fb=document.getElementById('treemap');
+    if(typeof d3==='undefined' || !cont){
+      if(cont) cont.closest('section').style.display='none';
+      if(fb) fb.style.display='';
+      return;
+    }
+    if(fb) fb.style.display='none';
+    try{ renderTree(); }
+    catch(e){
+      if(cont) cont.closest('section').style.display='none';
+      if(fb) fb.style.display='';
+    }
+  }
+  function renderTree(){
+    const el=document.getElementById('tree-container');
+    const width=el.clientWidth||800, dx=24, dy=Math.min(210, Math.max(120,width/4.2));
+    const root=d3.hierarchy(TREE);
+    root.x0=0; root.y0=0;
+    root.descendants().forEach((d,i)=>{ d.id=i; d._children=d.children; if(d.depth>=1) d.children=null; });
+    const svg=d3.create("svg")
+      .attr("viewBox",[-dy/2,-dx,width,dx])
+      .style("width","100%").style("height","auto")
+      .style("font","13px Pretendard,sans-serif").style("user-select","none");
+    const gLink=svg.append("g").attr("fill","none")
+      .attr("stroke","var(--line)").attr("stroke-width",1.5);
+    const gNode=svg.append("g").attr("cursor","pointer").attr("pointer-events","all");
+    const zoom=d3.zoom().scaleExtent([0.4,2.5]).on("zoom",e=>{
+      gLink.attr("transform",e.transform); gNode.attr("transform",e.transform); });
+    svg.call(zoom);
+    function update(source){
+      const nodes=root.descendants().reverse(), links=root.links();
+      const tree=d3.tree().nodeSize([dx,dy]); tree(root);
+      let l=root,r=root; root.eachBefore(n=>{ if(n.x<l.x)l=n; if(n.x>r.x)r=n; });
+      const h=Math.max(dx, r.x-l.x+dx*2);
+      const t=svg.transition().duration(250).attr("viewBox",[-dy/2,l.x-dx,width,h]);
+      const node=gNode.selectAll("g").data(nodes,d=>d.id);
+      const nEnter=node.enter().append("g")
+        .attr("transform",`translate(${source.y0},${source.x0})`)
+        .attr("fill-opacity",0).attr("stroke-opacity",0)
+        .on("click",(e,d)=>{
+          if(d._children){ d.children=d.children?null:d._children; update(d); }
+          if(d.data.id) goNode(d.data.id);
+        });
+      nEnter.append("circle").attr("r",4.5)
+        .attr("fill",d=>d._children?"var(--accent)":"var(--muted)")
+        .attr("stroke-width",10).attr("stroke","transparent");
+      nEnter.append("text").attr("dy","0.32em")
+        .attr("x",d=>d._children?-9:9).attr("text-anchor",d=>d._children?"end":"start")
+        .attr("fill","var(--ink)").text(d=>d.data.name)
+        .clone(true).lower().attr("stroke","var(--panel)").attr("stroke-width",3);
+      node.merge(nEnter).transition(t)
+        .attr("transform",d=>`translate(${d.y},${d.x})`)
+        .attr("fill-opacity",1).attr("stroke-opacity",1);
+      node.exit().transition(t).remove()
+        .attr("transform",`translate(${source.y},${source.x})`).attr("fill-opacity",0);
+      const link=gLink.selectAll("path").data(links,d=>d.target.id);
+      const diag=d3.linkHorizontal().x(d=>d.y).y(d=>d.x);
+      const lEnter=link.enter().append("path").attr("d",()=>{
+        const o={x:source.x0,y:source.y0}; return diag({source:o,target:o}); });
+      link.merge(lEnter).transition(t).attr("d",diag);
+      link.exit().transition(t).remove().attr("d",()=>{
+        const o={x:source.x,y:source.y}; return diag({source:o,target:o}); });
+      root.eachBefore(d=>{ d.x0=d.x; d.y0=d.y; });
+    }
+    el.innerHTML=""; el.appendChild(svg.node());
+    update(root);
+  }
+  let __treeTimer=null;
+  window.addEventListener('resize',()=>{
+    if(typeof d3==='undefined') return;
+    clearTimeout(__treeTimer);
+    __treeTimer=setTimeout(()=>{ try{renderTree();}catch(e){} },200);
+  });
+
+  function getSceneTheme(){
+    const cs=getComputedStyle(document.body);
+    return {
+      bg:cs.getPropertyValue('--bg').trim(),
+      panel:cs.getPropertyValue('--panel').trim(),
+      panel2:cs.getPropertyValue('--panel2').trim(),
+      ink:cs.getPropertyValue('--ink').trim(),
+      muted:cs.getPropertyValue('--muted').trim(),
+      line:cs.getPropertyValue('--line').trim(),
+      accent:cs.getPropertyValue('--accent').trim(),
+      accent2:cs.getPropertyValue('--accent2').trim(),
+      hot:cs.getPropertyValue('--hot').trim(),
+      ok:cs.getPropertyValue('--ok').trim(),
+      warn:cs.getPropertyValue('--warn').trim()
+    };
+  }
+  function clamp(v,min,max){ return Math.min(max,Math.max(min,v)); }
+  function easeInOutCubic(t){ return t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
+  function fmt2(v){ return (Math.round(v*100)/100).toFixed(2); }
+  const prefersReducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* ===== Scene 1: ROC threshold slider with rAF canvas ===== */
+  (function(){
+    const slider=document.getElementById('thSlider');
+    const canvas=document.getElementById('rocCanvas');
+    if(!slider||!canvas) return;
+    const ctx=canvas.getContext('2d');
+    const playBtn=document.getElementById('rocPlayBtn');
+    const progressEl=document.getElementById('rocProgress');
+    const reducedNote=document.getElementById('rocReducedNote');
+    const neg=[0.05,0.10,0.12,0.18,0.22,0.25,0.30,0.33,0.38,0.42,0.46,0.50,0.55,0.60,0.68];
+    const pos=[0.38,0.45,0.50,0.55,0.58,0.62,0.66,0.70,0.74,0.78,0.82,0.86,0.90,0.94,0.98];
+    const P=pos.length, N=neg.length;
+    const thresholds=[]; for(let t=1;t>=0;t-=0.02){ thresholds.push(+t.toFixed(2)); }
+    function classify(th){
+      let tp=0,fn=0,tn=0,fp=0;
+      pos.forEach(s=>s>=th?tp++:fn++);
+      neg.forEach(s=>s>=th?fp++:tn++);
+      return {tp,fn,tn,fp};
+    }
+    const rocPts=thresholds.map(th=>{
+      const {tp,fn,tn,fp}=classify(th);
+      return {th,fpr:fp/(fp+tn||1),tpr:tp/(tp+fn||1)};
+    });
+    let auc=0;
+    for(let i=1;i<rocPts.length;i++){
+      auc+=(rocPts[i].fpr-rocPts[i-1].fpr)*(rocPts[i].tpr+rocPts[i-1].tpr)/2;
+    }
+    auc=Math.abs(auc);
+    let displayedThreshold=+slider.value;
+    let targetThreshold=displayedThreshold;
+    let rafId=0;
+    let autoplay=false;
+    let direction=-1;
+    function draw(){
+      const th=displayedThreshold;
+      const {tp,fn,tn,fp}=classify(th);
+      const sens=tp/(tp+fn||1), spec=tn/(tn+fp||1), fpr=fp/(fp+tn||1), acc=(tp+tn)/(P+N);
+      const theme=getSceneTheme();
+      const w=canvas.width, h=canvas.height, left=46, top=18, size=220;
+      ctx.clearRect(0,0,w,h);
+      ctx.fillStyle=theme.panel;
+      ctx.fillRect(0,0,w,h);
+      ctx.strokeStyle=theme.line;
+      ctx.lineWidth=1;
+      for(let i=0;i<=5;i++){
+        const x=left+(size/5)*i;
+        const y=top+(size/5)*i;
+        ctx.beginPath(); ctx.moveTo(x,top); ctx.lineTo(x,top+size); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(left,y); ctx.lineTo(left+size,y); ctx.stroke();
+      }
+      ctx.strokeStyle=theme.muted;
+      ctx.setLineDash([5,5]);
+      ctx.beginPath();
+      ctx.moveTo(left,top+size);
+      ctx.lineTo(left+size,top);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.strokeStyle=theme.accent;
+      ctx.lineWidth=3;
+      ctx.beginPath();
+      rocPts.forEach((pt,idx)=>{
+        const x=left+pt.fpr*size;
+        const y=top+(1-pt.tpr)*size;
+        if(idx===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      });
+      ctx.stroke();
+      const px=left+fpr*size;
+      const py=top+(1-sens)*size;
+      ctx.fillStyle=theme.hot;
+      ctx.beginPath(); ctx.arc(px,py,6,0,Math.PI*2); ctx.fill();
+      ctx.strokeStyle=theme.ink;
+      ctx.lineWidth=2;
+      ctx.stroke();
+      ctx.fillStyle=theme.muted;
+      ctx.font='12px Pretendard, sans-serif';
+      ctx.fillText('FPR (1 - specificity / 1 - ?뱀씠??', left+10, top+size+24);
+      ctx.save();
+      ctx.translate(14, top+size/2);
+      ctx.rotate(-Math.PI/2);
+      ctx.fillText('TPR (sensitivity / 誘쇨컧??', 0,0);
+      ctx.restore();
+      document.getElementById('thVal').textContent=fmt2(th);
+      document.getElementById('mSens').textContent=fmt2(sens);
+      document.getElementById('mSpec').textContent=fmt2(spec);
+      document.getElementById('mFpr').textContent=fmt2(fpr);
+      document.getElementById('mAcc').textContent=fmt2(acc);
+      document.getElementById('mAuc').textContent=fmt2(auc);
+      document.getElementById('rocPointLabel').textContent=`(${fmt2(fpr)}, ${fmt2(sens)})`;
+      document.getElementById('cTP').textContent=tp;
+      document.getElementById('cFP').textContent=fp;
+      document.getElementById('cFN').textContent=fn;
+      document.getElementById('cTN').textContent=tn;
+      progressEl.style.width=`${(1-th)*100}%`;
+      const dir = th>0.7 ? 'threshold(?꾧퀎媛????믪븘 specificity(?뱀씠?????믨퀬 sensitivity(誘쇨컧??????떎.'
+        : th<0.3 ? 'threshold(?꾧퀎媛?????븘 sensitivity(誘쇨컧?????믨퀬 specificity(?뱀씠??????떎.'
+        : '洹좏삎 援ш컙?대떎. ROC ?먯씠 trade-off(留욊탳??瑜?蹂댁뿬 以??';
+      document.getElementById('rocDesc').textContent=`TP ${tp} / FP ${fp} / FN ${fn} / TN ${tn}. ${dir}`;
+    }
+    function tick(){
+      const diff=targetThreshold-displayedThreshold;
+      if(Math.abs(diff)<0.001){
+        displayedThreshold=targetThreshold;
+      }else{
+        displayedThreshold+=diff*0.18;
+      }
+      if(autoplay&&!prefersReducedMotion.matches){
+        targetThreshold=clamp(targetThreshold+direction*0.004,0,1);
+        slider.value=targetThreshold.toFixed(2);
+        if(targetThreshold<=0||targetThreshold>=1) direction*=-1;
+      }
+      draw();
+      if(autoplay||Math.abs(targetThreshold-displayedThreshold)>=0.001){
+        rafId=requestAnimationFrame(tick);
+      }else{
+        rafId=0;
+      }
+    }
+    function ensureTick(){
+      if(!rafId) rafId=requestAnimationFrame(tick);
+    }
+    slider.addEventListener('input',()=>{
+      targetThreshold=+slider.value;
+      ensureTick();
+    });
+    playBtn.addEventListener('click',()=>{
+      if(prefersReducedMotion.matches){
+        autoplay=false;
+        playBtn.textContent='?먮룞 ?ъ깮';
+        reducedNote.textContent='reduced motion: ?뺤???snapshot留??쒖떆';
+        draw();
+        return;
+      }
+      autoplay=!autoplay;
+      playBtn.textContent=autoplay?'?쇱떆 ?뺤?':'?먮룞 ?ъ깮';
+      ensureTick();
+    });
+    reducedNote.textContent=prefersReducedMotion.matches?'reduced motion: ?뺤???snapshot留??쒖떆':'';
+    if(typeof prefersReducedMotion.addEventListener==='function'){
+      prefersReducedMotion.addEventListener('change',()=>{
+        if(prefersReducedMotion.matches){
+          autoplay=false;
+          playBtn.textContent='?먮룞 ?ъ깮';
+        }
+        reducedNote.textContent=prefersReducedMotion.matches?'reduced motion: ?뺤???snapshot留??쒖떆':'';
+        draw();
+      });
+    }
+    draw();
+  })();
+
+  /* ===== Scene 2: CNN convolution sliding window ===== */
+  (function(){
+    const canvas=document.getElementById('cnnCanvas');
+    if(!canvas) return;
+    const ctx=canvas.getContext('2d');
+    const playBtn=document.getElementById('cnnPlayBtn');
+    const stepBtn=document.getElementById('cnnStepBtn');
+    const progressEl=document.getElementById('cnnProgress');
+    const reducedNote=document.getElementById('cnnReducedNote');
+    const inputGrid=[
+      [0,1,3,2,0],
+      [0,2,4,3,1],
+      [1,3,5,4,1],
+      [0,2,4,3,1],
+      [0,1,3,2,0]
+    ];
+    const kernel=[
+      [-1,0,1],
+      [-2,0,2],
+      [-1,0,1]
+    ];
+    const positions=[];
+    for(let y=0;y<=2;y++) for(let x=0;x<=2;x++) positions.push({x,y});
+    const outputs=positions.map(pos=>{
+      let sum=0;
+      for(let ky=0;ky<3;ky++) for(let kx=0;kx<3;kx++) sum+=inputGrid[pos.y+ky][pos.x+kx]*kernel[ky][kx];
+      return sum;
+    });
+    let state={index:0,interp:0,playing:false,last:0,raf:0};
+    function draw(){
+      const theme=getSceneTheme();
+      const w=canvas.width, h=canvas.height;
+      const cell=34, gap=18, left=18, top=28;
+      const featureLeft=left+cell*5+gap+cell;
+      ctx.clearRect(0,0,w,h);
+      ctx.fillStyle=theme.panel;
+      ctx.fillRect(0,0,w,h);
+      ctx.fillStyle=theme.ink;
+      ctx.font='12px Pretendard, sans-serif';
+      ctx.fillText('input image(?낅젰 ?곸긽)', left, 16);
+      ctx.fillText('kernel(而ㅻ꼸)', left, top+cell*5+28);
+      ctx.fillText('feature map(?뱀쭠留?', featureLeft-10, 16);
+      for(let y=0;y<5;y++) for(let x=0;x<5;x++){
+        const value=inputGrid[y][x];
+        ctx.fillStyle=`rgba(91,157,255,${0.08+value*0.10})`;
+        ctx.fillRect(left+x*cell, top+y*cell, cell-2, cell-2);
+        ctx.strokeStyle=theme.line; ctx.strokeRect(left+x*cell, top+y*cell, cell-2, cell-2);
+        ctx.fillStyle=theme.ink; ctx.fillText(String(value), left+x*cell+12, top+y*cell+20);
+      }
+      const pos=positions[state.index];
+      ctx.strokeStyle=theme.hot;
+      ctx.lineWidth=3;
+      ctx.strokeRect(left+pos.x*cell-1, top+pos.y*cell-1, cell*3-2, cell*3-2);
+      for(let y=0;y<3;y++) for(let x=0;x<3;x++){
+        const value=kernel[y][x];
+        const kx=left+x*cell;
+        const ky=top+cell*5+36+y*cell;
+        ctx.fillStyle=`rgba(124,92,255,${0.10+Math.abs(value)*0.15})`;
+        ctx.fillRect(kx,ky,cell-2,cell-2);
+        ctx.strokeStyle=theme.line; ctx.strokeRect(kx,ky,cell-2,cell-2);
+        ctx.fillStyle=theme.ink; ctx.fillText(String(value),kx+10,ky+20);
+      }
+      for(let y=0;y<3;y++) for(let x=0;x<3;x++){
+        const idx=y*3+x;
+        const filled=idx<state.index || (idx===state.index&&state.interp>0.98);
+        const fx=featureLeft+x*cell, fy=top+y*cell;
+        ctx.fillStyle=filled?`rgba(62,207,142,${0.10+Math.min(Math.abs(outputs[idx])/12,0.35)})`:theme.panel2;
+        ctx.fillRect(fx,fy,cell-2,cell-2);
+        ctx.strokeStyle=theme.line; ctx.strokeRect(fx,fy,cell-2,cell-2);
+        if(filled){
+          ctx.fillStyle=theme.ink;
+          ctx.fillText(String(outputs[idx]),fx+8,fy+20);
+        }
+      }
+      document.getElementById('cnnPosLabel').textContent=`(${pos.x}, ${pos.y})`;
+      document.getElementById('cnnValueLabel').textContent=String(outputs[state.index]);
+      document.getElementById('cnnPercentLabel').textContent=`${Math.round((state.index/(positions.length-1))*100)}%`;
+      document.getElementById('cnnMeaning').textContent=outputs[state.index]>0?'?몃줈 寃쎄퀎(edge, 寃쎄퀎) 諛섏쓳':'寃쎄퀎 諛섏쓳???쏀븳 ?꾩튂';
+      document.getElementById('cnnDesc').textContent=`?꾩옱 3횞3 window? kernel??怨깊빐 ?뷀븳 convolution(?⑹꽦怨? 寃곌낵媛 ${outputs[state.index]}?대ŉ, ?닿쾬??feature map????移몄씠 ?쒕떎.`;
+      progressEl.style.width=`${(state.index/(positions.length-1))*100}%`;
+    }
+    function loop(ts){
+      if(!state.last) state.last=ts;
+      const dt=ts-state.last;
+      state.last=ts;
+      if(state.playing&&!prefersReducedMotion.matches){
+        state.interp=clamp(state.interp+dt/500,0,1);
+        if(state.interp>=1){
+          state.interp=0;
+          state.index=(state.index+1)%positions.length;
+        }
+        draw();
+        state.raf=requestAnimationFrame(loop);
+      }else{
+        state.raf=0;
+      }
+    }
+    playBtn.addEventListener('click',()=>{
+      if(prefersReducedMotion.matches){
+        reducedNote.textContent='reduced motion: ?뺤???snapshot留??쒖떆';
+        state.playing=false;
+        draw();
+        return;
+      }
+      state.playing=!state.playing;
+      playBtn.textContent=state.playing?'?쇱떆 ?뺤?':'?먮룞 ?ъ깮';
+      if(state.playing&&!state.raf){ state.last=0; state.raf=requestAnimationFrame(loop); }
+    });
+    stepBtn.addEventListener('click',()=>{
+      state.index=(state.index+1)%positions.length;
+      state.interp=0;
+      draw();
+    });
+    reducedNote.textContent=prefersReducedMotion.matches?'reduced motion: ?뺤???snapshot留??쒖떆':'';
+    draw();
+  })();
+
+  /* ===== Scene 3: ECG waveform ===== */
+  (function(){
+    const canvas=document.getElementById('ecgCanvas');
+    if(!canvas) return;
+    const ctx=canvas.getContext('2d');
+    const playBtn=document.getElementById('ecgPlayBtn');
+    const resetBtn=document.getElementById('ecgResetBtn');
+    const progressEl=document.getElementById('ecgProgress');
+    const reducedNote=document.getElementById('ecgReducedNote');
+    const hotspots=[...document.querySelectorAll('[data-ecg-focus]')];
+    const segments={
+      P:{label:'P wave(?щ갑 ?덈텇洹?', meaning:'atrial depolarization', clinical:'P-QRS-T ?쒖꽌 ?뺤씤', colorKey:'accent'},
+      QRS:{label:'QRS complex(?ъ떎 ?덈텇洹?', meaning:'ventricular depolarization', clinical:'?볦쑝硫??꾨룄?μ븷 ?섏떖', colorKey:'hot'},
+      T:{label:'T wave(?ъ떎 ?щ텇洹?', meaning:'ventricular repolarization', clinical:'?щ텇洹??댁긽 ?뺤씤', colorKey:'ok'}
+    };
+    let phase=0, playing=false, raf=0, last=0, focus='P';
+    function pickFocus(p){
+      if(p<0.28) return 'P';
+      if(p<0.58) return 'QRS';
+      return 'T';
+    }
+    function yAt(x){
+      const p=x;
+      if(p<0.18) return 0;
+      if(p<0.30){ const t=(p-0.18)/0.12; return Math.sin(t*Math.PI)*0.22; }
+      if(p<0.42) return 0;
+      if(p<0.48){ const t=(p-0.42)/0.06; return -0.16*Math.sin(t*Math.PI); }
+      if(p<0.54){ const t=(p-0.48)/0.06; return 1.15*Math.sin(t*Math.PI); }
+      if(p<0.60){ const t=(p-0.54)/0.06; return -0.28*Math.sin(t*Math.PI); }
+      if(p<0.70) return 0;
+      if(p<0.88){ const t=(p-0.70)/0.18; return Math.sin(t*Math.PI)*0.38; }
+      return 0;
+    }
+    function draw(){
+      const theme=getSceneTheme();
+      const w=canvas.width, h=canvas.height, left=18, top=22, right=w-18, base=h*0.62;
+      ctx.clearRect(0,0,w,h);
+      ctx.fillStyle=theme.panel;
+      ctx.fillRect(0,0,w,h);
+      ctx.strokeStyle=theme.line;
+      ctx.lineWidth=1;
+      for(let i=0;i<=10;i++){
+        const x=left+((right-left)/10)*i;
+        ctx.beginPath(); ctx.moveTo(x,top); ctx.lineTo(x,h-18); ctx.stroke();
+      }
+      for(let i=0;i<=6;i++){
+        const y=top+((h-top-18)/6)*i;
+        ctx.beginPath(); ctx.moveTo(left,y); ctx.lineTo(right,y); ctx.stroke();
+      }
+      ctx.beginPath();
+      ctx.strokeStyle=theme.accent2;
+      ctx.lineWidth=3;
+      for(let i=0;i<=240;i++){
+        const p=i/240;
+        const x=left+p*(right-left);
+        const y=base-yAt(p)*72;
+        if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+      const cursorX=left+phase*(right-left);
+      const cursorY=base-yAt(phase)*72;
+      focus=pickFocus(phase);
+      const focusTheme=segments[focus];
+      ctx.strokeStyle=theme[focusTheme.colorKey];
+      ctx.lineWidth=2;
+      ctx.beginPath(); ctx.moveTo(cursorX,top); ctx.lineTo(cursorX,h-18); ctx.stroke();
+      ctx.fillStyle=theme[focusTheme.colorKey];
+      ctx.beginPath(); ctx.arc(cursorX,cursorY,6,0,Math.PI*2); ctx.fill();
+      hotspots.forEach(btn=>btn.classList.toggle('active',btn.dataset.ecgFocus===focus));
+      document.getElementById('ecgFocusLabel').textContent=focusTheme.label;
+      document.getElementById('ecgPhaseLabel').textContent=`${Math.round(phase*100)}%`;
+      document.getElementById('ecgMeaningLabel').textContent=focusTheme.meaning;
+      document.getElementById('ecgClinicalLabel').textContent=focusTheme.clinical;
+      document.getElementById('ecgDesc').textContent=`?꾩옱 媛뺤“??援ш컙? ${focusTheme.label}?대ŉ ${focusTheme.meaning}???대떦?쒕떎.`;
+      progressEl.style.width=`${Math.round(phase*100)}%`;
+    }
+    function loop(ts){
+      if(!last) last=ts;
+      const dt=ts-last;
+      last=ts;
+      if(playing&&!prefersReducedMotion.matches){
+        phase=(phase+dt/2600)%1;
+        draw();
+        raf=requestAnimationFrame(loop);
+      }else{
+        raf=0;
+      }
+    }
+    playBtn.addEventListener('click',()=>{
+      if(prefersReducedMotion.matches){
+        reducedNote.textContent='reduced motion: ?뺤???snapshot留??쒖떆';
+        playing=false;
+        draw();
+        return;
+      }
+      playing=!playing;
+      playBtn.textContent=playing?'?쇱떆 ?뺤?':'?먮룞 ?ъ깮';
+      if(playing&&!raf){ last=0; raf=requestAnimationFrame(loop); }
+    });
+    resetBtn.addEventListener('click',()=>{
+      phase=0;
+      draw();
+    });
+    hotspots.forEach(btn=>btn.addEventListener('click',()=>{
+      const target=btn.dataset.ecgFocus;
+      if(target==='P') phase=0.22;
+      if(target==='QRS') phase=0.50;
+      if(target==='T') phase=0.78;
+      draw();
+    }));
+    reducedNote.textContent=prefersReducedMotion.matches?'reduced motion: ?뺤???snapshot留??쒖떆':'';
+    draw();
+  })();
+
+  window.addEventListener('load',initTree);
+</script>
+</body>
+</html>

@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기말 시험대비 학습 허브 v1.1 | 한양대 AI융합대학원</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+  :root{
+    --bg:#f4f1eb;
+    --bg-strong:#ebe4d7;
+    --panel:rgba(255,255,255,.72);
+    --panel-strong:rgba(255,255,255,.92);
+    --panel-soft:rgba(124,87,58,.08);
+    --ink:#171413;
+    --muted:#6f665d;
+    --line:rgba(23,20,19,.1);
+    --shadow:0 20px 70px rgba(57,39,24,.12);
+    --hero-grid:rgba(94,71,47,.08);
+    --hero-glow:rgba(195,145,92,.24);
+    --accent:#2e6df6;
+    --ok:#2fb36d;
+    --radius-xl:32px;
+    --radius-lg:24px;
+    --radius-md:18px;
+    --radius-sm:12px;
+    --maxw:1240px;
+  }
+
+  [data-theme="dark"]{
+    --bg:#0c1118;
+    --bg-strong:#151d29;
+    --panel:rgba(14,20,30,.78);
+    --panel-strong:rgba(18,25,38,.92);
+    --panel-soft:rgba(255,255,255,.04);
+    --ink:#edf3ff;
+    --muted:#98a6bc;
+    --line:rgba(196,211,235,.12);
+    --shadow:0 24px 80px rgba(0,0,0,.34);
+    --hero-grid:rgba(152,174,214,.09);
+    --hero-glow:rgba(110,159,255,.22);
+    --accent:#8bb1ff;
+    --ok:#57d49a;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    min-height:100vh;
+    color:var(--ink);
+    background:
+      radial-gradient(circle at 20% 0%, rgba(252,220,160,.18), transparent 28%),
+      radial-gradient(circle at 100% 10%, rgba(61,124,255,.16), transparent 26%),
+      linear-gradient(180deg, var(--bg-strong), var(--bg));
+    font-family:"Pretendard",-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic",sans-serif;
+    line-height:1.6;
+  }
+
+  a{color:inherit;text-decoration:none}
+  button{font:inherit}
+
+  .shell{
+    width:min(var(--maxw), calc(100% - 32px));
+    margin:0 auto;
+    padding:24px 0 56px;
+  }
+
+  .topbar{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom:24px;
+  }
+
+  .brand{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+
+  .brand-mark{
+    font-size:.76rem;
+    font-weight:700;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--accent);
+  }
+
+  .brand-title{
+    font-size:1.05rem;
+    font-weight:800;
+    letter-spacing:-.03em;
+  }
+
+  .brand-sub{
+    font-size:.88rem;
+    color:var(--muted);
+  }
+
+  .topbar-actions{
+    margin-left:auto;
+    display:flex;
+    gap:10px;
+  }
+
+  .ghost-btn{
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--ink);
+    padding:11px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    backdrop-filter:blur(18px);
+    transition:transform .2s ease, border-color .2s ease, background .2s ease;
+  }
+
+  .ghost-btn:hover{
+    transform:translateY(-1px);
+    border-color:rgba(118,149,214,.28);
+  }
+
+  .hero{
+    position:relative;
+    display:grid;
+    grid-template-columns:minmax(0,1.08fr) minmax(300px,.92fr);
+    gap:22px;
+    margin-bottom:28px;
+  }
+
+  .hero-copy,
+  .hero-visual,
+  .section-panel{
+    border:1px solid var(--line);
+    background:var(--panel);
+    backdrop-filter:blur(18px);
+    box-shadow:var(--shadow);
+  }
+
+  .hero-copy{
+    position:relative;
+    overflow:hidden;
+    border-radius:var(--radius-xl);
+    padding:34px 32px 30px;
+  }
+
+  .hero-copy::before{
+    content:"";
+    position:absolute;
+    inset:auto auto -72px -52px;
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    background:radial-gradient(circle, var(--hero-glow), transparent 70%);
+    pointer-events:none;
+  }
+
+  .kicker{
+    margin:0 0 14px;
+    font-size:.8rem;
+    font-weight:700;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--accent);
+  }
+
+  .hero-title{
+    margin:0 0 14px;
+    font-size:clamp(2.2rem, 4vw, 4.3rem);
+    line-height:1.04;
+    letter-spacing:-.05em;
+  }
+
+  .hero-title strong{
+    display:block;
+    font-weight:900;
+  }
+
+  .hero-lead{
+    margin:0;
+    max-width:52ch;
+    font-size:1.04rem;
+    color:var(--muted);
+  }
+
+  .hero-meta{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0,1fr));
+    gap:12px;
+    margin-top:26px;
+  }
+
+  .hero-chip{
+    padding:14px 14px 13px;
+    border-radius:20px;
+    background:var(--panel-soft);
+    border:1px solid var(--line);
+  }
+
+  .hero-chip span{
+    display:block;
+    font-size:.76rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+
+  .hero-chip strong{
+    display:block;
+    margin-top:6px;
+    font-size:1.04rem;
+    letter-spacing:-.03em;
+  }
+
+  .hero-progress{
+    margin-top:22px;
+    padding:18px 18px 16px;
+    border-radius:22px;
+    background:var(--panel-soft);
+    border:1px solid var(--line);
+  }
+
+  .progress-label{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:10px;
+    font-size:.92rem;
+  }
+
+  .progress-label strong{
+    font-size:1.18rem;
+    letter-spacing:-.03em;
+  }
+
+  .progress-track{
+    position:relative;
+    overflow:hidden;
+    width:100%;
+    height:12px;
+    border-radius:999px;
+    background:rgba(127,127,127,.14);
+    border:1px solid var(--line);
+  }
+
+  .progress-fill{
+    position:absolute;
+    inset:0 auto 0 0;
+    width:0;
+    border-radius:inherit;
+    background:linear-gradient(90deg, var(--accent), var(--ok));
+    transition:width .45s ease;
+  }
+
+  .hero-visual{
+    position:relative;
+    overflow:hidden;
+    min-height:460px;
+    border-radius:var(--radius-xl);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0)),
+      linear-gradient(145deg, rgba(94,139,255,.08), rgba(89,215,162,.05));
+  }
+
+  .hero-canvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    display:block;
+  }
+
+  .visual-caption{
+    position:absolute;
+    left:22px;
+    right:22px;
+    bottom:22px;
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    padding:14px 16px;
+    border-radius:18px;
+    background:rgba(8,12,18,.18);
+    color:#f6f8ff;
+    border:1px solid rgba(255,255,255,.12);
+    backdrop-filter:blur(10px);
+  }
+
+  .visual-caption strong{
+    display:block;
+    margin-bottom:4px;
+    font-size:.92rem;
+  }
+
+  .visual-caption span{
+    font-size:.84rem;
+    color:rgba(246,248,255,.76);
+  }
+
+  .card-grid{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:18px;
+    margin-bottom:28px;
+  }
+
+  .course-card{
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    min-height:340px;
+    padding:24px;
+    border-radius:28px;
+    border:1px solid var(--line);
+    background:var(--panel-strong);
+    box-shadow:var(--shadow);
+    transition:transform .24s ease, border-color .24s ease, box-shadow .24s ease;
+  }
+
+  .course-card::before{
+    content:"";
+    position:absolute;
+    inset:0 0 auto 0;
+    height:5px;
+    background:linear-gradient(90deg, var(--course-accent), transparent 85%);
+  }
+
+  .course-card::after{
+    content:"";
+    position:absolute;
+    top:-36px;
+    right:-16px;
+    width:170px;
+    height:170px;
+    border-radius:50%;
+    background:radial-gradient(circle, color-mix(in srgb, var(--course-accent) 24%, transparent), transparent 70%);
+    opacity:.9;
+    pointer-events:none;
+  }
+
+  .course-card:hover{
+    transform:translateY(-6px);
+    border-color:color-mix(in srgb, var(--course-accent) 32%, var(--line));
+    box-shadow:0 28px 72px rgba(8,12,18,.18);
+  }
+
+  .course-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+    margin-bottom:18px;
+  }
+
+  .course-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 12px;
+    border-radius:999px;
+    background:color-mix(in srgb, var(--course-accent) 12%, transparent);
+    border:1px solid color-mix(in srgb, var(--course-accent) 40%, var(--line));
+    color:var(--course-accent);
+    font-size:.82rem;
+    font-weight:700;
+  }
+
+  .course-count{
+    font-size:.92rem;
+    color:var(--muted);
+    text-align:right;
+  }
+
+  .course-title{
+    margin:0 0 6px;
+    font-size:1.42rem;
+    letter-spacing:-.04em;
+  }
+
+  .course-prof{
+    margin:0 0 16px;
+    font-size:.94rem;
+    color:var(--muted);
+  }
+
+  .course-summary{
+    display:grid;
+    gap:10px;
+    margin-bottom:16px;
+  }
+
+  .course-summary div{
+    padding:12px 14px;
+    border-radius:18px;
+    background:var(--panel-soft);
+    border:1px solid var(--line);
+  }
+
+  .course-summary span{
+    display:block;
+    margin-bottom:6px;
+    font-size:.76rem;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    color:var(--muted);
+  }
+
+  .course-summary strong{
+    font-size:.96rem;
+  }
+
+  .course-keywords{
+    margin:0 0 18px;
+    color:var(--muted);
+    font-size:.95rem;
+  }
+
+  .progress-box{
+    margin-top:auto;
+    padding:14px 14px 13px;
+    border-radius:20px;
+    border:1px solid var(--line);
+    background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+    transition:border-color .24s ease, transform .24s ease;
+  }
+
+  .course-card:hover .progress-box{
+    transform:translateY(-2px);
+    border-color:color-mix(in srgb, var(--course-accent) 42%, var(--line));
+  }
+
+  .progress-row{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:10px;
+    font-size:.9rem;
+  }
+
+  .progress-mini{
+    position:relative;
+    overflow:hidden;
+    width:100%;
+    height:10px;
+    border-radius:999px;
+    background:rgba(127,127,127,.16);
+  }
+
+  .progress-mini-fill{
+    position:absolute;
+    inset:0 auto 0 0;
+    width:0;
+    border-radius:inherit;
+    background:linear-gradient(90deg, var(--course-accent), color-mix(in srgb, var(--course-accent) 36%, white));
+    transition:width .45s ease, filter .24s ease;
+  }
+
+  .course-card:hover .progress-mini-fill{
+    filter:brightness(1.08);
+  }
+
+  .course-cta{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-top:14px;
+    font-weight:800;
+    color:var(--course-accent);
+  }
+
+  .section-panel{
+    border-radius:var(--radius-xl);
+    padding:28px;
+    margin-bottom:22px;
+  }
+
+  .section-heading{
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+    gap:18px;
+    margin-bottom:18px;
+  }
+
+  .section-heading h2{
+    margin:0;
+    font-size:1.55rem;
+    letter-spacing:-.04em;
+  }
+
+  .section-heading p{
+    margin:0;
+    max-width:54ch;
+    color:var(--muted);
+  }
+
+  .feature-grid{
+    display:grid;
+    grid-template-columns:repeat(5, minmax(0, 1fr));
+    gap:14px;
+  }
+
+  .feature-card{
+    padding:18px 16px;
+    border-radius:22px;
+    background:var(--panel-soft);
+    border:1px solid var(--line);
+  }
+
+  .feature-card strong{
+    display:block;
+    margin-bottom:8px;
+    font-size:1rem;
+    letter-spacing:-.03em;
+  }
+
+  .feature-card p{
+    margin:0;
+    color:var(--muted);
+    font-size:.92rem;
+  }
+
+  .footer{
+    color:var(--muted);
+    font-size:.88rem;
+    text-align:center;
+  }
+
+  @media (max-width: 1080px){
+    .hero{
+      grid-template-columns:1fr;
+    }
+
+    .hero-visual{
+      min-height:360px;
+    }
+
+    .feature-grid{
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 760px){
+    .shell{
+      width:min(var(--maxw), calc(100% - 20px));
+      padding-top:16px;
+    }
+
+    .topbar{
+      align-items:flex-start;
+      flex-direction:column;
+    }
+
+    .topbar-actions{
+      margin-left:0;
+      width:100%;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+    }
+
+    .hero-copy,
+    .hero-visual,
+    .section-panel,
+    .course-card{
+      border-radius:24px;
+    }
+
+    .hero-copy{
+      padding:26px 22px 24px;
+    }
+
+    .hero-meta{
+      grid-template-columns:1fr;
+    }
+
+    .card-grid{
+      grid-template-columns:1fr;
+    }
+
+    .feature-grid{
+      grid-template-columns:1fr;
+    }
+
+    .visual-caption{
+      flex-direction:column;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,
+    *::before,
+    *::after{
+      animation:none !important;
+      transition:none !important;
+    }
+  }
+</style>
+</head>
+<body data-theme="dark">
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">Study Hub v1.1</span>
+        <span class="brand-title">한양대 AI융합대학원 기말 대비 허브</span>
+        <span class="brand-sub">강의별 학습 흐름, 핵심 개념, 예상문제를 한 화면에 정리했습니다.</span>
+      </div>
+      <div class="topbar-actions">
+        <button class="ghost-btn" type="button" id="refreshProgressBtn">진도 새로고침</button>
+        <button class="ghost-btn" type="button" id="themeToggleBtn" aria-label="다크 라이트 테마 전환">테마 전환</button>
+      </div>
+    </header>
+
+    <section class="hero" aria-label="학습 허브 소개">
+      <div class="hero-copy">
+        <p class="kicker">Purpose-Built Exam Review Workspace</p>
+        <h1 class="hero-title"><strong>기말고사 대비를 위한</strong>하나의 집중형 학습 허브</h1>
+        <p class="hero-lead">
+          과목별 강의 PDF와 노트를 바탕으로 핵심 개념을 쌓고, 영어 용어와 한글 설명을 함께 보며,
+          시험 직전에는 예상문제와 모범답안으로 마무리할 수 있도록 설계한 오프라인 대응형 랜딩 페이지입니다.
+        </p>
+
+        <div class="hero-meta">
+          <div class="hero-chip">
+            <span>Subjects</span>
+            <strong>4개 과목 · 상대평가 대비</strong>
+          </div>
+          <div class="hero-chip">
+            <span>Coverage</span>
+            <strong>총 83개 핵심 개념 노드</strong>
+          </div>
+          <div class="hero-chip">
+            <span>Format</span>
+            <strong>Single HTML · Responsive · Offline</strong>
+          </div>
+        </div>
+
+        <div class="hero-progress" id="aggregateProgress">
+          <div class="progress-label">
+            <span>전체 학습 진도</span>
+            <strong id="aggregateProgressText">0%</strong>
+          </div>
+          <div class="progress-track" aria-hidden="true">
+            <div class="progress-fill" id="aggregateProgressFill"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <canvas class="hero-canvas" id="heroCanvas" aria-hidden="true"></canvas>
+        <div class="visual-caption">
+          <div>
+            <strong>Floating node graph</strong>
+            <span>개념 간 연결과 누적 진도를 시각적으로 표현하는 미세한 캔버스 레이어</span>
+          </div>
+          <div>
+            <strong>Reduced motion aware</strong>
+            <span>움직임 감소 선호 시 정적인 상태로만 렌더링됩니다.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="coursesHeading">
+      <div class="section-heading">
+        <div>
+          <h2 id="coursesHeading">과목별 준비 트랙</h2>
+          <p>교수명, 개념 수, 시험 특성, 핵심 주제를 빠르게 훑고 바로 해당 과목 학습 페이지로 이동할 수 있습니다.</p>
+        </div>
+      </div>
+      <div class="card-grid" id="courseGrid"></div>
+    </section>
+
+    <section class="section-panel" aria-labelledby="featureHeading">
+      <div class="section-heading">
+        <div>
+          <h2 id="featureHeading">v1.1 학습 특징</h2>
+          <p>기존 단순 링크 허브를 넘어, 학습 흐름과 시험 적합성을 명확하게 보여주는 방향으로 재구성했습니다.</p>
+        </div>
+      </div>
+      <div class="feature-grid">
+        <article class="feature-card">
+          <strong>5단 개념 빌드업</strong>
+          <p>입문, 구조 이해, 응용, 비교, 예상문제까지 단계적으로 복습 흐름을 설계합니다.</p>
+        </article>
+        <article class="feature-card">
+          <strong>3Blue1Brown식 모핑 애니메이션</strong>
+          <p>캔버스 기반의 유기적인 연결 변화로 개념 사이의 관계를 직관적으로 암시합니다.</p>
+        </article>
+        <article class="feature-card">
+          <strong>영어(한글) 병기</strong>
+          <p>시험 답안에서 자주 쓰는 핵심 용어를 영문과 한글 설명으로 함께 정리합니다.</p>
+        </article>
+        <article class="feature-card">
+          <strong>실전 예상문제+모범답안</strong>
+          <p>출제 포인트를 다시 문제 형태로 되짚으며 서술형 대비 감각을 유지합니다.</p>
+        </article>
+        <article class="feature-card">
+          <strong>오프라인·반응형</strong>
+          <p>외부 UI 라이브러리 없이 단일 HTML로 구성해 이동 중에도 안정적으로 확인할 수 있습니다.</p>
+        </article>
+      </div>
+    </section>
+
+    <p class="footer">
+      상대 링크만 사용하며, 학습 진도와 테마 선택은 브라우저 로컬 저장소에 유지됩니다.
+    </p>
+  </main>
+
+<script>
+  const COURSES = [
+    {
+      slug: "ai-intro",
+      title: "인공지능개론",
+      prof: "최용수 교수",
+      accent: "#6aa6ff",
+      nodes: 24,
+      concepts: "탐색, 제약충족, 기계학습, 강화학습, 인공신경망",
+      exam: "서술형 + 논리 비교형",
+      characteristics: "알고리즘 흐름 설명과 대표 모델 비교를 함께 묻는 편",
+      highlight: "A*, minimax, CSP, Q-learning, ANN의 연결 구조 정리"
+    },
+    {
+      slug: "algorithms",
+      title: "컴퓨터 알고리즘",
+      prof: "이을규 교수",
+      accent: "#8f78ff",
+      nodes: 20,
+      concepts: "정렬, DP, 그리디, 그래프, RSA",
+      exam: "증명형 + 복잡도 분석형",
+      characteristics: "점화식 유도와 cut property 같은 핵심 정당화가 중요",
+      highlight: "MST, shortest path, divide and conquer, RSA를 구조적으로 압축"
+    },
+    {
+      slug: "biomed-ai",
+      title: "생명공학을 위한 AI",
+      prof: "김민호 교수",
+      accent: "#41d39b",
+      nodes: 19,
+      concepts: "genomic token, backprop, GNN, GAT, DNABERT",
+      exam: "서술형 + 논문 이해형",
+      characteristics: "생물학적 맥락과 모델 아키텍처를 함께 설명해야 하는 편",
+      highlight: "GNN/GAT 업데이트와 DNABERT 계열 논문 포인트를 집중 정리"
+    },
+    {
+      slug: "medical-dx-ai",
+      title: "의료진단을 위한 AI",
+      prof: "김정익 교수",
+      accent: "#ff8f62",
+      nodes: 20,
+      concepts: "ECG, EEG, modality, 계량지표, CNN",
+      exam: "객관식 + 매칭형",
+      characteristics: "생체신호와 의료영상 modality 비교, 평가 지표 정리가 핵심",
+      highlight: "ECG 파형, EEG 특성, 영상 modality와 CNN 역할을 빠르게 복기"
+    }
+  ];
+
+  const TITLEKEY = {
+    "ai-intro": "인공지능개론 - 시험대비 학습자료",
+    "algorithms": "컴퓨터 알고리즘 - 시험대비 학습자료",
+    "biomed-ai": "생명공학을 위한 AI - 시험대비 학습자료",
+    "medical-dx-ai": "의료진단을 위한 AI - 시험대비 학습자료"
+  };
+
+  const themeStorageKey = "hubtheme";
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  function getCourseProgress(course){
+    try{
+      const raw = localStorage.getItem("studyprog:" + TITLEKEY[course.slug]);
+      if(!raw){
+        return null;
+      }
+      const parsed = JSON.parse(raw);
+      const done = Object.values(parsed).filter(Boolean).length;
+      const pct = Math.round((done / course.nodes) * 100);
+      return { done, total: course.nodes, pct };
+    }catch(error){
+      return null;
+    }
+  }
+
+  function getOverallProgress(){
+    let totalDone = 0;
+    let totalNodes = 0;
+
+    COURSES.forEach(function(course){
+      totalNodes += course.nodes;
+      const progress = getCourseProgress(course);
+      if(progress){
+        totalDone += progress.done;
+      }
+    });
+
+    const pct = totalNodes ? Math.round((totalDone / totalNodes) * 100) : 0;
+    return { done: totalDone, total: totalNodes, pct };
+  }
+
+  function renderCourseCard(course){
+    const progress = getCourseProgress(course);
+    const pct = progress ? progress.pct : 0;
+    const statusText = progress ? progress.done + "/" + progress.total + " 완료" : "아직 기록 없음";
+
+    return [
+      '<a class="course-card" href="' + course.slug + '.html" style="--course-accent:' + course.accent + ';">',
+        '<div class="course-top">',
+          '<span class="course-pill">', course.slug, '</span>',
+          '<div class="course-count">핵심 개념<br><strong>', String(course.nodes), '개</strong></div>',
+        '</div>',
+        '<h3 class="course-title">', course.title, '</h3>',
+        '<p class="course-prof">', course.prof, '</p>',
+        '<div class="course-summary">',
+          '<div><span>Exam Profile</span><strong>', course.exam, '</strong></div>',
+          '<div><span>Exam Characteristics</span><strong>', course.characteristics, '</strong></div>',
+        '</div>',
+        '<p class="course-keywords"><strong>Key Concepts</strong><br>', course.concepts, '</p>',
+        '<p class="course-keywords"><strong>Focus</strong><br>', course.highlight, '</p>',
+        '<div class="progress-box">',
+          '<div class="progress-row">',
+            '<span>학습 진도</span>',
+            '<strong>', String(pct), '% · ', statusText, '</strong>',
+          '</div>',
+          '<div class="progress-mini" aria-hidden="true">',
+            '<div class="progress-mini-fill" style="width:', String(pct), '%;"></div>',
+          '</div>',
+        '</div>',
+        '<span class="course-cta">과목 페이지 열기 <span aria-hidden="true">↗</span></span>',
+      '</a>'
+    ].join("");
+  }
+
+  function renderCourses(){
+    const grid = document.getElementById("courseGrid");
+    grid.innerHTML = COURSES.map(renderCourseCard).join("");
+  }
+
+  function renderAggregateProgress(){
+    const overall = getOverallProgress();
+    document.getElementById("aggregateProgressText").textContent = overall.pct + "%";
+    document.getElementById("aggregateProgressFill").style.width = overall.pct + "%";
+  }
+
+  function applyStoredTheme(){
+    const stored = localStorage.getItem(themeStorageKey);
+    if(stored === "light" || stored === "dark"){
+      document.body.setAttribute("data-theme", stored);
+      return;
+    }
+
+    document.body.setAttribute("data-theme", "dark");
+  }
+
+  function toggleTheme(){
+    const current = document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    document.body.setAttribute("data-theme", current);
+    localStorage.setItem(themeStorageKey, current);
+    drawHeroGraph(true);
+  }
+
+  function refreshProgress(){
+    renderCourses();
+    renderAggregateProgress();
+  }
+
+  function drawHeroGraph(forceStatic){
+    const canvas = document.getElementById("heroCanvas");
+    const context = canvas.getContext("2d");
+    const parent = canvas.parentElement;
+    const motionReduced = reducedMotion.matches || forceStatic === true;
+
+    if(!context || !parent){
+      return;
+    }
+
+    const rect = parent.getBoundingClientRect();
+    const ratio = window.devicePixelRatio || 1;
+    canvas.width = Math.max(1, Math.floor(rect.width * ratio));
+    canvas.height = Math.max(1, Math.floor(rect.height * ratio));
+    canvas.style.width = rect.width + "px";
+    canvas.style.height = rect.height + "px";
+    context.setTransform(ratio, 0, 0, ratio, 0, 0);
+
+    const width = rect.width;
+    const height = rect.height;
+    const styles = getComputedStyle(document.body);
+    const gridColor = styles.getPropertyValue("--hero-grid").trim() || "rgba(128,128,128,.08)";
+    const accent = styles.getPropertyValue("--accent").trim() || "#8bb1ff";
+    const glow = styles.getPropertyValue("--hero-glow").trim() || "rgba(110,159,255,.22)";
+    const nodeCount = width < 560 ? 22 : 34;
+    const nodes = [];
+
+    for(let i = 0; i < nodeCount; i += 1){
+      nodes.push({
+        baseX: Math.random() * width,
+        baseY: Math.random() * height,
+        radius: 1.8 + Math.random() * 3.4,
+        offset: Math.random() * Math.PI * 2,
+        orbit: 8 + Math.random() * 22,
+        speed: 0.0007 + Math.random() * 0.0016
+      });
+    }
+
+    function drawFrame(timestamp){
+      context.clearRect(0, 0, width, height);
+
+      const background = context.createLinearGradient(0, 0, width, height);
+      background.addColorStop(0, "rgba(255,255,255,0.02)");
+      background.addColorStop(1, "rgba(255,255,255,0)");
+      context.fillStyle = background;
+      context.fillRect(0, 0, width, height);
+
+      context.lineWidth = 1;
+      context.strokeStyle = gridColor;
+      for(let x = 32; x < width; x += 32){
+        context.beginPath();
+        context.moveTo(x, 0);
+        context.lineTo(x, height);
+        context.stroke();
+      }
+      for(let y = 32; y < height; y += 32){
+        context.beginPath();
+        context.moveTo(0, y);
+        context.lineTo(width, y);
+        context.stroke();
+      }
+
+      const currentPoints = nodes.map(function(node, index){
+        const t = motionReduced ? node.offset : timestamp * node.speed + node.offset;
+        const x = node.baseX + Math.cos(t + index * 0.17) * node.orbit;
+        const y = node.baseY + Math.sin(t * 1.18 + index * 0.13) * node.orbit;
+        return { x, y, radius: node.radius };
+      });
+
+      context.strokeStyle = "rgba(164,196,255,.22)";
+      for(let i = 0; i < currentPoints.length; i += 1){
+        const a = currentPoints[i];
+        for(let j = i + 1; j < currentPoints.length; j += 1){
+          const b = currentPoints[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const distance = Math.sqrt((dx * dx) + (dy * dy));
+
+          if(distance < 118){
+            context.globalAlpha = 1 - (distance / 118);
+            context.beginPath();
+            context.moveTo(a.x, a.y);
+            context.lineTo(b.x, b.y);
+            context.stroke();
+          }
+        }
+      }
+      context.globalAlpha = 1;
+
+      currentPoints.forEach(function(point, index){
+        const ring = context.createRadialGradient(point.x, point.y, 0, point.x, point.y, point.radius * 7);
+        ring.addColorStop(0, accent);
+        ring.addColorStop(.34, glow);
+        ring.addColorStop(1, "rgba(255,255,255,0)");
+        context.fillStyle = ring;
+        context.beginPath();
+        context.arc(point.x, point.y, point.radius * 7, 0, Math.PI * 2);
+        context.fill();
+
+        context.fillStyle = index % 3 === 0 ? "#ffffff" : accent;
+        context.beginPath();
+        context.arc(point.x, point.y, point.radius, 0, Math.PI * 2);
+        context.fill();
+      });
+
+      if(!motionReduced){
+        window.requestAnimationFrame(drawFrame);
+      }
+    }
+
+    drawFrame(0);
+    if(!motionReduced){
+      window.requestAnimationFrame(drawFrame);
+    }
+  }
+
+  document.getElementById("themeToggleBtn").addEventListener("click", toggleTheme);
+  document.getElementById("refreshProgressBtn").addEventListener("click", refreshProgress);
+  window.addEventListener("resize", function(){
+    drawHeroGraph(false);
+  });
+  reducedMotion.addEventListener("change", function(){
+    drawHeroGraph(false);
+  });
+
+  applyStoredTheme();
+  renderCourses();
+  renderAggregateProgress();
+  drawHeroGraph(false);
+</script>
+</body>
+</html>
