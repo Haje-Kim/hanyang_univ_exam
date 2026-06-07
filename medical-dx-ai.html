@@ -1,1640 +1,486 @@
 <!DOCTYPE html>
-<!-- generated: 의료진단을 위한 AI | nodes: 20 -->
+<!-- 의료진단을 위한 AI · 전체 시험대비 (개요 → Week1~4) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>의료진단을 위한 AI — 시험대비 학습자료</title>
+<title>의료진단을 위한 AI — 시험대비</title>
 <style>
   :root{
-    --bg:#0f1218; --panel:#161b24; --panel2:#1d2531; --ink:#e7ecf3; --muted:#9aa7b8;
-    --line:#2a3340; --accent:#5b9dff; --accent2:#7c5cff; --hot:#ff6b6b; --ok:#3ecf8e;
-    --warn:#ffcf5c; --radius:14px; --maxw:1280px;
-  }
-  [data-theme="light"]{
-    --bg:#f6f8fb; --panel:#ffffff; --panel2:#eef2f7; --ink:#16202c; --muted:#5a6675;
-    --line:#dde4ec; --accent:#2563eb; --accent2:#6d28d9;
+    --bg:#0c1016; --panel:#141a23; --panel2:#1b2330; --ink:#e8edf5; --muted:#94a3b6;
+    --line:#27313f; --accent:#ff8a5b; --accent2:#fbbf24; --hot:#ff6b6b; --ok:#34d399;
+    --warn:#ffcf5c; --gold:#ffd479; --radius:16px; --maxw:920px;
+    --w1:#ff8a5b; --w2:#fbbf24; --w3:#34d399; --w4:#60a5fa;
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);
-    font-family:"Pretendard",-apple-system,"Segoe UI",Roboto,"Malgun Gothic",sans-serif;line-height:1.7}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:
+      radial-gradient(1200px 600px at 80% -10%,rgba(255,138,91,.10),transparent 60%),
+      radial-gradient(900px 500px at 0% 10%,rgba(251,191,36,.07),transparent 55%),
+      var(--bg);
+    color:var(--ink);font-family:"Pretendard",-apple-system,"Segoe UI",Roboto,"Malgun Gothic",sans-serif;
+    line-height:1.72;-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
   a{color:var(--accent)}
-  header{position:sticky;top:0;z-index:20;background:rgba(15,18,24,.85);
-    backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-  [data-theme="light"] header{background:rgba(255,255,255,.85)}
-  .hwrap{max-width:var(--maxw);margin:0 auto;padding:10px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-  .htitle{font-weight:800;font-size:1.05rem}
-  .htitle small{color:var(--muted);font-weight:500}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+  header{position:sticky;top:0;z-index:30;backdrop-filter:blur(10px);background:rgba(12,16,22,.8);border-bottom:1px solid var(--line)}
+  .htop{max-width:var(--maxw);margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px}
+  .brand{font-weight:800;font-size:.95rem;display:flex;align-items:center;gap:9px;white-space:nowrap}
+  .brand .dot{width:9px;height:9px;border-radius:3px;background:var(--accent);box-shadow:0 0 0 4px rgba(255,138,91,.18)}
   .grow{flex:1}
-  .search{background:var(--panel2);border:1px solid var(--line);color:var(--ink);
-    padding:8px 12px;border-radius:10px;min-width:180px}
-  .btn{background:var(--panel2);border:1px solid var(--line);color:var(--ink);
-    padding:8px 12px;border-radius:10px;cursor:pointer;font-size:.9rem}
-  .btn:hover{border-color:var(--accent)}
-  .progwrap{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.85rem}
-  .progbar{width:120px;height:8px;border-radius:6px;background:var(--panel2);overflow:hidden;border:1px solid var(--line)}
-  .progfill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--ok));transition:width .3s}
-  .layout{max-width:var(--maxw);margin:0 auto;padding:20px;display:grid;
-    grid-template-columns:300px 1fr;gap:24px;align-items:start}
-  @media(max-width:900px){.layout{grid-template-columns:1fr}.roadmap{position:static!important}}
-  .roadmap{position:sticky;top:72px;background:var(--panel);border:1px solid var(--line);
-    border-radius:var(--radius);padding:16px;max-height:calc(100vh - 96px);overflow:auto}
-  .roadmap h2{margin:.2em 0 .6em;font-size:.95rem;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
-  .rm-stem{margin:0 0 14px}
-  .rm-stem>.rm-stem-name{font-weight:700;margin-bottom:6px;font-size:.92rem}
-  .rm-node{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:9px;
-    cursor:pointer;font-size:.88rem;color:var(--ink);border:1px solid transparent}
-  .rm-node:hover{background:var(--panel2)}
-  .rm-node.active{border-color:var(--accent);background:var(--panel2)}
-  .rm-node .dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex:none}
-  .rm-node.hot .dot{background:var(--hot)}
-  .rm-node.hot3 .dot{background:var(--hot);box-shadow:0 0 0 3px rgba(255,107,107,.3)}
-  .rm-node.done .dot{background:var(--ok)}
-  .rm-node .badge-hot{margin-left:auto;font-size:.66rem;color:var(--hot);border:1px solid var(--hot);
-    border-radius:6px;padding:0 5px;white-space:nowrap}
-  .pathpanel{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px;margin-top:6px}
-  .pathpanel h3{margin:.1em 0 .5em;font-size:.82rem;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
-  .pstep{display:flex;gap:6px;align-items:flex-start;font-size:.82rem;padding:3px 4px;border-radius:6px;cursor:pointer}
-  .pstep:hover{background:var(--panel)}
-  .pstep input{margin-top:3px;flex:none}
-  .pstep .pn{color:var(--accent);font-weight:700;flex:none}
-  .content{min-width:0}
-  .intro{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:22px}
-  .intro h1{margin:.1em 0 .3em;font-size:1.5rem}
-  .examnote{border:1px solid var(--warn);background:rgba(255,207,92,.1);border-radius:10px;padding:10px 14px;margin-top:12px;font-size:.92rem}
-  .examnote b{color:var(--warn)}
-  .stem-sec{margin:0 0 28px}
-  .stem-sec>h2{font-size:1.2rem;padding-bottom:6px;border-bottom:2px solid var(--line)}
-  .node-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
-    margin:14px 0;overflow:hidden;scroll-margin-top:84px}
-  .node-card.hot3{border-color:var(--hot);box-shadow:0 0 0 1px rgba(255,107,107,.25)}
-  .node-card>summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;align-items:center;gap:10px;font-weight:700}
-  .node-card>summary::-webkit-details-marker{display:none}
-  .node-card>summary .chev{margin-left:auto;color:var(--muted);transition:transform .2s}
-  .node-card[open]>summary .chev{transform:rotate(90deg)}
-  .node-card[open]>summary{border-bottom:1px solid var(--line)}
-  .nbadge{font-size:.66rem;padding:1px 7px;border-radius:6px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
-  .nbadge.hot{color:var(--hot);border-color:var(--hot)}
-  .nbody{padding:16px 18px}
-  .field{margin:0 0 14px}
-  .field .lbl{font-weight:700;color:var(--accent);font-size:.92rem;display:block;margin-bottom:3px}
-  .callout{border-left:4px solid var(--accent2);background:var(--panel2);padding:10px 14px;border-radius:8px;margin:8px 0}
-  .scenario{border-left:4px solid var(--ok);background:rgba(62,207,142,.07);padding:10px 14px;border-radius:8px;margin:8px 0}
-  .exam-box{border:1px solid var(--warn);background:rgba(255,207,92,.08);border-radius:10px;padding:12px 14px;margin:10px 0}
-  .exam-box .lbl{color:var(--warn)}
-  .trap{border-left:4px solid var(--hot);background:rgba(255,107,107,.07);padding:10px 14px;border-radius:8px}
-  .miss{color:var(--muted);font-style:italic;border:1px dashed var(--line);border-radius:8px;padding:8px 12px;background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(154,167,184,.05) 8px,rgba(154,167,184,.05) 16px)}
-  table{border-collapse:collapse;width:100%;margin:8px 0;font-size:.9rem}
-  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
-  th{background:var(--panel2)}
-  .matchtable{border:2px solid var(--warn);border-radius:10px;overflow:hidden;margin:10px 0}
-  .matchtable .mt-cap{background:rgba(255,207,92,.15);color:var(--warn);font-weight:700;font-size:.82rem;padding:5px 12px}
-  .matchtable table{margin:0}
-  code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-size:.88em}
-  .katex-fallback{color:var(--muted);font-family:ui-monospace,monospace}
-  .stepper{border:1px solid var(--line);border-radius:10px;padding:12px;margin:10px 0;background:var(--panel2)}
-  .stepper .step{display:none}
-  .stepper .step.show{display:block}
-  .stepper .step-head{font-weight:700;color:var(--accent2);margin-bottom:4px}
-  .stepper-nav{display:flex;align-items:center;gap:10px;margin-top:10px}
-  .dots{display:flex;gap:5px;margin-left:auto}
-  .dots i{width:8px;height:8px;border-radius:50%;background:var(--line);display:inline-block}
-  .dots i.on{background:var(--accent)}
-  .hidden{display:none!important}
-  .scrollx{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .treemap{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:22px}
-  .treemap h2{margin:.1em 0 .2em;font-size:1.15rem}
-  .treemap .tm-sub{color:var(--muted);font-size:.88rem;margin-bottom:12px}
-  .tree, .tree ul{list-style:none;margin:0;padding-left:18px}
-  .tree>li{margin:4px 0}
-  .tm-root{font-weight:800;font-size:1rem}
-  .tm-branch{cursor:pointer;font-weight:700;padding:4px 8px;border-radius:8px;display:inline-flex;align-items:center;gap:6px;border:1px solid transparent}
-  .tm-branch:hover{background:var(--panel2)}
-  .tm-branch .tw{color:var(--muted);transition:transform .2s;font-size:.8rem}
-  .tm-branch.collapsed .tw{transform:rotate(-90deg)}
-  .tm-branch.collapsed + ul{display:none}
-  .tm-desc{color:var(--muted);font-weight:400;font-size:.85rem}
-  .tm-leaf{cursor:pointer;padding:3px 8px;border-radius:7px;border:1px solid var(--line);display:inline-block;margin:2px 0;font-size:.86rem}
-  .tm-leaf:hover{background:var(--panel2);border-color:var(--accent)}
-  .tm-leaf.hot{border-color:var(--hot);color:var(--hot)}
-  .tree li{position:relative}
-  .tree ul{border-left:1px dashed var(--line);margin-left:6px}
-  .qa-item{border:1px solid var(--line);border-radius:10px;margin:10px 0;overflow:hidden}
-  .qa-q{padding:12px 14px;font-weight:700;display:flex;gap:10px;align-items:flex-start}
-  .qa-type{font-size:.66rem;padding:2px 7px;border-radius:6px;border:1px solid var(--accent);color:var(--accent);flex:none;margin-top:2px;white-space:nowrap}
-  .qa-a{padding:0 14px;max-height:0;overflow:hidden;transition:max-height .35s;background:var(--panel2)}
-  .qa-a.open{max-height:2400px;padding:12px 14px}
-  .qa-toggle{margin-left:auto;flex:none}
-  .qopts{font-weight:400;margin:4px 0 0;color:var(--muted)}
-  .navtoggle{display:none}
-  .scrim{display:none}
-  @media(max-width:900px){
-    .navtoggle{display:inline-block}
-    .roadmap{position:fixed;top:0;left:0;bottom:0;width:84%;max-width:320px;z-index:40;border-radius:0;
-      transform:translateX(-105%);transition:transform .25s;max-height:100vh}
-    .roadmap.open{transform:translateX(0)}
-    .scrim.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:35}
-  }
-  @media(max-width:600px){
-    body{line-height:1.6}
-    .hwrap{padding:8px 12px;gap:8px}
-    .htitle{font-size:.95rem}
-    .search{min-width:120px;flex:1}
-    .layout{padding:12px}
-    .intro h1{font-size:1.25rem}
-    .node-card>summary{padding:12px 14px;flex-wrap:wrap}
-    .nbody{padding:12px 14px}
-  }
-  footer{max-width:var(--maxw);margin:0 auto;padding:30px 20px;color:var(--muted);font-size:.85rem}
-  /* ROC 임계값 슬라이더 시뮬레이션 */
-  .roc-sim{border:1px solid var(--line);border-radius:10px;padding:14px;background:var(--panel2);margin:8px 0}
-  .roc-grid{display:grid;grid-template-columns:300px 1fr;gap:18px;align-items:start}
-  @media(max-width:700px){.roc-grid{grid-template-columns:1fr}}
-  .roc-th{display:block;font-weight:700;margin-bottom:6px}
-  .roc-hint{color:var(--muted);font-size:.84rem;margin:4px 0 10px}
-  .roc-metrics{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.9rem;margin-bottom:10px}
-  .roc-metrics b{color:var(--accent)}
-  .roc-metrics .roc-auc b{color:var(--accent2)}
-  .roc-conf{display:grid;grid-template-columns:1fr 1fr;gap:6px;max-width:240px}
-  .rc-cell{border:1px solid var(--line);border-radius:8px;padding:8px;text-align:center;font-size:.8rem;color:var(--muted)}
-  .rc-cell b{display:block;font-size:1.15rem;color:var(--ink)}
-  .rc-tp{background:rgba(62,207,142,.14)} .rc-tn{background:rgba(91,157,255,.14)}
-  .rc-fp{background:rgba(255,207,92,.14)} .rc-fn{background:rgba(255,107,107,.14)}
-  .roc-sim .sim-desc{color:var(--muted);font-size:.85rem;margin:10px 0 0}
-  #tree-container svg{display:block}
-  /* ===== v1.1 canvas 모핑 씬 (CDN 0) ===== */
-  .viz-scene{border:1px solid var(--line);border-radius:10px;padding:14px;background:var(--panel2);margin:8px 0}
-  .viz-scene canvas{display:block;width:100%;background:var(--panel);border:1px solid var(--line);border-radius:8px}
-  .viz-caption{color:var(--ink);font-size:.9rem;margin:10px 0 4px;min-height:2.4em}
-  .viz-metric{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;font-size:.9rem;margin:6px 0}
-  .viz-metric b{color:var(--accent)}
-  .viz-meter{flex:1;min-width:120px;max-width:240px;height:9px;border-radius:6px;background:var(--panel);border:1px solid var(--line);overflow:hidden}
-  .viz-meter>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--ok));transition:width .3s}
-  .viz-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px}
-  .viz-controls input[type=range]{flex:1;min-width:120px}
-  .viz-controls .viz-step{color:var(--muted);font-size:.84rem;white-space:nowrap}
-  .viz-legend{font-size:.78rem;color:var(--muted);margin:6px 0 0}
+  .navchips{display:flex;gap:6px;flex-wrap:wrap}
+  .navchips a{font-size:.78rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 11px;background:var(--panel)}
+  .navchips a:hover{border-color:var(--accent);color:var(--ink)}
+
+  .sec{margin:30px 0}
+  .sec-h{display:flex;align-items:center;gap:11px;margin:0 0 14px}
+  .sec-h .en{color:var(--muted);font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap}
+  .sec-h .ko{font-weight:800;font-size:1.16rem;letter-spacing:-.02em;white-space:nowrap}
+  .sec-h .rule{flex:1;height:1px;background:var(--line)}
+
+  .hero{padding:36px 0 4px}
+  .kicker{display:inline-flex;align-items:center;gap:8px;color:var(--accent);font-weight:700;letter-spacing:.18em;font-size:.72rem;text-transform:uppercase}
+  .kicker::before{content:"";width:22px;height:1.5px;background:var(--accent)}
+  .hero h1{font-size:clamp(1.7rem,4.6vw,2.4rem);line-height:1.12;margin:.3em 0 .35em;letter-spacing:-.03em;font-weight:800}
+  .hero h1 em{font-style:normal;color:var(--accent)}
+  .overview{color:var(--muted);font-size:1.0rem;max-width:680px}
+  .overview b{color:var(--ink);font-weight:600}
+
+  .infogrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+  @media(max-width:680px){.infogrid{grid-template-columns:1fr}}
+  .infocard{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--panel)}
+  .infocard h3{margin:.1em 0 .5em;font-size:.92rem;color:var(--accent)}
+  .infocard ul{margin:0;padding-left:18px;font-size:.9rem}
+  .infocard ul li{margin:3px 0}
+  .infocard .src{color:var(--muted)}
+
+  .weekmap{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:6px}
+  @media(max-width:680px){.weekmap{grid-template-columns:1fr 1fr}}
+  .wcard{border:1px solid var(--line);border-left-width:4px;border-radius:12px;padding:12px 13px;background:var(--panel);display:block;color:inherit}
+  .wcard:hover{border-color:var(--accent)}
+  .wcard .wn{font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+  .wcard h3{margin:.2em 0 .25em;font-size:.95rem}
+  .wcard p{margin:0;font-size:.8rem;color:var(--muted)}
+
+  .weekband{display:flex;align-items:center;gap:12px;margin:40px 0 16px;padding:14px 18px;border-radius:14px;
+    border:1px solid var(--line);background:linear-gradient(120deg,var(--bandc,rgba(255,138,91,.12)),var(--panel))}
+  .weekband .wbn{font-size:1.5rem;font-weight:800;color:var(--bandfg,var(--w1))}
+  .weekband .wbt{font-weight:800;font-size:1.15rem}
+  .weekband .wbs{color:var(--muted);font-size:.85rem;margin-top:2px}
+
+  /* 핵심 개념 표 */
+  table.kt{border-collapse:collapse;width:100%;margin:4px 0 8px;font-size:.86rem;display:block;overflow-x:auto}
+  table.kt th,table.kt td{border:1px solid var(--line);padding:6px 10px;text-align:left;white-space:nowrap}
+  table.kt th{background:var(--panel2);color:var(--accent);font-weight:700}
+  .ktwrap{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--panel)}
+  .ktwrap h4{margin:.1em 0 .5em;font-size:.9rem}
+  .concept-note{font-size:.88rem;color:var(--muted);margin:8px 0 0}
+  .concept-note b{color:var(--ink)}
+
+  /* 문제 */
+  .quizhead{display:flex;align-items:center;gap:10px;margin:18px 0 8px}
+  .quizhead .qh-t{font-weight:800;font-size:1rem}
+  .quizhead .qh-c{font-size:.74rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 10px}
+  .quiz-item{border:1px solid var(--line);border-radius:12px;margin:9px 0;background:var(--panel);overflow:hidden}
+  .qi-stem{padding:13px 15px 6px;display:flex;gap:9px;align-items:flex-start}
+  .qi-no{flex:none;width:26px;height:26px;border-radius:8px;background:var(--panel2);border:1px solid var(--line);color:var(--ink);font-weight:800;font-size:.8rem;display:flex;align-items:center;justify-content:center}
+  .qi-type{font-size:.64rem;padding:1px 7px;border-radius:5px;border:1px solid var(--accent2);color:var(--accent2);flex:none;margin-top:3px;white-space:nowrap}
+  .qi-type.sa{border-color:var(--ok);color:var(--ok)}
+  .qi-q{font-weight:600;font-size:.95rem}
+  .qi-opts{list-style:none;margin:4px 0 0;padding:0 15px 4px 50px}
+  .qi-opts li{padding:4px 0;font-size:.92rem;color:var(--ink)}
+  .qi-reveal{margin:4px 15px 13px 50px;background:var(--panel2);border:1px solid var(--line);color:var(--ink);padding:6px 12px;border-radius:8px;cursor:pointer;font-weight:600;font-size:.82rem}
+  .qi-reveal:hover{border-color:var(--accent2)}
+  .qi-ans{max-height:0;overflow:hidden;transition:max-height .35s;margin:0 15px 0 50px}
+  .qi-ans.show{max-height:800px;margin-bottom:13px}
+  .qi-ans-in{border-top:1px dashed var(--line);padding-top:9px;font-size:.9rem;line-height:1.7}
+  .qi-ans-in .ans{color:var(--ok);font-weight:700}
+  .qi-ans-in .exp{display:block;margin-top:4px;color:var(--muted)}
+  .qi-ans-in .exp b{color:var(--ink)}
+
+  .unver{font-size:.72rem;color:var(--warn);border:1px solid var(--warn);border-radius:6px;padding:1px 7px;white-space:nowrap}
+
+  footer{color:var(--muted);font-size:.82rem;padding:26px 0 50px;border-top:1px solid var(--line);margin-top:34px;line-height:1.7}
+  footer .warn{color:var(--warn)}
 </style>
 </head>
 <body data-theme="dark">
-<a href="index.html" class="__homebtn" style="position:fixed;left:12px;bottom:12px;z-index:9999;background:#5b9dff;color:#04122e;font-weight:800;padding:8px 14px;border-radius:999px;text-decoration:none;font-family:sans-serif;font-size:.82rem;box-shadow:0 4px 14px rgba(0,0,0,.45)">🏠 통합 홈</a>
 <header>
-  <div class="hwrap">
-    <button class="btn navtoggle" onclick="toggleNav()" title="로드맵/목차" aria-label="로드맵 열기">☰</button>
-    <div class="htitle">의료진단을 위한 AI <small>· 시험대비 학습자료</small></div>
+  <div class="htop">
+    <div class="brand"><span class="dot"></span>의료진단 AI</div>
     <div class="grow"></div>
-    <input class="search" id="search" placeholder="개념 검색…" oninput="filterNodes(this.value)">
-    <div class="progwrap"><span id="progtxt">0%</span><div class="progbar"><div class="progfill" id="progfill"></div></div></div>
-    <button class="btn" onclick="toggleTheme()">🌓</button>
+    <nav class="navchips">
+      <a href="#overview">개요</a><a href="#w1">Week 1</a><a href="#w2">Week 2</a><a href="#w3">Week 3</a><a href="#w4">Week 4</a>
+    </nav>
   </div>
 </header>
 
-<div class="scrim" id="scrim" onclick="toggleNav()"></div>
-<div class="layout">
-  <!-- ===== 로드맵 + 추천 학습 경로 ===== -->
-  <nav class="roadmap" id="roadmap" aria-label="로드맵">
-    <h2>🗺️ 로드맵</h2>
-    <div class="rm-stem">
-      <div class="rm-stem-name">🎓 선행지식</div>
-      <div class="rm-node" data-target="prereq" onclick="goNode('prereq')"><span class="dot"></span>P1~P6 영상·신호·민감도·특이도·ROC</div>
-    </div>
-    <div class="rm-stem">
-      <div class="rm-stem-name">B1. AI/ML/DL 기초 & 학습 패러다임</div>
-      <div class="rm-node" data-target="C1" onclick="goNode('C1')"><span class="dot"></span>C1 의료AI·Ability-based</div>
-      <div class="rm-node hot" data-target="C2" onclick="goNode('C2')"><span class="dot"></span>C2 AI/ML/DL<span class="badge-hot">⭐⭐</span></div>
-      <div class="rm-node hot" data-target="C3" onclick="goNode('C3')"><span class="dot"></span>C3 학습 패러다임<span class="badge-hot">⭐⭐</span></div>
-      <div class="rm-node hot" data-target="C4" onclick="goNode('C4')"><span class="dot"></span>C4 분류/회귀/군집<span class="badge-hot">⭐⭐</span></div>
-      <div class="rm-node" data-target="C5" onclick="goNode('C5')"><span class="dot"></span>C5 의료AI 4대 장점</div>
-      <div class="rm-node" data-target="C12" onclick="goNode('C12')"><span class="dot"></span>C12 디지털 전환</div>
-      <div class="rm-node" data-target="C20" onclick="goNode('C20')"><span class="dot"></span>C20 Tremor 연구</div>
-    </div>
-    <div class="rm-stem">
-      <div class="rm-stem-name">B2. 생체신호 (Biosignals)</div>
-      <div class="rm-node" data-target="C6" onclick="goNode('C6')"><span class="dot"></span>C6 생체신호처리 개요</div>
-      <div class="rm-node hot" data-target="C7" onclick="goNode('C7')"><span class="dot"></span>C7 ECG(심전도)<span class="badge-hot">⭐⭐</span></div>
-      <div class="rm-node hot" data-target="C8" onclick="goNode('C8')"><span class="dot"></span>C8 EEG(뇌파)<span class="badge-hot">⭐⭐</span></div>
-      <div class="rm-node" data-target="C9" onclick="goNode('C9')"><span class="dot"></span>C9 EMG(근전도)</div>
-      <div class="rm-node" data-target="C10" onclick="goNode('C10')"><span class="dot"></span>C10 EOG/ENG/PCG/VAG</div>
-    </div>
-    <div class="rm-stem">
-      <div class="rm-stem-name">B3. 의료영상 모달리티</div>
-      <div class="rm-node hot3" data-target="C11" onclick="goNode('C11')"><span class="dot"></span>C11 영상 11종<span class="badge-hot">⭐⭐⭐</span></div>
-    </div>
-    <div class="rm-stem">
-      <div class="rm-stem-name">B4. 계측 시스템</div>
-      <div class="rm-node hot3" data-target="C13" onclick="goNode('C13')"><span class="dot"></span>C13 계측 3블록<span class="badge-hot">⭐⭐⭐</span></div>
-      <div class="rm-node" data-target="C14" onclick="goNode('C14')"><span class="dot"></span>C14 측정·계측 정의</div>
-      <div class="rm-node hot3" data-target="C15" onclick="goNode('C15')"><span class="dot"></span>C15 5대 분류<span class="badge-hot">⭐⭐⭐</span></div>
-    </div>
-    <div class="rm-stem">
-      <div class="rm-stem-name">B5. 신경망 & CNN</div>
-      <div class="rm-node hot" data-target="C16" onclick="goNode('C16')"><span class="dot"></span>C16 뉴런·활성화·퍼셉트론<span class="badge-hot">⭐⭐</span></div>
-      <div class="rm-node hot" data-target="C17" onclick="goNode('C17')"><span class="dot"></span>C17 구조·파라미터수<span class="badge-hot">⭐⭐</span></div>
-      <div class="rm-node hot" data-target="C18" onclick="goNode('C18')"><span class="dot"></span>C18 forward/backprop<span class="badge-hot">⭐⭐</span></div>
-      <div class="rm-node hot" data-target="C19" onclick="goNode('C19')"><span class="dot"></span>C19 CNN<span class="badge-hot">⭐⭐</span></div>
+<div class="wrap">
+
+  <!-- ===================== 과목 개요 ===================== -->
+  <section class="hero" id="overview">
+    <div class="kicker">의료진단을 위한 AI · 김정희 교수</div>
+    <h1>의료 데이터를 <em>진단</em>으로 — <br>AI의 원리부터 한계까지.</h1>
+    <p class="overview">이 과목은 <b>의료진단에 쓰이는 AI의 전 과정</b>을 개념 중심으로 다룬다. AI/ML/DL의 기초, 진단의 입력이 되는 <b>생체신호·의료영상</b>, 신호를 다루는 <b>생체계측 시스템</b>과 <b>신경망·CNN</b>, 그리고 의료 AI의 <b>한계·윤리·규제</b>까지 4주에 걸쳐 본다.</p>
+
+    <div class="infogrid">
+      <div class="infocard">
+        <h3>시험 정보</h3>
+        <ul>
+          <li>형식: <b>객관식 + 단답형</b> (+ 서술형)</li>
+          <li>수준: <b>핵심 개념 검증</b> 중심 (개념 매칭·분류 위주)</li>
+          <li>평가 비중: 출석 10 + 과제 20 + <b>기말 70</b></li>
+          <li class="src">강의자료 AAI0035 Week1–4 기반</li>
+        </ul>
+      </div>
+      <div class="infocard">
+        <h3>이 자료 구성</h3>
+        <ul>
+          <li>Week마다 <b>핵심 문제 10 + 예상 문제 10</b></li>
+          <li>비율: <b>객관식 70% · 단답형 30%</b></li>
+          <li>각 문제에 <b>정답 + 해설</b> 토글</li>
+          <li class="src"><span class="unver">⚠ 예상 문제는 AI 생성·미검증</span> (빈칸 슬라이드를 의료 표준 지식으로 보강)</li>
+        </ul>
+      </div>
     </div>
 
-    <div class="pathpanel">
-      <h3>🧭 추천 학습 경로 (의존도순)</h3>
-      <div id="pathlist"></div>
+    <div style="margin-top:14px" class="weekmap">
+      <a class="wcard" href="#w1" style="border-left-color:var(--w1)"><div class="wn" style="color:var(--w1)">Week 1</div><h3>AI 기초·계측</h3><p>AI/ML/DL, 학습유형, 계측</p></a>
+      <a class="wcard" href="#w2" style="border-left-color:var(--w2)"><div class="wn" style="color:var(--w2)">Week 2</div><h3>신호·영상</h3><p>ECG·EEG, X-ray·CT·MRI·PET</p></a>
+      <a class="wcard" href="#w3" style="border-left-color:var(--w3)"><div class="wn" style="color:var(--w3)">Week 3</div><h3>계측·신경망</h3><p>서브시스템, 퍼셉트론·CNN</p></a>
+      <a class="wcard" href="#w4" style="border-left-color:var(--w4)"><div class="wn" style="color:var(--w4)">Week 4</div><h3>한계·윤리</h3><p>편향·XAI·규제·증강지능</p></a>
     </div>
-  </nav>
+  </section>
 
-  <!-- ===== 콘텐츠 ===== -->
-  <main class="content">
-    <section class="intro">
-      <h1>의료진단을 위한 AI <small style="font-size:.9rem;color:var(--muted)">· AAI0035 · 김정희 교수</small></h1>
-      <p>이 과목의 핵심은 <b>신경계 질환을 진단·재활하기 위해 생체신호·의료영상을 계측하고 AI(ML/DL·CNN)로 해석하는 전체 파이프라인</b>이다. 큰 그림: <b>무엇을(신호·영상) → 어떻게 재는가(계측) → 무엇으로 해석하나(AI/신경망)</b>.</p>
-      <div class="examnote">📋 <b>시험 특성</b>: 객관식 70~80%·<b>매칭형 중심</b>·난이도 낮음(Notion Day1 교수 강조). → 깊은 유도보다 <b>정의·비교·매칭 암기</b>가 핵심이다. 헷갈리는 쌍은 아래 <b>주황 대조표</b>로 반복하고, 맨 아래 <b>예상 문제(매칭형)</b>로 자가 점검한다. (⚠️ Week4 한계·윤리·규제 및 구체 기출은 자료 미제공 — 본 자료는 Week1~3 범위.)</div>
-    </section>
+  <!-- ===================== WEEK 1 ===================== -->
+  <div class="weekband" id="w1" style="--bandc:rgba(255,138,91,.14);--bandfg:var(--w1)">
+    <div class="wbn">1</div>
+    <div><div class="wbt">AI 기초와 생체계측</div><div class="wbs">AI/ML/DL 계층 · 학습 패러다임 · 문제유형 · 계측 시스템</div></div>
+  </div>
 
-    <!-- ===== 첫 화면: D3 탐색 트리 (CDN) + 트리맵 폴백 ===== -->
-    <section class="treemap" id="treeview">
-      <h2>🧭 한눈에 보는 전체 구조 (탐색 트리)</h2>
-      <div class="tm-sub">노드를 클릭하면 하위 가지가 접히고 펼쳐진다. 잎(개념)을 클릭하면 해당 카드로 이동한다. 휠·핀치로 확대·축소, 드래그로 이동. 5대 가지 = Week1~3 구조와 1:1, 잎 20개 = 노드 C1~C20(선행지식 6개 포함).</div>
-      <div id="tree-container" style="width:100%;min-height:380px"></div>
-    </section>
+  <section class="sec">
+    <div class="sec-h"><span class="en">Key Concepts</span><span class="ko">핵심 개념 한눈</span><span class="rule"></span></div>
+    <div class="ktwrap">
+      <h4>학습 패러다임 · 문제유형</h4>
+      <table class="kt">
+        <tr><th>구분</th><th>지도학습</th><th>비지도학습</th><th>강화학습</th></tr>
+        <tr><td>입력</td><td>입력 + 정답(label)</td><td>입력만</td><td>상태·행동·보상</td></tr>
+        <tr><td>목적</td><td>분류·회귀</td><td>군집·차원축소</td><td>누적 보상 최대화</td></tr>
+        <tr><td>대표 알고리즘</td><td>SVM·CNN</td><td>K-means·PCA</td><td>Q-learning·DQN</td></tr>
+        <tr><td>의료 예시</td><td>영상 진단</td><td>환자군 분류</td><td>재활 로봇</td></tr>
+      </table>
+      <p class="concept-note"><b>AI ⊃ ML ⊃ DL</b> (포함관계). <b>분류</b>=이산형 출력, <b>회귀</b>=연속형 출력, <b>클러스터링</b>=비지도 군집. 딥러닝은 <b>특징 공학(feature engineering)을 자동화</b>(End-to-End)한다. 생체계측 3대 서브시스템: <b>변환기(Transducer) · 전자 인터페이스 · 연산부</b>.</p>
+    </div>
+  </section>
 
-    <!-- ===== MECE 트리맵 (D3 미로드 시 폴백) ===== -->
-    <section class="treemap" id="treemap" data-fallback="1" style="display:none">
-      <h2>🧭 한눈에 보는 전체 구조 (MECE 트리맵)</h2>
-      <div class="tm-sub">큰 가지(주차/주제)를 먼저 보고, 잎(개념)을 클릭하면 해당 카드로 이동한다. 5대 가지 = 추출본 Week1~3 구조와 1:1, 잎 20개 = 노드 C1~C20.</div>
-      <ul class="tree">
-        <li><span class="tm-root">의료진단을 위한 AI</span>
-          <ul>
-            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">▾</span>가지 1. AI/ML/DL 기초 & 학습 패러다임 <span class="tm-desc">— 데이터로 진단을 자동화하는 두뇌 (Week1/Day1)</span></span>
-              <ul>
-                <li><span class="tm-leaf" data-target="C1" onclick="goNode('C1')">의료AI 배경·Ability-based (C1)</span></li>
-                <li><span class="tm-leaf hot" data-target="C2" onclick="goNode('C2')">AI⊃ML⊃DL 계층 ⭐⭐ (C2)</span></li>
-                <li><span class="tm-leaf hot" data-target="C3" onclick="goNode('C3')">지도/비지도/강화 ⭐⭐ (C3)</span></li>
-                <li><span class="tm-leaf hot" data-target="C4" onclick="goNode('C4')">분류/회귀/군집 ⭐⭐ (C4)</span></li>
-                <li><span class="tm-leaf" data-target="C5" onclick="goNode('C5')">의료AI 4대 장점 (C5)</span></li>
-                <li><span class="tm-leaf" data-target="C12" onclick="goNode('C12')">디지털 전환 (C12)</span></li>
-                <li><span class="tm-leaf" data-target="C20" onclick="goNode('C20')">Tremor 연구 (C20)</span></li>
-              </ul>
-            </li>
-            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">▾</span>가지 2. 생체신호 (Biosignals) <span class="tm-desc">— 몸이 내는 전기·소리·진동을 읽는다 (Week2/Day2)</span></span>
-              <ul>
-                <li><span class="tm-leaf" data-target="C6" onclick="goNode('C6')">생체신호처리 개요 (C6)</span></li>
-                <li><span class="tm-leaf hot" data-target="C7" onclick="goNode('C7')">ECG 심전도 ⭐⭐ (C7)</span></li>
-                <li><span class="tm-leaf hot" data-target="C8" onclick="goNode('C8')">EEG 뇌파 ⭐⭐ (C8)</span></li>
-                <li><span class="tm-leaf" data-target="C9" onclick="goNode('C9')">EMG 근전도 (C9)</span></li>
-                <li><span class="tm-leaf" data-target="C10" onclick="goNode('C10')">EOG/ENG/PCG/VAG (C10)</span></li>
-              </ul>
-            </li>
-            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">▾</span>가지 3. 의료영상 모달리티 <span class="tm-desc">— 몸 속을 보는 11가지 카메라 (출제 최다, Week2/Day2)</span></span>
-              <ul>
-                <li><span class="tm-leaf hot" data-target="C11" onclick="goNode('C11')">X-ray/CT/MRI/US/PET/SPECT/Mammo/Fluoro/DSA/OCT/Dermato ⭐⭐⭐ (C11)</span></li>
-              </ul>
-            </li>
-            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">▾</span>가지 4. 계측 시스템 (Instrumentation) <span class="tm-desc">— 신호를 어떻게 측정/제어하나, 하드웨어 (Week3/Day3)</span></span>
-              <ul>
-                <li><span class="tm-leaf hot" data-target="C13" onclick="goNode('C13')">계측 3블록 모델 ⭐⭐⭐ (C13)</span></li>
-                <li><span class="tm-leaf" data-target="C14" onclick="goNode('C14')">측정·계측의 정의 (C14)</span></li>
-                <li><span class="tm-leaf hot" data-target="C15" onclick="goNode('C15')">생체계측 5대 분류 ⭐⭐⭐ (C15)</span></li>
-              </ul>
-            </li>
-            <li><span class="tm-branch" onclick="toggleBranch(this)"><span class="tw">▾</span>가지 5. 신경망 & CNN <span class="tm-desc">— AI가 실제로 학습하는 메커니즘 (Week3/Day3)</span></span>
-              <ul>
-                <li><span class="tm-leaf hot" data-target="C16" onclick="goNode('C16')">뉴런·활성화·퍼셉트론 ⭐⭐ (C16)</span></li>
-                <li><span class="tm-leaf hot" data-target="C17" onclick="goNode('C17')">신경망 구조·파라미터수 ⭐⭐ (C17)</span></li>
-                <li><span class="tm-leaf hot" data-target="C18" onclick="goNode('C18')">forward/backprop·학습절차 ⭐⭐ (C18)</span></li>
-                <li><span class="tm-leaf hot" data-target="C19" onclick="goNode('C19')">CNN·이미지 분석 ⭐⭐ (C19)</span></li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </section>
+  <section class="sec" id="w1quiz">
+    <div class="quizhead"><span class="qh-t">핵심 문제</span><span class="qh-c">10문항 · 객관식 7 + 단답 3</span></div>
+    <div id="w1-core"></div>
+    <div class="quizhead" style="margin-top:24px"><span class="qh-t">예상 문제</span><span class="qh-c">10문항</span><span class="unver">AI 생성 · 미검증</span></div>
+    <div id="w1-practice"></div>
+  </section>
 
-    <!-- ================= 선행지식 (Prerequisites) ================= -->
-    <section class="stem-sec" id="prereq">
-      <h2>🎓 선행지식 — 본문 전 최소 토대</h2>
-      <p style="color:var(--muted)">본문 개념(신호·영상·계측·신경망)을 읽기 전에 알아야 할 용어. 각 정의 1~3줄 + <i>쓰임</i>으로 본문과 연결한다. 진단 성능지표(민감도·특이도·ROC/AUC)는 객관식 매칭형에 직결되니 아래 <b>임계값 슬라이더</b>로 직접 조작해 체득하라.</p>
+  <!-- ===================== WEEK 2 ===================== -->
+  <div class="weekband" id="w2" style="--bandc:rgba(251,191,36,.14);--bandfg:var(--w2)">
+    <div class="wbn">2</div>
+    <div><div class="wbt">생체신호와 의료영상</div><div class="wbs">ECG·EEG·EMG · X-ray·CT·MRI·US·PET — 원리와 비교</div></div>
+  </div>
 
-      <details class="node-card" id="prereq-signal" data-node-id="prereq-signal" data-title="영상 신호 정의 modality 픽셀 샘플링">
-        <summary>P1. 영상 / 신호<span class="nbadge">선행</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">📖 정의</span><b>신호(signal)</b> = 시간에 따라 변하는 1차원 측정값(ECG·EEG·EMG 등 생체전기). <b>영상(image)</b> = 공간에 배열된 2D/3D 픽셀값(X-ray·CT·MRI 등). 둘 다 진단의 원자료(raw data)다.</div>
-          <div class="field"><span class="lbl">🔗 쓰임</span>B2(생체신호)는 1D 신호, B3(의료영상)은 2D/3D 영상을 다룬다. CNN(C19)은 영상의 공간 구조를, 신호처리(C6)는 시간 구조를 보존한다.</div>
-        </div>
-      </details>
+  <section class="sec">
+    <div class="sec-h"><span class="en">Key Concepts</span><span class="ko">핵심 개념 한눈</span><span class="rule"></span></div>
+    <div class="ktwrap">
+      <h4>의료영상 5종 비교 (매칭 핵심)</h4>
+      <table class="kt">
+        <tr><th>항목</th><th>X-ray</th><th>CT</th><th>MRI</th><th>초음파</th><th>PET</th></tr>
+        <tr><td>원리</td><td>X선</td><td>X선+재구성</td><td>자기장+RF</td><td>음파</td><td>동위원소(대사)</td></tr>
+        <tr><td>방사선</td><td>있음</td><td>있음</td><td><b>없음</b></td><td><b>없음</b></td><td>있음</td></tr>
+        <tr><td>실시간</td><td>✗</td><td>✗</td><td>✗</td><td><b>✓</b></td><td>✗</td></tr>
+        <tr><td>강점</td><td>뼈·폐</td><td>종양·내장</td><td>연조직·뇌</td><td>태아·혈류</td><td>기능·대사</td></tr>
+      </table>
+      <p class="concept-note"><b>생체신호</b> — ECG(심장 전기, SA node·P-QRS-T) / EEG(뇌파, 10-20 시스템·δθαβγ) / EMG(근육 전기, sEMG·needle). <b>EEG 대역</b>: Delta(깊은수면) → Theta(졸림) → Alpha(안정) → Beta(집중) → Gamma(고차인지). <b>OCT</b>=μm 초고해상도(망막), <b>DSA</b>=조영제 감산 혈관, <b>PET vs SPECT</b>=양전자(쌍감마) vs 감마선(단일).</p>
+    </div>
+  </section>
 
-      <details class="node-card" id="prereq-feature" data-node-id="prereq-feature" data-title="특징추출 feature extraction engineering 표현학습">
-        <summary>P2. 특징추출 (Feature Extraction)<span class="nbadge">선행</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">📖 정의</span>raw 데이터에서 분류·예측에 쓸모 있는 수치(특징, feature)를 뽑는 과정. 사람이 설계하면 <b>feature engineering</b>, 모델이 스스로 뽑으면 <b>표현학습(representation learning)</b>이다.</div>
-          <div class="field"><span class="lbl">🔗 쓰임</span>ML과 DL을 가르는 핵심 축(C2): ML은 사람이 feature를 설계, DL은 자동 추출. CNN(C19)이 영상의 특징을 자동으로 잡는 것이 대표 예다.</div>
-        </div>
-      </details>
+  <section class="sec" id="w2quiz">
+    <div class="quizhead"><span class="qh-t">핵심 문제</span><span class="qh-c">10문항 · 객관식 7 + 단답 3</span></div>
+    <div id="w2-core"></div>
+    <div class="quizhead" style="margin-top:24px"><span class="qh-t">예상 문제</span><span class="qh-c">10문항</span><span class="unver">AI 생성 · 미검증</span></div>
+    <div id="w2-practice"></div>
+  </section>
 
-      <details class="node-card hot" id="prereq-sensspec" data-node-id="prereq-sensspec" data-title="민감도 특이도 sensitivity specificity 혼동행렬 TP FP TN FN">
-        <summary>P3. 민감도 · 특이도 (Sensitivity · Specificity)<span class="nbadge hot">⭐핵심</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">📖 정의</span>진단 모델을 환자/정상으로 판정할 때의 두 적중률.<br><b>민감도(Sensitivity, 재현율)</b> = 실제 환자를 환자로 맞힌 비율 = TP / (TP + FN).<br><b>특이도(Specificity)</b> = 실제 정상을 정상으로 맞힌 비율 = TN / (TN + FP).</div>
-          <div class="field"><span class="lbl">📊 혼동행렬(Confusion Matrix)</span>TP(진양성)·FP(위양성)·TN(진음성)·FN(위음성) 네 칸. 민감도는 <b>놓친 환자(FN)</b>를, 특이도는 <b>오진한 정상(FP)</b>을 줄일수록 올라간다.</div>
-          <div class="field"><span class="lbl">🔗 쓰임</span>의료 진단의 표준 평가지표. 임계값을 낮추면 민감도↑·특이도↓로 <b>맞교환(trade-off)</b>이 생긴다 — 아래 P4 슬라이더로 직접 확인하라.</div>
-        </div>
-      </details>
+  <!-- WEEK2_PLACEHOLDER -->
+  <!-- ===================== WEEK 3 ===================== -->
+  <div class="weekband" id="w3" style="--bandc:rgba(52,211,153,.14);--bandfg:var(--w3)">
+    <div class="wbn">3</div>
+    <div><div class="wbt">생체계측 시스템과 신경망</div><div class="wbs">3대 서브시스템 · 5분류축 · 뉴런·퍼셉트론·CNN</div></div>
+  </div>
 
-      <details class="node-card hot" id="prereq-roc" data-node-id="prereq-roc" data-title="ROC AUC 곡선 임계값 threshold 슬라이더 시뮬레이션 trade-off">
-        <summary>P4. ROC · AUC + 임계값 슬라이더<span class="nbadge hot">⭐핵심·인터랙티브</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span>
-            <p><b>Hook.</b> 진단 모델은 "환자일 확률 0.73" 같은 점수를 낸다. 그런데 <b>몇 점부터 환자로 판정할지</b>(threshold, 임계값)에 따라 같은 모델이 사람을 더 많이 놓치기도, 더 많이 오진하기도 한다. <b>ROC(Receiver Operating Characteristic, 수신자 조작 특성) 곡선</b>은 이 임계값을 0에서 1까지 전부 훑어 모델의 <b>전체 분별력</b>을 한 그림에 담는다.</p>
-            <p><b>Intuition(직관).</b> 임계값을 낮추면 의심만 가도 환자로 부른다 → <b>sensitivity(민감도)↑</b>(환자를 잘 잡음) 대신 <b>specificity(특이도)↓</b>(정상을 오진). 높이면 반대. 즉 둘은 <b>맞교환(trade-off)</b> 관계이고, 임계값을 옮길 때마다 (FPR, TPR) 한 점이 곡선 위를 움직인다.</p>
-            <p><b>Analogy(비유).</b> 공항 금속탐지기의 <b>민감도 다이얼</b>이다. 너무 예민하게(임계값↓) 맞추면 동전 하나에도 울려 정상 승객을 다 세운다(FP↑). 둔하게(임계값↑) 맞추면 진짜 흉기를 놓친다(FN↑). <b>비유의 한계:</b> 다이얼을 어디 두든 <b>탐지기 자체의 성능</b>은 안 변한다 — 그게 곧 AUC다(곡선 모양은 고정, 임계값은 점만 옮김).</p>
-            <p><b>Definition(정의).</b> ROC 곡선 = 임계값을 0→1로 훑으며 가로축 <b>위양성률(FPR = 1−특이도, false positive rate)</b>, 세로축 <b>민감도(TPR = true positive rate)</b>를 찍은 곡선. <b>AUC(Area Under the Curve, 곡선하면적)</b> = 곡선 아래 넓이(0.5=무작위 동전던지기, 1.0=완벽). 임계값과 무관한 모델 고유의 분별력 한 숫자.</p>
-            <p><b>Mechanism(메커니즘).</b> ① 모든 임계값마다 <b>혼동행렬(confusion matrix)</b> 4칸(TP·FP·FN·TN)을 센다. ② TPR=TP/(TP+FN), FPR=FP/(FP+TN)을 계산해 점 하나를 찍는다. ③ 임계값을 쭉 옮기며 점들을 이으면 곡선. ④ 사다리꼴로 면적을 더하면 AUC. <b>아래 슬라이더를 끌어 ①~②가 실시간으로 반응하는 것을 직접 보라.</b></p></div>
-          <div class="field"><span class="lbl">📖 한 줄 정의</span><b>ROC 곡선</b> = 임계값을 0→1로 훑으며 (1−특이도, 민감도)를 찍은 곡선. x축 = 위양성률(FPR = 1−특이도), y축 = 민감도(TPR). <b>AUC</b> = 곡선 아래 면적(0.5=무작위, 1.0=완벽).</div>
-          <div class="field"><span class="lbl">🎛️ 직접 조작 — 임계값(threshold)을 바꿔 보라</span>
-            <div class="roc-sim" id="rocSim">
-              <div class="roc-grid">
-                <div class="roc-left">
-                  <svg id="rocChart" viewBox="0 0 260 260" width="100%" style="max-width:300px;height:auto" role="img" aria-label="ROC 곡선과 현재 임계값 위치"></svg>
-                </div>
-                <div class="roc-right">
-                  <label class="roc-th">임계값 threshold = <b id="thVal">0.50</b>
-                    <input type="range" id="thSlider" min="0" max="1" step="0.01" value="0.50" style="width:100%">
-                  </label>
-                  <p class="roc-hint">임계값↑ → 환자로 판정하기 까다로워짐 → 특이도↑·민감도↓. 임계값↓ → 민감도↑·특이도↓.</p>
-                  <div class="roc-metrics">
-                    <span>민감도(TPR) <b id="mSens">–</b></span>
-                    <span>특이도(TNR) <b id="mSpec">–</b></span>
-                    <span>위양성률(FPR) <b id="mFpr">–</b></span>
-                    <span>정확도 <b id="mAcc">–</b></span>
-                    <span class="roc-auc">AUC <b id="mAuc">–</b></span>
-                  </div>
-                  <div class="roc-conf" aria-label="혼동행렬">
-                    <div class="rc-cell rc-tp">TP<br><b id="cTP">0</b></div>
-                    <div class="rc-cell rc-fp">FP<br><b id="cFP">0</b></div>
-                    <div class="rc-cell rc-fn">FN<br><b id="cFN">0</b></div>
-                    <div class="rc-cell rc-tn">TN<br><b id="cTN">0</b></div>
-                  </div>
-                </div>
-              </div>
-              <p class="sim-desc" id="rocDesc">슬라이더를 움직이면 혼동행렬·민감도·특이도와 ROC 위의 현재 점이 즉시 갱신된다.</p>
-            </div>
-          </div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">ROC의 x축은 <b>특이도가 아니라 위양성률(1−특이도)</b>다. 임계값을 바꿔도 AUC(곡선 자체)는 바뀌지 않는다 — AUC는 모델 고유 값, 임계값은 곡선 위의 한 점을 고를 뿐이다.</div></div>
-          <div class="field"><span class="lbl">🔗 쓰임</span>분류(C4)·신경망(C18) 성능 평가의 표준. 매칭형으로 "민감도↔TP/(TP+FN)", "임계값↓→민감도↑·특이도↓" 관계를 묻기 좋다.</div>
-        </div>
-      </details>
+  <section class="sec">
+    <div class="sec-h"><span class="en">Key Concepts</span><span class="ko">핵심 개념 한눈</span><span class="rule"></span></div>
+    <div class="ktwrap">
+      <h4>생체계측 5분류축 (매칭 핵심)</h4>
+      <table class="kt">
+        <tr><th>분류축</th><th>한쪽</th><th>반대쪽</th><th>예시</th></tr>
+        <tr><td>Direct/Indirect</td><td>직접 측정</td><td>관련 파라미터로 간접</td><td>동맥 직접 혈류 vs 체표 ECG</td></tr>
+        <tr><td>Invasive/Noninvasive</td><td>침습</td><td>비침습</td><td>이식 전극 vs 초음파 혈류</td></tr>
+        <tr><td>Contact/Remote</td><td>접촉</td><td>원격</td><td>스트레인 게이지 vs MRI</td></tr>
+        <tr><td>Sense/Actuate</td><td>감지</td><td>작동</td><td>센서 vs 인슐린 펌프</td></tr>
+        <tr><td>Dynamic/Static</td><td>실시간</td><td>시간 평균</td><td>도플러 vs 정적 장비</td></tr>
+      </table>
+      <p class="concept-note"><b>계측 3대 서브시스템</b>: 변환기(센서+작동기) · 전자 인터페이스(전치증폭→신호조정→버퍼) · 연산부. <b>전치증폭기(pre-amp)가 시스템 잡음을 지배</b>. <b>신경망</b>: 뉴런(z=Σwx+bias) → 퍼셉트론(활성함수 추가, 단일은 XOR 불가) → MLP → CNN. <b>활성함수 없으면 선형회귀</b>로 축소. <b>FC망은 이미지 공간구조 무시</b> → CNN(필터·3차원 배열). 과적합 완화=<b>데이터 증강</b>.</p>
+    </div>
+  </section>
 
-      <details class="node-card" id="prereq-overfit" data-node-id="prereq-overfit" data-title="과적합 overfitting 일반화 검증 데이터 증강">
-        <summary>P5. 과적합 (Overfitting)<span class="nbadge">선행</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">📖 정의</span>모델이 학습 데이터에 지나치게 맞춰져 새 데이터(검증·시험)에서 성능이 떨어지는 현상. 학습 정확도는 높은데 검증 정확도가 크게 뒤처지면 과적합이다.</div>
-          <div class="field"><span class="lbl">🔗 쓰임</span>학습곡선 진단(C18)의 핵심 — train↑·validation 정체면 strong overfitting. CNN(C19)은 데이터 증강으로 과적합을 줄인다. DL이 항상 우월하지 않은 이유(C2)이기도 하다.</div>
-        </div>
-      </details>
+  <section class="sec" id="w3quiz">
+    <div class="quizhead"><span class="qh-t">핵심 문제</span><span class="qh-c">10문항 · 객관식 7 + 단답 3</span></div>
+    <div id="w3-core"></div>
+    <div class="quizhead" style="margin-top:24px"><span class="qh-t">예상 문제</span><span class="qh-c">10문항</span><span class="unver">AI 생성 · 미검증</span></div>
+    <div id="w3-practice"></div>
+  </section>
 
-      <details class="node-card" id="prereq-cv" data-node-id="prereq-cv" data-title="교차검증 cross validation k-fold 학습 검증 분할 일반화">
-        <summary>P6. 교차검증 (Cross-Validation)<span class="nbadge">선행</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">📖 정의</span>데이터를 여러 묶음(fold)으로 나눠, 번갈아 학습/검증에 써서 성능을 평균내는 방법. k-fold가 대표적이다. 단일 분할의 운(運)을 줄여 <b>일반화 성능</b>을 더 믿을 만하게 추정한다.</div>
-          <div class="field"><span class="lbl">🔗 쓰임</span>과적합(P5) 여부를 안정적으로 판단하고 모델·하이퍼파라미터를 고를 때 쓴다. 의료처럼 데이터가 적을 때 특히 중요하다.</div>
-        </div>
-      </details>
-    </section>
+  <!-- WEEK3_PLACEHOLDER -->
+  <!-- ===================== WEEK 4 ===================== -->
+  <div class="weekband" id="w4" style="--bandc:rgba(96,165,250,.14);--bandfg:var(--w4)">
+    <div class="wbn">4</div>
+    <div><div class="wbt">의료 AI의 한계·윤리·규제</div><div class="wbs">Deep Medicine · 편향·XAI · 프라이버시 · 증강지능</div></div>
+  </div>
 
-    <!-- ================= 줄기 B1 ================= -->
-    <section class="stem-sec" id="B1">
-      <h2>B1. AI/ML/DL 기초 & 학습 패러다임</h2>
+  <section class="sec">
+    <div class="sec-h"><span class="en">Key Concepts</span><span class="ko">핵심 개념 한눈</span><span class="rule"></span></div>
+    <div class="ktwrap">
+      <h4>의료 AI 4대 한계 · 프라이버시 법제</h4>
+      <table class="kt">
+        <tr><th>4대 한계</th><th>내용</th><th>법제</th><th>관할</th></tr>
+        <tr><td>데이터 편향</td><td>학습 데이터 치우침</td><td>GDPR</td><td>EU 일반</td></tr>
+        <tr><td>일반화 부족</td><td>다른 환경 성능 저하</td><td>HIPAA</td><td>미국 의료</td></tr>
+        <tr><td>임상데이터 부족</td><td>검증용 데이터 부족</td><td>CCPA</td><td>캘리포니아</td></tr>
+        <tr><td>설명력 부족(XAI)</td><td>블랙박스</td><td>AI Act</td><td>EU 위험기반</td></tr>
+      </table>
+      <p class="concept-note"><b>Deep Medicine</b>(Eric Topol) 3요소: 딥피노타이핑 · 딥러닝 · 딥엠퍼시. <b>증강지능(Augmented Intelligence)</b>=AI가 의사를 대체하지 않고 협업으로 향상. 프라이버시 기술: <b>연합학습</b>(데이터 이동 없이 모델만) · <b>차등 프라이버시</b>(잡음 추가). <b>XAI</b>=설명 가능한 AI. <b>P4 의학</b>=Predict·Prevent·Personalize·Participate. 실무 연동: <b>EHR·PACS</b>. 실패 사례: IBM 왓슨.</p>
+    </div>
+  </section>
 
-      <details class="node-card" id="C1" data-node-id="C1" data-title="의료 AI 배경 Ability-based Design">
-        <summary><input type="checkbox" class="nodechk" data-id="C1" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C1. 의료 AI 배경 / Human-centered AI / Ability-based Design<span class="nbadge">⭐中</span><span class="nbadge">선행: 없음</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span>"사람을 시스템에 맞추지 말고, 시스템을 사람의 능력에 맞춰라" — 이것이 Ability-based Design.</div>
-          <div class="field"><span class="lbl">📖 정의</span><b>Ability-based Design (Edwards 1995)</b> — 일반 시스템은 대표 사용자를 상정해 <b>사용자가 시스템에 적응</b>(User→adaptation→System)한다. 반면 <b>Ability-Based System(+AI)</b>은 <b>시스템이 사용자의 능력에 적응</b>한다. 연구 3축: Custom Hardware + Signal Processing & AI + Human-centered Evaluation.</div>
-          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario">"손가락이 10개 없는 사용자가 QWERTY 키보드를 쓴다." 일반 설계는 사용자가 키보드에 맞춰 적응해야 하지만(User-adaptation-System), Ability-Based System은 AI가 그 사용자의 잔존 능력에 맞춰 입력 방식을 바꿔준다.</div></div>
-          <div class="field"><span class="lbl">🔍 작동 원리</span>연구 방향이 <b>Diagnosis(진단)</b> → <b>Treatment(치료)</b>로 이어짐. 치료는 다시 <b>Therapeutic(비침습 신경조절)</b> / <b>Assistive(보조기술)</b>로 나뉜다 — 신경계 질환 중심.</div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">User-adaptation-System(사용자가 적응) ↔ Ability-Based System(시스템이 적응)을 <b>반대로 외우기 쉽다.</b></div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트 <small>(출제 가이드 · Notion Day1)</small></span>"Ability-based Design" 정의·키보드 예시 객관식. 진단 vs 치료(therapeutic=비침습 신경조절 / assistive=보조) 구분.</div>
-          <div class="field" style="color:var(--muted);font-size:.85rem">🔗 연결: 응용 C20(Tremor 연구가 이 사상의 적용)</div>
-        </div>
-      </details>
+  <section class="sec" id="w4quiz">
+    <div class="quizhead"><span class="qh-t">핵심 문제</span><span class="qh-c">10문항 · 객관식 7 + 단답 3</span></div>
+    <div id="w4-core"></div>
+    <div class="quizhead" style="margin-top:24px"><span class="qh-t">예상 문제</span><span class="qh-c">10문항</span><span class="unver">AI 생성 · 미검증</span></div>
+    <div id="w4-practice"></div>
+  </section>
 
-      <details class="node-card hot" id="C2" data-node-id="C2" data-title="AI ML DL 계층 구조">
-        <summary><input type="checkbox" class="nodechk" data-id="C2" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C2. AI / ML / DL 계층 구조<span class="nbadge hot">⭐⭐高</span><span class="nbadge">선행: 없음 · 관문</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span>러시아 인형처럼 <b>AI ⊃ ML ⊃ DL</b>. 바깥일수록 포괄적, 안쪽일수록 데이터로 자동 학습.</div>
-          <div class="field"><span class="lbl">📖 정의</span><b>AI</b>: 인간의 인지능력(학습·추론·판단·문제해결)을 기계가 수행. 규칙기반~자가학습 포괄.<br><b>ML</b>: 데이터로 시스템이 스스로 규칙·패턴 학습(프로그래밍된 규칙 없이). 지도/비지도/강화로 분류.<br><b>DL</b>: 다층 인공신경망 기반. 비정형 데이터(영상·음성·자연어)에 강력. <b>특징(feature) 자동 추출</b>(End-to-End). CNN/RNN/Transformer.</div>
-          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario">응급실에서 — <b>AI</b>=환자 우선순위 분류·챗봇 / <b>ML</b>=혈액검사 수치로 질병 예측 / <b>DL</b>=흉부 X-ray를 CNN이 직접 보고 폐렴 진단. 셋 다 "AI"지만 안쪽으로 갈수록 데이터를 더 많이 먹고 사람 개입이 줄어든다.</div></div>
-          <div class="field"><span class="lbl">🔍 작동 원리 (ML vs DL 핵심, Week1 p.26)</span><b>ML = Feature engineering</b> — Raw 데이터를 <b>사람이 feature 설계</b> → ML모델 → 출력. <b>DL = feature engineering 불필요</b> — Raw → DNN이 표현학습 → 출력.</div>
-          <div class="field"><span class="lbl">📊 표 인사이트 (SUMMARY, Week1 p.27) — 매칭 핵심!</span>
-            <div class="matchtable"><div class="mt-cap">⭐ 매칭 대조표: AI vs ML vs DL</div><div class="scrollx"><table>
-              <tr><th>비교축</th><th>AI</th><th>ML</th><th>DL</th></tr>
-              <tr><td>데이터 필요량</td><td>적음</td><td>중간</td><td><b>매우 많음</b></td></tr>
-              <tr><td>설명가능성</td><td>높음</td><td>보통</td><td><b>낮음 (black box)</b></td></tr>
-              <tr><td>처리 데이터</td><td>정형/비정형</td><td>정형 위주</td><td><b>비정형에 강함</b></td></tr>
-              <tr><td>특징 추출</td><td>—</td><td>사람이 설계</td><td><b>자동(End-to-End)</b></td></tr>
-            </table></div></div>
-            <div class="callout">"데이터 적게 필요 / black box / 비정형에 강함 / feature 자동" 특성을 AI·ML·DL에 매칭하는 객관식이 단골.</div>
-          </div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 (매칭형)</span>
-            <i>"다음 특성을 AI/ML/DL에 매칭: ① 흉부 X-ray를 raw로 넣어 폐렴 진단 ② 혈액검사 수치로 질병 예측 ③ black box라 설명 어려움 ④ feature engineering 필요"</i>
-            <div class="stepper">
-              <div class="step show"><div class="step-head">1단계</div>① "raw 영상 직접 + 비정형" → 비정형에 강하고 feature 자동 = <b>DL</b></div>
-              <div class="step"><div class="step-head">2단계</div>② "정형 수치 + 사람이 feature 설계" = <b>ML</b></div>
-              <div class="step"><div class="step-head">3단계</div>③ "설명가능성 낮음 = black box" = <b>DL</b></div>
-              <div class="step"><div class="step-head">4단계 → 답</div>④ "feature engineering 필요 = 사람이 설계" = <b>ML</b>. ∴ ①DL ②ML ③DL ④ML</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
-            </div>
-          </div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">DL은 ML의 <b>하위</b> 개념(AI⊃ML⊃DL). <b>DL이 항상 우월한 게 아니다</b> — 데이터·연산을 많이 먹고, 과적합·설명력 낮음.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>⭐ 특성↔AI/ML/DL 매칭. 포함관계 AI⊃ML⊃DL. ML=feature engineering / DL=불필요.</div>
-          <div class="field" style="color:var(--muted);font-size:.85rem">🔗 연결: 응용 C3·C16~C19(신경망=DL), 대조 C5</div>
-        </div>
-      </details>
+  <!-- WEEK4_PLACEHOLDER -->
 
-      <details class="node-card hot" id="C3" data-node-id="C3" data-title="학습 패러다임 지도 비지도 강화">
-        <summary><input type="checkbox" class="nodechk" data-id="C3" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C3. 학습 패러다임 — 지도 / 비지도 / 강화학습<span class="nbadge hot">⭐⭐高</span><span class="nbadge">선행: C2</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span><b>정답 있음</b>(지도) / <b>구조 발견</b>(비지도) / <b>보상 최적화</b>(강화).</div>
-          <div class="field"><span class="lbl">📖 정의·메커니즘</span><b>지도학습</b>: 입력 X + 정답 y(label) 쌍 → 손실(Loss) 최소화로 파라미터 조정. 분류(SVM·Logistic·RF·k-NN·NN), 회귀(Linear·Ridge/Lasso·XGBoost).<br><b>비지도학습</b>: 입력만, 정답 없음 → 거리·유사도·분포로 내재 구조 발견. 클러스터링(K-means·DBSCAN·Hierarchical), 차원축소(PCA·t-SNE·Autoencoder).<br><b>강화학습(RL)</b>: Agent가 Environment와 상호작용 → Reward로 최적 policy 학습. 기본 Q-learning·SARSA, 심화 DQN·PPO·A3C.</div>
-          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario"><b>지도</b>=X-ray로 폐렴 판단(정답표 있음) / <b>비지도</b>=정상 생체신호만 모아두고 거기서 벗어나는 비정상 탐지(정답 없이 구조로) / <b>강화</b>=재활 로봇이 시행착오로 보상을 쌓으며 동작 학습.</div></div>
-          <div class="field"><span class="lbl">📊 표 인사이트 (Week1 p.29) — 시험 핵심 매칭표!</span>
-            <div class="matchtable"><div class="mt-cap">⭐ 매칭 대조표: 지도 vs 비지도 vs 강화</div><div class="scrollx"><table>
-              <tr><th>비교축</th><th>지도학습</th><th>비지도학습</th><th>강화학습</th></tr>
-              <tr><td>입력 데이터</td><td>입력 + <b>정답(label)</b></td><td><b>입력만</b></td><td>상태·행동·보상</td></tr>
-              <tr><td>학습 방식</td><td>오차 최소화</td><td>유사도로 군집</td><td><b>누적보상 최대화</b></td></tr>
-              <tr><td>단점</td><td><b>라벨링 비용 큼</b></td><td><b>평가 어려움(정답 없음)</b></td><td>느리고 복잡·의료선 실험·윤리 어려움</td></tr>
-            </table></div></div>
-          </div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 (매칭형)</span>
-            <i>"단점을 학습유형에 매칭: (가) 라벨링 비용 큼 (나) 결과 평가 어려움 (다) 느리고 실험·윤리 어려움"</i>
-            <div class="stepper">
-              <div class="step show"><div class="step-head">1단계</div>(가) "라벨=정답 필요" → 정답을 다 달아야 하니 = <b>지도학습</b></div>
-              <div class="step"><div class="step-head">2단계</div>(나) "정답이 없어 잘했는지 모름" = <b>비지도학습</b></div>
-              <div class="step"><div class="step-head">3단계 → 답</div>(다) "환경 상호작용·시행착오" = <b>강화학습</b>. ∴ 가-지도, 나-비지도, 다-강화</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
-            </div>
-          </div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">강화학습은 "정답표가 없는데도" 학습한다(보상으로). 비지도의 핵심 단점은 "<b>평가가 어려움</b>"(정답이 없어서).</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>⭐ 입력데이터·학습방식·단점 3축 매칭.</div>
-          <div class="field" style="color:var(--muted);font-size:.85rem">🔗 연결: 선행 C2, 응용 C4</div>
-        </div>
-      </details>
-
-      <details class="node-card hot" id="C4" data-node-id="C4" data-title="분류 회귀 클러스터링">
-        <summary><input type="checkbox" class="nodechk" data-id="C4" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C4. 분류 / 회귀 / 클러스터링<span class="nbadge hot">⭐⭐高</span><span class="nbadge">선행: C3</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span>출력이 <b>범주면 분류</b>, <b>연속값이면 회귀</b>, <b>라벨 없이 그룹화면 군집</b>.</div>
-          <div class="field"><span class="lbl">📊 표 인사이트 (Week1 p.34) — 매칭 핵심!</span>
-            <div class="matchtable"><div class="mt-cap">⭐ 매칭 대조표: 분류 vs 회귀 vs 클러스터링</div><div class="scrollx"><table>
-              <tr><th></th><th>분류</th><th>회귀</th><th>클러스터링</th></tr>
-              <tr><td>문제유형</td><td>지도</td><td>지도</td><td><b>비지도</b></td></tr>
-              <tr><td>출력</td><td>범주형(label, <b>이산 discrete</b>)</td><td>연속형(숫자, <b>continuous</b>)</td><td>그룹(군집 번호)</td></tr>
-              <tr><td>평가지표</td><td>정확도 등</td><td><b>MSE, MAE</b></td><td>군집 품질</td></tr>
-              <tr><td>대표 알고리즘</td><td>SVM·Decision Tree·CNN</td><td>Linear Regression·XGBoost</td><td>K-means·DBSCAN·Autoencoder</td></tr>
-            </table></div></div>
-          </div>
-          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario"><b>분류</b>=폐 CT 폐암 유무, 병리슬라이드 양성/악성 / <b>회귀</b>=혈당·생존기간(개월)·심박출량(ml/beat) 예측 / <b>군집</b>=유전체 발현으로 환자 그룹화.</div></div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 (출력→유형 매칭)</span>
-            <i>"각 과제를 분류/회귀/군집에 매칭: ① 5년 생존기간을 개월로 예측 ② X-ray가 폐렴인지 아닌지 ③ 라벨 없이 유전체로 환자 묶기"</i>
-            <div class="stepper">
-              <div class="step show"><div class="step-head">1단계</div>① 출력 "개월=연속 숫자" → <b>회귀</b> (평가 MSE/MAE)</div>
-              <div class="step"><div class="step-head">2단계</div>② 출력 "폐렴/아님=이산 범주" → <b>분류</b></div>
-              <div class="step"><div class="step-head">3단계 → 답</div>③ "라벨 없음 + 그룹화" → <b>클러스터링(비지도)</b>. ∴ ①회귀 ②분류 ③군집</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
-            </div>
-          </div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">분류·회귀는 <b>둘 다 지도학습</b>(차이는 출력이 이산/연속). 군집만 비지도.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>⭐ "이산 vs 연속 vs 그룹" → 분류/회귀/군집 매칭. <b>회귀 평가지표 = MSE/MAE 암기.</b></div>
-          <div class="field" style="color:var(--muted);font-size:.85rem">🔗 연결: 선행 C3</div>
-        </div>
-      </details>
-
-      <details class="node-card" id="C5" data-node-id="C5" data-title="의료 AI 4대 장점">
-        <summary><input type="checkbox" class="nodechk" data-id="C5" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C5. 의료 AI의 4대 장점<span class="nbadge">⭐中</span><span class="nbadge">선행: C2</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span>AI가 진단을 도울 때 좋은 점 네 가지.</div>
-          <div class="field"><span class="lbl">📖 정의</span><b>속도 / 정확도 / 일관성 / 예측</b> (4가지).</div>
-          <div class="field"><span class="lbl">⚠️ 자료 없음</span><div class="miss">각 항목의 상세 설명은 PDF·Notion 모두 Blank. 키워드 4개만 노출하고 상세는 빈칸 처리(임의 보강 금지).</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>4대 장점 나열형 단답 가능.</div>
-          <div class="field" style="color:var(--muted);font-size:.85rem">🔗 연결: 선행 C2</div>
-        </div>
-      </details>
-
-      <details class="node-card" id="C12" data-node-id="C12" data-title="디지털 전환 의료">
-        <summary><input type="checkbox" class="nodechk" data-id="C12" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C12. 디지털 전환 (Digital Transformation) — 의료<span class="nbadge">⭐低</span><span class="nbadge">선행: 없음 · 독립</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span>디지털 기술로 의료 운영·환자가치를 근본적으로 바꾸기.</div>
-          <div class="field"><span class="lbl">📖 정의</span>디지털 기술을 조직 전반에 통합해 운영방식·고객가치를 근본부터 바꾸는 것. 의료 미래기술 = 개인맞춤의학·디지털헬스 플랫폼·웨어러블·AI/ML 진단·원격진료·3D프린팅/로봇·블록체인 보안.</div>
-          <div class="field"><span class="lbl">🔍 작동 원리 (워크플로우, p.5)</span>①사전평가·전략 → ②이해관계자 참여 → ③기술도입(EHR·원격진료·웨어러블) → ④교육·채택 → ⑤모니터링·피드백 → ⑥반복개선.</div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>미래 헬스케어 기술 나열형 가능 (비중 낮음).</div>
-        </div>
-      </details>
-
-      <details class="node-card" id="C20" data-node-id="C20" data-title="교수 Tremor 연구 진단 치료 보조">
-        <summary><input type="checkbox" class="nodechk" data-id="C20" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C20. 교수 연구 사례 — Tremor 진단·치료·보조<span class="nbadge">⭐低</span><span class="nbadge">선행: C1</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span>손떨림(tremor)을 종이 나선 대신 컴퓨터로 정량화하고, 전기자극으로 억제하는 연구.</div>
-          <div class="field"><span class="lbl">📖 내용</span><b>진단</b>: 기존=종이 나선/필기(주관적) → 신규=표준화 과제(Gyration Air Mouse·Wrist Device)로 정량화. <b>TETRAS 0~4 등급</b>별 궤적 악화. 성능지표: Movement time, Path efficiency, Error rate, <b>Throughput</b>, Outside area.<br><b>치료(Therapeutic)</b>: 비침습 E-Stim으로 떨림 억제, 폐루프 phase-locked 자극 최적화(Amplitude·Frequency·Duty Cycle·Phase).<br><b>치료(Assistive)</b>: 마비 환자의 혀 움직임 → <b>Tongue Pattern Recognition</b>(PCA 분류), MORA로 휠체어·로봇 제어.</div>
-          <div class="field"><span class="lbl">📊 그래프 인사이트 (Week1 p.19)</span><div class="callout">Path Efficiency vs Tremor Power = <b>음의 상관</b>(R²=0.48, 떨림 강할수록 효율↓). Throughput vs Tremor Frequency = <b>양의 상관</b>(R²=0.70).</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>비중 낮음. Throughput·Path efficiency 등 성능지표 용어 정도.</div>
-          <div class="field" style="color:var(--muted);font-size:.85rem">🔗 연결: 선행 C1(Ability-based 사상의 적용)</div>
-        </div>
-      </details>
-    </section>
-
-    <!-- ================= 줄기 B2 ================= -->
-    <section class="stem-sec" id="B2">
-      <h2>B2. 생체신호 (Biosignals)</h2>
-
-      <details class="node-card" id="C6" data-node-id="C6" data-title="생체신호 처리 개요">
-        <summary><input type="checkbox" class="nodechk" data-id="C6" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C6. 생체신호 처리 개요<span class="nbadge">⭐中</span><span class="nbadge">선행: 없음 · 관문</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span>몸이 내는 전기·소리·진동 신호를 다듬어 진단에 쓸 정보로 바꾸는 파이프라인.</div>
-          <div class="field"><span class="lbl">📖 정의</span>신호처리 = 소리·이미지·생체신호를 분석·변형·합성해 유용 정보 추출·품질 향상. <b>생체신호처리</b> = 인체 생리신호를 분석해 임상 진단·모니터링·치료에 활용. 대표 신호: ECG·EEG·EMG, 그 외 EOG·ENG·PCG·VAG.</div>
-          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario">ECG 원시 파형은 근육 잡음·기준선 흔들림이 섞여 있다. 필터링→정규화→R-피크 탐지→SVM/DL 분류를 거쳐야 "부정맥"이라는 진단 정보가 나온다.</div></div>
-          <div class="field"><span class="lbl">🔍 작동 원리 (파이프라인, Week2 p.27)</span>데이터수집 → <b>전처리</b>(필터링·정규화·기준선보정) → <b>세분화(Segmentation)</b> → <b>노이즈제거(Artifact Removal: ICA, PCA)</b> → <b>피크탐지</b>(예: ECG R-피크) → <b>분류·패턴인식</b>(SVM·DL) → 모델링·예측 → 시각화.</div>
-          <div class="field"><span class="lbl">📊 표 인사이트 (연구 4분야, Week2 p.27)</span><div class="callout">향상(Enhancement, 잡음제거) / 탐지·추출(Detection &amp; Extraction) / 해석·분석(Interpretation) / 분류·예측(Classification &amp; Prediction).</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>처리 파이프라인 순서. Artifact Removal = ICA/PCA. 라이브러리(SciPy=scipy.signal 필터, Scikit-learn=SVM/PCA).</div>
-          <div class="field" style="color:var(--muted);font-size:.85rem">🔗 연결: 응용 C7·C8·C9·C10(개별 신호), C13(계측 시스템)</div>
-        </div>
-      </details>
-
-      <details class="node-card hot" id="C7" data-node-id="C7" data-title="ECG 심전도">
-        <summary><input type="checkbox" class="nodechk" data-id="C7" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C7. ECG (심전도)<span class="nbadge hot">⭐⭐高</span><span class="nbadge">선행: C6</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span>
-            <p><b>Hook.</b> 흉통 환자가 응급실에 들어오면 의사가 가장 먼저 보는 그래프가 ECG(Electrocardiography, 심전도)다. 심장을 열어 보지 않고도 <b>피부에 붙인 전극만으로</b> "지금 심장의 어느 부위가, 어떤 순서로 전기를 켜고 끄는가"를 1초 안에 읽어 심근경색(myocardial infarction, 심근경색)을 잡아낸다. 그래서 시험에서도 <b>파형(waveform, 파형)의 의미 매칭</b>이 단골이다.</p>
-            <p><b>Intuition(직관).</b> 심장 근육은 전기로 수축한다. 세포가 전기를 띠는 것을 <b>depolarization(탈분극)</b>, 다시 휴식 전위로 돌아가는 것을 <b>repolarization(재분극)</b>이라 부른다. 한 번의 심박은 늘 <b>심방(atria) 먼저 → 심실(ventricles) 나중</b>, 각 방에서 <b>탈분극(수축) → 재분극(회복)</b> 순서로 일어난다. ECG의 봉우리들은 이 순서를 그대로 시간 축에 찍은 것이다.</p>
-            <p><b>Analogy(비유).</b> 심장을 <b>4박자로 도는 스프링클러</b>로 보면 쉽다. 먼저 위쪽 두 구역(심방)에 물(전기)이 돌고(P파), 잠시 멈췄다가 아래쪽 큰 두 구역(심실)이 세게 돈다(QRS). 다 돌면 큰 구역이 다시 잠긴다(T파). <b>다만 이 비유가 깨지는 지점:</b> 실제 ECG는 물의 양이 아니라 <b>체표면 두 지점의 전압차(voltage difference, 전압차)</b>를 본다 — 그래서 같은 사건이라도 어느 lead(유도)에서 보느냐에 따라 봉우리의 방향·크기가 달라진다.</p>
-            <p><b>Definition(정의).</b> ECG는 심장의 전기적 활동을 피부 표면에서 측정·기록해, 리듬(rhythm)·속도(rate)·전도이상(conduction)·허혈(ischemia)·심근경색 정보를 읽는 비침습 검사다. 측정 위치(lead)는 사지유도(limb leads: I·II·III·aVR·aVL·aVF)와 흉부유도(chest leads: V1~V6)로 나뉜다.</p>
-            <p><b>Mechanism(메커니즘) — 전기가 도는 경로를 한 겹씩.</b> ① <b>발화층:</b> <b>동방결절(SA node, sinoatrial node)</b>에서 전기자극이 시작된다(심장의 자연 박동조율기). ② <b>지연층:</b> <b>방실결절(AV node, atrioventricular node)</b>에서 잠깐 지연 — 심방이 다 짜낼 시간을 번다. ③ <b>전파층:</b> 히스속(His bundle) → 푸르키네섬유(Purkinje fibers)로 심실 전체에 빠르게 퍼진다. ④ <b>기록층:</b> 이 전파를 체표면 전압차로 잡아 P–QRS–T 파형으로 그린다. 아래 애니메이션이 이 ①→④를 한 박자로 보여준다.</p></div>
-          <div class="field"><span class="lbl">🎬 인터랙티브 — ECG 한 박자가 그려지는 과정 (P → QRS → T)</span>
-            <figure class="viz-scene" id="ecgWaveScene">
-              <canvas id="ecgWaveCanvas" style="height:230px" role="img" aria-label="ECG P-QRS-T 파형이 단계별로 그려지는 애니메이션"></canvas>
-              <figcaption data-caption class="viz-caption"></figcaption>
-              <div class="viz-controls">
-                <button class="btn" data-prev aria-label="이전 단계">◀ 이전</button>
-                <button class="btn" data-play>▶ 재생</button>
-                <button class="btn" data-next aria-label="다음 단계">다음 ▶</button>
-                <input type="range" data-scrub min="0" step="1" value="0" aria-label="ECG 단계 이동">
-                <span class="viz-step" data-stepidx>단계 0</span>
-              </div>
-              <p class="viz-legend">🟦 P파=심방 탈분극 · 🟥 QRS=심실 탈분극 · 🟩 T파=심실 재분극. 가로=시간, 세로=체표면 전압차.</p>
-            </figure></div>
-          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario">응급실에 흉통 환자가 오면 ECG에서 <b>ST분절 상승</b>을 보고 즉시 STEMI(심근경색)를 진단해 골든타임 내 시술로 보낸다.</div></div>
-          <div class="field"><span class="lbl">📊 표 인사이트 — 파형 매칭 (Week2 p.9) ⭐ 시험 단골!</span>
-            <div class="matchtable"><div class="mt-cap">⭐ 매칭 대조표: ECG 파형 P / QRS / T</div><div class="scrollx"><table>
-              <tr><th>파형</th><th>의미</th><th>설명</th></tr>
-              <tr><td><b>P파</b></td><td>심방 <b>탈분극</b></td><td>심방 수축 위한 전기자극</td></tr>
-              <tr><td><b>QRS 복합파</b></td><td>심실 <b>탈분극</b></td><td>심실 수축 위한 전기자극</td></tr>
-              <tr><td><b>T파</b></td><td>심실 <b>재분극</b></td><td>심실이 휴식상태로 복귀</td></tr>
-              <tr><td>U파(드묾)</td><td>심실 마지막 재분극</td><td>명확하지 않음</td></tr>
-            </table></div></div>
-            <div class="callout">정량: 1회 심박동 0.8~1초, 분당 60~80회. PR interval 0.12–0.20s, QRS 0.06–0.10s, QTc ≤0.44s.</div>
-          </div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 (파형 매칭)</span>
-            <i>"P파·QRS·T파를 '심방 탈분극 / 심실 탈분극 / 심실 재분극'에 매칭하라."</i>
-            <div class="stepper">
-              <div class="step show"><div class="step-head">1단계</div>순서: 심장은 <b>심방 먼저 → 심실 나중</b>, 각각 <b>탈분극(수축) → 재분극(회복)</b>.</div>
-              <div class="step"><div class="step-head">2단계</div>P = 가장 먼저 = 심방의 탈분극.</div>
-              <div class="step"><div class="step-head">3단계</div>QRS = 크고 가운데 = 심실의 탈분극(수축).</div>
-              <div class="step"><div class="step-head">4단계 → 답</div>T = 마지막 = 심실의 재분극(회복). ∴ P=심방탈분극, QRS=심실탈분극, T=심실재분극</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
-            </div>
-          </div>
-          <div class="field"><span class="lbl">🔍 임상 활용 (Week2 p.10)</span>①부정맥 ②<b>심근경색(MI): ST상승=STEMI / 비ST상승=NSTEMI</b> ③전도장애(방실차단·각차단 LBBB/RBBB) ④전해질이상(<b>고칼륨→T파 고출현, 저칼슘→QT연장</b>) ⑤심장비대.</div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">QRS는 "심실 <b>탈분극</b>"이지 재분극 아님. <b>재분극=T파</b>. 심방 재분극은 QRS에 묻혀 안 보임.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>⭐ P/QRS/T ↔ 심방탈분극/심실탈분극/심실재분극 매칭. STEMI vs NSTEMI. 전해질이상 ECG 변화.</div>
-          <div class="field" style="color:var(--muted);font-size:.85rem">🔗 연결: 선행 C6, 대조 C8(EEG)</div>
-        </div>
-      </details>
-
-      <details class="node-card hot" id="C8" data-node-id="C8" data-title="EEG 뇌파">
-        <summary><input type="checkbox" class="nodechk" data-id="C8" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C8. EEG (뇌파)<span class="nbadge hot">⭐⭐高</span><span class="nbadge">선행: C6</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span>두피에서 뇌의 전기 활동을 읽어, <b>주파수 대역으로 의식 상태</b>를 구분한다.</div>
-          <div class="field"><span class="lbl">📖 정의</span>뇌의 전기적 활동을 두피 전극으로 측정. 뉴런 동기 활동 시 전위차를 증폭 기록. <b>10-20 시스템</b>으로 전극 배치. 신호가 매우 약해 노이즈 민감.</div>
-          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario">수면검사실에서 EEG 주파수를 보고 환자가 깊은 수면(δ)인지 졸림(θ)인지 판정하고, 간질 환자의 발작파를 잡아낸다.</div></div>
-          <div class="field"><span class="lbl">📊 표 인사이트 — 5대 주파수 대역 (Week2 p.12) ⭐⭐ 시험 단골 매칭!</span>
-            <div class="matchtable"><div class="mt-cap">⭐⭐ 매칭 대조표: EEG 5대역 δθαβγ ↔ 상태</div><div class="scrollx"><table>
-              <tr><th>파형</th><th>주파수</th><th>상태</th></tr>
-              <tr><td><b>Delta (δ)</b></td><td>0.5–4 Hz</td><td><b>깊은 수면</b></td></tr>
-              <tr><td><b>Theta (θ)</b></td><td>4–8 Hz</td><td>졸림·깊은 명상</td></tr>
-              <tr><td><b>Alpha (α)</b></td><td>8–13 Hz</td><td>안정·깨어있음(<b>눈 감음</b>)</td></tr>
-              <tr><td><b>Beta (β)</b></td><td>13–30 Hz</td><td><b>집중·문제해결</b></td></tr>
-              <tr><td><b>Gamma (γ)</b></td><td>&gt;30 Hz</td><td>고차원 인지·기억</td></tr>
-            </table></div></div>
-            <div class="callout">외우기: 주파수 <b>낮을수록 잠</b>(δ수면), <b>높을수록 각성·인지</b>(γ). 알파벳 순 δ→θ→α→β→γ = 주파수 오름차순.</div>
-          </div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 (대역↔상태 매칭)</span>
-            <i>"다음 상태를 EEG 대역에 매칭: ① 깊은 수면 ② 눈 감고 안정 ③ 집중해 문제 풀이"</i>
-            <div class="stepper">
-              <div class="step show"><div class="step-head">1단계</div>규칙: 주파수 낮음=수면, 높음=각성·집중.</div>
-              <div class="step"><div class="step-head">2단계</div>① 깊은 수면 = 가장 낮은 = <b>Delta(δ, 0.5–4Hz)</b></div>
-              <div class="step"><div class="step-head">3단계</div>② 눈 감고 안정 = <b>Alpha(α, 8–13Hz)</b></div>
-              <div class="step"><div class="step-head">4단계 → 답</div>③ 집중·문제해결 = <b>Beta(β, 13–30Hz)</b>. ∴ ①δ ②α ③β</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
-            </div>
-          </div>
-          <div class="field"><span class="lbl">🔍 P300 (ERP)</span>자극 후 ~300ms에 나타나는 <b>양(positive) 전위</b>. 활용: 인지기능 평가(알츠하이머·ADHD), 조현병·우울증(진폭 감소), <b>BCI P300 Speller</b>.</div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap"><b>α=눈 감고 안정</b>(각성 상태이되 휴식), β=집중. 둘을 헷갈리기 쉽다. P300은 "음"이 아니라 <b>양(positive)</b> 전위.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>⭐ 5대역 주파수↔상태 매칭(δ수면, α안정·눈감음, β집중). P300=300ms positive ERP.</div>
-          <div class="field" style="color:var(--muted);font-size:.85rem">🔗 연결: 선행 C6, 대조 C7(ECG)</div>
-        </div>
-      </details>
-
-      <details class="node-card" id="C9" data-node-id="C9" data-title="EMG 근전도">
-        <summary><input type="checkbox" class="nodechk" data-id="C9" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C9. EMG (근전도)<span class="nbadge">⭐中</span><span class="nbadge">선행: C6</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span>근육이 수축할 때 나는 전기를 읽어 근육·신경 건강을 평가하고, 의수·외골격을 제어한다.</div>
-          <div class="field"><span class="lbl">📖 정의</span>근육 수축 시 전기적 활동 측정 → 근육·신경계 상태 평가(신경근 접합부·말초신경·근육질환).</div>
-          <div class="field"><span class="lbl">📊 표 인사이트 — 측정방식 매칭</span>
-            <div class="matchtable"><div class="mt-cap">매칭 대조표: sEMG vs needle EMG</div><div class="scrollx"><table>
-              <tr><th>방식</th><th>특징</th><th>용도</th></tr>
-              <tr><td><b>표면 EMG (sEMG)</b></td><td><b>비침습</b>, 전극을 피부에</td><td>재활·로봇제어·운동분석</td></tr>
-              <tr><td><b>침습 EMG (needle)</b></td><td>바늘 전극, 정확도 높음</td><td>임상 진단용</td></tr>
-            </table></div></div>
-          </div>
-          <div class="field"><span class="lbl">🔍 신호 특성 4요소 (Week2 p.16)</span>Amplitude(μV~mV, 힘 세기), Frequency(20~500Hz), Duration(전도시간), Recruitment pattern(점진적 활성화).</div>
-          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario">절단 환자의 잔존 근육에 sEMG 센서를 붙여 "쥐려는 의도"를 읽고 로봇 의수를 움직인다. → <b>EMG Controlled Car</b>처럼 계측 3블록 시스템의 실제 예.</div></div>
-          <div class="field"><span class="lbl">📊 그래프 인사이트 (Delsys, Week2 p.18–19)</span><div class="callout"><b>적절한 센서 위치 → 신호↑·SNR↑·cross-talk 감소.</b> 전극 spacing↑·bar width↑ → cross-talk(%)↑. 필터링 대역 <b>20–450 Hz</b>.</div></div>
-          <div class="field"><span class="lbl">🔍 임상 (Week2 p.17)</span>말초신경질환(근위축증·<b>루게릭병 ALS</b>), 재활·보행분석(뇌졸중·척수손상), 로봇·웨어러블 제어.</div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">sEMG=<b>비침습</b>(재활·제어용), needle=침습(진단 정확). 적절한 센서 위치는 cross-talk을 <b>줄인다(↓)</b>.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>sEMG vs needle EMG. 신호 특성 4요소. 센서 위치 효과(SNR↑, cross-talk↓).</div>
-          <div class="field" style="color:var(--muted);font-size:.85rem">🔗 연결: 선행 C6, 응용 C13(EMG car = 계측 3블록 실례)</div>
-        </div>
-      </details>
-
-      <details class="node-card" id="C10" data-node-id="C10" data-title="EOG ENG PCG VAG 기타 생체신호">
-        <summary><input type="checkbox" class="nodechk" data-id="C10" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C10. 기타 생체신호 — EOG / ENG / PCG / VAG<span class="nbadge">⭐低</span><span class="nbadge">선행: C6</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span>눈·평형·심음·관절음을 각각 읽는 네 가지 특수 생체신호.</div>
-          <div class="field"><span class="lbl">📊 표 인사이트 — 이름↔측정 대상 매칭 (시험 핵심)</span>
-            <div class="matchtable"><div class="mt-cap">⭐ 매칭 대조표: EOG / ENG / PCG / VAG ↔ 측정 대상</div><div class="scrollx"><table>
-              <tr><th>신호</th><th>풀네임</th><th>측정 대상</th><th>활용</th></tr>
-              <tr><td><b>EOG</b></td><td>Electrooculography</td><td><b>눈 움직임</b>(안구 전위차)</td><td>gaze tracking, 수면·안과, 장애인 통신, VR/AR</td></tr>
-              <tr><td><b>ENG</b></td><td>Electronystagmography</td><td><b>전정기관(평형감각)</b>·안진</td><td>어지럼증·메니에르병</td></tr>
-              <tr><td><b>PCG</b></td><td>Phonocardiography</td><td><b>심음</b>(heart sounds, 마이크)</td><td>심잡음(판막) 탐지, AI 심음분석</td></tr>
-              <tr><td><b>VAG</b></td><td>Vibroarthrography</td><td><b>관절 진동·소리</b></td><td>무릎·<b>턱관절(TMJ)</b>·퇴행성 관절염</td></tr>
-            </table></div></div>
-          </div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 (매칭형)</span>
-            <i>"EOG·ENG·PCG·VAG를 '눈 / 평형 / 심음 / 관절음'에 매칭."</i>
-            <div class="stepper">
-              <div class="step show"><div class="step-head">1단계</div>어근 힌트: oculo=눈, nystagmo=안진(평형), phono=소리(심음), arthro=관절.</div>
-              <div class="step"><div class="step-head">2단계 → 답</div>EOG=<b>눈</b>, ENG=<b>전정/평형</b>, PCG=<b>심음</b>, VAG=<b>관절음</b>.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
-            </div>
-          </div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">EOG(눈)와 ENG(평형)는 원리가 비슷(둘 다 안구 관련)해 헷갈린다 — ENG는 <b>무의식적 안진→전정기관 평가</b> 특화.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>각 신호 이름↔측정 대상 매칭.</div>
-          <div class="field" style="color:var(--muted);font-size:.85rem">🔗 연결: 선행 C6</div>
-        </div>
-      </details>
-    </section>
-
-    <!-- ================= 줄기 B3 ================= -->
-    <section class="stem-sec" id="B3">
-      <h2>B3. 의료영상 모달리티</h2>
-
-      <details class="node-card hot3" id="C11" data-node-id="C11" data-title="의료영상 모달리티 11종 X-ray CT MRI US PET SPECT">
-        <summary><input type="checkbox" class="nodechk" data-id="C11" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C11. 의료영상 모달리티 (11종)<span class="nbadge hot">⭐⭐⭐高</span><span class="nbadge">선행: 없음 · 출제 최다</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span>
-            <p><b>Hook.</b> 이 노드는 이 과목 객관식·매칭형에서 <b>출제 최다</b>다. 외울 게 11개라 막막해 보이지만, 사실 <b>딱 두 축</b>으로 줄이면 거의 다 풀린다 — "<b>방사선(ionizing radiation, 전리방사선)을 쓰나?</b>"와 "<b>무엇을 보나(구조 vs 기능)?</b>".</p>
-            <p><b>Intuition(직관).</b> 영상 모달리티(imaging modality, 영상 양식)는 모두 <b>"몸을 통과하거나 몸에서 나온 어떤 에너지를 받아 지도로 그리는 카메라"</b>다. 에너지가 X-ray(엑스선)면 뼈가 잘 보이고 방사선이 있다. 자기장+전파(MRI)나 음파(ultrasound, 초음파)·빛(OCT)이면 방사선이 없고 연조직·실시간에 강하다.</p>
-            <p><b>Analogy(비유).</b> 여러 종류의 <b>탐조등</b>이라고 보면 된다. 어떤 탐조등(X-ray)은 단단한 것(뼈)에 그림자를 만들고, 어떤 것(PET)은 대상이 스스로 내는 빛(대사 활동)을 본다. <b>비유의 한계:</b> 탐조등은 표면만 비추지만 의료영상은 <b>몸을 관통한 신호의 차이</b>를 재구성하므로 단면·3D까지 만든다(특히 CT).</p>
-            <p><b>Definition(정의).</b> 각 모달리티는 <b>원리(physics) · 방사선 유무 · 주 대상(structure vs function/metabolism) · 장단점</b>으로 정의된다. 이 4칸을 채운 표가 곧 시험 답이다.</p>
-            <p><b>Mechanism(메커니즘) — 두 축으로 분류.</b> ① <b>방사선 축:</b> 있음 = X-ray·CT·Mammography·Fluoroscopy·DSA·PET·SPECT / 없음 = <b>MRI·Ultrasound·OCT</b>. ② <b>보는 것 축:</b> 구조(anatomy) = X-ray·CT·MRI·US·OCT / 기능·대사(function·metabolism) = <b>PET·SPECT</b>. 이 두 축에 아래 11개를 꽂으면 매칭 문제가 거의 자동으로 풀린다.</p></div>
-          <div class="field"><span class="lbl">📖 모달리티별 핵심</span>
-            <ul>
-              <li><b>X-ray</b>: 고에너지 전자파, 조직 밀도차 흡수(뼈=흰색). 골절·흉부·치과. 빠름·저렴·골격 탁월 / 연조직 해상도 낮음·방사선·2D.</li>
-              <li><b>CT</b>: 여러 방향 X-ray를 컴퓨터 재구성 → 단면·<b>3D</b>. 뇌출혈·흉복부. 고해상도·3D·빠름 / 방사선·조영제·고가.</li>
-              <li><b>MRI</b>: 강한 자기장+RF, <b>수소 원자핵(프로톤)</b> 신호. <b>연조직 정밀</b>(뇌·척수·관절). 확장 fMRI/DWI/DTI. <b>방사선 없음</b> / 고가·소음·금속 제한.</li>
-              <li><b>Ultrasound</b>: 고주파 음파 반사. <b>실시간</b>·태아·혈류(Doppler). <b>방사선 없음</b>·실시간·휴대·저렴 / 공기·뼈 통과 어려움·숙련 의존.</li>
-              <li><b>PET</b>: 방사성 동위원소(<b>FDG=포도당 유사</b>) → 대사 활발한 부위 집중 → 양전자→감마선. <b>대사·기능 영상</b>. 조기탐지·전이 탁월 / 고가·방사성·시간 김.</li>
-              <li><b>SPECT</b>: 감마선 방출체(Tc-99m, I-123) → <b>단일 광자</b> → 감마카메라 회전. 심근관류·뇌혈류. 보편·저렴 / 해상도 낮음(PET보다).</li>
-              <li><b>Mammography</b>: 유방 전용 저용량 X-ray. 미세석회화 조기발견. <b>젊은 여성 치밀유방 민감도 낮음</b>.</li>
-              <li><b>Fluoroscopy</b>: X-ray <b>실시간 연속</b> 조사(C-arm). 조영제로 소화기·혈관. <b>방사선 노출시간 증가</b>.</li>
-              <li><b>DSA</b>: 조영 전·후 영상을 <b>디지털 감산</b> → <b>혈관만 선명</b>. 뇌동맥류·AVM. 고급 fluoroscopy.</li>
-              <li><b>OCT</b>: 근적외선 빛의 <b>간섭</b> → <b>μm 단위</b> 초고해상도·비침습. 안과(망막)·혈관내시경. 깊은 조직 어려움.</li>
-              <li><b>Dermatoscopy</b>: 피부 병변 고배율(10~20배)+편광. <b>ABCD Rule</b>, AI 멜라노사이트 분류. 피부암 감별.</li>
-            </ul>
-          </div>
-          <div class="field"><span class="lbl">📊 비교표 인사이트 — 시험 단골 5종 대조!</span>
-            <div class="matchtable"><div class="mt-cap">① X-ray vs CT vs MRI vs US (Week2 p.41)</div><div class="scrollx"><table>
-              <tr><th></th><th>X-ray</th><th>CT</th><th>MRI</th><th>US</th></tr>
-              <tr><td>방사선</td><td><b>있음</b></td><td><b>있음</b></td><td>없음</td><td>없음</td></tr>
-              <tr><td>실시간</td><td>✗</td><td>✗</td><td>✗</td><td><b>✅</b></td></tr>
-              <tr><td>강점</td><td>골격</td><td>3D 단면</td><td>연조직</td><td>실시간·태아</td></tr>
-              <tr><td>금기</td><td>—</td><td>조영제</td><td><b>금속 이식물</b></td><td>피부상처·공기</td></tr>
-            </table></div></div>
-            <div class="matchtable"><div class="mt-cap">② CT vs MRI vs PET (Week2 p.44)</div><div class="scrollx"><table>
-              <tr><th></th><th>CT</th><th>MRI</th><th>PET</th></tr>
-              <tr><td>목적</td><td><b>해부구조</b></td><td><b>연조직 해상도</b></td><td><b>대사·기능</b></td></tr>
-              <tr><td>조기진단</td><td>제한</td><td>제한</td><td><b>가능(대사이상 포착)</b></td></tr>
-            </table></div></div>
-            <div class="matchtable"><div class="mt-cap">③ PET vs SPECT (Week2 p.46)</div><div class="scrollx"><table>
-              <tr><th></th><th>PET</th><th>SPECT</th></tr>
-              <tr><td>방출체</td><td>양전자(F-18, Ga-68)</td><td>감마선(Tc-99m, I-123)</td></tr>
-              <tr><td>검출</td><td><b>쌍감마선 동시</b></td><td><b>단일 감마선</b></td></tr>
-              <tr><td>해상도/가격</td><td>고해상도·고가</td><td>저해상도·저렴·보편</td></tr>
-            </table></div></div>
-            <div class="matchtable"><div class="mt-cap">④ 유방암 적합 도구 (Week2 p.47)</div><div class="scrollx"><table>
-              <tr><th>도구</th><th>역할</th></tr>
-              <tr><td>Mammography</td><td>1차 스크리닝(저용량 X-ray)</td></tr>
-              <tr><td>Ultrasound</td><td>보완(치밀유방)</td></tr>
-              <tr><td>MRI</td><td>고위험군</td></tr>
-              <tr><td>PET</td><td>전이 평가</td></tr>
-            </table></div></div>
-            <div class="matchtable"><div class="mt-cap">⑤ CT vs MRI vs OCT (Week2 p.52) — 해상도</div><div class="scrollx"><table>
-              <tr><th></th><th>CT</th><th>MRI</th><th>OCT</th></tr>
-              <tr><td>해상도</td><td><b>mm</b></td><td><b>mm~sub-mm</b></td><td><b>μm</b></td></tr>
-              <tr><td>특징</td><td>—</td><td>—</td><td>망막·혈관 비접촉</td></tr>
-            </table></div></div>
-          </div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 (증상→모달리티 선택)</span>
-            <i>"각 상황에 가장 적합한 모달리티는? ① 임신부 태아 실시간 ② 무릎 인대(연조직) ③ 암 전이(대사) ④ 뇌동맥류 혈관만 선명"</i>
-            <div class="stepper">
-              <div class="step show"><div class="step-head">1단계</div>① "실시간 + 방사선 없어야(태아)" → <b>Ultrasound</b></div>
-              <div class="step"><div class="step-head">2단계</div>② "연조직 정밀" → <b>MRI</b> (무방사선·연조직 탁월)</div>
-              <div class="step"><div class="step-head">3단계</div>③ "대사·기능 + 전이" → <b>PET</b> (대사영상, 조기진단)</div>
-              <div class="step"><div class="step-head">4단계 → 답</div>④ "혈관만 분리" → 디지털 감산 = <b>DSA</b>. ∴ ①US ②MRI ③PET ④DSA</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
-            </div>
-          </div>
-          <div class="field"><span class="lbl">✏️ 특성→모달리티 빠른 매칭</span>
-            <div class="callout">"방사선 없는 것은?" → <b>MRI · US · OCT</b> · "실시간인 것은?" → <b>US · Fluoroscopy</b> · "대사 영상은?" → <b>PET</b> · "μm 해상도는?" → <b>OCT</b> · "혈관만 보는 것은?" → <b>DSA</b></div>
-          </div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">CT는 X-ray 기반이라 <b>방사선 있음</b>(MRI와 헷갈리지 말 것). PET=양전자/쌍감마선, SPECT=단일감마선 — <b>반대로 외우기 쉬움.</b> MRI 금기=금속, US 금기=공기/상처.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>⭐⭐⭐ 모달리티↔원리/방사선유무/주대상/장단점 매칭. "방사선 없는 것?", "실시간?", "대사?", "혈관만?", "μm 해상도?"</div>
-          <div class="field" style="color:var(--muted);font-size:.85rem">🔗 연결: 응용 C19(영상=CNN 입력)</div>
-        </div>
-      </details>
-    </section>
-
-    <!-- ================= 줄기 B4 ================= -->
-    <section class="stem-sec" id="B4">
-      <h2>B4. 계측 시스템 (Instrumentation)</h2>
-
-      <details class="node-card hot3" id="C13" data-node-id="C13" data-title="계측 시스템 3블록 모델 Transducer">
-        <summary><input type="checkbox" class="nodechk" data-id="C13" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C13. 계측 시스템 3블록 모델<span class="nbadge hot">⭐⭐⭐高</span><span class="nbadge">선행: C6</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span>몸의 신호를 측정/제어하는 <b>3블록 파이프라인</b>: 변환 → 전자 인터페이스 → 연산.</div>
-          <div class="field"><span class="lbl">📖 정의 (3 Primary Subsystems)</span>(1) <b>Transducer</b> → (2) <b>Electronics Interface</b> → (3) <b>Computation Unit</b>. (Tissue/생리신호와 Energy source 포함)</div>
-          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario">EMG Controlled Car — 근육 신호(Muscle)를 EMG 센서(<b>Transducer</b>)가 전압으로 바꾸고, 증폭·필터·정류(<b>Electronics Interface</b>)를 거쳐 ADC로 디지털화, 컴퓨터/MCU(<b>Computation Unit</b>)가 처리해 모터를 제어한다.</div></div>
-          <div class="field"><span class="lbl">🔍 블록별 세부</span>
-            <ul>
-              <li><b>Transducer (Sensor + Actuator)</b>: 센서=생리신호 감지, 액추에이터=자극/제어. 대부분 <b>voltage 신호</b> 생성.</li>
-              <li><b>Electronics Interface (Pre-amplifier → Signal Conditioning → Buffer)</b>: A/D 변환 가능한 신호로. <b>SNR·대역폭 보존</b>. — Pre-amp: 저잡음·differential, <b>시스템 잡음 지배</b> / Signal Conditioning: 전압변환·증폭·필터링·정류·변조 / Buffer: 긴 케이블 구동, <b>front-end·back-end 1~2m 이상 떨어질 때만</b> 필요.</li>
-              <li><b>Computation Unit</b>: UI·전체 제어·저장·신호처리·안전. (Data converter·DSP·Storage·UI·Comms·Control)</li>
-            </ul>
-          </div>
-          <div class="field"><span class="lbl">🔍 STEP-BY-STEP: 신호가 3블록을 통과하는 경로</span>
-            <div class="stepper">
-              <div class="step show"><div class="step-head">1. 직관</div>몸의 신호는 약하고 잡음투성이 → 단계적으로 다듬어 컴퓨터가 읽게 한다.</div>
-              <div class="step"><div class="step-head">2. 셋업</div>입력 = 생리신호(bioelectric 등). 목표 = 디지털 데이터/제어 명령.</div>
-              <div class="step"><div class="step-head">3. 전개 1</div><b>Transducer</b>가 생리신호를 전압으로 변환(센서) — modality·source·dynamic range를 맞춤.</div>
-              <div class="step"><div class="step-head">4. 전개 2</div><b>Pre-amplifier</b>가 저잡음으로 증폭(여기서 시스템 잡음이 결정됨).</div>
-              <div class="step"><div class="step-head">5. 전개 3</div><b>Signal Conditioning</b>이 필터·정류·변조로 A/D 가능하게 다듬음.</div>
-              <div class="step"><div class="step-head">6. 전개 4</div>(원거리면) <b>Buffer</b>가 케이블 구동. → ADC.</div>
-              <div class="step"><div class="step-head">7. 결론</div><b>Computation Unit</b>이 디지털 신호를 처리·저장·표시·제어.</div>
-              <div class="step"><div class="step-head">8. 시험 변형</div>"잡음을 지배하는 블록은?"→Pre-amp. "Buffer가 필요한 조건?"→front/back-end 1~2m↑.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
-            </div>
-          </div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap"><b>잡음은 pre-amp가 지배</b>(필터가 아님). <b>Buffer는 항상 필요한 게 아니라</b> 원거리(1~2m↑)에서만.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>⭐ 3블록 이름·순서, 각 기능. Pre-amp=잡음 지배. Buffer=원거리에서만.</div>
-          <div class="field" style="color:var(--muted);font-size:.85rem">🔗 연결: 선행 C6, 예시 C9(EMG car), 응용 C14·C15</div>
-        </div>
-      </details>
-
-      <details class="node-card" id="C14" data-node-id="C14" data-title="측정 계측의 정의 Measurement Instrumentation">
-        <summary><input type="checkbox" class="nodechk" data-id="C14" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C14. 측정·계측의 정의<span class="nbadge">⭐中</span><span class="nbadge">선행: C13</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span>"측정 못하면 제어 못한다" — 재는 것이 모든 의료기기의 출발점.</div>
-          <div class="field"><span class="lbl">📖 정의</span><b>Measurement system</b> = 물리·전기량(질량·온도·압력·전압) 측정, 사건/위치 탐지, 객체 식별·계수(적혈구). <b>Instrumentation</b> = 측정기기로 프로세스를 monitor·control 하는 기술. <b>Biomedical Instrumentation</b> = 몸으로부터/몸으로 데이터를 측정·기록·전송하는 기기 분야.</div>
-          <div class="field"><span class="lbl">🔍 요구사항</span>정확도·해상도·무게·부피·비용·환경.</div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>측정 시스템 요구사항. <b>"측정 못하면 제어 못한다"</b> 명제. Measurement vs Instrumentation vs Biomedical Instrumentation 구분.</div>
-          <div class="field" style="color:var(--muted);font-size:.85rem">🔗 연결: 선행 C13, 응용 C15</div>
-        </div>
-      </details>
-
-      <details class="node-card hot3" id="C15" data-node-id="C15" data-title="생체계측 시스템 5대 분류 Direct Indirect Invasive">
-        <summary><input type="checkbox" class="nodechk" data-id="C15" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C15. 생체계측 시스템 5대 분류<span class="nbadge hot">⭐⭐⭐高</span><span class="nbadge">선행: C13, C14</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span>
-            <p><b>Hook.</b> "이 의료기기는 침습적인가? 직접 재는가?" 같은 질문에 답하려면 <b>분류 잣대</b>가 필요하다. 시험은 구체 기기(ECG·인슐린 펌프·HIFU)를 던지고 <b>"어느 분류에 속하나"</b>를 매칭하라고 묻는다.</p>
-            <p><b>Intuition(직관).</b> 모든 생체계측(biomedical instrumentation, 생체계측) 시스템은 <b>5쌍의 양자택일(dichotomy, 이분법)</b>로 한 줄 요약된다. 각 쌍은 "예/아니오 한 칸"이라 외우기 쉽다.</p>
-            <p><b>Analogy(비유).</b> 신상명세서의 <b>체크박스 5개</b>라고 보면 된다 — 직접/간접, 침습/비침습, 접촉/원격, 읽기/작동, 동적/정적. 기기 하나가 들어오면 박스 다섯 개에 체크하면 분류 끝. <b>비유의 한계:</b> 박스끼리 독립이 아니다 — 예컨대 HIFU는 "작동(actuate)"이면서 동시에 "원격(remote)"이라 한 기기가 여러 축에 동시에 걸린다.</p>
-            <p><b>Definition(정의).</b> 5 dichotomy = <b>Direct/Indirect(직접/간접)</b> · <b>Invasive/Noninvasive(침습/비침습)</b> · <b>Contact/Remote(접촉/원격)</b> · <b>Sense/Actuate(감지/작동)</b> · <b>Dynamic/Static(동적/정적)</b>. 각 축은 측정 방식의 한 성질을 가른다.</p>
-            <p><b>Mechanism(메커니즘) — 헷갈리는 축만 콕.</b> ① <b>Direct/Indirect:</b> 재려는 양 자체를 재면 직접, 관련된 다른 양으로 추정하면 간접 → <b>ECG는 간접</b>(체표면 전압은 심장 활동전위 전파와 "관련될 뿐"). ② <b>Sense/Actuate:</b> 읽기만 하면 sense, 몸에 작용을 가하면 actuate → 인슐린 펌프·HIFU는 actuate. ③ <b>Contact/Remote:</b> 닿으면 contact(인슐린 펌프), 안 닿으면 remote(HIFU·MRI). ④ <b>Dynamic/Static:</b> 실시간 시계열 변화를 따라가면 dynamic(Doppler 혈류), 시간 평균(temporal average)이면 static.</p></div>
-          <div class="field"><span class="lbl">📊 표 인사이트 — 5 dichotomy + 예시 (Week3) ⭐⭐ 매칭 핵심!</span>
-            <div class="matchtable"><div class="mt-cap">⭐⭐ 매칭 대조표: 생체계측 5대 분류 + 예시</div><div class="scrollx"><table>
-              <tr><th>분류</th><th>정의</th><th>대표 예시</th></tr>
-              <tr><td><b>Direct / Indirect</b></td><td>직접 vs 관련 파라미터로</td><td>직접=동맥 평균 혈류량 / <b>간접=ECG</b>(체표면 기록은 활동전위 전파와 관련될 뿐)</td></tr>
-              <tr><td><b>Invasive / Noninvasive</b></td><td>장치 삽입 여부</td><td>침습=신경섬유 활동전위 직접 기록 / 비침습=초음파 color flow</td></tr>
-              <tr><td><b>Contact / Remote</b></td><td>대상 접촉 여부</td><td>접촉=근섬유 strain gauge / 원격=MRI·초음파</td></tr>
-              <tr><td><b>Sense / Actuate</b></td><td>읽기 vs 액션</td><td>actuator(접촉)=<b>자동 인슐린 펌프</b> / actuator(원격)=<b>HIFU</b>(집속초음파 수술)</td></tr>
-              <tr><td><b>Dynamic / Static</b></td><td>시계열 변화 정도</td><td>Dynamic=초음파 Doppler(심주기 내 혈속) / Static=<b>시간 평균(temporal average)</b> 측정</td></tr>
-            </table></div></div>
-          </div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 (예시→분류 매칭)</span>
-            <i>"각 예시를 5분류 축·값에 매칭: ① ECG ② 자동 인슐린 펌프 ③ HIFU 수술 ④ 초음파 Doppler 혈류속도"</i>
-            <div class="stepper">
-              <div class="step show"><div class="step-head">1단계</div>① ECG = 심장 활동전위 자체가 아니라 체표면 신호 = <b>Indirect(간접)</b></div>
-              <div class="step"><div class="step-head">2단계</div>② 인슐린 펌프 = 읽기가 아니라 약물 주입(액션)+몸 접촉 = <b>Actuate / Contact</b></div>
-              <div class="step"><div class="step-head">3단계</div>③ HIFU = 초음파로 수술(액션)+비접촉 = <b>Actuate / Remote</b></div>
-              <div class="step"><div class="step-head">4단계 → 답</div>④ Doppler 혈류속도 = 실시간 시계열 변화 = <b>Dynamic</b>. ∴ ①Indirect ②Actuate·Contact ③Actuate·Remote ④Dynamic</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
-            </div>
-          </div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap"><b>ECG=간접(Indirect)</b> 측정(직접 아님!). Dynamic=실시간 변화(시간응답 ≤ 생리 시상수), <b>Static=시간 평균(temporal average)</b>.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>⭐⭐ 5분류 예시 매칭(ECG=간접, 인슐린펌프=actuator/contact, HIFU=actuator/remote). 동적 vs 정적 정의.</div>
-          <div class="field" style="color:var(--muted);font-size:.85rem">🔗 연결: 선행 C13·C14</div>
-        </div>
-      </details>
-    </section>
-
-    <!-- ================= 줄기 B5 ================= -->
-    <section class="stem-sec" id="B5">
-      <h2>B5. 신경망 & CNN (Neural Networks)</h2>
-
-      <details class="node-card hot" id="C16" data-node-id="C16" data-title="인공뉴런 활성화함수 퍼셉트론 Sigmoid TanH ReLU">
-        <summary><input type="checkbox" class="nodechk" data-id="C16" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C16. 인공뉴런 / 활성화함수 / 퍼셉트론<span class="nbadge hot">⭐⭐高</span><span class="nbadge">선행: C2</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span>뉴런 = "입력에 가중치 곱해 더하고(가중합) + 비선형 함수로 굽히기".</div>
-          <div class="field"><span class="lbl">🧮 수식 (뉴런, Week3 p.30)</span><div>\[ z = w_1 x_1 + w_2 x_2 + w_3 x_3 + b = \sum_i w_i x_i + b \]</div><div style="color:var(--muted);font-size:.88rem">입력 가중합 + 편향(bias). 이후 활성화함수 통과.</div></div>
-          <div class="field"><span class="lbl">📖 활성화함수 (Week3 p.31)</span>층 출력에 적용해 <b>비선형성 부여</b>. <b>없으면 NN이 선형회귀로 축소</b>된다(아무리 층을 쌓아도).</div>
-          <div class="field"><span class="lbl">📊 표 인사이트 — 활성화함수 3종 매칭</span>
-            <div class="matchtable"><div class="mt-cap">⭐ 매칭 대조표: 활성화함수 3종 식·치역</div><div class="scrollx"><table>
-              <tr><th>함수</th><th>수식</th><th>치역</th></tr>
-              <tr><td><b>Sigmoid</b></td><td>\( f(x)=\dfrac{1}{1+e^{-x}} \)</td><td><b>(0, 1)</b></td></tr>
-              <tr><td><b>TanH</b></td><td>\( \tanh(x)=\dfrac{2}{1+e^{-2x}}-1 \)</td><td><b>(−1, 1)</b></td></tr>
-              <tr><td><b>ReLU</b></td><td>\( f(x)=\max(0,x) \)</td><td><b>[0, ∞)</b></td></tr>
-            </table></div></div>
-          </div>
-          <div class="field"><span class="lbl">🔍 퍼셉트론 (Week3 p.32)</span>뉴런 + 계단형 활성화(\( \sum wx+b\ge 0 \)이면 1, 아니면 0). 가중치 작은 변화가 큰 출력 변화 유발 → 다른(부드러운) 활성화함수 사용. <b>단일 퍼셉트론은 XOR 표현 불가.</b> <b>MLP</b> = 여러 퍼셉트론·완전연결층 + 다양한 활성화함수.</div>
-          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario">폐렴 판별 뉴런 — X-ray 특징들(x)에 가중치(w)를 곱해 합치고, Sigmoid로 0~1 확률로 굽혀 "폐렴일 확률 0.87"을 낸다.</div></div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap"><b>활성화함수가 없으면 선형회귀</b>(비선형성이 핵심 이유). <b>단일 퍼셉트론은 XOR 불가</b> → MLP가 필요했던 역사적 이유. Sigmoid 치역=(0,1), TanH=(−1,1) 헷갈리지 말 것.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>⭐ 활성화함수 목적(비선형성, 없으면 선형회귀). Sigmoid/TanH/ReLU 식·치역 매칭. 단일 퍼셉트론 XOR 불가.</div>
-          <div class="field" style="color:var(--muted);font-size:.85rem">🔗 연결: 선행 C2, 응용 C17</div>
-        </div>
-      </details>
-
-      <details class="node-card hot" id="C17" data-node-id="C17" data-title="신경망 구조 파라미터 수 계산 행렬표현 softmax">
-        <summary><input type="checkbox" class="nodechk" data-id="C17" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C17. 신경망 구조 / 파라미터 수 계산 / 행렬표현<span class="nbadge hot">⭐⭐高</span><span class="nbadge">선행: C16</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span>각 층의 파라미터 수 = <b>(출력노드 수) × (입력노드 수 + 1)</b> — +1은 bias.</div>
-          <div class="field"><span class="lbl">🧮 수식 (파라미터 수, Week3 p.34)</span><div>\[ \text{params per layer} = n_{out} \times (n_{in} + 1) \]</div><div style="color:var(--muted);font-size:.88rem">전체 = 각 층 합.</div></div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 (파라미터 수 계산 — 시험 계산형!)</span>
-            <i>입력 6노드 → 1st hidden 4 → 2nd hidden 3 → output 1. 총 파라미터 수는?</i>
-            <div class="stepper">
-              <div class="step show"><div class="step-head">1단계</div>1st hidden: 출력 4 × (입력 6 + 1) = 4 × 7 = <b>28</b></div>
-              <div class="step"><div class="step-head">2단계</div>2nd hidden: 출력 3 × (입력 4 + 1) = 3 × 5 = <b>15</b></div>
-              <div class="step"><div class="step-head">3단계</div>output: 출력 1 × (입력 3 + 1) = 1 × 4 = <b>4</b></div>
-              <div class="step"><div class="step-head">4단계 → 답</div>합산: 28 + 15 + 4 = <b>47</b> (bias를 빼먹으면 안 됨!)</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
-            </div>
-          </div>
-          <div class="field"><span class="lbl">🧮 행렬표현 (Week3 p.35)</span><div>\[ x=[x_1,x_2,x_3]=a^{(1)},\quad z^{(2)}=xW^{(1)},\quad a^{(2)}=f(z^{(2)}),\ \dots\ y=\text{softmax}(z^{(4)}) \]</div><div style="color:var(--muted);font-size:.88rem"><b>softmax</b>는 마지막 층 선호(값을 <b>확률</b>로 해석 가능).</div></div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap"><b>bias의 +1을 빼먹는 것</b>이 가장 흔한 계산 실수. softmax는 은닉층이 아니라 <b>출력층</b>.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>⭐ 파라미터 수 = Σ (출력 × (입력+1)). softmax=출력층(확률 해석).</div>
-          <div class="field" style="color:var(--muted);font-size:.85rem">🔗 연결: 선행 C16, 응용 C18</div>
-        </div>
-      </details>
-
-      <details class="node-card hot" id="C18" data-node-id="C18" data-title="Forward Backward Propagation 학습 절차 Loss 곡선">
-        <summary><input type="checkbox" class="nodechk" data-id="C18" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C18. Forward / Backward Propagation / 학습 절차<span class="nbadge hot">⭐⭐高</span><span class="nbadge">선행: C17</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 직관</span><b>앞으로(forward)</b> 가서 예측하고, 틀린 만큼 <b>뒤로(backward)</b> 돌아가며 가중치를 고친다.</div>
-          <div class="field"><span class="lbl">📖 정의</span><b>Forward propagation</b>: 입력 X → 은닉층 \( a^{(2)},a^{(3)},a^{(4)} \) 순차 계산 → 출력 \( \hat{y} \).<br><b>Backward propagation</b>: 손실 \( J(y,\hat{y}) \) → 출력층 가중치부터 역순으로 gradient \( \frac{\partial J}{\partial W_4}, \dots, \frac{\partial J}{\partial W_1} \) 계산(체인룰, 역순 전파).</div>
-          <div class="field"><span class="lbl">🔍 STEP-BY-STEP: 학습 5단계 (Week3 p.43 TRAINING STEPS)</span>
-            <div class="stepper">
-              <div class="step show"><div class="step-head">1. Feed network</div>입력·batch·epoch 설정, 가중치 초기화</div>
-              <div class="step"><div class="step-head">2. Make prediction</div>forward로 출력 \( \hat{y} \) 생성</div>
-              <div class="step"><div class="step-head">3. Compare with ground truth</div><b>손실함수 J 계산</b> (\( y \) vs \( \hat{y} \))</div>
-              <div class="step"><div class="step-head">4. Calculate gradients & Update</div>\( \partial J/\partial w_i \) 계산, <b>backpropagation</b>으로 가중치 갱신</div>
-              <div class="step"><div class="step-head">5. Iterate & monitor</div>반복하며 수렴·과적합 감시</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
-            </div>
-          </div>
-          <div class="field"><span class="lbl">📊 그래프 인사이트 (Week3 p.44) — 진단형 출제!</span>
-            <div class="callout"><b>Loss vs epoch (학습률 진단)</b>: very high LR → <b>발산(상승)</b> / low LR → <b>너무 느림</b> / high LR → <b>정체(플래토)</b> / <b>good LR → 부드럽게 수렴</b>.<br><b>Accuracy vs epoch (과적합 진단)</b>: training↑인데 validation이 <b>크게 뒤처지면 strong overfitting</b>, 약간 뒤처지면 little overfitting.</div>
-          </div>
-          <div class="field"><span class="lbl">✏️ 단계별 풀이 예제 (Loss 곡선 진단)</span>
-            <i>"Loss가 epoch 따라 위로 치솟으면 무엇이 문제?"</i>
-            <div class="stepper">
-              <div class="step show"><div class="step-head">1단계</div>Loss는 줄어야 정상인데 올라감 = 발산.</div>
-              <div class="step"><div class="step-head">2단계 → 답</div>발산의 원인 = <b>학습률이 너무 큼(very high LR)</b> → 학습률을 낮춰야 함.</div>
-              <div class="stepper-nav"><button class="btn" onclick="stepMove(this,-1)">← 이전</button><button class="btn" onclick="stepMove(this,1)">다음 →</button><span class="dots"></span></div>
-            </div>
-          </div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap">forward=입력→출력, backward=손실→gradient(반대 방향). 손실 J는 4단계가 아니라 <b>3단계</b>에서 계산(예측 직후 비교).</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>⭐ forward/backward 방향. 학습 5단계 순서. Loss 곡선→학습률, Accuracy 곡선→과적합 진단.</div>
-          <div class="field" style="color:var(--muted);font-size:.85rem">🔗 연결: 선행 C17, 응용 C19</div>
-        </div>
-      </details>
-
-      <details class="node-card hot" id="C19" data-node-id="C19" data-title="CNN 합성곱 신경망 이미지 분석 filter kernel 데이터 증강">
-        <summary><input type="checkbox" class="nodechk" data-id="C19" onclick="event.stopPropagation();markDone(this)" title="학습 완료">C19. CNN (합성곱 신경망) / 이미지 분석<span class="nbadge hot">⭐⭐高</span><span class="nbadge">선행: C18, C11</span><span class="chev">▶</span></summary>
-        <div class="nbody">
-          <div class="field"><span class="lbl">🎯 개념 설명 (Hook → Intuition → Analogy → Definition → Mechanism)</span>
-            <p><b>Hook.</b> 흉부 X-ray 한 장은 224×224만 해도 5만 픽셀이다. 이걸 일렬로 펴서 일반 <b>fully-connected(완전연결)</b> 신경망에 넣으면 파라미터가 폭발하고, 결정적으로 <b>"옆 픽셀이 옆에 있다"는 공간 정보가 사라진다.</b> CNN(Convolutional Neural Network, 합성곱 신경망)은 바로 이 문제를 푼다.</p>
-            <p><b>Intuition(직관).</b> 핵심 동작 하나만 보면 된다. 작은 격자(필터)를 이미지 위에 올려놓고 <b>겹친 칸끼리 곱해서 더한 한 숫자</b>를 만든다. 그 격자를 한 칸씩 오른쪽·아래로 밀면서 같은 계산을 반복하면, 이미지가 <b>특징맵(feature map, 특징맵)</b>이라는 새 격자로 변환된다. "세로선이 있는 자리"에서 큰 값이 나오는 필터를 쓰면, 특징맵은 곧 "세로선 지도"가 된다.</p>
-            <p><b>Analogy(비유).</b> <b>손전등(필터)을 들고 어두운 사진을 훑는</b> 장면을 떠올려라. 손전등이 비추는 작은 영역만 보고 "여기 내가 찾는 무늬(가장자리·선)가 얼마나 있나"를 점수로 적는다. 손전등을 격자처럼 한 칸씩 옮기며 점수표를 채우면, 그 점수표가 특징맵이다. <b>비유가 깨지는 지점:</b> 손전등은 밝기만 보지만, 실제 필터는 <b>음수 가중치(negative weight)</b>도 가져 "특정 무늬가 있으면 더하고 반대 무늬면 빼는" 식으로 동작한다. 그래서 결과에 음수도 나온다.</p>
-            <p><b>Definition(정의).</b> <b>convolution(합성곱)</b> = 입력 채널(color channels, 보통 RGB에 <b>zero-padding(영 채움)</b>)에 <b>kernel(=filter, 커널/필터)</b>를 슬라이드하며 원소별 곱의 합 + bias(편향)를 계산해 output channel(출력 채널)을 만드는 연산. 필터 하나가 출력 채널 하나를 만들고, 필터를 여러 개 쓰면 여러 출력 채널이 쌓인다.</p>
-            <p><b>Mechanism(메커니즘) — 한 겹씩.</b> ① <b>윈도우층:</b> 필터를 입력 좌상단에 정렬한다. ② <b>곱-합층:</b> 겹친 칸끼리 곱하고 모두 더한 뒤 bias를 더해 특징맵의 한 칸을 채운다. ③ <b>슬라이드층:</b> 필터를 stride(보폭)만큼 옮겨 ②를 반복 — 전체를 훑으면 특징맵 한 장 완성. ④ <b>다채널층:</b> 다른 필터(가로선·코너 검출기)로 ①~③을 반복해 출력 채널을 쌓는다. ⑤ <b>깊이층:</b> CNN은 이렇게 뉴런을 <b>3차원(width·height·depth, 너비·높이·깊이)</b>으로 배열해, 얕은 층이 가장자리를, 깊은 층이 폐 음영 같은 큰 패턴을 잡는다. 아래 애니메이션이 ①~③을 직접 보여준다.</p></div>
-          <div class="field"><span class="lbl">🎬 인터랙티브 — convolution(합성곱) 슬라이딩 윈도우가 특징맵을 만든다</span>
-            <figure class="viz-scene" id="cnnConvScene">
-              <canvas id="cnnConvCanvas" style="height:260px" role="img" aria-label="3x3 필터가 입력 위를 슬라이드하며 특징맵을 채우는 합성곱 애니메이션"></canvas>
-              <figcaption data-caption class="viz-caption"></figcaption>
-              <div class="viz-metric">
-                <span>현재 합성곱 값 <b id="cnnConvVal">0</b></span>
-                <span>채운 칸 <b><span id="cnnConvFilled">0</span> / 9</b></span>
-                <div class="viz-meter" aria-hidden="true"><i id="cnnConvMeter"></i></div>
-              </div>
-              <div class="viz-controls">
-                <button class="btn" data-prev aria-label="이전 단계">◀ 이전</button>
-                <button class="btn" data-play>▶ 재생</button>
-                <button class="btn" data-next aria-label="다음 단계">다음 ▶</button>
-                <input type="range" data-scrub min="0" step="1" value="0" aria-label="합성곱 단계 이동">
-                <span class="viz-step" data-stepidx>단계 0</span>
-              </div>
-              <p class="viz-legend">🟧 노란 테두리=현재 필터 윈도우 · 오른쪽 격자=특징맵(feature map). 이 필터는 <b>세로선 검출기(vertical line detector)</b>다 — 세로 경계에서 값이 커진다.</p>
-            </figure></div>
-          <div class="field"><span class="lbl">🌍 실세계 시나리오</span><div class="scenario">흉부 X-ray 폐렴 진단 — 첫 층 필터가 가장자리·선을 잡고, 깊은 층이 폐의 음영 패턴을 잡아 "폐렴" 분류. <b>C11의 영상이 그대로 CNN 입력</b>이 된다.</div></div>
-          <div class="field"><span class="lbl">📊 표 인사이트 — 필터 예시 (Week3 p.54)</span><div class="callout">Vertical Line Detector / Horizontal Line Detector / Corner Detector (각 3×3). <b>Filter(kernel) = 입력과 합성곱되는 가중치 집합.</b></div></div>
-          <div class="field"><span class="lbl">🔍 과적합 감소 (Week3 p.55)</span><b>데이터 증강(data augmentation)</b> — rotation·flip·crop·stretch·translate·resize·contrast·blur·RGB↔BGR·color inversion.</div>
-          <div class="field"><span class="lbl">⚠️ 함정</span><div class="trap"><b>FC가 공간 구조를 무시</b>하는 것이 CNN의 존재 이유(반대로 외우지 말 것). 데이터 증강은 과적합을 <b>줄인다</b>. CNN 뉴런은 <b>3D 배열</b>.</div></div>
-          <div class="exam-box"><span class="lbl">📝 시험 포인트</span>⭐ "FC는 공간 무시 → CNN 필요". Filter=합성곱 가중치 집합. CNN=3D(W·H·depth). 데이터 증강=과적합 감소.</div>
-          <div class="field" style="color:var(--muted);font-size:.85rem">🔗 연결: 선행 C18·C11(영상 입력)</div>
-        </div>
-      </details>
-    </section>
-
-    <!-- ===== 예상 문제 + 모범 답변 ===== -->
-    <section class="stem-sec" id="examqs">
-      <h2>📝 예상 문제 &amp; 모범 답변</h2>
-      <p style="color:var(--muted)">먼저 스스로 답한 뒤 <b>"답 보기"</b>로 확인한다. 시험 형태: <b>객관식 매칭형 중심</b>(매칭 8 + 선다/계산 7). ⚠️ 구체 기출이 없어 PDF 구조 기반 <b>출제 추정</b>이다. Week4(한계·윤리·규제)는 자료 미제공이라 제외했다.</p>
-
-      <div class="qa-item">
-        <div class="qa-q"><span class="qa-type">매칭</span><span>Q1. 다음 특성을 <b>AI / ML / DL</b>에 매칭하라.<div class="qopts">① 데이터가 가장 많이 필요 ② black box라 설명가능성 낮음 ③ feature engineering 필요 ④ 비정형 데이터에 가장 강함 ⑤ 가장 적은 데이터로 동작</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
-        <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span>①DL ②DL ③ML ④DL ⑤AI. (데이터 필요량 AI &lt; ML &lt; DL, 설명가능성 AI &gt; ML &gt; DL, DL=feature 자동·비정형 강함, ML=사람이 feature 설계.)</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>②④를 DL, ③을 ML로 맞히면 핵심 득점. ①⑤(데이터량 양극단)까지 맞히면 만점.</div>
-          <div class="field"><span class="lbl">❌ 오답 해설</span>③을 DL로 고르면 오답 — DL은 feature engineering 불필요(자동 추출). ④를 ML로 고르면 오답.</div>
-          <div style="color:var(--muted);font-size:.85rem">연결 노드: C2</div>
-        </div>
-      </div>
-
-      <div class="qa-item">
-        <div class="qa-q"><span class="qa-type">매칭</span><span>Q2. 학습 패러다임 <b>지도/비지도/강화</b>와 각 "단점"을 연결하라.<div class="qopts">(가) 라벨링 비용 큼 (나) 결과 평가 어려움(정답 없음) (다) 느리고 복잡·실험·윤리 어려움</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
-        <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span>(가)-지도학습 / (나)-비지도학습 / (다)-강화학습.</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>"정답 없음→평가 어려움=비지도"가 핵심. 입력데이터 축(지도=입력+정답 / 비지도=입력만 / 강화=상태·행동·보상)도 쓰면 가점.</div>
-          <div class="field"><span class="lbl">❌ 오답 해설</span>강화학습을 "정답이 있어야 학습"으로 보면 오답 — 강화는 보상(reward)으로 학습(정답 라벨 없음).</div>
-          <div style="color:var(--muted);font-size:.85rem">연결 노드: C3, C4</div>
-        </div>
-      </div>
-
-      <div class="qa-item">
-        <div class="qa-q"><span class="qa-type">선다</span><span>Q3. 출력이 <b>연속값</b>이고 평가지표로 <b>MSE/MAE</b>를 쓰는 ML 문제 유형은?<div class="qopts">① 분류 ② 회귀 ③ 클러스터링 ④ 강화학습</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
-        <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span><b>② 회귀.</b> 출력=연속형(continuous), 평가=MSE/MAE. 예: 생존기간(개월)·혈당·심박출량 예측.</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>"이산=분류 / 연속=회귀 / 라벨없는 그룹화=군집" 3분 구분을 쓰면 가점.</div>
-          <div class="field"><span class="lbl">❌ 오답 해설</span>①분류는 출력이 이산 범주(label), ③군집은 비지도(라벨 없음). 분류·회귀는 둘 다 지도학습이나 출력형이 다름.</div>
-          <div style="color:var(--muted);font-size:.85rem">연결 노드: C4</div>
-        </div>
-      </div>
-
-      <div class="qa-item">
-        <div class="qa-q"><span class="qa-type">매칭</span><span>Q4. ECG 파형 <b>P / QRS / T</b>를 의미에 매칭하라.<div class="qopts">(가) 심실 탈분극 (나) 심방 탈분극 (다) 심실 재분극</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
-        <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span>P-(나) 심방 탈분극 / QRS-(가) 심실 탈분극 / T-(다) 심실 재분극.</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>"심방 먼저→심실 나중, 탈분극(수축)→재분극(회복)" 순서 논리를 쓰면 가점.</div>
-          <div class="field"><span class="lbl">❌ 오답 해설</span>QRS를 "재분극"으로 고르면 오답 — 재분극은 T파. 심방 재분극은 QRS에 묻혀 안 보임.</div>
-          <div style="color:var(--muted);font-size:.85rem">연결 노드: C7</div>
-        </div>
-      </div>
-
-      <div class="qa-item">
-        <div class="qa-q"><span class="qa-type">매칭</span><span>Q5. EEG 대역 <b>δ/θ/α/β/γ</b>와 상태를 연결하라.<div class="qopts">① 깊은 수면 ② 졸림·명상 ③ 안정·눈 감음 ④ 집중·문제해결 ⑤ 고차원 인지·기억</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
-        <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span>δ-① / θ-② / α-③ / β-④ / γ-⑤. (주파수 오름차순 δ &lt; θ &lt; α &lt; β &lt; γ, 낮을수록 수면·높을수록 각성·인지.)</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>δ=수면(가장 낮음), α=눈감고 안정, β=집중 3개만 맞혀도 핵심 득점.</div>
-          <div class="field"><span class="lbl">❌ 오답 해설</span>α(안정·눈감음)와 β(집중)를 바꾸면 오답 — α는 깨어있되 휴식, β가 능동적 집중.</div>
-          <div style="color:var(--muted);font-size:.85rem">연결 노드: C8</div>
-        </div>
-      </div>
-
-      <div class="qa-item">
-        <div class="qa-q"><span class="qa-type">매칭</span><span>Q6. 생체신호 <b>EOG/ENG/PCG/VAG</b>를 측정 대상에 매칭하라.<div class="qopts">(가) 관절 진동·소리 (나) 눈 움직임 (다) 심음 (라) 전정기관·평형(안진)</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
-        <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span>EOG-(나) 눈 / ENG-(라) 전정·평형 / PCG-(다) 심음 / VAG-(가) 관절음.</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>어근 단서(oculo=눈, nystagmo=안진, phono=소리, arthro=관절)를 적으면 가점.</div>
-          <div class="field"><span class="lbl">❌ 오답 해설</span>EOG와 ENG는 원리가 비슷(안구 관련)해 혼동 — ENG는 무의식적 안진→전정기관 평가 특화.</div>
-          <div style="color:var(--muted);font-size:.85rem">연결 노드: C10</div>
-        </div>
-      </div>
-
-      <div class="qa-item">
-        <div class="qa-q"><span class="qa-type">선다</span><span>Q7. <b>방사선을 사용하지 않는</b> 영상 모달리티만 묶은 것은?<div class="qopts">① X-ray, CT ② MRI, Ultrasound, OCT ③ CT, PET ④ Mammography, Fluoroscopy</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
-        <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span><b>② MRI, Ultrasound, OCT.</b> (MRI=자기장+RF, US=음파, OCT=근적외선 빛 간섭 — 모두 무방사선.)</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>"X-ray·CT·Mammo·Fluoro·DSA·PET·SPECT=방사선 있음 / MRI·US·OCT=없음" 기준을 쓰면 가점.</div>
-          <div class="field"><span class="lbl">❌ 오답 해설</span>①③④는 방사선 모달리티(X-ray·CT·PET·Mammo·Fluoro) 포함 — 오답. CT는 X-ray 기반이라 방사선 있음(MRI와 혼동 주의).</div>
-          <div style="color:var(--muted);font-size:.85rem">연결 노드: C11</div>
-        </div>
-      </div>
-
-      <div class="qa-item">
-        <div class="qa-q"><span class="qa-type">매칭</span><span>Q8. 모달리티 <b>PET·SPECT·DSA·OCT·US</b>를 특징에 매칭하라.<div class="qopts">(가) μm 간섭 (나) 양전자→쌍감마선·대사 (다) 단일감마선·저렴·보편 (라) 디지털 감산·혈관만 (마) 실시간·태아·Doppler·무방사선</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
-        <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span>PET-(나) / SPECT-(다) / DSA-(라) / OCT-(가) / US-(마).</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>PET=쌍감마선, SPECT=단일감마선 구분이 핵심(가장 헷갈림). DSA=혈관만, OCT=μm도 단골.</div>
-          <div class="field"><span class="lbl">❌ 오답 해설</span>PET과 SPECT를 반대로 매칭하기 쉬움 — PET=양전자/쌍감마선/고해상도·고가, SPECT=단일감마선/저해상도·저렴.</div>
-          <div style="color:var(--muted);font-size:.85rem">연결 노드: C11</div>
-        </div>
-      </div>
-
-      <div class="qa-item">
-        <div class="qa-q"><span class="qa-type">선다</span><span>Q9. 계측 3블록 중 <b>시스템 전체 잡음 특성을 주로 지배</b>하는 요소는?<div class="qopts">① Transducer ② Pre-amplifier ③ Signal Conditioning 필터 ④ Computation Unit</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
-        <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span><b>② Pre-amplifier.</b> 저잡음·differential 설계가 시스템 잡음 특성을 좌우.</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>"Buffer는 front/back-end가 1~2m 이상 떨어질 때만 필요"까지 알면 추가 득점.</div>
-          <div class="field"><span class="lbl">❌ 오답 해설</span>③ 필터가 잡음을 줄이긴 하나 시스템 잡음 한계는 pre-amp가 결정. 흔한 함정.</div>
-          <div style="color:var(--muted);font-size:.85rem">연결 노드: C13</div>
-        </div>
-      </div>
-
-      <div class="qa-item">
-        <div class="qa-q"><span class="qa-type">매칭</span><span>Q10. 생체계측 5대 분류 <b>예시</b>를 축·값에 매칭하라.<div class="qopts">① ECG ② 자동 인슐린 펌프 ③ HIFU 수술 ④ 초음파 Doppler 혈류속도</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
-        <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span>① ECG=<b>Indirect(간접)</b> / ② 인슐린펌프=<b>Actuate·Contact</b> / ③ HIFU=<b>Actuate·Remote</b> / ④ Doppler=<b>Dynamic</b>.</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>"ECG=간접(직접 아님)"과 "Static=시간 평균(temporal average)" 정의를 쓰면 가점.</div>
-          <div class="field"><span class="lbl">❌ 오답 해설</span>ECG를 Direct로 고르면 오답 — 체표면 기록은 활동전위 전파와 관련될 뿐 직접 측정이 아님. 인슐린펌프·HIFU는 둘 다 Actuate지만 Contact↔Remote로 갈림.</div>
-          <div style="color:var(--muted);font-size:.85rem">연결 노드: C15</div>
-        </div>
-      </div>
-
-      <div class="qa-item">
-        <div class="qa-q"><span class="qa-type">선다·계산</span><span>Q11. 입력 6 → hidden 4 → hidden 3 → output 1 완전연결망의 <b>총 파라미터 수</b>(bias 포함)는?<div class="qopts">① 40 ② 43 ③ 47 ④ 50</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
-        <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span><b>③ 47.</b> 층별 출력×(입력+1): 4×(6+1)=28, 3×(4+1)=15, 1×(3+1)=4 → 28+15+4=47.</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>층별 식 \( n_{out}\times(n_{in}+1) \)을 세우면 가점.</div>
-          <div class="field"><span class="lbl">❌ 오답 해설</span>bias의 +1을 빼먹으면(4×6+3×4+1×3=39) 오답 — 가장 흔한 실수. bias 항을 반드시 더할 것.</div>
-          <div style="color:var(--muted);font-size:.85rem">연결 노드: C17</div>
-        </div>
-      </div>
-
-      <div class="qa-item">
-        <div class="qa-q"><span class="qa-type">선다</span><span>Q12. 활성화함수 설명으로 <b>옳은 것</b>은?<div class="qopts">① 없으면 더 강력 ② Sigmoid 치역은 (−1,1) ③ 없으면 선형회귀로 축소 ④ 단일 퍼셉트론으로 XOR 표현 가능</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
-        <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span><b>③ 활성화함수가 없으면 신경망은 선형회귀로 축소된다.</b> 비선형성이 활성화함수의 핵심 목적.</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>Sigmoid (0,1) / TanH (−1,1) / ReLU [0,∞) 치역을 정확히 쓰면 가점.</div>
-          <div class="field"><span class="lbl">❌ 오답 해설</span>②는 TanH의 치역(Sigmoid는 (0,1)). ④ 단일 퍼셉트론은 XOR 표현 불가(MLP 필요). ①은 정반대.</div>
-          <div style="color:var(--muted);font-size:.85rem">연결 노드: C16</div>
-        </div>
-      </div>
-
-      <div class="qa-item">
-        <div class="qa-q"><span class="qa-type">선다</span><span>Q13. CNN이 FC보다 <b>이미지 분석에 적합한 이유</b>로 가장 옳은 것은?<div class="qopts">① 연산량이 더 많아서 ② FC는 공간 구조를 무시(픽셀 섞어도 결과 동일) ③ 활성화함수가 필요 없어서 ④ 데이터 증강이 불가능해서</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
-        <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span><b>② FC는 공간 구조를 무시하기 때문.</b> CNN은 필터를 슬라이드하며 공간 구조를 보존하고, 뉴런을 3D(W·H·depth)로 배열한다.</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>"Filter=합성곱되는 가중치 집합", "데이터 증강이 과적합 감소"를 함께 쓰면 가점.</div>
-          <div class="field"><span class="lbl">❌ 오답 해설</span>④는 반대(데이터 증강은 CNN 과적합 감소 기법). ③도 틀림(CNN도 활성화함수 사용).</div>
-          <div style="color:var(--muted);font-size:.85rem">연결 노드: C19</div>
-        </div>
-      </div>
-
-      <div class="qa-item">
-        <div class="qa-q"><span class="qa-type">매칭·진단</span><span>Q14. 학습 곡선 진단. 각 현상의 원인/처방을 매칭하라.<div class="qopts">(가) Loss가 epoch에 따라 위로 치솟음 (나) training accuracy↑인데 validation이 크게 뒤처짐</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
-        <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span>(가) <b>학습률이 너무 큼(very high LR)</b> → 학습률을 낮춘다. (나) <b>strong overfitting</b> → 데이터 증강·정규화 등으로 완화.</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>학습 5단계(Feed→Predict→Compare(손실 J)→Gradient/Update→Iterate) 순서를 쓰면 가점. 손실 J 계산은 3단계.</div>
-          <div class="field"><span class="lbl">❌ 오답 해설</span>(가)를 "학습률이 너무 작음"으로 보면 오답 — 작으면 발산이 아니라 너무 느림. 정체(플래토)는 high LR.</div>
-          <div style="color:var(--muted);font-size:.85rem">연결 노드: C18</div>
-        </div>
-      </div>
-
-      <div class="qa-item">
-        <div class="qa-q"><span class="qa-type">선다</span><span>Q15. <b>Ability-based Design</b>(Edwards 1995) 설명으로 옳은 것은?<div class="qopts">① 사용자가 시스템에 적응 ② 시스템이 사용자 능력에 적응 ③ 대표 사용자 1명 상정 설계 ④ AI를 안 쓰는 전통 설계</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
-        <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span><b>② 시스템이 사용자의 능력에 맞춰 적응한다.</b> 예: 손가락 없는 사용자에게 AI가 입력 방식을 맞춰줌. 일반 설계의 User→System 적응과 반대.</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>진단(Diagnosis)→치료(Treatment: therapeutic 비침습 신경조절 / assistive 보조) 방향을 쓰면 가점.</div>
-          <div class="field"><span class="lbl">❌ 오답 해설</span>①③은 일반 시스템(User-adaptation-System) 설명 — 반대로 외우기 쉬운 함정. ④도 틀림(AI를 적극 활용).</div>
-          <div style="color:var(--muted);font-size:.85rem">연결 노드: C1</div>
-        </div>
-      </div>
-
-      <div class="qa-item">
-        <div class="qa-q"><span class="qa-type">선다</span><span>Q16. <b>convolution(합성곱)</b> 연산과 특징맵(feature map)에 대한 설명으로 <b>옳은 것</b>은?<div class="qopts">① 필터를 슬라이드하며 겹친 칸끼리 곱해 더한 값으로 특징맵을 채운다 ② 필터 하나가 여러 출력 채널을 동시에 만든다 ③ 필터 값은 모두 양수여야 한다 ④ zero-padding은 출력 채널 수를 늘리려고 쓴다</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
-        <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span><b>① 필터를 슬라이드하며 원소별 곱의 합(+ bias)으로 특징맵 한 칸씩을 채운다.</b> 위 C19 애니메이션이 보여주는 그 동작이다.</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>"필터 1개 = 출력 채널 1개", "여러 필터 → 여러 채널", "CNN 뉴런은 3D(W·H·depth) 배열"을 함께 쓰면 가점.</div>
-          <div class="field"><span class="lbl">❌ 오답 해설</span>② <b>필터 1개는 출력 채널 1개</b>만 만든다(여러 채널은 여러 필터 필요) — 오답. ③ 필터는 <b>음수 가중치</b>도 가진다(세로선 검출기처럼 한쪽은 더하고 반대쪽은 뺌) — 오답. ④ <b>zero-padding(영 채움)</b>은 가장자리를 보존해 출력 크기를 맞추려는 것이지 채널 수와 무관 — 오답.</div>
-          <div style="color:var(--muted);font-size:.85rem">연결 노드: C19</div>
-        </div>
-      </div>
-
-      <div class="qa-item">
-        <div class="qa-q"><span class="qa-type">매칭</span><span>Q17. ECG 전기전도 경로 요소를 기능에 매칭하라.<div class="qopts">(가) 박동의 출발점(자연 박동조율기) (나) 전도를 잠깐 지연해 심방이 짜낼 시간을 줌 (다) 심실 전체로 빠르게 전파</div><div class="qopts" style="margin-top:2px">요소: SA node(동방결절) · AV node(방실결절) · Purkinje fibers(푸르키네섬유)</div></span><button class="btn qa-toggle" onclick="toggleQA(this)">답 보기</button></div>
-        <div class="qa-a">
-          <div class="field"><span class="lbl">✅ 모범 답변</span>(가) <b>SA node(동방결절)</b> / (나) <b>AV node(방실결절)</b> / (다) <b>Purkinje fibers(푸르키네섬유)</b>.</div>
-          <div class="field"><span class="lbl">🎯 부분점수 포인트</span>P파=심방 탈분극, QRS=심실 탈분극, T파=심실 재분극 매칭을 함께 쓰면 가점. 전도 순서 SA→AV→His→Purkinje를 적어도 됨.</div>
-          <div class="field"><span class="lbl">❌ 오답 해설</span>SA node와 AV node를 바꿔 쓰면 오답 — <b>출발은 SA, 지연은 AV</b>다. Purkinje를 "출발점"으로 보면 오답(전파 담당).</div>
-          <div style="color:var(--muted);font-size:.85rem">연결 노드: C7</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== 누락·확인 필요 ===== -->
-    <section class="stem-sec">
-      <h2>⚠️ 누락·확인 필요 (자료 미제공)</h2>
-      <div class="miss">
-        <b>Week4 (의료 AI 한계·윤리·규제)</b>: PDF·Notion 모두 미제공 — 시험 범위 포함 시 별도 보강 필요. 본 자료는 추측 없이 빈칸 처리.<br>
-        <b>C5 의료AI 4대 장점</b>: 키워드(속도·정확도·일관성·예측)만 있고 각 설명 Blank.<br>
-        <b>구체 기출 문항 없음</b>: "객관식 70~80%·안 어렵다" 강조만. C1·C11·C13·C15 비교표가 핵심일 가능성은 PDF 구조 기반 추정.<br>
-        <b>Week1 일부 SUMMARY 슬라이드</b>: 제목만(Blank) — 복원 불가.
-      </div>
-    </section>
-  </main>
+  <footer>
+    의료진단을 위한 AI · 김정희 교수 · 전체 시험대비 (Week 1–4) · 단일 HTML · 오프라인 동작.<br>
+    출처 · 강의자료 AAI0035 Week1–4. 빈칸 슬라이드는 의료/의공학 표준 지식으로 보강.<br>
+    <span class="warn">⚠ 예상 문제는 AI 생성·미검증 (실제 기출 아님)</span> · 개인 학습용 · 강의 저작권은 담당 교수.
+  </footer>
 </div>
 
-<footer>생성: 시험대비 학습자료 하네스 · 1차 자료(강의 PDF Week1~3 + Notion Day1~3) 기반 · 단일 HTML, 오프라인 동작 · 노드 20개(C1~C20) + 선행지식 6(P1~P6) · D3 탐색 트리(트리맵 폴백) · 인터랙티브 3종(ROC 임계값 슬라이더 · CNN 합성곱 슬라이딩윈도우 · ECG P-QRS-T 파형) · 매칭 대조표(노드 9종 / 표 14개) · 예상문제 17(매칭 9·선다 8) · 출처: AAI0035 김정희 교수</footer>
-
-<!-- D3 (탐색 트리용; 없으면 트리맵 폴백) -->
-<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<!-- KaTeX (있으면 렌더, 없으면 폴백) -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" onerror="window.__noKatex=true">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
-  onload="renderMathInElement(document.body,{delimiters:[{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"
-  onerror="katexFallback()"></script>
 <script>
-  function katexFallback(){ document.body.classList.add('katex-fallback'); }
-  function toggleTheme(){
-    const b=document.body, t=b.getAttribute('data-theme')==='dark'?'light':'dark';
-    b.setAttribute('data-theme',t); localStorage.setItem('theme',t);
-  }
-  (function(){const t=localStorage.getItem('theme'); if(t)document.body.setAttribute('data-theme',t);})();
-  function toggleNav(){
-    const rm=document.getElementById('roadmap'), sc=document.getElementById('scrim');
-    const open=rm.classList.toggle('open'); sc.classList.toggle('show',open);
-  }
-  function closeNav(){
-    const rm=document.getElementById('roadmap'), sc=document.getElementById('scrim');
-    if(rm)rm.classList.remove('open'); if(sc)sc.classList.remove('show');
-  }
-  function goNode(id){
-    const card=document.getElementById(id); if(!card)return;
-    if(card.tagName==='DETAILS')card.open=true; card.scrollIntoView({behavior:'smooth',block:'start'});
-    document.querySelectorAll('.rm-node').forEach(n=>n.classList.remove('active'));
-    const rn=document.querySelector('.rm-node[data-target="'+id+'"]'); if(rn)rn.classList.add('active');
-    if(window.matchMedia('(max-width:900px)').matches)closeNav();
-  }
-  function toggleBranch(el){ el.classList.toggle('collapsed'); }
-  function toggleQA(btn){
-    const a=btn.closest('.qa-item').querySelector('.qa-a');
-    const open=a.classList.toggle('open'); btn.textContent=open?'답 숨기기':'답 보기';
-  }
-  function stepMove(btn,dir){
-    const sp=btn.closest('.stepper'), steps=[...sp.querySelectorAll('.step')];
-    let i=steps.findIndex(s=>s.classList.contains('show'));
-    i=Math.max(0,Math.min(steps.length-1,i+dir));
-    steps.forEach((s,k)=>s.classList.toggle('show',k===i));
-    syncDots(sp,i,steps.length);
-  }
-  function syncDots(sp,i,n){
-    const d=sp.querySelector('.dots'); if(!d)return;
-    d.innerHTML=Array.from({length:n},(_,k)=>'<i class="'+(k===i?'on':'')+'"></i>').join('');
-  }
-  document.querySelectorAll('.stepper').forEach(sp=>{
-    const n=sp.querySelectorAll('.step').length; syncDots(sp,0,n);
-  });
-  // 추천 학습 경로 생성 (의존도순 위상정렬)
-  const PATH=[
-    ['C2','AI/ML/DL ⭐⭐'],['C1','의료AI·Ability-based'],['C3','학습 패러다임 ⭐⭐'],['C4','분류/회귀/군집 ⭐⭐'],
-    ['C5','의료AI 4대 장점'],['C6','생체신호처리 개요'],['C7','ECG ⭐⭐'],['C8','EEG ⭐⭐'],['C9','EMG'],['C10','EOG/ENG/PCG/VAG'],
-    ['C11','의료영상 11종 ⭐⭐⭐'],['C12','디지털 전환'],['C13','계측 3블록 ⭐⭐⭐'],['C14','측정·계측 정의'],['C15','5대 분류 ⭐⭐⭐'],
-    ['C16','뉴런·활성화 ⭐⭐'],['C17','파라미터수 ⭐⭐'],['C18','forward/backprop ⭐⭐'],['C19','CNN ⭐⭐'],['C20','Tremor 연구']
-  ];
-  (function(){
-    const box=document.getElementById('pathlist');
-    box.innerHTML=PATH.map((p,i)=>'<div class="pstep" onclick="goNode(\''+p[0]+'\')"><input type="checkbox" class="pchk" data-id="'+p[0]+'" onclick="event.stopPropagation();pathCheck(this)"><span class="pn">'+(i+1)+'.</span><span>'+p[1]+'</span></div>').join('');
-  })();
-  const PKEY='studyprog:'+document.title;
-  function loadProg(){try{return JSON.parse(localStorage.getItem(PKEY)||'{}')}catch(e){return {}}}
-  function saveProg(p){localStorage.setItem(PKEY,JSON.stringify(p))}
-  function syncOne(id,done){
-    const rn=document.querySelector('.rm-node[data-target="'+id+'"]'); if(rn)rn.classList.toggle('done',done);
-    const nc=document.querySelector('.nodechk[data-id="'+id+'"]'); if(nc)nc.checked=done;
-    const pc=document.querySelector('.pchk[data-id="'+id+'"]'); if(pc)pc.checked=done;
-  }
-  function pathCheck(chk){
-    const p=loadProg(); p[chk.dataset.id]=chk.checked; saveProg(p);
-    syncOne(chk.dataset.id,chk.checked); updateProg();
-  }
-  function markDone(chk){
-    const p=loadProg(); p[chk.dataset.id]=chk.checked; saveProg(p);
-    syncOne(chk.dataset.id,chk.checked); updateProg();
-  }
-  function updateProg(){
-    const all=document.querySelectorAll('.nodechk'), done=[...all].filter(c=>c.checked).length;
-    const pct=all.length?Math.round(done/all.length*100):0;
-    document.getElementById('progfill').style.width=pct+'%';
-    document.getElementById('progtxt').textContent=pct+'%';
-  }
-  (function(){const p=loadProg();
-    document.querySelectorAll('.nodechk').forEach(c=>{c.checked=!!p[c.dataset.id];
-      if(c.checked)syncOne(c.dataset.id,true);});
-    updateProg();})();
-  function filterNodes(q){
-    q=q.trim().toLowerCase();
-    document.querySelectorAll('.node-card').forEach(card=>{
-      const hit=!q||card.dataset.title.toLowerCase().includes(q)||card.textContent.toLowerCase().includes(q);
-      card.classList.toggle('hidden',!hit);
-    });
-  }
-
-  /* ===== D3 collapsible 탐색 트리 (CDN + 트리맵 폴백) ===== */
-  const TREE = {
-    name:"의료진단 AI", id:null, children:[
-      { name:"🎓 선행지식", id:"prereq", children:[
-        { name:"P1 영상/신호", id:"prereq-signal" },
-        { name:"P2 특징추출", id:"prereq-feature" },
-        { name:"P3 민감도·특이도", id:"prereq-sensspec" },
-        { name:"P4 ROC·AUC 슬라이더", id:"prereq-roc" },
-        { name:"P5 과적합", id:"prereq-overfit" },
-        { name:"P6 교차검증", id:"prereq-cv" } ] },
-      { name:"B1 AI/ML/DL·패러다임", id:"B1", children:[
-        { name:"C1 의료AI·Ability-based", id:"C1" },
-        { name:"C2 AI⊃ML⊃DL ⭐⭐", id:"C2" },
-        { name:"C3 지도/비지도/강화 ⭐⭐", id:"C3" },
-        { name:"C4 분류/회귀/군집 ⭐⭐", id:"C4" },
-        { name:"C5 의료AI 4대 장점", id:"C5" },
-        { name:"C12 디지털 전환", id:"C12" },
-        { name:"C20 Tremor 연구", id:"C20" } ] },
-      { name:"B2 생체신호", id:"B2", children:[
-        { name:"C6 생체신호 개요", id:"C6" },
-        { name:"C7 ECG ⭐⭐", id:"C7" },
-        { name:"C8 EEG ⭐⭐", id:"C8" },
-        { name:"C9 EMG", id:"C9" },
-        { name:"C10 EOG/ENG/PCG/VAG", id:"C10" } ] },
-      { name:"B3 의료영상", id:"B3", children:[
-        { name:"C11 영상 11종 ⭐⭐⭐", id:"C11" } ] },
-      { name:"B4 계측 시스템", id:"B4", children:[
-        { name:"C13 계측 3블록 ⭐⭐⭐", id:"C13" },
-        { name:"C14 측정·계측 정의", id:"C14" },
-        { name:"C15 5대 분류 ⭐⭐⭐", id:"C15" } ] },
-      { name:"B5 신경망 & CNN", id:"B5", children:[
-        { name:"C16 뉴런·활성화 ⭐⭐", id:"C16" },
-        { name:"C17 파라미터수 ⭐⭐", id:"C17" },
-        { name:"C18 forward/backprop ⭐⭐", id:"C18" },
-        { name:"C19 CNN ⭐⭐", id:"C19" } ] },
-      { name:"📝 예상문제", id:"examqs" }
-    ]
+  /* ===== 문제 데이터 ===== */
+  const QUIZ = {
+    'w1-core': [
+      {t:'mc', q:'AI, ML, DL의 포함관계로 옳은 것은?', o:['AI ⊂ ML ⊂ DL','DL ⊃ ML ⊃ AI','AI ⊃ ML ⊃ DL','세 개념은 서로 독립적이다'], a:2,
+       e:'AI가 가장 넓은 개념이고, ML은 AI의 한 방법, DL은 ML의 하위 개념이다. 따라서 <b>AI ⊃ ML ⊃ DL</b>.'},
+      {t:'mc', q:'다층 인공신경망으로 비정형 데이터에서 특징을 자동 추출하지만 \'블랙박스\' 문제를 갖는 기법은?', o:['규칙기반 시스템','딥러닝(Deep Learning)','의사결정나무','선형회귀'], a:1,
+       e:'딥러닝은 다층 신경망으로 영상·음성 등 비정형 데이터의 특징을 자동 추출한다. 판단 근거 설명이 어려운 black box 특성이 한계다.'},
+      {t:'mc', q:'정답(label) 없이 데이터의 내재 구조·군집을 스스로 찾는 학습 방식은?', o:['지도학습','비지도학습','강화학습','전이학습'], a:1,
+       e:'비지도학습은 라벨 없이 입력만으로 군집·차원축소·이상탐지를 수행한다. 지도학습은 정답이 필요하다.'},
+      {t:'mc', q:'출력이 \'연속형(continuous) 수치값\'이고 MSE·MAE로 평가하는 지도학습 문제는?', o:['분류(Classification)','회귀(Regression)','클러스터링','강화학습'], a:1,
+       e:'회귀는 연속형 수치(예: 생존기간)를 예측한다. 분류는 이산형 범주(label)를 출력한다.'},
+      {t:'mc', q:'다음 중 비지도학습 알고리즘은?', o:['SVM','로지스틱 회귀','K-means','랜덤 포레스트'], a:2,
+       e:'K-means는 대표적 군집(clustering) 알고리즘으로 비지도학습이다. 나머지는 지도학습(분류/회귀)이다.'},
+      {t:'mc', q:'강화학습(RL)에서 에이전트가 최대화하려는 대상은?', o:['손실(Loss)','보상(Reward)','거리(Distance)','엔트로피'], a:1,
+       e:'강화학습은 에이전트가 환경과 상호작용하며 누적 <b>보상(reward)</b>을 최대화하는 정책을 학습한다.'},
+      {t:'mc', q:'전형적 디지털 계측기의 신호 흐름 순서로 옳은 것은?', o:['Sensor → A/D → 신호조절 → Computer','Physical signal → Sensor → 신호조절 → A/D → Computer','A/D → Sensor → Computer → D/A','Computer → Sensor → A/D → 신호조절'], a:1,
+       e:'물리신호를 센서가 감지 → 아날로그 신호조절 → A/D 변환 → 컴퓨터 처리 순이다. 센서 다음에 신호를 다듬고 디지털로 바꾼다.'},
+      {t:'sa', q:'전통적 ML에서는 사람이 수동으로 하지만, DL에서는 신경망이 자동 학습하여 불필요해지는 과정의 이름은?', a:'특징 공학(Feature Engineering)',
+       e:'DL은 표현(representation)을 자동 학습(End-to-End)하므로 수동 특징 설계가 필요 없다.'},
+      {t:'sa', q:'분류(Classification)의 출력은 (㉠)형, 회귀(Regression)의 출력은 (㉡)형이다. ㉠, ㉡은?', a:'㉠ 이산형(discrete) · ㉡ 연속형(continuous)',
+       e:'분류는 범주(label)라 이산형, 회귀는 수치라 연속형이다.'},
+      {t:'sa', q:'생체계측 시스템(Instrumentation System)의 3대 핵심 서브시스템을 쓰시오.', a:'변환기(Transducer) · 전자 인터페이스(Electronics Interface) · 연산부(Computation Unit)',
+       e:'변환기=센서+작동기, 전자 인터페이스=증폭·정합, 연산부=변환·처리·표시·제어.'},
+    ],
+    'w1-practice': [
+      {t:'mc', q:'지도학습(Supervised Learning)에 대한 설명으로 옳은 것은?', o:['입력만 주어진다','입력과 정답(label)이 쌍으로 주어진다','보상으로 학습한다','군집을 찾는다'], a:1,
+       e:'지도학습은 입력 x와 정답 y를 쌍으로 제공해 입출력 관계를 학습한다.'},
+      {t:'mc', q:'흉부 X-ray에서 폐렴 유무(있다/없다)를 판단하는 문제의 유형은?', o:['회귀','분류','클러스터링','차원축소'], a:1,
+       e:'유무(범주) 판정이므로 이산형 출력의 분류 문제다.'},
+      {t:'mc', q:'A/D 변환 직전에서 표본화 시 앨리어싱(aliasing)을 방지하는 필터는?', o:['고역통과 필터','안티앨리어싱(저역통과) 필터','정합 필터','중앙값 필터'], a:1,
+       e:'샘플링 정리에 따라 나이퀴스트 주파수 이상 성분을 제거하는 안티앨리어싱(저역통과) 필터를 A/D 앞에 둔다.'},
+      {t:'mc', q:'다음 중 회귀(Regression) 문제의 예로 가장 적절한 것은?', o:['종양 양성/악성 분류','암환자 생존기간(개월) 예측','환자군 자동 군집화','정상/비정상 판정'], a:1,
+       e:'생존기간은 연속형 수치 예측이므로 회귀다. 나머지는 분류/군집이다.'},
+      {t:'mc', q:'딥러닝(DL)이 전통 ML과 구별되는 핵심 특징은?', o:['적은 데이터로 동작','특징을 자동 추출(End-to-End)','항상 설명 가능','규칙을 수동 입력'], a:1,
+       e:'DL은 raw 입력에서 특징을 자동 학습한다. 대신 대용량 데이터가 필요하고 설명력은 낮다.'},
+      {t:'mc', q:'유전체 발현 패턴으로 환자를 자동 군집화하는 작업의 학습 유형은?', o:['지도학습','비지도학습','강화학습','앙상블'], a:1,
+       e:'라벨 없이 유사도로 군집을 찾으므로 비지도학습(클러스터링)이다.'},
+      {t:'mc', q:'강화학습의 구성요소가 아닌 것은?', o:['에이전트(Agent)','환경(Environment)','보상(Reward)','정답 라벨(Label)'], a:3,
+       e:'강화학습은 에이전트·환경·보상·정책으로 구성된다. 정답 라벨은 지도학습 요소다.'},
+      {t:'sa', q:'계측 시스템에서 측정하고자 하는 생체 물리량을 가리키는 용어(약어 QUM)는?', a:'측정 대상량(Measurand)',
+       e:'Quantity Under Measurement. 센싱 과정에서 잡음이 더해지며 단계적으로 가공된다.'},
+      {t:'sa', q:'라벨 없는 데이터를 유사도 기반으로 자동 군집화하는 비지도학습 대표 문제의 이름은?', a:'클러스터링(군집화, Clustering)',
+       e:'K-means·DBSCAN 등이 대표 알고리즘이다.'},
+      {t:'sa', q:'지도학습의 대표적인 두 문제 유형을 쓰시오.', a:'분류(Classification)와 회귀(Regression)',
+       e:'분류는 이산형 범주, 회귀는 연속형 수치를 예측한다.'},
+    ],
+    'w2-core': [
+      {t:'mc', q:'심장의 전기 자극이 시작되는 부위는?', o:['방실결절(AV node)','동방결절(SA node)','히스속(His bundle)','푸르키네 섬유'], a:1,
+       e:'전기 자극은 <b>동방결절(SA node)</b>에서 시작해 AV node → His → 푸르키네 섬유로 전파된다.'},
+      {t:'mc', q:'ECG에서 심실의 탈분극(수축)을 나타내는 파형은?', o:['P파','QRS 복합파','T파','U파'], a:1,
+       e:'P파=심방 탈분극, <b>QRS=심실 탈분극</b>, T파=심실 재분극이다.'},
+      {t:'mc', q:'EEG 주파수 대역 중 \'깊은 수면\'에 해당하는 것은?', o:['Delta(0.5–4Hz)','Alpha(8–13Hz)','Beta(13–30Hz)','Gamma(>30Hz)'], a:0,
+       e:'가장 느린 <b>Delta(δ)</b>가 깊은 수면이다. Alpha=안정, Beta=집중, Gamma=고차 인지.'},
+      {t:'mc', q:'방사선을 쓰지 않으면서 실시간 영상이 가능한 기법은?', o:['CT','초음파(Ultrasound)','PET','X-ray'], a:1,
+       e:'초음파만 방사선이 없고 실시간 영상이 가능하다. MRI도 방사선은 없으나 실시간은 아니다.'},
+      {t:'mc', q:'FDG(포도당 유사물질)로 암세포의 대사 활동을 시각화하는 기능 영상은?', o:['MRI','PET','초음파','X-ray'], a:1,
+       e:'<b>PET</b>은 방사성 동위원소(FDG)의 대사 흡수를 영상화한다. 암세포는 포도당 대사가 활발해 잘 보인다.'},
+      {t:'mc', q:'조영제 주입 전·후 영상을 디지털 감산해 혈관만 선명히 보는 기법은?', o:['DSA','Mammography','OCT','SPECT'], a:0,
+       e:'<b>DSA</b>(디지털 감산 혈관조영술)는 배경(뼈·연조직)을 빼고 혈관만 남긴다.'},
+      {t:'mc', q:'방사선 없이 연조직(뇌·관절)을 고해상도로 영상화하는 기법은?', o:['X-ray','CT','MRI','PET'], a:2,
+       e:'<b>MRI</b>는 자기장과 RF로 수소 원자핵 신호를 분석한다. 방사선이 없고 연조직 대비가 우수하다.'},
+      {t:'sa', q:'표면 근전도와 침습 근전도의 약어를 각각 쓰시오.', a:'표면=sEMG, 침습=needle EMG',
+       e:'sEMG는 비침습(재활·로봇제어), needle EMG는 침습(진단 정확도↑).'},
+      {t:'sa', q:'EEG 전극 배치에 쓰이는 국제 표준 시스템의 이름은?', a:'10-20 시스템',
+       e:'두피에 일정 비율(10%·20%)로 전극을 배치하는 국제 표준이다.'},
+      {t:'sa', q:'생체신호의 아티팩트(잡음) 제거에 쓰이는 대표적 성분/통계 분석 기법 2가지는?', a:'ICA, PCA',
+       e:'독립성분분석(ICA), 주성분분석(PCA)으로 잡음 성분을 분리·제거한다.'},
+    ],
+    'w2-practice': [
+      {t:'mc', q:'ECG의 P파가 나타내는 것은?', o:['심방 탈분극','심실 탈분극','심실 재분극','심방 재분극'], a:0,
+       e:'P파=심방 탈분극(수축). QRS=심실 탈분극, T파=심실 재분극이다.'},
+      {t:'mc', q:'눈을 감고 안정된 상태에서 두드러지는 EEG 대역은?', o:['Delta','Theta','Alpha','Gamma'], a:2,
+       e:'Alpha(8–13Hz)가 안정·눈감음 상태에서 두드러진다.'},
+      {t:'mc', q:'PET와 SPECT의 차이로 옳은 것은?', o:['PET는 감마선 단일 검출','SPECT가 해상도가 더 높다','PET는 양전자(쌍감마 동시검출), SPECT는 감마선 단일 검출','둘 다 방사선을 쓰지 않는다'], a:2,
+       e:'PET=양전자 방출체의 쌍감마선 동시검출(해상도↑), SPECT=감마선 단일 광자 감지(저렴·보편).'},
+      {t:'mc', q:'뼈가 흰색(고밀도)으로, 공기·연조직이 어둡게 보이는 기본 영상 기법은?', o:['MRI','초음파','X-ray','PET'], a:2,
+       e:'X-ray는 조직 밀도에 따른 X선 흡수 차로 영상화한다. 칼슘 밀도 높은 뼈가 희게 보인다.'},
+      {t:'mc', q:'μm 단위 초고해상도로 망막 등 얇은 조직 단면을 영상화하는 기법은?', o:['CT','OCT','Mammography','Fluoroscopy'], a:1,
+       e:'<b>OCT</b>(광간섭 단층촬영)는 근적외선 간섭으로 μm 해상도 단면을 비접촉 영상화한다.'},
+      {t:'mc', q:'근육 수축 시 발생하는 전기적 활동을 측정하는 생체신호는?', o:['ECG','EEG','EMG','EOG'], a:2,
+       e:'EMG(근전도)는 근육의 전기 활동을 측정한다. EOG는 눈 움직임이다.'},
+      {t:'mc', q:'혈류의 속도와 방향을 실시간으로 측정할 수 있는 영상 기법은?', o:['도플러 초음파','단순 X-ray','PET','Mammography'], a:0,
+       e:'도플러 초음파는 음파 반사 주파수 변화로 혈류 속도·방향을 측정한다.'},
+      {t:'sa', q:'ECG의 세 가지 주요 파형 P, QRS, T가 각각 의미하는 바를 쓰시오.', a:'P=심방 탈분극, QRS=심실 탈분극, T=심실 재분극',
+       e:'탈분극=수축, 재분극=휴식 복귀로 이해하면 된다.'},
+      {t:'sa', q:'유방촬영술에서 여러 각도로 촬영해 3D로 재구성하는 방식의 명칭은?', a:'Tomosynthesis(3D 촬영)',
+       e:'2D 유방촬영보다 겹침을 줄여 미세 병변 발견에 유리하다.'},
+      {t:'sa', q:'의료영상 5종(X-ray·CT·MRI·초음파·PET) 중 방사선을 쓰지 않는 두 가지는?', a:'MRI와 초음파(Ultrasound)',
+       e:'MRI는 자기장+RF, 초음파는 음파를 쓴다. 나머지는 방사선을 사용한다.'},
+    ],
+    'w3-core': [
+      {t:'mc', q:'생체계측 시스템의 3대 주요 서브시스템이 아닌 것은?', o:['변환기(Transducer)','전자 인터페이스(Electronics Interface)','연산부(Computation Unit)','전원부(Power Supply)'], a:3,
+       e:'3대 서브시스템은 변환기·전자 인터페이스·연산부다. 전원부는 포함되지 않는다.'},
+      {t:'mc', q:'전자 인터페이스(Electronics Interface)의 신호 흐름 순서로 옳은 것은?', o:['Buffer → 신호조정 → 전치증폭','전치증폭(Pre-amp) → 신호조정 → Buffer','신호조정 → Buffer → 전치증폭','A/D → 전치증폭 → Buffer'], a:1,
+       e:'전치증폭(pre-amp) → 신호조정(filtering 등) → buffer → A/D 순이다.'},
+      {t:'mc', q:'계측 시스템 전체의 잡음 특성을 주로 지배(dominate)하는 구성요소는?', o:['버퍼(Buffer)','전치증폭기(Pre-amplifier)','A/D 변환기','디스플레이'], a:1,
+       e:'센서 직후의 <b>전치증폭기</b>가 저잡음 설계의 핵심이며 시스템 잡음을 지배한다.'},
+      {t:'mc', q:'활성화 함수(activation function)가 없으면 신경망은 무엇으로 축소되는가?', o:['선형 회귀 모델','의사결정나무','SVM','랜덤 포레스트'], a:0,
+       e:'비선형 활성함수가 없으면 층을 쌓아도 <b>선형 회귀</b>와 같아진다(비선형성 소실).'},
+      {t:'mc', q:'단일 퍼셉트론(single perceptron)이 표현할 수 없는 논리 게이트는?', o:['AND','OR','XOR','NOT'], a:2,
+       e:'XOR는 선형 분리가 불가능해 단일 퍼셉트론으로 표현할 수 없다(MLP 필요).'},
+      {t:'mc', q:'완전연결(FC) 신경망을 이미지에 적용할 때의 근본적 한계는?', o:['연산이 너무 빠르다','이미지의 공간 구조를 고려하지 못한다','픽셀 수를 못 센다','색을 구분 못 한다'], a:1,
+       e:'FC망은 픽셀을 섞어도 결과가 같을 만큼 <b>공간 구조를 무시</b>한다. 그래서 CNN(필터)이 필요하다.'},
+      {t:'mc', q:'역전파(backpropagation)에서 계산·갱신하는 것은?', o:['입력 데이터','손실의 가중치에 대한 기울기(∂J/∂w)','활성함수 종류','학습률 자동값'], a:1,
+       e:'역전파는 손실 J의 가중치 기울기 <b>∂J/∂w</b>를 출력층→입력층으로 계산해 파라미터를 갱신한다.'},
+      {t:'sa', q:'변환기(Transducer)는 센서(Sensor)와 무엇으로 구성되는가?', a:'작동기(Actuator)',
+       e:'센서=감지, 작동기=인체에 작용(예: 인슐린 펌프).'},
+      {t:'sa', q:'뉴런의 가중합과 바이어스를 나타내는 식을 쓰시오.', a:'z = Σ wᵢxᵢ + bias (= w₁x₁+w₂x₂+…+bias)',
+       e:'입력에 가중치를 곱해 더하고 bias를 더한 뒤 활성함수에 통과시킨다.'},
+      {t:'sa', q:'CNN에서 입력과 합성곱(convolution)되는 가중치 집합을 무엇이라 하는가?', a:'필터(Filter) 또는 커널(Kernel)',
+       e:'예: 수직선·수평선·코너 검출기. 채널별 필터+바이어스로 출력 채널을 만든다.'},
+    ],
+    'w3-practice': [
+      {t:'mc', q:'다음 중 비침습(noninvasive) 계측의 예로 옳은 것은?', o:['이식형 전극','경동맥 초음파 혈류 영상','needle EMG','동맥 카테터'], a:1,
+       e:'초음파 혈류 영상은 몸을 침습하지 않는다. 이식 전극·needle·카테터는 침습이다.'},
+      {t:'mc', q:'다음 중 활성화 함수가 아닌 것은?', o:['Sigmoid','TanH','ReLU','K-means'], a:3,
+       e:'Sigmoid·TanH·ReLU는 활성함수다. K-means는 군집(클러스터링) 알고리즘이다.'},
+      {t:'mc', q:'ReLU 활성함수의 출력 범위로 옳은 것은?', o:['0 ~ 1','−1 ~ 1','0 ~ ∞','−∞ ~ ∞'], a:2,
+       e:'ReLU는 f(x)=max(0,x)라 음수는 0, 양수는 그대로 → 출력 0~∞.'},
+      {t:'mc', q:'이미지를 회전·뒤집기·자르기·색 반전 등으로 변형해 과적합을 줄이는 기법은?', o:['데이터 증강(Data Augmentation)','드롭아웃','배치 정규화','전이학습'], a:0,
+       e:'데이터 증강은 변환으로 학습 데이터를 늘려 일반화를 돕는다.'},
+      {t:'mc', q:'CNN에서 뉴런은 몇 차원으로 배열되는가?', o:['1차원','2차원','3차원(너비·높이·깊이)','4차원'], a:2,
+       e:'CNN은 뉴런을 너비·높이·깊이의 3차원으로 배열해 공간 구조를 보존한다.'},
+      {t:'mc', q:'생체계측의 5가지 분류축에 해당하지 않는 것은?', o:['Direct/Indirect','Invasive/Noninvasive','Contact/Remote','Linear/Nonlinear'], a:3,
+       e:'5분류축은 Direct/Indirect, Invasive/Noninvasive, Contact/Remote, Sense/Actuate, Dynamic/Static이다.'},
+      {t:'mc', q:'데이터 변환기를 전단에서 멀리(약 1~2m) 둘 수 있게 긴 케이블을 구동하는 구성요소는?', o:['전치증폭기','버퍼(Buffer)','A/D 변환기','센서'], a:1,
+       e:'버퍼는 케이블 구동에 필요한 신호·전력을 제공해 변환기를 멀리 배치할 수 있게 한다.'},
+      {t:'sa', q:'강의에서 제시된 대표적 활성화 함수 3가지를 쓰시오.', a:'Sigmoid, TanH, ReLU',
+       e:'Sigmoid(0~1), TanH(−1~1), ReLU(0~∞).'},
+      {t:'sa', q:'과적합을 줄이기 위해 학습 이미지를 변형해 수를 늘리는 기법의 이름은?', a:'데이터 증강(Data Augmentation)',
+       e:'회전·flip·crop·translate·contrast·blur 등으로 변형한다.'},
+      {t:'sa', q:'생체계측 5분류축 중 침습 여부와 접촉 여부를 가리는 두 축을 쓰시오.', a:'Invasive/Noninvasive, Contact/Remote',
+       e:'침습=몸 안으로 들어감, 접촉=피부에 닿음(원격은 비접촉).'},
+    ],
+    'w4-core': [
+      {t:'mc', q:'슬라이드에 명시된 의료 AI의 4대 한계가 아닌 것은?', o:['데이터 편향','일반화 성능 부족','연산 속도 부족','설명력 부족(XAI 문제)'], a:2,
+       e:'4대 한계는 데이터 편향·일반화 부족·임상데이터 부족·설명력 부족이다. 연산 속도는 포함되지 않는다.'},
+      {t:'mc', q:'원본 데이터를 외부로 옮기지 않고 각 기관에서 모델만 학습·통합하는 프라이버시 보호 기술은?', o:['연합학습(Federated Learning)','데이터 증강','전이학습','앙상블'], a:0,
+       e:'연합학습은 데이터를 이동시키지 않고 모델 파라미터만 공유·통합해 프라이버시를 지킨다.'},
+      {t:'mc', q:'위험 기반(risk-based)으로 의료 AI를 규제하는 EU의 법안은?', o:['HIPAA','AI Act','CCPA','GDPR'], a:1,
+       e:'EU의 <b>AI Act</b>는 위험도에 따라 차등 규제한다. HIPAA·CCPA는 미국, GDPR은 EU 일반 정보보호법.'},
+      {t:'mc', q:'부적절한 암 치료를 추천해 의료 AI 실패 사례로 언급된 시스템은?', o:['알파고','IBM 왓슨','챗GPT','딥마인드'], a:1,
+       e:'IBM 왓슨(암 치료 AI)이 부적절한 치료를 추천한 사례가 신뢰성 문제로 자주 인용된다.'},
+      {t:'mc', q:'WHO가 제시한 의료 AI 윤리 핵심 원칙에 해당하지 않는 것은?', o:['자율성','안전성','형평성','수익성'], a:3,
+       e:'WHO 원칙은 자율성·안전성·형평성과 투명성·책임성·설명가능성이다. 수익성은 포함되지 않는다.'},
+      {t:'mc', q:'Deep Medicine(딥 메디슨)의 세 가지 주요 구성요소가 아닌 것은?', o:['딥피노타이핑','딥러닝','딥엠퍼시·딥커넥션','딥페이크'], a:3,
+       e:'3요소는 딥피노타이핑·딥러닝·딥엠퍼시(딥커넥션)다. 딥페이크는 무관하다.'},
+      {t:'mc', q:'AI가 의사를 완전히 대체하기보다 인간-AI 협업으로 진료를 향상시키는 모델은?', o:['자동지능','증강지능(Augmented Intelligence)','일반지능','초지능'], a:1,
+       e:'증강지능은 "AI를 활용하는 의사가 그렇지 않은 의사보다 우수하다"는 협업 관점이다.'},
+      {t:'sa', q:'딥러닝의 블랙박스 문제를 해결하려는 \'설명 가능한 AI\'를 가리키는 약어는?', a:'XAI (eXplainable AI)',
+       e:'의사의 신뢰 확보와 규제기관(FDA 등) 요구 충족을 위해 필요하다.'},
+      {t:'sa', q:'데이터에 통계적 잡음을 추가해 개별 환자 식별을 막는 프라이버시 보호 기법은?', a:'차등 프라이버시(Differential Privacy)',
+       e:'개인 식별은 막되 전체 통계 분석은 가능하게 한다.'},
+      {t:'sa', q:'의료 AI 실무 적용을 위해 연동이 필요한 두 의료 시스템(영문 약어)은?', a:'EHR(전자의무기록), PACS(의료영상저장전송시스템)',
+       e:'AI 진단이 실제 임상 워크플로우에 들어가려면 EHR·PACS와 연동돼야 한다.'},
+    ],
+    'w4-practice': [
+      {t:'mc', q:'미래 의료 패러다임 \'P4 Medicine\'의 4P에 해당하지 않는 것은?', o:['Predict(예측)','Prevent(예방)','Personalize(맞춤)','Profit(수익)'], a:3,
+       e:'4P는 Predict·Prevent·Personalize·Participate(참여)다. Profit은 아니다.'},
+      {t:'mc', q:'데이터에 잡음을 더해 개인 식별을 막는 기법은?', o:['연합학습','차등 프라이버시','데이터 증강','암호화 해시'], a:1,
+       e:'차등 프라이버시(Differential Privacy)는 통계적 잡음으로 개인 식별을 차단한다.'},
+      {t:'mc', q:'미국에서 의료정보 보호에 특화된 프라이버시 법제는?', o:['GDPR','HIPAA','CCPA','AI Act'], a:1,
+       e:'HIPAA가 미국 의료정보 보호 특화 법제다. GDPR=EU 일반, CCPA=캘리포니아 소비자.'},
+      {t:'mc', q:'딥러닝의 판단 근거를 설명하기 어려운 문제를 해결하려는 분야는?', o:['XAI(설명 가능한 AI)','강화학습','데이터 증강','전이학습'], a:0,
+       e:'XAI는 블랙박스 모델의 판단 근거를 설명해 신뢰·규제 요구를 충족한다.'},
+      {t:'mc', q:'강의의 기반이 된 『Deep Medicine』(2020)의 저자는?', o:['제프리 힌튼','에릭 토폴(Eric Topol)','앤드류 응','얀 르쿤'], a:1,
+       e:'Eric Topol의 『Deep Medicine』이 Week4 전체의 프레임이다.'},
+      {t:'mc', q:'학습 데이터가 특정 인종·계층에 치우쳐 발생하는 의료 AI 문제는?', o:['과적합','데이터 편향(Bias)','기울기 소실','앨리어싱'], a:1,
+       e:'데이터 편향은 형평성 문제의 근원으로, 특정 집단에 불리한 진단을 낳을 수 있다.'},
+      {t:'mc', q:'자율주행 6단계에 빗댄 의료 자동화에서 가능성이 낮다고 본 단계는?', o:['Lv2 부분 자동화','Lv3 조건부 자동화','Lv4 고도 자동화','Lv5 완전 자동(의사 없는 진료)'], a:3,
+       e:'의료는 Lv4까지가 현실적이며, Lv5(완전 자동)는 가능성이 낮다고 본다.'},
+      {t:'sa', q:'미국의 의료정보 보호 특화 프라이버시 법제의 약어는?', a:'HIPAA',
+       e:'Health Insurance Portability and Accountability Act.'},
+      {t:'sa', q:'원본 데이터를 옮기지 않고 각 기관의 모델만 학습·통합하는 프라이버시 기술의 이름은?', a:'연합학습(Federated Learning)',
+       e:'분산된 데이터를 그대로 두고 모델만 모아 프라이버시를 지킨다.'},
+      {t:'sa', q:'P4 Medicine의 4가지 P를 모두 쓰시오.', a:'Predict(예측), Prevent(예방), Personalize(맞춤), Participate(참여)',
+       e:'예측·예방·맞춤·참여의 미래 의료 패러다임.'},
+    ],
   };
-  function initTree(){
-    const cont=document.getElementById('tree-container'), fb=document.getElementById('treemap');
-    if(typeof d3==='undefined' || !cont){          // CDN 실패 → 트리맵 폴백
-      if(cont) cont.closest('section').style.display='none';
-      if(fb) fb.style.display='';                  // 트리맵 노출
-      return;
-    }
-    if(fb) fb.style.display='none';                // D3 성공 → 트리맵 숨김
-    try{ renderTree(); }
-    catch(e){
-      if(cont) cont.closest('section').style.display='none';
-      if(fb) fb.style.display='';
-    }
+
+  /* ===== 렌더 ===== */
+  const KO_NUM=['①','②','③','④','⑤'];
+  function renderQuiz(containerId){
+    const items=QUIZ[containerId], box=document.getElementById(containerId);
+    if(!items||!box)return;
+    box.innerHTML=items.map((it,i)=>{
+      const isMC=it.t==='mc';
+      const opts=isMC?'<ul class="qi-opts">'+it.o.map((o,k)=>'<li>'+KO_NUM[k]+' '+o+'</li>').join('')+'</ul>':'';
+      const ansLine=isMC?KO_NUM[it.a]+' '+it.o[it.a]:it.a;
+      const exp=it.e?'<span class="exp">'+it.e+'</span>':'';
+      return '<div class="quiz-item">'+
+        '<div class="qi-stem"><span class="qi-no">'+(i+1)+'</span><span class="qi-type'+(isMC?'':' sa')+'">'+(isMC?'객관식':'단답형')+'</span><span class="qi-q">'+it.q+'</span></div>'+
+        opts+
+        '<button class="qi-reveal" onclick="toggleAns(this)">정답·해설</button>'+
+        '<div class="qi-ans"><div class="qi-ans-in"><span class="ans">정답: '+ansLine+'</span>'+exp+'</div></div>'+
+      '</div>';
+    }).join('');
   }
-  function renderTree(){
-    const el=document.getElementById('tree-container');
-    const width=el.clientWidth||800, dx=24, dy=Math.min(210, Math.max(120,width/4.2));
-    const root=d3.hierarchy(TREE);
-    root.x0=0; root.y0=0;
-    root.descendants().forEach((d,i)=>{ d.id=i; d._children=d.children;
-      if(d.depth>=1) d.children=null; });          // 1단계만 펼친 상태
-    const svg=d3.create("svg")
-      .attr("viewBox",[-dy/2,-dx,width,dx])
-      .style("width","100%").style("height","auto")
-      .style("font","13px Pretendard,sans-serif").style("user-select","none");
-    const gLink=svg.append("g").attr("fill","none")
-      .attr("stroke","var(--line)").attr("stroke-width",1.5);
-    const gNode=svg.append("g").attr("cursor","pointer").attr("pointer-events","all");
-    const zoom=d3.zoom().scaleExtent([0.4,2.5]).on("zoom",e=>{
-      gLink.attr("transform",e.transform); gNode.attr("transform",e.transform); });
-    svg.call(zoom);
-    function update(source){
-      const nodes=root.descendants().reverse(), links=root.links();
-      const tree=d3.tree().nodeSize([dx,dy]); tree(root);
-      let l=root,r=root; root.eachBefore(n=>{ if(n.x<l.x)l=n; if(n.x>r.x)r=n; });
-      const h=Math.max(dx, r.x-l.x+dx*2);
-      const t=svg.transition().duration(250).attr("viewBox",[-dy/2,l.x-dx,width,h]);
-      const node=gNode.selectAll("g").data(nodes,d=>d.id);
-      const nEnter=node.enter().append("g")
-        .attr("transform",`translate(${source.y0},${source.x0})`)
-        .attr("fill-opacity",0).attr("stroke-opacity",0)
-        .on("click",(e,d)=>{
-          if(d._children){ d.children=d.children?null:d._children; update(d); }
-          if(d.data.id) goNode(d.data.id);
-        });
-      nEnter.append("circle").attr("r",4.5)
-        .attr("fill",d=>d._children?"var(--accent)":"var(--muted)")
-        .attr("stroke-width",10).attr("stroke","transparent");
-      nEnter.append("text").attr("dy","0.32em")
-        .attr("x",d=>d._children?-9:9).attr("text-anchor",d=>d._children?"end":"start")
-        .attr("fill","var(--ink)").text(d=>d.data.name)
-        .clone(true).lower().attr("stroke","var(--panel)").attr("stroke-width",3);
-      node.merge(nEnter).transition(t)
-        .attr("transform",d=>`translate(${d.y},${d.x})`)
-        .attr("fill-opacity",1).attr("stroke-opacity",1);
-      node.exit().transition(t).remove()
-        .attr("transform",`translate(${source.y},${source.x})`).attr("fill-opacity",0);
-      const link=gLink.selectAll("path").data(links,d=>d.target.id);
-      const diag=d3.linkHorizontal().x(d=>d.y).y(d=>d.x);
-      const lEnter=link.enter().append("path").attr("d",()=>{
-        const o={x:source.x0,y:source.y0}; return diag({source:o,target:o}); });
-      link.merge(lEnter).transition(t).attr("d",diag);
-      link.exit().transition(t).remove().attr("d",()=>{
-        const o={x:source.x,y:source.y}; return diag({source:o,target:o}); });
-      root.eachBefore(d=>{ d.x0=d.x; d.y0=d.y; });
-    }
-    el.innerHTML=""; el.appendChild(svg.node());
-    update(root);
+  function toggleAns(btn){
+    const a=btn.nextElementSibling;
+    const open=a.classList.toggle('show'); btn.textContent=open?'정답·해설 숨기기':'정답·해설';
   }
-  let __treeTimer=null;
-  window.addEventListener('resize',()=>{
-    if(typeof d3==='undefined') return;
-    clearTimeout(__treeTimer);
-    __treeTimer=setTimeout(()=>{ try{renderTree();}catch(e){} },200);
-  });
-
-  /* ===== ROC·임계값 슬라이더 시뮬레이션 (vanilla) ===== */
-  (function(){
-    const slider=document.getElementById('thSlider'); if(!slider) return;
-    // 합성 데이터: 정상(label0)·환자(label1) 각 점수 분포. 환자가 더 높은 점수.
-    const neg=[0.05,0.10,0.12,0.18,0.22,0.25,0.30,0.33,0.38,0.42,0.46,0.50,0.55,0.60,0.68];
-    const pos=[0.38,0.45,0.50,0.55,0.58,0.62,0.66,0.70,0.74,0.78,0.82,0.86,0.90,0.94,0.98];
-    const P=pos.length, N=neg.length;
-    function classify(th){
-      let tp=0,fn=0,tn=0,fp=0;
-      pos.forEach(s=> s>=th?tp++:fn++);
-      neg.forEach(s=> s>=th?fp++:tn++);
-      return {tp,fn,tn,fp};
-    }
-    // ROC 점 + AUC (trapezoid)
-    const ths=[]; for(let t=1.001;t>=-0.001;t-=0.02) ths.push(+t.toFixed(3));
-    const rocPts=ths.map(t=>{ const{tp,fn,tn,fp}=classify(t);
-      return [ fp/(fp+tn||1), tp/(tp+fn||1) ]; });        // [FPR, TPR]
-    let auc=0; for(let i=1;i<rocPts.length;i++){
-      auc += (rocPts[i][0]-rocPts[i-1][0])*(rocPts[i][1]+rocPts[i-1][1])/2; }
-    auc=Math.abs(auc);
-    const chart=document.getElementById('rocChart');
-    const M=30, S=200;                                     // margin, plot size in viewBox(260)
-    function sx(x){ return M + x*S; }
-    function sy(y){ return M + (1-y)*S; }
-    function fmt(v){ return (Math.round(v*100)/100).toFixed(2); }
-    function drawChart(curFpr,curTpr){
-      const grid=`<rect x="${M}" y="${M}" width="${S}" height="${S}" fill="none" stroke="var(--line)"/>`+
-        `<line x1="${M}" y1="${M+S}" x2="${M+S}" y2="${M}" stroke="var(--muted)" stroke-dasharray="4 4" opacity=".6"/>`;
-      const path="M"+rocPts.map(p=>sx(p[0]).toFixed(1)+","+sy(p[1]).toFixed(1)).join(" L");
-      const curve=`<path d="${path}" fill="none" stroke="var(--accent)" stroke-width="2"/>`;
-      const pt=`<circle cx="${sx(curFpr).toFixed(1)}" cy="${sy(curTpr).toFixed(1)}" r="5" fill="var(--hot)"/>`;
-      const labels=`<text x="${M+S/2}" y="${M+S+22}" text-anchor="middle" fill="var(--muted)" font-size="11">위양성률 FPR (1−특이도)</text>`+
-        `<text x="12" y="${M+S/2}" text-anchor="middle" fill="var(--muted)" font-size="11" transform="rotate(-90 12 ${M+S/2})">민감도 TPR</text>`;
-      chart.innerHTML=grid+curve+pt+labels;
-    }
-    function render(){
-      const th=+slider.value;
-      const {tp,fn,tn,fp}=classify(th);
-      const sens=tp/(tp+fn||1), spec=tn/(tn+fp||1), fpr=fp/(fp+tn||1), acc=(tp+tn)/(P+N);
-      document.getElementById('thVal').textContent=fmt(th);
-      document.getElementById('mSens').textContent=fmt(sens);
-      document.getElementById('mSpec').textContent=fmt(spec);
-      document.getElementById('mFpr').textContent=fmt(fpr);
-      document.getElementById('mAcc').textContent=fmt(acc);
-      document.getElementById('mAuc').textContent=fmt(auc);
-      document.getElementById('cTP').textContent=tp;
-      document.getElementById('cFP').textContent=fp;
-      document.getElementById('cFN').textContent=fn;
-      document.getElementById('cTN').textContent=tn;
-      drawChart(fpr,sens);
-      const dir = th>0.7?'임계값이 높아 환자 판정이 엄격 → 특이도↑·민감도↓(환자를 놓칠 위험 FN↑).'
-        : th<0.3?'임계값이 낮아 환자 판정이 느슨 → 민감도↑·특이도↓(정상을 환자로 오진 FP↑).'
-        : '균형 구간 — 민감도와 특이도가 맞교환된다.';
-      document.getElementById('rocDesc').textContent=
-        `TP ${tp}·FP ${fp}·FN ${fn}·TN ${tn} | 민감도 ${fmt(sens)} · 특이도 ${fmt(spec)}. ${dir}`;
-    }
-    slider.addEventListener('input',render);
-    render();
-  })();
-
-  /* ===== sceneEngine: CDN-free 모핑 애니메이션 (offline-first) ===== */
-  const sceneEngine = (function () {
-    const easings = { smooth: t => t*t*(3-2*t), linear: t => t };
-    const lerp = (a,b,t) => a + (b-a)*t;
-    function interp(a,b,t){
-      if(typeof a==='number') return lerp(a,b,t);
-      if(Array.isArray(a)) return a.map((x,i)=>interp(x,b[i],t));
-      if(a && typeof a==='object'){ const o={}; for(const k in a) o[k]=interp(a[k],b[k],t); return o; }
-      return t<1 ? a : b;
-    }
-    function makeColor(el){
-      return (name,fallback)=>{ const v=getComputedStyle(el).getPropertyValue('--'+name).trim(); return v||fallback; };
-    }
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function fitCanvas(cv){
-      const dpr=window.devicePixelRatio||1, r=cv.getBoundingClientRect();
-      cv.width=Math.max(1,r.width*dpr); cv.height=Math.max(1,r.height*dpr);
-      const ctx=cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
-      return { ctx, w:r.width, h:r.height };
-    }
-    function create(cv, { steps, draw, caption, onState, duration=700, easing='smooth' }){
-      let i=0, raf=0;
-      const color=makeColor(cv);
-      const capEl=cv.parentElement.querySelector('[data-caption]');
-      function render(state){ const {ctx,w,h}=fitCanvas(cv); ctx.clearRect(0,0,w,h); draw(ctx,state,{w,h,color}); }
-      function show(idx){ i=idx; render(steps[i]); if(capEl&&caption) capEl.textContent=caption(i); if(onState) onState(steps[i],i); }
-      function go(idx){
-        idx=Math.max(0,Math.min(steps.length-1,idx));
-        if(reduced||idx===i) return show(idx);
-        cancelAnimationFrame(raf);
-        const from=steps[i], to=steps[idx], t0=performance.now();
-        if(capEl&&caption) capEl.textContent=caption(idx);
-        if(onState) onState(to,idx);
-        (function frame(now){
-          const p=Math.min(1,(now-t0)/duration);
-          render(interp(from,to,easings[easing](p)));
-          if(p<1) raf=requestAnimationFrame(frame); else i=idx;
-        })(t0);
-      }
-      const repaint=()=>show(i);
-      window.addEventListener('resize',repaint);
-      const mo=new MutationObserver(repaint);
-      mo.observe(document.body,{attributes:true,attributeFilter:['data-theme','class']});
-      show(0);
-      return { next:()=>go(i+1), prev:()=>go(i-1), go, show, get index(){return i;}, len:steps.length };
-    }
-    return { create };
-  })();
-
-  function wireScene(scene, root){
-    const scrub=root.querySelector('[data-scrub]'); if(scrub) scrub.max=scene.len-1;
-    const idxEl=root.querySelector('[data-stepidx]');
-    // cur = 클릭 즉시 목표 인덱스(라벨/캡션 동기화용). scene.index는 tween 끝에야 갱신되므로 직접 추적한다.
-    let cur=scene.index;
-    const clamp=n=>Math.max(0,Math.min(scene.len-1,n));
-    const sync=()=>{ if(scrub) scrub.value=cur; if(idxEl) idxEl.textContent='단계 '+cur; };
-    const nb=root.querySelector('[data-next]'); if(nb) nb.onclick=()=>{ cur=clamp(cur+1); scene.go(cur); sync(); };
-    const pb=root.querySelector('[data-prev]'); if(pb) pb.onclick=()=>{ cur=clamp(cur-1); scene.go(cur); sync(); };
-    if(scrub) scrub.oninput=e=>{ cur=clamp(+e.target.value); scene.go(cur); sync(); };
-    const play=root.querySelector('[data-play]'); let timer=null;
-    if(play) play.onclick=()=>{
-      if(timer){ clearInterval(timer); timer=null; play.textContent='▶ 재생'; return; }
-      play.textContent='⏸ 일시정지';
-      timer=setInterval(()=>{
-        if(cur>=scene.len-1){ clearInterval(timer); timer=null; play.textContent='▶ 재생'; return; }
-        cur=clamp(cur+1); scene.go(cur); sync();
-      }, 950);
-    };
-    // 접힌 <details> 안에서는 캔버스 폭이 0 → blank로 그려진다. open 시 현재 단계로 다시 그린다.
-    const det=root.closest('details'); if(det) det.addEventListener('toggle',()=>{ if(det.open) scene.show(cur); });
-    sync();
-  }
-
-  /* ===== ECG 파형 씬 (P → QRS → T 누적 등장) ===== */
-  function initEcgScene(){
-    const cv=document.getElementById('ecgWaveCanvas'); if(!cv) return;
-    // 한 박자 파형: 시간 0..1 → 전압. seg=얼마나 그릴지(0..1 누적).
-    function volt(x){
-      // baseline, P(작은 양), PR평탄, Q(작은 음), R(큰 양), S(음), ST평탄, T(완만한 양)
-      const g=(c,w,a)=>a*Math.exp(-((x-c)*(x-c))/(2*w*w));
-      return g(0.18,0.022,0.22)            // P
-           - g(0.40,0.010,0.12)            // Q
-           + g(0.44,0.012,1.00)            // R
-           - g(0.48,0.012,0.34)            // S
-           + g(0.72,0.045,0.30);           // T
-    }
-    const steps=[
-      {seg:0.06,note:'기준선(baseline) — 전기적으로 조용한 상태. 여기서 한 박자가 시작된다.'},
-      {seg:0.30,note:'🟦 P파(P wave) — 심방 탈분극(atrial depolarization). 작은 봉우리 하나.'},
-      {seg:0.52,note:'PR 간격 — AV node(방실결절)가 전도를 잠깐 지연(심방이 짜낼 시간 확보).'},
-      {seg:0.66,note:'🟥 QRS 복합파 — 심실 탈분극(ventricular depolarization). 가장 크고 뾰족하다.'},
-      {seg:1.00,note:'🟩 T파(T wave) — 심실 재분극(ventricular repolarization). 심실이 휴식으로 복귀 → 한 박자 끝.'}
-    ];
-    const PAD=34;
-    const scene=sceneEngine.create(cv,{
-      steps, caption:i=>steps[i].note,
-      draw(ctx,s,{w,h,color}){
-        const ink=color('ink','#e7ecf3'), muted=color('muted','#9aa7b8'),
-              line=color('line','#2a3340'), accent=color('accent','#5b9dff'),
-              hot=color('hot','#ff6b6b'), ok=color('ok','#3ecf8e');
-        const x0=PAD, x1=w-12, mid=h*0.62, amp=h*0.40;
-        ctx.strokeStyle=line; ctx.lineWidth=1;
-        ctx.beginPath(); ctx.moveTo(x0,mid); ctx.lineTo(x1,mid); ctx.stroke(); // baseline grid
-        // 색 구간을 위해 3색으로 나눠 그린다: P(<=0.33 accent), QRS(0.33..0.55 hot), T(>0.55 ok)
-        const seg=s.seg, N=240;
-        function drawBand(lo,hi,col){
-          ctx.strokeStyle=col; ctx.lineWidth=2.4; ctx.beginPath(); let started=false;
-          for(let k=0;k<=N;k++){
-            const t=k/N; if(t>seg) break; if(t<lo||t>hi) { started=false; continue; }
-            const px=x0+t*(x1-x0), py=mid-volt(t)*amp;
-            if(!started){ ctx.moveTo(px,py); started=true; } else ctx.lineTo(px,py);
-          }
-          ctx.stroke();
-        }
-        drawBand(0,0.33,accent); drawBand(0.33,0.55,hot); drawBand(0.55,1,ok);
-        // 진행 커서
-        if(seg<1){ const px=x0+seg*(x1-x0); ctx.strokeStyle=muted; ctx.setLineDash([3,3]);
-          ctx.beginPath(); ctx.moveTo(px,12); ctx.lineTo(px,h-8); ctx.stroke(); ctx.setLineDash([]); }
-        // 라벨
-        ctx.fillStyle=muted; ctx.font='12px Pretendard,sans-serif';
-        if(seg>=0.30){ ctx.fillStyle=accent; ctx.fillText('P', x0+0.18*(x1-x0)-3, mid-volt(0.18)*amp-8); }
-        if(seg>=0.66){ ctx.fillStyle=hot; ctx.fillText('QRS', x0+0.44*(x1-x0)-10, mid-volt(0.44)*amp-8); }
-        if(seg>=1){ ctx.fillStyle=ok; ctx.fillText('T', x0+0.72*(x1-x0)-3, mid-volt(0.72)*amp-8); }
-        ctx.fillStyle=muted; ctx.fillText('시간 →', x1-44, h-4);
-      }
-    });
-    wireScene(scene, cv.closest('.viz-scene'));
-  }
-
-  /* ===== CNN convolution 슬라이딩 윈도우 씬 ===== */
-  function initCnnScene(){
-    const cv=document.getElementById('cnnConvCanvas'); if(!cv) return;
-    // 5x5 입력(왼쪽 절반=0, 오른쪽=1 → 세로 경계). 3x3 세로선 검출 필터. valid conv → 3x3 특징맵.
-    const IN=[
-      [0,0,1,1,1],
-      [0,0,1,1,1],
-      [0,0,1,1,1],
-      [0,0,1,1,1],
-      [0,0,1,1,1]
-    ];
-    const K=[[1,0,-1],[1,0,-1],[1,0,-1]];     // vertical line detector
-    function conv(r,c){ let s=0; for(let i=0;i<3;i++)for(let j=0;j<3;j++) s+=IN[r+i][c+j]*K[i][j]; return s; }
-    const out=[]; for(let r=0;r<3;r++){ out[r]=[]; for(let c=0;c<3;c++) out[r][c]=conv(r,c); }
-    // steps: 0=소개, 그다음 9칸을 한 칸씩(row-major)
-    // intro 단계도 step과 동일한 수치 스키마(r/c/val)를 가져야 보간 시 lerp(number,undefined)=NaN을 피한다.
-    const steps=[{idx:-1,r:0,c:0,val:0,note:'3×3 필터(노란 윈도우)를 입력 좌상단에 올린다. 겹친 칸끼리 곱해 더하면 특징맵 한 칸이 채워진다.'}];
-    for(let r=0;r<3;r++)for(let c=0;c<3;c++){
-      const v=out[r][c];
-      const desc = v>0 ? `값 ${v} (양수) — 이 위치에 왼쪽 어둡고 오른쪽 밝은 세로 경계가 있다.`
-                 : v<0 ? `값 ${v} (음수) — 반대 방향 경계.`
-                 : `값 0 — 좌우가 같아 경계 없음(필터 반응 0).`;
-      steps.push({idx:r*3+c, r, c, val:v, note:`윈도우를 (행 ${r+1}, 열 ${c+1})로 → 합성곱 ${desc}`});
-    }
-    const filledEl=document.getElementById('cnnConvFilled'),
-          valEl=document.getElementById('cnnConvVal'),
-          meterEl=document.getElementById('cnnConvMeter');
-    const scene=sceneEngine.create(cv,{
-      steps, caption:i=>steps[i].note,
-      onState(s){
-        const filled = s.idx<0 ? 0 : s.idx+1;
-        if(filledEl) filledEl.textContent=filled;
-        if(valEl) valEl.textContent = s.idx<0 ? '–' : s.val;
-        if(meterEl) meterEl.style.width=Math.round(filled/9*100)+'%';
-      },
-      draw(ctx,s,{w,h,color}){
-        const ink=color('ink','#e7ecf3'), muted=color('muted','#9aa7b8'),
-              line=color('line','#2a3340'), accent=color('accent','#5b9dff'),
-              warn=color('warn','#ffcf5c'), ok=color('ok','#3ecf8e'), hot=color('hot','#ff6b6b');
-        const cell=Math.min((w*0.42)/5,(h-30)/5,40);
-        const gx=10, gy=14;                       // 입력 격자 원점
-        const ox=gx+5*cell+Math.max(28,w*0.08);   // 출력 격자 원점
-        // 입력 격자
-        ctx.font=Math.round(cell*0.42)+'px Pretendard,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-        for(let r=0;r<5;r++)for(let c=0;c<5;c++){
-          const x=gx+c*cell, y=gy+r*cell, v=IN[r][c];
-          ctx.fillStyle = v? 'rgba(91,157,255,.20)':'rgba(154,167,184,.10)';
-          ctx.fillRect(x,y,cell,cell);
-          ctx.strokeStyle=line; ctx.strokeRect(x,y,cell,cell);
-          ctx.fillStyle=muted; ctx.fillText(v, x+cell/2, y+cell/2);
-        }
-        // 현재 윈도우(보간된 r,c 사용)
-        const rr = s.idx<0?0:s.r, cc = s.idx<0?0:s.c;
-        ctx.strokeStyle=warn; ctx.lineWidth=3;
-        ctx.strokeRect(gx+cc*cell, gy+rr*cell, 3*cell, 3*cell);
-        ctx.lineWidth=1;
-        // 출력 특징맵
-        const filled = s.idx<0 ? -1 : Math.round(s.idx);
-        ctx.fillStyle=muted; ctx.textAlign='left'; ctx.fillText('특징맵', ox, gy-4); ctx.textAlign='center';
-        for(let r=0;r<3;r++)for(let c=0;c<3;c++){
-          const x=ox+c*cell, y=gy+r*cell, fi=r*3+c, shown=fi<=filled;
-          ctx.fillStyle = !shown ? 'rgba(154,167,184,.06)'
-                        : out[r][c]>0 ? 'rgba(62,207,142,.25)'
-                        : out[r][c]<0 ? 'rgba(255,107,107,.22)' : 'rgba(154,167,184,.18)';
-          ctx.fillRect(x,y,cell,cell);
-          ctx.strokeStyle=(fi===filled)?accent:line; ctx.lineWidth=(fi===filled)?2.5:1;
-          ctx.strokeRect(x,y,cell,cell); ctx.lineWidth=1;
-          ctx.fillStyle = shown?ink:'transparent';
-          if(shown) ctx.fillText(out[r][c], x+cell/2, y+cell/2);
-        }
-        ctx.textAlign='start'; ctx.textBaseline='alphabetic';
-      }
-    });
-    wireScene(scene, cv.closest('.viz-scene'));
-  }
-
-  window.addEventListener('load',function(){ initTree(); initEcgScene(); initCnnScene(); });
+  function renderAll(){ Object.keys(QUIZ).forEach(renderQuiz); }
+  renderAll();
 </script>
 </body>
 </html>
