@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- 의생명과학을 위한 AI · 전체 시험대비 (강의 개요 → Week1 → Week2 → Week3) -->
+<!-- 의생명공학을 위한 AI · 전체 시험대비 (강의 개요 → Week1 → Week2 → Week3) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>의생명과학을 위한 AI — 시험대비</title>
+<title>의생명공학을 위한 AI — 시험대비</title>
 <style>
   :root{
     --bg:#0c1016; --panel:#141a23; --panel2:#1b2330; --ink:#e8edf5; --muted:#94a3b6;
@@ -71,6 +71,12 @@
   .pq-card h3{margin:.1em 0 .35em;font-size:.95rem;color:var(--accent)}
   .pq-card p{margin:0;font-size:.9rem}
   .pq-card .term-en{color:var(--muted);font-weight:500;font-size:.85em}
+  .pq-group{grid-column:1/-1;display:flex;align-items:center;gap:11px;margin:8px 0 0;font-weight:800;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase}
+  .pq-group .gl{flex:1;height:1px}
+  .pq-group.bio{color:var(--w2)} .pq-group.bio .gl{background:linear-gradient(90deg,rgba(52,211,153,.45),transparent)}
+  .pq-group.ai{color:var(--accent2)} .pq-group.ai .gl{background:linear-gradient(90deg,rgba(138,107,255,.45),transparent)}
+  .pq-card.bio h3{color:var(--w2)} .pq-card.bio{border-color:rgba(52,211,153,.28)}
+  .pq-card.ai h3{color:var(--accent2)} .pq-card.ai{border-color:rgba(138,107,255,.28)}
 
   /* week banner */
   .weekband{display:flex;align-items:center;gap:12px;margin:40px 0 16px;padding:14px 18px;border-radius:14px;
@@ -183,6 +189,9 @@
   .calc .who{color:var(--gold);font-weight:800;font-size:.78rem;letter-spacing:.04em;display:block;margin-bottom:5px;text-transform:uppercase}
   .calc code{background:#141a23;border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:.86em;color:var(--accent)}
   .calc .step-r{margin:.35em 0}
+  .tip{border:1px dashed var(--accent2);background:rgba(138,107,255,.06);border-radius:10px;padding:11px 14px;margin:12px 0;font-size:.9rem;line-height:1.65}
+  .tip .who{color:var(--accent2);font-weight:800;font-size:.76rem;letter-spacing:.04em;display:block;margin-bottom:5px;text-transform:uppercase}
+  .tip code{background:#141a23;border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:.86em;color:var(--accent2)}
 
   /* 영상 자료 토글 */
   .vidsec .step .qnum{background:var(--hot)}
@@ -198,10 +207,10 @@
 <body data-theme="dark">
 <header>
   <div class="htop">
-    <div class="brand"><span class="dot"></span>의생명 AI</div>
+    <div class="brand"><span class="dot"></span>의생명공학을 위한 AI</div>
     <div class="grow"></div>
     <nav class="navchips">
-      <a href="#overview">개요</a><a href="#unify">관통 개념</a><a href="#w1">Week 1</a><a href="#w2">Week 2</a><a href="#w3">Week 3</a><a href="#videos">영상</a>
+      <a href="#overview">개요</a><a href="#w1">Week 1</a><a href="#w2">Week 2</a><a href="#w3">Week 3</a><a href="#videos">영상</a>
     </nav>
   </div>
 </header>
@@ -210,7 +219,7 @@
 
   <!-- ===================== 강의 개요 ===================== -->
   <section class="hero" id="overview">
-    <div class="kicker">의생명과학을 위한 AI · 노미나 교수</div>
+    <div class="kicker">의생명공학을 위한 AI · 노미나 교수</div>
     <h1>생물 서열·구조는 <em>입력</em>,<br>예측은 <em>출력</em></h1>
     <p class="overview">이 과목은 <b>딥러닝을 의생명 데이터(DNA·단백질·분자)에 적용하는 방법</b>을 다룬다. 핵심은 항상 같다 — <b>생물 데이터를 어떤 형태의 모델 입력으로 바꾸고, 어떤 출력을 기대하며, 어떻게 학습하는가</b>. 3주에 걸쳐 변이 탐지(CNN), 유전체 언어모델(Transformer), 분자 그래프(GNN)를 본다.</p>
 
@@ -245,84 +254,42 @@
 
   <!-- 공통 선행 개념 -->
   <section class="sec" id="prereq">
-    <div class="sec-h"><span class="en">Prerequisites</span><span class="ko">먼저 알아야 할 개념</span><span class="rule"></span></div>
+    <div class="sec-h"><span class="en">Prerequisites</span><span class="ko">선행 지식</span><span class="rule"></span></div>
     <div class="pq-grid">
-      <div class="pq-card"><h3>DNA <span class="term-en">deoxyribonucleic acid</span></h3>
-        <p>유전 정보를 저장하는 분자다. <b>A·T·G·C</b> 네 염기(base)가 긴 사슬로 늘어선 형태이며, 글자 순서가 곧 정보다.</p></div>
-      <div class="pq-card"><h3>중심원리 <span class="term-en">central dogma</span></h3>
-        <p>생물 정보의 흐름이다: <b>DNA(저장) → RNA(전달) → 단백질(기능)</b>. AI가 다루는 입력은 대부분 이 흐름 위의 서열·구조다.</p></div>
-      <div class="pq-card"><h3>SNV <span class="term-en">single-nucleotide variant</span></h3>
-        <p>한 위치의 염기 하나가 바뀐 변이다(예: T→C). 단 한 글자가 단백질을 바꾸고 질병을 일으킨다.</p></div>
-      <div class="pq-card"><h3>토큰 <span class="term-en">token</span></h3>
-        <p>모델이 한 단위로 다루는 입력 조각이다. 언어의 단어처럼, DNA에서는 염기 1개 또는 k개 묶음이 토큰이 된다.</p></div>
-      <div class="pq-card"><h3>임베딩 <span class="term-en">embedding</span></h3>
-        <p>토큰을 의미를 담은 <b>수치 벡터</b>로 바꾼 것이다. 학습하면 비슷한 의미일수록 가까운 벡터에 모인다.</p></div>
-      <div class="pq-card"><h3>표현학습 <span class="term-en">representation learning</span></h3>
-        <p>사람이 feature를 설계하지 않고, 모델이 raw 데이터에서 유용한 특징을 <b>스스로 학습</b>하는 것이다. 딥러닝의 핵심.</p></div>
+      <div class="pq-group bio"><span>생물 · 의공학</span><span class="gl"></span></div>
+      <div class="pq-card bio"><h3>DNA <span class="term-en">deoxyribonucleic acid</span></h3>
+        <p>유전 정보를 저장하는 분자. <b>A·T·G·C</b> 네 염기(base)가 사슬로 늘어선 형태, 글자 순서가 곧 정보.</p></div>
+      <div class="pq-card bio"><h3>중심원리 <span class="term-en">central dogma</span></h3>
+        <p>생물 정보의 흐름 <b>DNA(저장) → RNA(전달) → 단백질(기능)</b>. RNA가 잘려 이어붙는 경계가 스플라이스 부위(splice site).</p></div>
+      <div class="pq-card bio"><h3>SNV <span class="term-en">single-nucleotide variant</span></h3>
+        <p>한 위치의 염기 하나가 바뀐 변이(예 T→C). 단 한 글자가 단백질·질병을 좌우.</p></div>
+      <div class="pq-card bio"><h3>시퀀싱·Reads·Reference <span class="term-en">NGS</span></h3>
+        <p>시퀀서가 DNA를 100~150 bp 조각(<b>reads</b>)으로 분할 판독. 변이를 재는 비교 기준이 표준 유전체 <b>reference</b>.</p></div>
+      <div class="pq-card bio"><h3>정렬·pileup·깊이 <span class="term-en">mapping · depth</span></h3>
+        <p>reads를 reference 좌표에 맞추는 <b>mapping</b>, 한 좌표에 수십~수백 개가 수직으로 쌓인 수가 <b>깊이(depth·coverage)</b>.</p></div>
+      <div class="pq-card bio"><h3>유전형 <span class="term-en">genotype</span></h3>
+        <p>한 좌표의 두 대립유전자(allele) 조합. <b>Hom-ref</b>(정상)·<b>Het</b>(이형접합)·<b>Hom-alt</b>(동형접합) 셋.</p></div>
+      <div class="pq-card bio"><h3>분자 그래프 <span class="term-en">molecular graph</span></h3>
+        <p>원자=노드, 결합=엣지로 표현. 산소·황 같은 <b>기능기(functional group)</b>가 독성·반응을 좌우.</p></div>
+
+      <div class="pq-group ai"><span>AI · 수학</span><span class="gl"></span></div>
+      <div class="pq-card ai"><h3>텐서·형상 <span class="term-en">tensor · shape</span></h3>
+        <p>다차원 숫자 배열. <b>형상(shape)</b>이 <code>(깊이, 너비, 채널)</code>처럼 각 축의 크기를 규정.</p></div>
+      <div class="pq-card ai"><h3>임베딩 <span class="term-en">embedding</span></h3>
+        <p>토큰·노드를 의미를 담은 <b>수치 벡터</b>로 변환. 비슷할수록 가까운 벡터로 수렴.</p></div>
+      <div class="pq-card ai"><h3>토큰·토큰화 <span class="term-en">token</span></h3>
+        <p>모델이 한 단위로 다루는 입력 조각. DNA에서는 염기 1개 또는 k-mer 묶음이 토큰.</p></div>
+      <div class="pq-card ai"><h3>신경망·활성함수 <span class="term-en">neural net · activation</span></h3>
+        <p>가중합 \(z=\sum wx+b\)에 비선형 활성함수(ReLU 등)를 씌운 층의 적층. 활성함수 없으면 선형회귀로 축소.</p></div>
+      <div class="pq-card ai"><h3>softmax·손실함수 <span class="term-en">softmax · loss</span></h3>
+        <p>softmax가 점수를 합 1의 <b>확률 분포</b>로 변환. 분류 손실은 <b>cross-entropy</b>.</p></div>
+      <div class="pq-card ai"><h3>경사하강·기울기 <span class="term-en">gradient descent</span></h3>
+        <p>손실 \(E\)의 음의 기울기 \(-\nabla E\) 방향으로 파라미터를 조금씩 이동. 기울기 = 가장 가파른 방향.</p></div>
+      <div class="pq-card ai"><h3>표현학습 <span class="term-en">representation learning</span></h3>
+        <p>사람이 feature를 설계하지 않고, 모델이 raw 데이터에서 유용한 특징을 <b>스스로 학습</b>. 딥러닝의 핵심.</p></div>
+      <div class="pq-card ai"><h3>순열 불변성 <span class="term-en">permutation invariance</span></h3>
+        <p>입력 순서를 바꿔도 출력이 같은 성질. 그래프 이웃처럼 <b>순서 없는 집합</b>을 다루는 모델의 필수 조건(Sum·Mean·Max 집계).</p></div>
     </div>
-  </section>
-
-  <!-- ===================== 관통 개념 (MECE 통합) ===================== -->
-  <section class="sec" id="unify">
-    <div class="sec-h"><span class="en">The Common Skeleton</span><span class="ko">관통 개념 — 네 모델, 한 뼈대</span><span class="rule"></span></div>
-    <p class="lead">이 과목의 모델은 도메인이 다 다르다 — <b>변이 탐지(CNN)</b>, <b>유전체 언어(Transformer·BERT)</b>, <b>분자 그래프(GNN·GAT)</b>. 그런데 영상 9편을 가로질러 보면 뼈대가 하나다. 모두 <b>① 입력을 벡터로 바꾸고 → ② 주변(이웃·문맥) 정보를 <span class="hl-w">가중합(weighted sum)</span>으로 섞어 표현을 갱신하고 → ③ 출력</b>한다. 모델끼리의 차이는 단 두 축뿐이고, 학습 방법은 전부 공통이다. 이 한 장이 나머지 전부를 꿰는 지도다.</p>
-
-    <div class="cmp-wrap">
-      <table class="cmp">
-        <thead><tr>
-          <th>모델</th><th>무엇을 섞나 — 이웃(neighbor)의 정의</th><th>가중치는 어떻게 정하나</th><th>가중치 공유</th><th>대표 도메인</th>
-        </tr></thead>
-        <tbody>
-          <tr>
-            <td>CNN<br><span style="color:var(--muted);font-weight:500;font-size:.82em">convolution</span></td>
-            <td><b>고정 격자 이웃</b> — 3×3 같은 주변 칸만</td>
-            <td><b>학습된 kernel(filter)</b> 값 — 단, 보는 위치는 고정 패턴</td>
-            <td>전 위치(position)에 같은 필터 공유</td>
-            <td>이미지 · pileup 텐서(변이 탐지)</td>
-          </tr>
-          <tr>
-            <td>기본 GNN<br><span style="color:var(--muted);font-weight:500;font-size:.82em">GCN</span></td>
-            <td><b>그래프로 연결된 이웃</b> \(\mathcal{N}(v)\)</td>
-            <td><b>고정</b> — 구조(차수)로 정규화 <code>1/√(d_v·d_u)</code></td>
-            <td>전 노드에 같은 \(W\) 공유</td>
-            <td>분자 · 단백질 상호작용(PPI)</td>
-          </tr>
-          <tr>
-            <td>GAT</td>
-            <td><b>그래프 이웃</b> \(\mathcal{N}(v)\)</td>
-            <td class="hl-w">학습된 attention \(\alpha_{vu}\) — 이웃 <b>내용</b>으로 동적 계산</td>
-            <td>전 노드에 같은 \(W,\vec a\) 공유</td>
-            <td>분자 · 미지 그래프(inductive)</td>
-          </tr>
-          <tr>
-            <td>Self-Attention<br><span style="color:var(--muted);font-weight:500;font-size:.82em">Transformer·BERT</span></td>
-            <td><b>문맥의 모든 토큰</b> — 멀어도 연결</td>
-            <td class="hl-w">학습된 \(Q\!\cdot\!K\) → softmax — 토큰 <b>내용</b>으로 동적 계산</td>
-            <td>전 위치에 같은 \(W_Q,W_K,W_V\) 공유</td>
-            <td>DNA 서열 · 자연어</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="axisnote">
-      <div class="ax"><h4>축 1 — 이웃을 어떻게 정의하나</h4>
-        <p><b>격자 → 그래프 → 전체</b>로 갈수록 "이웃" 범위가 넓고 유연해진다. CNN은 옆칸만, GNN은 결합된 원자만, attention은 서열 전체를 본다. 데이터의 구조(이미지/그래프/서열)가 이웃의 모양을 정한다.</p></div>
-      <div class="ax"><h4>축 2 — 가중치를 어떻게 정하나</h4>
-        <p><b>고정 → 학습 → 내용기반 동적</b>. CNN 필터값도 학습되지만 위치 무관한 한 벌이고, GCN은 차수로 <b>고정</b>한다. GAT·attention은 이웃의 <b>임베딩 내용</b>으로 매번 가중치를 새로 계산한다 — 이것이 "attention"의 정체다.</p></div>
-    </div>
-
-    <div class="answer" style="margin-top:16px;border-color:var(--accent2);background:linear-gradient(160deg,rgba(138,107,255,.07),var(--panel))">
-      <span class="atag" style="background:var(--accent2);color:#fff">공통 학습 엔진</span>
-      <div class="afull">
-        <p>위 네 모델은 <b>가중치(파라미터)를 똑같은 방식으로 학습</b>한다. 도메인·구조가 달라도 학습 엔진은 하나다.</p>
-        <p><span class="ph" style="color:var(--accent2)">① Gradient Descent(경사하강)</span> 오차(cost) \(E\)를 줄이는 방향, 즉 음의 기울기 \(-\nabla E\)로 파라미터를 조금씩(\(\eta\)) 옮긴다. <b>골짜기로 공을 굴리는 것</b>과 같다 — 경사가 가파르면 큰 걸음, 바닥 근처면 작은 걸음.</p>
-        <p><span class="ph" style="color:var(--accent2)">② Backpropagation(역전파)</span> 그 기울기 \(\nabla E\)를 <b>chain rule</b>로 출력층→입력층으로 거꾸로 효율 계산한다. 한 번의 forward + 한 번의 backward로 13,000개든 수억 개든 모든 파라미터의 책임을 동시에 구한다.</p>
-        <p style="color:var(--muted);font-size:.9rem">→ Week 1의 <a href="#w1s3g">경사하강</a>·<a href="#w1s4">역전파</a>에서 수식·수치 예제로 깊게 본다. 즉 <b>"무엇을 섞나"는 모델마다 다르지만, "어떻게 배우나"는 전부 GD+BP다.</b></p>
-      </div>
-    </div>
-
-    <div class="simple" style="margin-top:14px"><span class="who">한 줄 요약</span><b>convolution = "한 배열을 뒤집어 밀며 곱하고 더하는" 연산</b> 그 자체다(3B1B). CNN은 그 커널을 데이터로 학습하고, GNN은 격자 대신 그래프 이웃에, attention은 전체 토큰에 같은 "곱하고 더하기"를 쓴다. 결국 <b>전부 가중합의 변주</b>다.</div>
   </section>
 
   <!-- ===================== WEEK 1 ===================== -->
@@ -334,7 +301,7 @@
   <section class="sec">
     <div class="sec-h"><span class="en">Core Question</span><span class="ko">핵심 문제</span><span class="rule"></span></div>
     <div class="mission">
-      <div class="mhead"><span class="mtag">서술형 문제</span><span style="color:var(--muted);font-size:.82rem">입력→출력 양식</span></div>
+      <div class="mhead"><span class="mtag">서술형</span><span style="color:var(--muted);font-size:.82rem">입력→출력 양식</span></div>
       <div class="mq">환자 DNA에서 질병을 유발한 <span class="hl">단일 염기 변이(SNV)</span> 1개를 탐지하기 위한 <span class="hl">모델 입력 구성</span>, <span class="hl">출력 형태</span>, <span class="hl">학습 방식</span>을 서술하라.</div>
     </div>
   </section>
@@ -344,8 +311,8 @@
     <div class="answer">
       <span class="atag">모범 답안 · full-text</span>
       <div class="afull">
-        <p><span class="ph">[입력]</span> 환자 세포에서 DNA를 추출해 시퀀싱하면 수억 개의 짧은 조각(<b>reads</b>)을 얻는다. 이 reads를 참조 서열(<b>reference</b>)에 정렬(mapping)한 뒤, 변이 후보 위치 주변을 위아래로 쌓아(<b>pileup</b>) <code>(100, 221, 6)</code> 형태의 이미지 텐서로 인코딩한다. 100은 read 깊이, 221은 위치 너비(bp), 6은 각 칸을 묘사하는 채널 수다.</p>
-        <p><span class="ph">[출력]</span> 이 텐서를 <b>CNN</b>에 통과시켜 genotype likelihood <code>[Hom-ref, Het, Hom-alt]</code>를 출력한다. 예를 들어 <code>[0.01, 0.95, 0.04]</code>이면 가장 큰 값이 Het이므로 이형접합 변이로 판정한다.</p>
+        <p><span class="ph">[입력]</span> 환자 세포에서 DNA를 추출해 시퀀싱하면 수억 개의 짧은 조각(<b>reads</b>)을 얻는다. 이 reads를 참조 서열(<b>reference</b>)에 정렬(mapping)한 뒤, 변이 후보 위치 주변을 위아래로 쌓아(<b>pileup</b>) <code>(100, 221, 6)</code> 형태의 이미지 텐서로 인코딩한다. 100은 <b>pileup 고정 height</b>(read 행 + 상단 reference strip을 합친 고정 100행 — read가 부족하면 Padding, 넘치면 다운샘플링), 221은 위치 너비(bp), 6은 각 칸을 묘사하는 채널 수다.</p>
+        <p><span class="ph">[출력]</span> 이 텐서를 <b>CNN</b>에 통과시켜 유전형 확률 <code>[Hom-ref, Het, Hom-alt]</code>를 출력한다. 예를 들어 <code>[0.01, 0.95, 0.04]</code>이면 가장 큰 값이 Het이므로 이형접합 변이로 판정한다.</p>
         <p><span class="ph">[학습]</span> 예측과 정답의 차이를 손실함수로 측정하고, <b>역전파(backpropagation)</b>로 각 가중치의 기울기 \(\partial E/\partial w\)를 구한 뒤 \(w \leftarrow w - \eta\,\partial E/\partial w\)로 갱신한다. 이를 반복해 모델이 변이 패턴을 스스로 학습한다.</p>
       </div>
       <div class="flowline">
@@ -353,7 +320,7 @@
         <div class="arrow">→</div>
         <div class="fb"><div class="fl-l">모델</div><div class="fl-v">CNN</div></div>
         <div class="arrow">→</div>
-        <div class="fb"><div class="fl-l">출력</div><div class="fl-v">genotype likelihood → argmax</div></div>
+        <div class="fb"><div class="fl-l">출력</div><div class="fl-v">유전형 확률 → argmax</div></div>
         <div class="arrow">→</div>
         <div class="fb"><div class="fl-l">학습</div><div class="fl-v">역전파로 \(w \leftarrow w-\eta\,\partial E/\partial w\)</div></div>
       </div>
@@ -367,8 +334,8 @@
       <div class="qbar" onclick="toggleStep('w1s1')"><div class="qnum">1</div>
         <div class="qtxt"><div class="qlabel">입력 만들기 ①</div><div class="qmain">DNA를 컴퓨터 입력 데이터로 바꾸기</div></div><span class="chev">▶</span></div>
       <div class="drill"><div class="dinner">
-        <p>환자 세포에서 DNA를 추출하면 약 30억 bp(A·T·G·C)의 서열을 확보한다. 시퀀서는 이 긴 서열을 한 번에 읽지 못하므로, 잘게 쪼개 수억 개의 짧은 조각(<b>reads</b>)으로 읽는다(<code>FASTQ</code>). 각 read는 참조 서열에 정렬(mapping)해 위치를 확정한다.</p>
-        <div class="simple"><span class="who">단순 설명</span>DNA는 네 글자로 쓰인 약 30억 글자의 책이다. 통째로 복사할 수 없어 짧은 문장 단위로 수억 번 나눠 베낀 것이 reads다.</div>
+        <p>환자 세포에서 DNA를 추출하면 약 30억 bp(A·T·G·C)의 서열을 확보한다. 변이를 찾으려면 비교할 <b>기준</b>이 필요하다 — 그것이 인류 공통의 표준 유전체 <b>reference</b>다. 시퀀서는 이 긴 서열을 한 번에 읽지 못하므로, 잘게 쪼개 100~150 bp짜리 수억 개의 짧은 조각(<b>reads</b>)으로 읽는다(<code>FASTQ</code>). 각 read가 reference의 어느 좌표에서 왔는지 대조해 위치를 확정하는 과정이 <b>mapping(정렬)</b>이다.</p>
+        <div class="simple"><span class="who">단순 설명 · 퍼즐 비유</span><b>reference</b>는 완성된 퍼즐 그림(표준 설계도), <b>reads</b>는 기계가 잘게 부순 퍼즐 조각이다. <b>mapping</b>은 문자열 검색 엔진처럼 동작한다 — reference를 미리 인덱싱해 두고, 각 조각의 짧은 시드(seed)를 색인에서 찾아(시드 매칭) 가장 잘 맞는 좌표에 끼워 맞춘다(최적 정렬).</div>
         <div class="shapebox" data-shape="w1s1"><div class="shape-stage"></div><div class="shape-desc"></div>
           <div class="shape-ctrl"><button class="tbtn" data-prev>◀</button><button class="tbtn" data-next>▶</button><span class="dots"></span></div></div>
       </div></div>
@@ -378,9 +345,23 @@
       <div class="qbar" onclick="toggleStep('w1s2')"><div class="qnum">2</div>
         <div class="qtxt"><div class="qlabel">입력 만들기 ②</div><div class="qmain">흩어진 reads에서 변이 후보를 텐서로 인코딩</div></div><span class="chev">▶</span></div>
       <div class="drill"><div class="dinner">
-        <p>같은 위치에 정렬된 reads를 위아래로 쌓으면(<b>pileup</b>) 그 자리의 염기 분포가 드러난다. 한 칸에서 98개가 T, 2개가 C라면 그 위치가 변이 후보다. 이 더미를 이미지 텐서 <code>(100, 221, 6)</code>로 바꾼다.</p>
-        <div class="simple"><span class="who">단순 설명</span>같은 페이지를 베낀 필사본 100장을 같은 줄끼리 겹쳐 쌓는 것과 같다. 대부분 T인데 몇 장만 C라면 그 글자 칸이 의심 지점이다.</div>
-        <p>6채널은 다음을 담는다: ① read 염기 ② base quality(시퀀싱 신뢰도) ③ mapping quality(정렬 신뢰도) ④ strand(가닥 방향) ⑤ 변이 지지 여부 ⑥ reference 불일치 여부. (이미지의 RGB 채널처럼 정보를 층층이 쌓는 것)</p>
+        <p>같은 위치에 정렬된 reads를 위아래로 쌓으면(<b>pileup</b>) 그 자리의 염기 분포가 드러난다. <b>한 좌표에는 read 하나만 오는 게 아니다</b> — 실험 규격(<b>30X·100X</b> 등)에 따라 수십~수백 개가 수직으로 겹쳐 매핑된다. 이 겹침 수가 <b>시퀀싱 깊이(Depth·Coverage)</b>다.</p>
+        <div class="simple"><span class="who">단순 설명 · 왜 깊이가 핵심인가</span>같은 페이지를 베낀 필사본 100장을 같은 줄끼리 겹쳐 쌓는 것과 같다. 한 칸의 C 하나가 <b>실제 변이</b>인지 <b>기계 오차</b>인지는 그 칸의 수직 <b>분포</b>로만 가린다 — C가 절반쯤이면 이형접합(Het) 변이, 한두 개뿐이면 시퀀싱 오류다. 그래서 한 장이 아니라 더미 전체의 분포를 본다.</div>
+        <p>이 더미를 이미지 텐서 <code>(100, 221, 6)</code>로 바꾼다. 세로 크기 <code>100</code>은 고정이라 깊이를 거기에 맞춰야 한다 — read가 부족하면 빈 행을 <b>0으로 채우고(Padding)</b>, 넘치면 품질 높은 것만 <b>추려낸다(Sampling)</b>. 아래에서 버튼으로 단계별 변화를 본다.</p>
+        <p>마지막 차원 <code>6</code>은 한 칸(한 read의 한 위치)을 묘사하는 <b>6개 채널(layer)</b>이다. 이미지의 RGB가 3채널인 것처럼, 변이 판단에 필요한 정보를 층층이 쌓는다.</p>
+        <div class="cmp-wrap">
+          <table class="cmp">
+            <thead><tr><th>#</th><th>채널 (영문)</th><th>담는 정보</th><th>왜 필요한가</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>read 염기<br><span style="color:var(--muted);font-weight:500">read base</span></td><td>그 자리에서 read가 읽은 염기(A·C·G·T)</td><td>reference와 다른 염기 = 변이 후보의 1차 신호</td></tr>
+              <tr><td>2</td><td>base quality</td><td>그 염기를 읽은 시퀀싱 신뢰도(Phred Q)</td><td>저품질 염기의 불일치는 오류일 확률↑ → 가중 판단</td></tr>
+              <tr><td>3</td><td>mapping quality</td><td>read가 그 좌표에 정렬된 신뢰도</td><td>잘못 정렬된 read의 변이 신호를 깎음</td></tr>
+              <tr><td>4</td><td>strand</td><td>read의 가닥 방향(forward·reverse)</td><td>한쪽 가닥에만 쏠린 변이는 인공물(strand bias) 의심</td></tr>
+              <tr><td>5</td><td>변이 지지 여부<br><span style="color:var(--muted);font-weight:500">supports alt</span></td><td>그 염기가 후보 대립유전자(alt)를 지지하는지</td><td>변이 read vs 비변이 read 구분</td></tr>
+              <tr><td>6</td><td>reference 불일치<br><span style="color:var(--muted);font-weight:500">differs from ref</span></td><td>reference 염기와 같은지·다른지</td><td>불일치 위치를 직접 표시</td></tr>
+            </tbody>
+          </table>
+        </div>
         <div class="shapebox" data-shape="w1s2"><div class="shape-stage"></div><div class="shape-desc"></div>
           <div class="shape-ctrl"><button class="tbtn" data-prev>◀</button><button class="tbtn" data-next>▶</button><span class="dots"></span></div></div>
       </div></div>
@@ -392,7 +373,20 @@
       <div class="drill"><div class="dinner">
         <p>변이를 가르는 특징을 사람이 규칙으로 짜기는 어렵다. 딥러닝은 raw 텐서에서 유용한 특징을 스스로 학습한다(<b>표현학습</b>).</p>
         <div class="simple"><span class="who">교수의 셔플링 질문 (시험 단골)</span>손글씨 숫자 이미지의 행·열을 같은 규칙으로 뒤섞어도, <b>일반 신경망(fully-connected)의 성능은 그대로다.</b> 각 픽셀(셀)마다 따로 계수(coefficient)가 학습되어 <b>위치·관계를 보지 않기</b> 때문이다. 그래서 위치·관계 정보를 학습하려면 <b>CNN·GNN·attention</b>이 필요하다 — 이것이 CNN을 쓰는 진짜 이유다.</div>
-        <p><b>CNN</b>은 ① 작은 필터가 일부만 보는 <b>국소 연결</b>과 ② 같은 필터를 전 위치에 적용하는 <b>가중치 공유(weight sharing)</b>로 적은 파라미터로 국소 패턴을 잡는다. 1000×1000 이미지에서 Fully-Connected는 파라미터가 <code>~10¹²</code>, CNN(10×10 필터)은 <code>~10⁸</code>이다. 출력은 genotype likelihood <code>[Hom-ref, Het, Hom-alt]</code>이며 최대값을 택한다. (가중치 공유는 3주차 GNN에서 다시 등장한다.)</p>
+        <p><b>왜 FC는 셔플에 무감각한가?</b> Fully-Connected는 2D 격자를 <b>1차원 벡터로 길게 펼쳐(flatten)</b> 모든 칸을 일렬로 늘어뜨려 연산한다 — 각 칸이 자기만의 가중치를 가질 뿐 "옆 칸"이라는 개념 자체가 없다. 그래서 칸과 가중치를 같은 규칙으로 섞으면 결과가 완전히 동일하다. <b>위치·이웃이라는 정보가 처음부터 모델에 들어가지 않는다.</b></p>
+        <p><b>CNN</b>은 ① 작은 필터가 일부만 보는 <b>국소 연결(local connectivity)</b>과 ② 같은 필터를 전 위치에 적용하는 <b>가중치 공유(weight sharing)</b>로 적은 파라미터로 국소 패턴을 잡는다. 1000×1000 이미지에서 Fully-Connected는 파라미터가 <code>~10¹²</code>, CNN(10×10 필터)은 <code>~10⁸</code>이다. 출력은 유전형 확률 <code>[Hom-ref, Het, Hom-alt]</code>이며 최대값을 택한다. (가중치 공유는 3주차 GNN에서 다시 등장한다.)</p>
+        <p><b>유전형 확률(genotype probability)이란?</b> 모델은 그 좌표의 <b>유전형(genotype)</b>이 셋 중 무엇일지를 출력한다. 사람은 한 좌표에서 모계·부계 <b>두 개의 대립유전자(allele)</b>를 가지므로 ref·alt 조합이 세 가지뿐이다. 출력은 softmax를 거친 <b>3-클래스 확률 분포</b>(합 1, posterior \(P(\text{genotype}\mid\text{image})\) — DeepVariant proto 필드명 <code>genotype_probabilities</code>)이며, 가장 큰 값을 최종 판정(<code>argmax</code>)으로 택한다. (통계적으로 likelihood \(P(\text{data}\mid\text{genotype})\)와 구별되는 posterior다.)</p>
+        <div class="cmp-wrap">
+          <table class="cmp">
+            <thead><tr><th>출력 클래스</th><th>유전형 (allele 조합)</th><th>의미</th><th>예시 <code>[0.01, 0.95, 0.04]</code></th></tr></thead>
+            <tbody>
+              <tr><td>Hom-ref<br><span style="color:var(--muted);font-weight:500">homozygous ref</span></td><td>ref / ref</td><td>두 대립유전자 모두 reference와 같음 = 변이 없음(정상)</td><td>0.01</td></tr>
+              <tr><td>Het<br><span style="color:var(--muted);font-weight:500">heterozygous</span></td><td>ref / alt</td><td>한쪽만 변이 = <b>이형접합 변이</b></td><td class="hl-w">0.95 ← 최종 판정</td></tr>
+              <tr><td>Hom-alt<br><span style="color:var(--muted);font-weight:500">homozygous alt</span></td><td>alt / alt</td><td>양쪽 모두 변이 = 동형접합 변이</td><td>0.04</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="simple"><span class="who">단순 설명 · 돋보기와 도장</span><b>국소 연결</b>은 돋보기로 이웃 칸의 문맥만 집중해 보는 것 — 셔플하면 이 이웃이 깨져 패턴이 사라진다. <b>가중치 공유</b>는 같은 도장(필터) 하나를 전 영역에 찍는 것이라, 변이 패턴이 어디에 있든 같은 필터로 잡아낸다(<b>이동 불변성·translation invariance</b>). 그래서 pileup의 국소 변이 패턴을 적은 파라미터로 완벽히 포착한다.</div>
 
         <p style="margin-top:14px"><b>그런데 "convolution(합성곱)"이 정확히 무슨 연산인가?</b> 새 연산이 아니라 <b>두 배열을 섞는 한 방법</b>이다 — 한쪽을 <b>뒤집어(flip)</b> 다른 쪽 위로 <b>한 칸씩 밀며(slide)</b>, 겹치는 자리끼리 <b>곱해서 더한다(multiply-add)</b>. CNN의 "filter(kernel)"가 바로 이 작은 배열이고, 그 값을 데이터로 <b>학습</b>한다.</p>
         <div class="simple"><span class="who">kernel만 바꾸면 다른 일을 한다 (3B1B·IBM)</span>같은 "곱하고 더하기"라도 커널 값에 따라 효과가 달라진다 — 값이 다 양수이고 합이 1이면 <b>흐림(blur, 이동평균)</b>, 한쪽 양수·반대쪽 음수(합 0)면 <b>경계 검출(edge detection)</b>. CNN은 "어떤 커널이 변이 패턴을 가장 잘 잡나"를 학습으로 찾는다. 깊은 층일수록 커널이 추상화돼 모서리 → 부위(window) → 전체(house) 식으로 올라간다.</div>
@@ -401,6 +395,7 @@
           <div class="step-r">패치 <code>[[0,0,1],[0,0,1],[0,0,1]]</code> &nbsp; 커널 <code>[[1,0,-1],[1,0,-1],[1,0,-1]]</code></div>
           <div class="step-r">자리끼리 곱해 모두 더하면 \( \sum = 3\times(1\!\cdot\!0 + 0\!\cdot\!0 + (-1)\!\cdot\!1) = \mathbf{-3} \).</div>
           <div class="step-r">절댓값이 크다 → <b>세로 경계가 있다</b>고 강하게 반응. 반대로 색이 균일한 패치(전부 0 또는 전부 1)는 커널 합이 0이라 결과도 <b>0</b> — "변화가 있는 곳"만 골라낸다. 변이 탐지에서 pileup의 불일치 칸을 잡아내는 원리가 이것이다.</div>
+          <div class="step-r" style="color:var(--muted);font-size:.88em">※ 엄밀히 이 곱-합은 커널을 뒤집지 않은 <b>cross-correlation</b>이다. CNN은 관행적으로 flip 없는 이 연산을 '합성곱(convolution)'이라 부른다 — 커널을 학습으로 찾으므로 flip 여부는 결과에 무관하다.</div>
         </div>
         <div class="shapebox" data-shape="w1s3"><div class="shape-stage"></div><div class="shape-desc"></div>
           <div class="shape-ctrl"><button class="tbtn" data-prev>◀</button><button class="tbtn" data-next>▶</button><span class="dots"></span></div></div>
@@ -415,6 +410,12 @@
         <div class="simple"><span class="who">직관 · 공이 골짜기로 (3B1B)</span>13,000차원 함수의 최소는 상상하기 어렵다. 그래서 1차원으로 줄여 생각한다 — 지금 선 자리의 <b>기울기(slope)</b>를 보고, 양수면 왼쪽·음수면 오른쪽으로 한 걸음. 반복하면 골짜기 바닥(local minimum)에 닿는다. 다변수에선 <b>gradient(기울기 벡터)가 가장 가파른 오르막 방향</b>이라, 그 반대 \(-\nabla E\)가 가장 빠른 내리막이다. <b>벡터 길이 = 경사의 가파름</b>.</div>
         <p><b>걸음 크기 ∝ 기울기</b>: 경사가 가파르면 크게, 바닥 근처에서 평평해지면 저절로 작아져 overshoot(과잉이동)을 막는다. 여기에 보폭 상수 <b>learning rate \(\eta\)</b>를 곱한다. 시작점에 따라 <b>다른 골짜기(local minima)</b>에 빠질 수 있다.</p>
         <div class="eqbox">cost: \( E=\tfrac{1}{2}\sum_l (y_l-t_l)^2 \) (한 예제), 전체는 모든 예제 평균</div>
+        <div class="calc"><span class="who">수식 뜯어보기 · 왜 제곱하고 왜 1/2인가</span>
+          <div class="step-r"><b>제곱(square)</b>: 오차 \(y-t\)는 부호가 +·−로 섞여 그냥 더하면 서로 상쇄돼 버린다. 제곱하면 모두 양수가 되어 상쇄를 막고, 크게 틀린 오차에 <b>폭발적 패널티</b>를 준다(2배 틀리면 4배 벌점).</div>
+          <div class="step-r"><b>1/2 곱하기</b>: 순전히 미분을 깔끔하게 만들기 위한 배려다. 미분하면 지수 2가 앞으로 튀어나오는데, 이때 1/2과 곱해져 <b>1로 상쇄(cancel out)</b>된다.</div>
+          <div class="step-r">\( \dfrac{\partial}{\partial y}\Big[\tfrac{1}{2}(y-t)^2\Big]=\tfrac{1}{2}\cdot 2\,(y-t)=\boxed{\,y-t\,} \)</div>
+          <div class="step-r">덕분에 출력층 미분이 <b>[예측 − 정답]</b>이라는 가장 간결한 형태로 남는다 — 역전파는 이 깔끔한 도미노에서 출발한다(아래 5단계 참고).</div>
+        </div>
         <div class="eqbox">갱신: \( w \leftarrow w - \eta\,\nabla_w E \) &nbsp;(\(\nabla_w E\) = 각 파라미터에 대한 편미분 벡터)</div>
         <div class="calc"><span class="who">계산 예제 · 1D 한 걸음</span>
           <div class="step-r">\(E(w)=(w-3)^2\)를 최소화한다(정답 \(w=3\)). 시작 \(w_0=0\), \(\eta=0.1\).</div>
@@ -426,6 +427,7 @@
         <div class="shapebox" data-shape="w1s3g"><div class="shape-stage"></div><div class="shape-desc"></div>
           <div class="shape-ctrl"><button class="tbtn" data-prev>◀</button><button class="tbtn" data-next>▶</button><button class="tbtn" data-play>▶ 자동</button><span class="dots"></span></div></div>
         <span class="reduced-note" style="font-size:.78rem;color:var(--muted)">⚙ 모션 최소화 설정 감지 — 자동재생 비활성.</span>
+        <div class="tip"><span class="who">언제 멈추나 · 수렴과 종료</span>학습이 끝나는 건 가중치 한두 개가 0이 될 때가 아니다. <b>모든 파라미터의 기울기를 모은 거대한 기울기 벡터 \(\nabla E\)</b>가 골짜기 맨 바닥에서 평평해질 때 — 즉 전체 Loss의 변화가 정체될 때 수렴한다. 실무에선 무한히 기다리지 않고 마침표 규칙을 둔다: <b>Early Stopping</b>(검증 손실이 더 안 줄면 중단)과 <b>Epoch 제한</b>(전체 데이터 N회 순회 후 종료).</div>
       </div></div>
     </div>
 
@@ -439,7 +441,7 @@
         <div class="shapebox" data-shape="w1s4"><div class="shape-stage"></div><div class="shape-desc"></div>
           <div class="shape-ctrl"><button class="tbtn" data-prev>◀</button><button class="tbtn" data-next>▶</button><button class="tbtn" data-play>▶ 자동</button><span class="dots"></span></div></div>
         <span class="reduced-note" style="font-size:.78rem;color:var(--muted)">⚙ 모션 최소화 설정 감지 — 자동재생 비활성.</span>
-        <p style="margin-top:12px">외울 핵심 수식:</p>
+        <p style="margin-top:12px">외울 핵심 수식 <span style="color:var(--muted);font-size:.85em">(\(j,k,l\)은 입력층→출력층으로 이어지는 연속한 세 층의 뉴런 인덱스, \(\delta_k\equiv\partial E/\partial z_k\))</span>:</p>
         <div class="eqbox">Forward: \( z_l=\sum_k w_{kl}\,y_k,\quad y_l=f(z_l) \)</div>
         <div class="eqbox">출력층 오차: \( \dfrac{\partial E}{\partial y_l}=y_l-t_l,\quad \dfrac{\partial E}{\partial z_l}=\dfrac{\partial E}{\partial y_l}\,f'(z_l) \) &nbsp;(\(E=\tfrac12\sum_l(y_l-t_l)^2\))</div>
         <div class="eqbox">은닉층 역전파: \( \dfrac{\partial E}{\partial y_k}=\sum_l w_{kl}\dfrac{\partial E}{\partial z_l},\quad \dfrac{\partial E}{\partial z_k}=\dfrac{\partial E}{\partial y_k}f'(z_k) \)</div>
@@ -450,6 +452,31 @@
           <div class="step-r">곱하면 \( \dfrac{\partial E}{\partial w}=(-0.6)(1)(0.5)=\mathbf{-0.3}\).</div>
           <div class="step-r">갱신(\(\eta=0.1\)): \( w \leftarrow 0.8-0.1\times(-0.3)=\mathbf{0.83}\). 기울기가 음수라 \(w\)를 <b>키워</b> 출력을 정답 1 쪽으로 민다 — \(\partial z/\partial w=y_j\)라서 <b>밝은 이전 뉴런일수록 크게 갱신</b>됨도 확인된다.</div>
         </div>
+        <p style="margin-top:16px"><b>은닉층이 여러 개라면? — 연대책임 릴레이</b></p>
+        <div class="simple"><span class="who">단순 설명 · 인사고과 연대책임</span>중간 은닉층은 최종 정답(target)을 직접 모른다. 그래서 <b>바로 뒷단 층들의 에러 신호 \(\delta_l\)</b>에 <b>연결 가중치 \(w_{kl}\)</b>를 곱해 거꾸로 합산(\(\sum_l w_{kl}\delta_l\))해 자기 오차 책임 \(\delta_k\)를 구한다. "내 낮은 평가는 뒷단 층들의 오차를 내 연결 가중치 비중만큼 떠안은 책임"이라는 식의 연대책임으로, 출력층의 책임이 입력층 끝까지 한 칸씩 릴레이된다. 핵심은 <b>한 번의 backward</b>로 전 층 기울기가 동시에 완성된다는 점이다.</div>
+        <div class="shapebox" data-shape="w1s4b"><div class="shape-stage"></div><div class="shape-desc"></div>
+          <div class="shape-ctrl"><button class="tbtn" data-prev>◀</button><button class="tbtn" data-next>▶</button><button class="tbtn" data-play>▶ 자동</button><span class="dots"></span></div></div>
+        <span class="reduced-note" style="font-size:.78rem;color:var(--muted)">⚙ 모션 최소화 설정 감지 — 자동재생 비활성.</span>
+      </div></div>
+    </div>
+
+    <div class="step gatenode" id="w1full">
+      <div class="qbar" onclick="toggleStep('w1full')"><div class="qnum">6</div>
+        <div class="qtxt"><div class="qlabel" style="color:var(--ok)">전체 흐름 · 입력→출력 풀 사이클 ★</div><div class="qmain">변이 탐지 한 좌표 — pileup에서 Het 판정까지</div></div><span class="chev">▶</span></div>
+      <div class="drill"><div class="dinner">
+        <p>앞의 다섯 단계를 한 줄기로 잇는다. 환자 1번 염색체의 한 좌표를 입력으로 받아, 수치로 구운 텐서가 CNN을 통과하고 softmax를 거쳐 유전형 확률로 나오기까지의 전 과정이다.</p>
+        <div class="flowline">
+          <div class="fb"><div class="fl-l">입력</div><div class="fl-v">pileup <code>(100,221,6)</code></div></div>
+          <div class="arrow">→</div>
+          <div class="fb"><div class="fl-l">연산</div><div class="fl-v">CNN conv·pool → FC</div></div>
+          <div class="arrow">→</div>
+          <div class="fb"><div class="fl-l">정규화</div><div class="fl-v">softmax <code>[3]</code></div></div>
+          <div class="arrow">→</div>
+          <div class="fb"><div class="fl-l">출력</div><div class="fl-v"><code>[0.01,0.95,0.04]</code> → Het</div></div>
+        </div>
+        <div class="shapebox" data-shape="w1full"><div class="shape-stage"></div><div class="shape-desc"></div>
+          <div class="shape-ctrl"><button class="tbtn" data-prev>◀</button><button class="tbtn" data-next>▶</button><button class="tbtn" data-play>▶ 자동</button><span class="dots"></span></div></div>
+        <span class="reduced-note" style="font-size:.78rem;color:var(--muted)">⚙ 모션 최소화 설정 감지 — 자동재생 비활성.</span>
       </div></div>
     </div>
   </section>
@@ -458,38 +485,20 @@
     <div class="sec-h"><span class="en">Practice</span><span class="ko">예상 문제</span><span class="rule"></span><span class="unver">AI 생성 · 미검증</span></div>
 
     <div class="qa">
-      <div class="qa-q"><span class="qa-type">문제 1 · 서술형</span><span>환자 DNA에서 단일 염기 변이(SNV) 1개를 탐지하기 위한 DeepVariant의 모델 입력 구성과 출력 형태를, pileup 이미지 텐서의 형상 <code>(100,221,6)</code>과 6채널의 의미, 그리고 일반 신경망 대신 CNN을 쓰는 이유를 포함하여 서술하라.</span></div>
-      <button class="reveal" onclick="revealQA(this)">모범 답안 보기</button>
+      <div class="qa-q"><span class="qa-type">문제 1 · 서술형</span><span>[슬라이드 · 변이 탐지(Introduction)] 환자 DNA에서 질병을 유발한 단일 염기 변이(SNV) 1개를 탐지하는 딥러닝 모델(DeepVariant 방식)의 <b>입력 구성·출력 형태·학습 방식</b>을 서술하라. pileup 이미지 텐서의 형상과 6채널의 의미, 깊이(depth)를 맞추는 전처리, 일반 신경망 대신 CNN을 쓰는 이유(셔플링 불변성)를 포함하라.</span></div>
+      <button class="reveal" onclick="revealQA(this)">모범 답안</button>
       <div class="qa-a"><div class="qa-a-in">
-        정렬된 reads와 reference로 변이 후보 주변을 쌓아 <b>pileup 이미지 텐서 <code>(100,221,6)</code></b>를 만든다(100=read 깊이, 221=위치 너비 bp, 6=채널). 6채널은 ① read 염기 ② base quality ③ mapping quality ④ strand ⑤ 변이 지지 여부 ⑥ reference 불일치 여부다. 일반 신경망은 픽셀을 셔플해도 성능이 같아 <b>위치·관계를 학습하지 못하므로</b>, 국소 연결·가중치 공유로 국소 패턴을 잡는 <b>CNN</b>을 쓴다. 출력은 genotype likelihood <code>[Hom-ref, Het, Hom-alt]</code>이며 최대값을 변이 판정으로 택한다(예 <code>[0.01,0.95,0.04]</code> → Het).
-        <span class="pt">채점 포인트 · reads→정렬→pileup→텐서 / 6채널 / 셔플링 불변성→CNN 필요 / genotype likelihood 출력</span>
+        <b>[입력]</b> 환자 세포에서 추출한 DNA를 시퀀싱하면 100~150 bp의 짧은 조각(reads) 수억 개를 얻는다. 각 read를 표준 유전체(reference)에 정렬(mapping)하고, 변이 후보 좌표 주변을 위아래로 쌓아(pileup) 이미지 텐서 <code>(100, 221, 6)</code>으로 인코딩한다 — 100은 pileup 고정 height(read 행 + reference strip 포함 100행), 221은 위치 너비(bp), 6은 채널이다. 6채널은 ① read 염기 ② base quality ③ mapping quality ④ strand ⑤ 변이 지지 여부 ⑥ reference 불일치 여부를 담는다. 세로 깊이 100을 맞추기 위해 reads가 부족하면 0으로 채우고(Padding), 넘치면 품질 높은 것만 추려낸다(Sampling). <b>[출력]</b> 이 텐서를 CNN에 통과시켜 유전형 확률 <code>[Hom-ref, Het, Hom-alt]</code>를 출력하고 argmax로 판정한다(예 <code>[0.01, 0.95, 0.04]</code> → Het). 일반 신경망(FC)은 입력을 1차원으로 펼쳐 연산하므로 픽셀을 셔플해도 성능이 동일하다 — 위치·이웃 관계를 보지 못한다. 그래서 국소 연결과 가중치 공유로 국소 패턴을 잡고 이동 불변성을 갖는 CNN을 쓴다. <b>[학습]</b> 예측과 정답의 차이를 cross-entropy 손실로 재고, 역전파로 각 가중치의 기울기를 구해 경사하강으로 갱신한다. 이를 반복해 변이 패턴을 스스로 학습한다.
+        <span class="pt">채점 포인트 · reads→mapping→pileup→텐서(100,221,6) / 6채널 / depth·Padding·Sampling / 셔플링 불변성→CNN 필요 / 유전형 확률·argmax / cross-entropy·역전파 학습</span>
       </div></div>
     </div>
 
     <div class="qa">
-      <div class="qa-q"><span class="qa-type eq">문제 2 · 수식·서술형</span><span>다층 신경망의 역전파(backpropagation) 한 사이클을 forward, loss, backward, update 네 단계로 나누어 각 단계의 수식과 함께 서술하라.</span></div>
-      <button class="reveal" onclick="revealQA(this)">모범 답안 보기</button>
+      <div class="qa-q"><span class="qa-type eq">문제 2 · 서술형</span><span>[논문 · Deep Learning (LeCun et al., 2015)] 다층 신경망이 오차로부터 스스로 학습하는 과정을 <b>경사하강과 역전파</b> 중심으로 forward·loss·backward·update 네 단계의 <b>수식과 함께</b> 서술하라. 비용함수에서 제곱과 1/2의 역할, 다층 은닉층에서 오차가 거꾸로 전달되는 원리, 학습이 수렴하는 조건을 포함하라.</span></div>
+      <button class="reveal" onclick="revealQA(this)">모범 답안</button>
       <div class="qa-a"><div class="qa-a-in">
-        ① <b>Forward</b>: 각 층에서 \(z_l=\sum_k w_{kl}y_k\), \(y_l=f(z_l)\)를 입력→출력 방향으로 계산한다. ② <b>Loss</b>: \(E=\tfrac12\sum_l(y_l-t_l)^2\)로 예측과 정답의 차이를 잰다. ③ <b>Backward</b>: 출력층 \(\partial E/\partial y_l=y_l-t_l\), \(\partial E/\partial z_l=\partial E/\partial y_l\cdot f'(z_l)\)에서 시작해 은닉층 \(\partial E/\partial y_k=\sum_l w_{kl}\,\partial E/\partial z_l\)로 입력층까지 거꾸로 전파하고, 가중치 기울기 \(\partial E/\partial w_{jk}=y_j\,\partial E/\partial z_k\)를 구한다. ④ <b>Update</b>: \(w\leftarrow w-\eta\,\partial E/\partial w\)로 기울기 반대 방향으로 갱신한다.
-        <span class="pt">채점 포인트 · forward 식 / 출력층 미분 \(y-t\) / chain rule 역전파 / 가중치 기울기 / 갱신 부호 \(-\eta\)</span>
-      </div></div>
-    </div>
-
-    <div class="qa">
-      <div class="qa-q"><span class="qa-type eq">문제 3 · 계산</span><span>3×3 입력 패치 <code>[[0,0,1],[0,0,1],[0,0,1]]</code>에 vertical-edge 커널 <code>[[1,0,-1],[1,0,-1],[1,0,-1]]</code>로 convolution(자리별 곱의 합)을 적용한 출력 값을 구하고, 그 절댓값이 의미하는 바와 색이 균일한 패치에서 출력이 0이 되는 이유를 설명하라.</span></div>
-      <button class="reveal" onclick="revealQA(this)">모범 답안 보기</button>
-      <div class="qa-a"><div class="qa-a-in">
-        자리별 곱을 모두 더한다: 각 행이 \(1\cdot0+0\cdot0+(-1)\cdot1=-1\)이고 3행이므로 출력 \(=3\times(-1)=\mathbf{-3}\). <b>절댓값이 크다 = 좌우로 밝기 변화가 크다 = 세로 경계(edge)가 있다</b>는 뜻이다(부호는 어두움→밝음 방향). 색이 균일한 패치는 모든 자리값이 같고 <b>커널의 합이 0</b>이라 곱의 합도 0이 된다 → convolution은 "변화가 있는 곳"만 골라낸다. CNN은 이런 커널 값을 사람이 정하지 않고 <b>학습</b>으로 찾는다.
-        <span class="pt">채점 포인트 · 곱-합 = −3 / 절댓값=경계 세기 / 커널 합 0 → 균일 패치 0 / 커널을 학습</span>
-      </div></div>
-    </div>
-
-    <div class="qa">
-      <div class="qa-q"><span class="qa-type eq">문제 4 · 계산</span><span>\(E(w)=(w-3)^2\)를 경사하강으로 최소화한다. 초기 \(w_0=0\), learning rate \(\eta=0.1\)일 때 \(w_1,\ w_2\)를 계산하고, 정답(\(w=3\))에 가까워질수록 걸음이 작아지는 이유를 설명하라.</span></div>
-      <button class="reveal" onclick="revealQA(this)">모범 답안 보기</button>
-      <div class="qa-a"><div class="qa-a-in">
-        기울기 \(E'(w)=2(w-3)\), 갱신 \(w\leftarrow w-\eta E'(w)\). ① \(w_0=0\): \(E'=2(0-3)=-6\) → \(w_1=0-0.1(-6)=\mathbf{0.6}\). ② \(w_1=0.6\): \(E'=2(0.6-3)=-4.8\) → \(w_2=0.6-0.1(-4.8)=\mathbf{1.08}\). 기울기가 음수라 \(w\)가 커지는 방향(정답 3 쪽)으로 이동한다. <b>정답에 가까워질수록 \(|E'|\)가 작아져</b> 걸음폭(\(\eta|E'|\))도 줄어든다 → 바닥 근처에서 overshoot 없이 부드럽게 수렴한다.
-        <span class="pt">채점 포인트 · \(E'=2(w-3)\) / \(w_1=0.6,\ w_2=1.08\) / 음의 기울기 방향 / 기울기↓ → 걸음↓ → 수렴</span>
+        신경망 학습은 비용함수 \(E\)를 최소화하는 일이다. <b>① Forward</b>: 각 층에서 \(z_l=\sum_k w_{kl}y_k,\ y_l=f(z_l)\)를 입력→출력 방향으로 계산해 예측을 낸다. <b>② Loss</b>: \(E=\tfrac12\sum_l(y_l-t_l)^2\)로 차이를 잰다. 제곱은 오차의 부호 상쇄를 막고 큰 오차에 폭발적 패널티를 주며, \(\tfrac12\)은 미분 시 지수 2와 상쇄돼 출력층 미분이 \((y_l-t_l)\)로 깔끔하게 남게 한다. <b>③ Backward</b>: 출력층 \(\partial E/\partial z_l=(y_l-t_l)f'(z_l)\)에서 시작한다. 은닉층은 정답을 모르므로 바로 뒷층의 오차 \(\delta_l\)에 연결 가중치를 곱해 거꾸로 합산 \(\partial E/\partial y_k=\sum_l w_{kl}\delta_l\)하여 자기 책임을 구한다 — 이 연대책임이 입력층까지 chain rule로 릴레이된다. 가중치 기울기는 \(\partial E/\partial w_{jk}=y_j\,\delta_k\)이며, 한 번의 forward와 backward로 전 층 기울기가 동시에 완성된다. <b>④ Update</b>: \(w\leftarrow w-\eta\,\partial E/\partial w\)로 음의 기울기 방향으로 갱신한다. 전체 파라미터의 기울기 벡터 \(\nabla E\)가 골짜기 바닥에서 평평해질 때(Loss 정체) 수렴하며, 실무에선 Early Stopping·Epoch 제한으로 멈춘다.
+        <span class="pt">채점 포인트 · forward \(z,y\) / loss 제곱·½ 역할 / 출력층 \(y-t\) / 은닉층 \(\sum w\delta\) chain rule / \(\partial E/\partial w=y_j\delta_k\) / \(-\eta\) 갱신 / \(\nabla E\) 수렴·Early Stopping</span>
       </div></div>
     </div>
   </section>
@@ -503,7 +512,7 @@
   <section class="sec">
     <div class="sec-h"><span class="en">Core Question</span><span class="ko">핵심 문제</span><span class="rule"></span></div>
     <div class="mission" style="background:linear-gradient(160deg,rgba(52,211,153,.07),var(--panel))">
-      <div class="mhead"><span class="mtag">서술형 문제</span><span style="color:var(--muted);font-size:.82rem">입력→출력 양식</span></div>
+      <div class="mhead"><span class="mtag">서술형</span><span style="color:var(--muted);font-size:.82rem">입력→출력 양식</span></div>
       <div class="mq">DNA 서열을 <span class="hl">유전체 언어모델(genomic language model)</span>로 학습시켜 스플라이스 부위(splice site)를 예측하려 한다. 입력 서열의 <span class="hl">토큰화 과정</span>, <span class="hl">사전학습 방식</span>, <span class="hl">출력 형태</span>를 서술하라.</div>
     </div>
   </section>
@@ -513,7 +522,7 @@
     <div class="answer">
       <span class="atag">모범 답안 · full-text</span>
       <div class="afull">
-        <p><span class="ph">[입력·토큰화]</span> DNA 서열을 토큰으로 나눈다. 방법은 세 가지다 — <b>single-nucleotide</b>(염기 1개=1토큰, base-level로 정밀하나 입력이 길다), <b>k-mer</b>(연속 k개를 1토큰; <code>k=6</code>이 흔하고, overlap은 정보 보존·중복↑, non-overlap은 경계 정보 손실), <b>BPE</b>(빈도 높은 쌍을 반복 병합해 모티프 단위 토큰 생성). 토큰을 <code>[CLS]…[SEP]</code>로 감싸고 Token+Positional 임베딩을 더해 <code>[L × 768]</code> 행렬을 만든다.</p>
+        <p><span class="ph">[입력·토큰화]</span> DNA 서열을 토큰으로 나눈다. 방법은 세 가지다 — <b>single-nucleotide</b>(염기 1개=1토큰, base-level로 정밀하나 입력이 길다), <b>k-mer</b>(연속 k개를 1토큰; <code>k=6</code>이 흔하고, overlap은 정보 보존·중복↑, non-overlap은 경계 정보 손실), <b>BPE</b>(빈도 높은 쌍을 반복 병합해 모티프 단위 토큰 생성). 토큰을 <code>[CLS]…[SEP]</code>로 감싸고 Token·Position·Segment 임베딩을 더해 <code>[L × 768]</code> 행렬을 만든다(BERT 일반은 3종 합; DNABERT는 단일 서열이라 Segment는 형식적).</p>
         <p><span class="ph">[사전학습]</span> 레이블 없는 대량 유전체로 self-supervised 학습한다. <b>MLM</b>(일부 토큰을 <code>[MASK]</code>로 가리고 <b>양방향</b> attention으로 복원, encoder형 — DNABERT) 또는 <b>CLM</b>(이전 토큰만 보고 다음 토큰 예측, 단방향 decoder형 — Nucleotide GPT). 손실은 cross-entropy \(L=-\sum_i y_i'\log(y_i)\).</p>
         <p><span class="ph">[출력·응용]</span> 12층 Transformer를 통과한 뒤 <code>[CLS]</code> 토큰(또는 전체 토큰 mean pooling)으로 서열 임베딩을 얻고, 소량 레이블로 <b>fine-tuning</b>해 splice site 여부를 예측한다. 기존 방법은 <code>GU…AG</code> 같은 확률적 마커에 의존했으나, 언어모델은 <b>주변 문맥</b>으로 경계를 판정해 CNN·SVM 대비 월등한 성능을 낸다.</p>
       </div>
@@ -538,8 +547,29 @@
       <div class="drill"><div class="dinner">
         <p>언어모델은 입력을 토큰 단위로 다룬다. DNA에는 단어 경계가 없으므로 토큰을 정하는 방식이 중요하다.</p>
         <div class="simple"><span class="who">단순 설명</span>문장을 단어로 끊듯 DNA를 끊는다. 한 글자씩(single-nt), 세~여섯 글자씩(k-mer), 또는 자주 나오는 덩어리째(BPE) 끊을 수 있다. DNA에서는 <b>한 염기(SNV) 차이가 질병을 결정</b>하므로 base-level 정밀도가 중요할 때가 많다.</div>
-        <p><b>vocabulary 크기</b>는 k-mer에서 <code>4^k + 5</code>(4^k개 k-mer + 특수토큰 5)이다. 예로 <code>k=6 → 4101</code>. 한편 one-hot은 정보 손실이 없지만 입력이 커서 모델 부담이 크다.</p>
+        <p><b>어휘 사전(vocabulary) 크기</b>는 6-mer에서 <code>4^k + 5</code>다. 구성을 뜯어보면:</p>
+        <div class="calc"><span class="who">수식 뜯어보기 · 4^k + 5 유도</span>
+          <div class="step-r"><b>\(4^k\)</b>: DNA 4종 염기(A·C·G·T)로 k자리를 채우는 <b>중복순열</b> — \(k=6\)이면 \(4^6=4096\)개의 서로 다른 6-mer.</div>
+          <div class="step-r"><b>+ 5</b>: 시스템 제어용 특수 토큰 5종(아래 표).</div>
+          <div class="step-r">\( 4^6 + 5 = 4096 + 5 = \mathbf{4101} \)</div>
+        </div>
+        <div class="cmp-wrap"><table class="cmp">
+          <thead><tr><th>특수 토큰</th><th>이름</th><th>역할</th></tr></thead>
+          <tbody>
+            <tr><td><code>[CLS]</code></td><td>classification</td><td>맨 앞에 두는 문장 전체 요약 자리</td></tr>
+            <tr><td><code>[SEP]</code></td><td>separator</td><td>서열(문장) 경계 표시</td></tr>
+            <tr><td><code>[MASK]</code></td><td>mask</td><td>MLM에서 가릴 토큰 자리</td></tr>
+            <tr><td><code>[PAD]</code></td><td>padding</td><td>길이를 맞추는 빈 채움</td></tr>
+            <tr><td><code>[UNK]</code></td><td>unknown</td><td>사전에 없는 토큰</td></tr>
+          </tbody>
+        </table></div>
+        <div class="simple"><span class="who">overlap k-mer의 함정 · 데이터 누수</span>overlap 6-mer는 한 글자씩 밀며 잘라 이웃 토큰끼리 5글자가 겹친다. 그래서 한 토큰을 가려도 옆 토큰이 답을 거의 흘려 <b>데이터 누수(leakage)</b>가 생긴다 — MLM이 너무 쉬워진다. 그래서 연속된 여러 토큰을 함께 마스킹한다.</div>
         <div class="shapebox" data-shape="w2s1"><div class="shape-stage"></div><div class="shape-desc"></div>
+          <div class="shape-ctrl"><button class="tbtn" data-prev>◀</button><button class="tbtn" data-next>▶</button><span class="dots"></span></div></div>
+        <p style="margin-top:16px"><b>토큰을 행렬로 — 임베딩 3종의 합</b></p>
+        <div class="simple"><span class="who">오개념 교정 · 토큰 ≠ Read</span><b>"한 토큰 = 한 Read"가 아니다.</b> Read는 한 문장(서열 조각)이고, 토큰은 그 문장을 자른 단어 조각(k-mer)이다 — 한 Read가 여러 토큰으로 쪼개진다. <b>Segment embedding</b>은 서로 다른 두 서열 조각이 <code>[SEP]</code>로 이어 붙어 입력될 때 각 토큰이 <b>어느 조각(팀)에 속하는지</b>를 표시하는 768차원 고유 벡터다 — 1번 조각 토큰엔 segment A 벡터를, 2번 조각엔 segment B 벡터를 더한다.</div>
+        <p>입력 행렬은 세 임베딩의 <b>요소별 합(element-wise addition)</b>으로 만든다 — ① <b>Token</b>(토큰 의미) ② <b>Position</b>(서열 내 위치) ③ <b>Segment</b>(소속 조각). 셋 다 같은 768차원이라 더해도 <b>차원이 늘지 않고</b> 그대로 <code>[L × 768]</code>이 된다(\(L\)=최종 토큰 개수). 위치·소속 정보를 의미 벡터에 같은 공간에서 포개는 것이다.</p>
+        <div class="shapebox" data-shape="w2emb"><div class="shape-stage"></div><div class="shape-desc"></div>
           <div class="shape-ctrl"><button class="tbtn" data-prev>◀</button><button class="tbtn" data-next>▶</button><span class="dots"></span></div></div>
       </div></div>
     </div>
@@ -553,7 +583,7 @@
         <p><b>CLM</b>(Causal Language Model): 이전 토큰들만 보고(단방향) 다음 토큰을 예측한다(autoregressive). 서열 <b>생성·likelihood 평가</b>에 강하며 decoder(GPT/Nucleotide GPT)에서 쓴다.</p>
         <div class="simple"><span class="who">단순 설명</span>MLM은 빈칸 채우기 시험(앞뒤를 다 봄), CLM은 다음 단어 이어 쓰기(앞만 봄)다. 분류·이해가 목적이면 MLM, 생성이 목적이면 CLM.</div>
         <p>둘 다 레이블 없는 서열로 학습하므로 <b>self-supervised</b>다. 손실은 cross-entropy \(L=-\sum_i y_i'\log(y_i)\). 출력층은 어휘 크기만큼의 뉴런에 softmax를 걸어 분포를 만들고, <b>가린 토큰의 예측에 대해서만</b> 손실을 계산한다(나머지 출력은 무시 → 마스크 복원에 집중).</p>
-        <div class="simple"><span class="who">원조 BERT의 두 번째 과제 · NSP</span>BERT는 MLM과 <b>동시에</b> <b>NSP(Next Sentence Prediction, 다음 문장 예측)</b>도 학습한다 — 두 조각을 주고 두 번째가 첫 번째 <b>뒤에 실제로 이어지는지</b>를 <code>[CLS]</code> 출력으로 0/1 이진 판정한다. 한 문장 안의 양방향 문맥(MLM)에 더해 <b>조각 간 관계</b>를 익히는 장치다. (DNABERT는 서열 특성상 MLM 중심으로 쓴다.)</div>
+        <div class="simple"><span class="who">원조 BERT의 두 번째 과제 · NSP</span>BERT는 MLM과 <b>동시에</b> <b>NSP(Next Sentence Prediction, 다음 문장 예측)</b>도 학습한다 — 두 조각을 주고 두 번째가 첫 번째 <b>뒤에 실제로 이어지는지</b>를 <code>[CLS]</code> 출력으로 0/1 이진 판정한다. 한 문장 안의 양방향 문맥(MLM)에 더해 <b>조각 간 관계</b>를 익히는 장치다. (<b>DNABERT는 NSP를 제거</b>하고 연속 k-mer 마스킹 기반 MLM만으로 사전학습한다 — 단일 서열 입력이라 Segment·NSP가 실질적으로 불필요.)</div>
         <div class="shapebox" data-shape="w2s2"><div class="shape-stage"></div><div class="shape-desc"></div>
           <div class="shape-ctrl"><button class="tbtn" data-prev>◀</button><button class="tbtn" data-next>▶</button><span class="dots"></span></div></div>
       </div></div>
@@ -563,13 +593,13 @@
       <div class="qbar" onclick="toggleStep('w2sa')"><div class="qnum">3</div>
         <div class="qtxt"><div class="qlabel" style="color:var(--hot)">엔진 · 출제 핵심 ★</div><div class="qmain">self-attention — Query·Key·Value로 문맥을 섞다</div></div><span class="chev">▶</span></div>
       <div class="drill"><div class="dinner">
-        <p>DNABERT를 떠받치는 엔진이 <b>self-attention(자기주의집중)</b>이다. CNN이 옆칸만 본다면, attention은 <b>서열 전체의 모든 토큰</b>을 한 번에 보고 어디에 주목할지 학습한다. 핵심 임무는 <b>토큰의 의미를 문맥으로 갱신</b>하는 것이다.</p>
+        <p>DNABERT를 떠받치는 엔진이 <b>self-attention(자기 주의)</b>이다. CNN이 옆칸만 본다면, attention은 <b>서열 전체의 모든 토큰</b>을 한 번에 보고 어디에 주목할지 학습한다. 핵심 임무는 <b>토큰의 의미를 문맥으로 갱신</b>하는 것이다.</p>
         <div class="simple"><span class="who">왜 필요한가 · 다의성 (3B1B attention)</span>같은 토큰도 문맥에 따라 뜻이 다르다 — "mole"은 두더지/몰(화학량)/점이 될 수 있다. 첫 임베딩(embedding)은 사전을 찾은 값이라 문맥이 없다. attention은 <b>generic 임베딩에 "문맥 방향"을 더해</b> 구체적 의미로 옮긴다. <code>Eiffel</code> 다음의 <code>tower</code>는 파리·강철 쪽으로, <code>miniature tower</code>는 "크다"에서 멀어지는 식이다.</p></div>
         <p><b>Q·K·V 세 행렬</b>(전부 학습된다):</p>
         <p>① <b>Query(질의)</b> \(q=W_Q e\) — "내 앞에 형용사 있니?" 같은 <b>질문</b>. ② <b>Key(열쇠)</b> \(k=W_K e\) — "나 형용사야, 이 자리야" 같은 <b>답표</b>. ③ <b>Value(값)</b> \(v=W_V e\) — 관련 있을 때 <b>실제로 더해줄 정보</b>.</p>
         <div class="eqbox">attention score: \( e_{ij}=\dfrac{q_i\cdot k_j}{\sqrt{d_k}} \) &nbsp; → &nbsp; pattern: \( \alpha_{ij}=\text{softmax}_j(e_{ij}) \)</div>
         <div class="eqbox">갱신: \( \Delta e_i=\sum_j \alpha_{ij}\,v_j,\qquad e_i' = e_i + \Delta e_i \)</div>
-        <p>query와 key의 <b>내적(dot product)</b>이 크면(방향 정렬) 그 둘은 관련이 깊다. 한 query에 대한 모든 key 점수를 <b>softmax</b>로 합 1로 정규화한 격자가 <b>attention pattern</b>이다(\(\sqrt{d_k}\)로 나눠 수치 안정화). 그 가중치로 각 토큰의 value를 <b>가중합</b>해 원 임베딩에 더한다 — 여기서도 결국 <b>"누구를 얼마나 섞나"의 가중합</b>이다(GAT의 \(\alpha_{vu}\)와 같은 원리, 이웃이 "그래프"가 아니라 "전체 토큰"일 뿐).</p>
+        <p>query와 key의 <b>내적(dot product)</b>이 크면(방향 정렬) 그 둘은 관련이 깊다. 한 query에 대한 모든 key 점수를 <b>softmax</b>로 합 1로 정규화한 격자가 <b>attention pattern</b>이다(\(\sqrt{d_k}\)로 나눠 수치 안정화). 그 가중치로 각 토큰의 value를 <b>가중합</b>해 원 임베딩에 더한다 — 여기서도 결국 <b>"누구를 얼마나 섞나"의 가중합</b>이다(GAT의 \(\alpha_{vu}\)와 <b>유사한 가중합 원리</b> — 단 점수 함수는 다르다: attention은 내적 \(Q\!\cdot\!K\), GAT는 concat 후 LeakyReLU. 이웃도 "그래프"가 아니라 "전체 토큰").</p>
         <div class="calc"><span class="who">계산 예제 · attention 가중치</span>
           <div class="step-r">"creature"의 query \(q=[1,0]\). 두 토큰의 key: \(k_{\text{fluffy}}=[1,0]\), \(k_{\text{the}}=[0,1]\).</div>
           <div class="step-r">점수(\(\sqrt{d_k}\) 생략): \(q\!\cdot\!k_{\text{fluffy}}=1\), \(q\!\cdot\!k_{\text{the}}=0\).</div>
@@ -579,6 +609,10 @@
         <p><b>multi-head attention</b>: 같은 연산을 \(K\)벌 병렬로 둔다(GPT-3은 96개). head마다 다른 관계를 잡는다 — 하나는 문법(형용사→명사), 하나는 지칭(Harry+wizard→해리포터). 결과를 합쳐 원 임베딩에 더한다. <b>masking</b>: GPT(CLM)는 뒤 토큰을 못 보게 점수를 \(-\infty\)로 가려 단방향을 만들지만, <b>DNABERT(MLM)는 마스킹 없이 양방향</b>으로 좌우를 다 본다 — 이것이 Week 2 MLM/CLM 차이의 정체다.</p>
         <div class="shapebox" data-shape="w2sa"><div class="shape-stage"></div><div class="shape-desc"></div>
           <div class="shape-ctrl"><button class="tbtn" data-prev>◀</button><button class="tbtn" data-next>▶</button><span class="dots"></span></div></div>
+        <p style="margin-top:16px"><b>선형대수 차원 흐름 — 행렬 크기로 보는 self-attention</b></p>
+        <p>입력 <code>[L×768]</code>이 어떻게 다시 <code>[L×768]</code>로 거듭나는지 행렬 크기로 따라간다. 중간에 모든 토큰 쌍의 연관성을 담은 <code>[L×L]</code> 점수 격자를 거쳐도, 최종 출력은 <b>차원이 보존</b>되어 같은 블록을 12층 쌓을 수 있다.</p>
+        <div class="shapebox" data-shape="w2dim"><div class="shape-stage"></div><div class="shape-desc"></div>
+          <div class="shape-ctrl"><button class="tbtn" data-prev>◀</button><button class="tbtn" data-next>▶</button><span class="dots"></span></div></div>
       </div></div>
     </div>
 
@@ -587,9 +621,41 @@
         <div class="qtxt"><div class="qlabel">모델 · 응용</div><div class="qmain">DNABERT 구조와 fine-tuning, 그리고 장거리 한계</div></div><span class="chev">▶</span></div>
       <div class="drill"><div class="dinner">
         <p><b>DNABERT</b>는 12층 Transformer encoder(768 hidden, 12 head)에 MLM 사전학습을 적용한 모델이다. self-attention은 모든 토큰 쌍의 관계를 한 번에 보므로, CNN(국소)·RNN(순차 병목)이 놓치는 <b>원거리 의존성</b>과 다의성을 포착한다. attention 가중치가 실제 모티프·기능 부위에 집중해 해석도 가능하다.</p>
-        <div class="simple"><span class="who">encoder vs decoder · 입력 임베딩 3종</span>같은 transformer라도 <b>encoder만 쌓으면 BERT</b>(양방향 이해), <b>decoder만 쌓으면 GPT</b>(단방향 생성)다 — DNABERT는 전자. 그런데 모든 토큰을 <b>동시에</b> 넣으면 순서 정보가 사라지므로, 입력 임베딩을 <b>세 벡터의 합</b>으로 만든다: ① <b>token embedding</b>(사전학습된 토큰 의미) + ② <b>segment embedding</b>(몇 번째 조각인지) + ③ <b>position embedding</b>(서열 내 위치). 이 합이 \([L\times768]\) 입력이 된다.</div>
-        <p>사전학습 후 <code>[CLS]</code> 토큰 또는 전체 토큰 <b>mean pooling</b>으로 서열 표현을 얻어 fine-tuning한다(여러 벤치마크에서 mean pooling이 조금 더 우수). splice site 예측에서 DNABERT는 기존 CNN·SVM을 크게 앞선다.</p>
-        <div class="simple"><span class="who">장거리 한계와 보완</span>Transformer는 길이의 제곱(\(N^2\))으로 비용이 들어 긴 유전체에 제약이 있다. 이를 <b>HyenaDNA</b>(linear convolution, \(N\) 복잡도, 수십만 bp·character-level)와 <b>Evo</b>(Hyena+attention 하이브리드 + LoRA fine-tuning)가 보완한다. 단백질에서는 <b>ESM</b>이 서열만으로 3D 구조를 예측한다.</div>
+        <div class="simple"><span class="who">encoder vs decoder</span>같은 transformer라도 <b>encoder만 쌓으면 BERT</b>(양방향 이해), <b>decoder만 쌓으면 GPT</b>(단방향 생성)다 — DNABERT는 encoder형이다. 모든 토큰을 <b>동시에</b> 넣으면 순서 정보가 사라지므로 position embedding으로 위치를 알린다.</div>
+        <p>사전학습 후 <code>[CLS]</code> 토큰 또는 전체 토큰 <b>mean pooling</b>으로 서열 표현을 얻어 fine-tuning한다(여러 벤치마크에서 mean pooling이 조금 더 우수). splice site 등 여러 유전체 벤치마크에서 DNABERT는 기존 CNN·SVM 대비 우수한 성능을 보고했다.</p>
+        <p style="margin-top:14px"><b>fine-tuning — 머리(head)만 갈아끼우기</b></p>
+        <p>사전학습이 끝난 모델은 빈칸 채우기용 출력층 <code>[768×4101]</code>(어휘 크기만큼)을 머리에 달고 있다. splice site(유전체 가위질 경계선) 이진 분류(맞다/아니다)를 하려면 이 머리를 잘라내고 <code>[768×2]</code> 새 머리를 이식한다. 12층 기둥을 통과한 뒤 맨 앞 <code>[CLS]</code> 위치의 요약 벡터 <code>[1×768]</code>를 뽑아 새 머리와 행렬곱하면 <code>[1×2]</code> 확률(예 <code>[0.01, 0.99]</code>)이 나와 splice site 여부를 판정한다.</p>
+        <div class="shapebox" data-shape="w2ft"><div class="shape-stage"></div><div class="shape-desc"></div>
+          <div class="shape-ctrl"><button class="tbtn" data-prev>◀</button><button class="tbtn" data-next>▶</button><span class="dots"></span></div></div>
+        <div class="cmp-wrap"><table class="cmp">
+          <thead><tr><th>구간</th><th>대상 가중치</th><th>학습률</th><th>의도</th></tr></thead>
+          <tbody>
+            <tr><td>하부 기둥</td><td>Transformer 12층 body</td><td><code>1e-5</code> (작게)</td><td>사전학습으로 익힌 서열 상식을 사실상 동결 보존</td></tr>
+            <tr><td>상단 머리</td><td>새 splice head <code>[768×2]</code></td><td class="hl-w"><code>1e-3</code> (크게)</td><td>처음부터 배우는 분류기를 강하게 학습</td></tr>
+          </tbody>
+        </table></div>
+        <div class="simple"><span class="who">차별적 학습률 · differential learning rate</span>하부 기둥과 상단 머리에 <b>다른 학습률</b>을 준다. 상식을 마스터한 기둥은 미세 학습률(\(10^{-5}\))로 보존하고, 새로 붙인 머리만 큰 학습률(\(10^{-3}\))로 집중 학습한다 — 사전학습 지식을 망가뜨리지(catastrophic forgetting) 않으면서 새 과제에 빠르게 적응한다.</div>
+        <div class="simple"><span class="who">장거리 한계와 보완</span>Transformer는 길이의 제곱(\(N^2\))으로 비용이 들어 긴 유전체에 제약이 있다. 이를 <b>HyenaDNA</b>(implicit long convolution, near-linear 복잡도, 수십만 bp·character-level)와 <b>Evo</b>(StripedHyena 기반 hybrid)가 보완한다. 단백질에서는 <b>ESM</b>이 서열만으로 3D 구조를 예측한다.</div>
+      </div></div>
+    </div>
+
+    <div class="step gatenode" id="w2full">
+      <div class="qbar" onclick="toggleStep('w2full')"><div class="qnum">5</div>
+        <div class="qtxt"><div class="qlabel" style="color:var(--ok)">전체 흐름 · 입력→출력 풀 사이클 ★</div><div class="qmain">Raw DNA에서 splice site 판정까지</div></div><span class="chev">▶</span></div>
+      <div class="drill"><div class="dinner">
+        <p>8글자 환자 Raw DNA가 토큰화·임베딩·self-attention을 거쳐 단 2개의 출구 확률로 나오기까지를 한 줄기로 잇는다. 행렬 크기의 변화에 주목한다.</p>
+        <div class="flowline">
+          <div class="fb"><div class="fl-l">입력</div><div class="fl-v"><code>ACGTACGT</code> → 5 토큰</div></div>
+          <div class="arrow">→</div>
+          <div class="fb"><div class="fl-l">임베딩</div><div class="fl-v">합산 → <code>[5×768]</code></div></div>
+          <div class="arrow">→</div>
+          <div class="fb"><div class="fl-l">문맥</div><div class="fl-v">self-attn → <code>[CLS] [1×768]</code></div></div>
+          <div class="arrow">→</div>
+          <div class="fb"><div class="fl-l">출력</div><div class="fl-v"><code>[768×2]</code> → <code>[0.01,0.99]</code></div></div>
+        </div>
+        <div class="shapebox" data-shape="w2full"><div class="shape-stage"></div><div class="shape-desc"></div>
+          <div class="shape-ctrl"><button class="tbtn" data-prev>◀</button><button class="tbtn" data-next>▶</button><button class="tbtn" data-play>▶ 자동</button><span class="dots"></span></div></div>
+        <span class="reduced-note" style="font-size:.78rem;color:var(--muted)">⚙ 모션 최소화 설정 감지 — 자동재생 비활성.</span>
       </div></div>
     </div>
   </section>
@@ -598,29 +664,20 @@
     <div class="sec-h"><span class="en">Practice</span><span class="ko">예상 문제</span><span class="rule"></span><span class="unver">AI 생성 · 미검증</span></div>
 
     <div class="qa">
-      <div class="qa-q"><span class="qa-type">문제 1 · 서술형</span><span>DNA 서열을 DNABERT의 입력으로 만들 때의 토큰화 과정을, single-nucleotide·k-mer·BPE 세 방식의 차이와 vocabulary 크기 식, 최종 입력 행렬의 형상까지 포함하여 서술하라.</span></div>
-      <button class="reveal" onclick="revealQA(this)">모범 답안 보기</button>
+      <div class="qa-q"><span class="qa-type eq">문제 1 · 서술형</span><span>[슬라이드 · 유전체 언어모델(gLM)] 유전체 언어모델의 엔진인 <b>self-attention</b>이 토큰 임베딩을 문맥으로 갱신하는 과정을 <b>Q·K·V 수식</b>(\(e_{ij}=q_i\!\cdot\!k_j/\sqrt{d_k}\), softmax, \(\Delta e_i=\sum_j\alpha_{ij}v_j\))과 함께 서술하고, 사전학습 방식 <b>MLM과 CLM</b>의 차이를 attention <b>masking</b> 관점에서 비교하라(DNABERT가 어느 방식인지·self-supervised·손실함수 포함).</span></div>
+      <button class="reveal" onclick="revealQA(this)">모범 답안</button>
       <div class="qa-a"><div class="qa-a-in">
-        DNA 서열을 토큰화한다. <b>single-nucleotide</b>는 염기 1개를 1토큰으로 다뤄 base-level로 정밀하나 입력이 길다. <b>k-mer</b>는 연속 k개를 1토큰으로 묶으며(<code>k=6</code> 흔함), overlap은 정보 보존·중복↑, non-overlap은 경계 정보 손실이 있다. <b>BPE</b>는 base 어휘에서 시작해 빈도 높은 쌍을 반복 병합해 모티프 단위 토큰을 만든다. k-mer의 <b>vocabulary 크기는 <code>4^k + 5</code></b>(4^k개 + 특수토큰 5; k=6→4101)다. 토큰을 <code>[CLS]…[SEP]</code>로 감싸고 Token+Positional 임베딩을 더해 <b>입력 행렬 <code>[L × 768]</code></b>을 만든다.
-        <span class="pt">채점 포인트 · 3토큰화 차이 / overlap·non-overlap 트레이드오프 / vocab=4^k+5 / [L×768] 형상</span>
+        <b>[self-attention]</b> 사전 임베딩은 문맥이 없어 다의성을 못 가린다. self-attention은 임베딩을 세 행렬로 투영해 <b>Query</b> \(q=W_Q e\)(질의), <b>Key</b> \(k=W_K e\)(열쇠), <b>Value</b> \(v=W_V e\)(전할 정보)를 만든다. ① 점수 \(e_{ij}=q_i\!\cdot\!k_j/\sqrt{d_k}\) — 내적이 크면(방향 정렬) 관련이 깊고, \(\sqrt{d_k}\)로 나눠 수치 안정화. ② 한 토큰의 모든 점수를 <b>softmax</b>해 합 1의 가중치 \(\alpha_{ij}\)를 얻는다(attention pattern). ③ 그 가중치로 각 토큰의 value를 <b>가중합</b> \(\Delta e_i=\sum_j\alpha_{ij}v_j\)해 원 임베딩에 더한다(\(e_i'=e_i+\Delta e_i\)). 즉 "누구를 얼마나 섞나"의 가중합으로 임베딩을 문맥화한다(multi-head로 병렬). <b>[MLM vs CLM]</b> 둘은 이 attention을 <b>어떻게 가리느냐</b>로 갈린다. <b>MLM</b>은 입력의 ~15%를 <code>[MASK]</code>로 가리되 attention masking은 <b>없이 양방향</b>으로 좌우 문맥을 모두 봐 가린 토큰을 복원한다 → 이해, encoder형(DNABERT). <b>CLM</b>은 <b>causal masking</b>으로 뒤 토큰 점수를 \(-\infty\) 처리해 이전 토큰만 보고 다음 토큰을 예측한다 → 생성, decoder형(GPT). <b>DNABERT는 MLM(양방향 encoder)</b>이다. 둘 다 레이블 없이 서열 자체로 지도신호를 만드는 <b>self-supervised</b>이며 손실은 cross-entropy \(L=-\sum_i y_i'\log(y_i)\)이다.
+        <span class="pt">채점 포인트 · Q·K·V 투영 / \(e=q\!\cdot\!k/\sqrt{d_k}\)·softmax·\(\sum\alpha v\) 3단계 / MLM=마스킹 없는 양방향 vs CLM=causal masking(\(-\infty\)) / DNABERT=MLM / self-supervised·cross-entropy</span>
       </div></div>
     </div>
 
     <div class="qa">
-      <div class="qa-q"><span class="qa-type eq">문제 2 · 서술형</span><span>MLM과 CLM을 "입력을 어떻게 넣고 무엇을 출력으로 맞히는가" 관점에서 비교하고, 각각 어떤 종류의 문제에 유리한지와 DNABERT가 어느 방식을 쓰는지 손실 함수와 함께 서술하라.</span></div>
-      <button class="reveal" onclick="revealQA(this)">모범 답안 보기</button>
+      <div class="qa-q"><span class="qa-type eq">문제 2 · 서술형</span><span>[논문 · DNABERT (Ji et al., 2021)] DNA 서열을 DNABERT 입력으로 만드는 <b>토큰화·임베딩</b>부터 fine-tuning으로 <b>splice site를 분류해 출력</b>하기까지 전 과정을 서술하라. 6-mer 어휘 사전 크기(\(4^k+5\)) 유도, 입력 행렬 <code>[L×768]</code>을 만드는 임베딩 3종의 합, 출력 head 교체(<code>[768×4101]→[768×2]</code>)와 <code>[CLS]</code>·차별적 학습률을 포함하라.</span></div>
+      <button class="reveal" onclick="revealQA(this)">모범 답안</button>
       <div class="qa-a"><div class="qa-a-in">
-        <b>MLM</b>은 입력 토큰 일부(~15%)를 <code>[MASK]</code>로 가리고 <b>좌우 양방향</b> self-attention으로 가린 토큰을 예측한다 → 문맥 <b>이해</b>에 강해 분류·예측 문제(promoter·splice site)에 유리하고 encoder형이다. <b>CLM</b>은 이전 토큰들만 보고(단방향, causal) 다음 토큰을 예측한다(autoregressive) → 서열 <b>생성·likelihood 평가</b>에 유리하고 decoder형이다. <b>DNABERT는 MLM</b>(encoder, 양방향)을 쓴다. 둘 다 레이블이 필요 없는 self-supervised이며 손실은 cross-entropy \(L=-\sum_i y_i'\log(y_i)\)이다.
-        <span class="pt">채점 포인트 · MLM=마스킹·양방향·이해 / CLM=autoregressive·단방향·생성 / DNABERT=MLM / cross-entropy / self-supervised</span>
-      </div></div>
-    </div>
-
-    <div class="qa">
-      <div class="qa-q"><span class="qa-type eq">문제 3 · 계산</span><span>self-attention에서 한 토큰의 query \(q=[1,0]\)와 두 토큰의 key \(k_1=[1,0]\), \(k_2=[0,1]\)가 주어졌다(\(\sqrt{d_k}\) 생략). attention 가중치 \(\alpha\)를 softmax로 구하고, value \(v_1,v_2\)로 임베딩이 갱신되는 식을 쓴 뒤, DNABERT(MLM)가 masking을 적용하지 않는 이유를 한 줄로 답하라.</span></div>
-      <button class="reveal" onclick="revealQA(this)">모범 답안 보기</button>
-      <div class="qa-a"><div class="qa-a-in">
-        점수: \(q\!\cdot\!k_1=1,\ q\!\cdot\!k_2=0\). softmax: \(\alpha=\big[\frac{e^1}{e^1+e^0},\frac{e^0}{e^1+e^0}\big]=\big[\frac{2.718}{3.718},\frac{1}{3.718}\big]=[\mathbf{0.731},\mathbf{0.269}]\). 갱신: \(\Delta e=\alpha_1 v_1+\alpha_2 v_2=0.731\,v_1+0.269\,v_2\), 최종 \(e'=e+\Delta e\). <b>masking을 안 쓰는 이유</b>: masking은 단방향(CLM·GPT)에서 뒤 토큰이 답을 누설하지 못하게 가리는 장치인데, MLM은 <b>가린 토큰을 좌우 양방향 문맥으로 복원</b>하는 것이 목적이라 뒤쪽도 봐야 하므로 마스킹하지 않는다.
-        <span class="pt">채점 포인트 · 점수 1·0 / softmax=[0.731,0.269] / \(\Delta e=\sum\alpha v\) / MLM 양방향이라 masking 불필요</span>
+        <b>[입력·토큰화]</b> DNA 서열을 6-mer로 자른다. 어휘 사전 크기는 \(4^k+5=4^6(=4096\text{개 중복순열})+\)특수토큰 5종(<code>[CLS],[SEP],[MASK],[PAD],[UNK]</code>)\(=4101\)이다. 토큰을 <code>[CLS]…[SEP]</code>로 감싸고, Token·Position·Segment 임베딩(각 768차원)을 같은 공간에서 요소별로 더해 입력 행렬 <code>[L×768]</code>을 만든다(차원 팽창 없음). Segment 임베딩은 두 조각이 이어질 때 소속 조각을 표시하는 팀 구별 벡터다. <b>[사전학습]</b> 레이블 없는 대량 유전체로 MLM 학습한다(self-supervised, cross-entropy). <b>[fine-tuning·출력]</b> 12층 Transformer encoder를 통과한 뒤, 빈칸 채우기용 출력 head <code>[768×4101]</code>를 잘라내고 splice site 이진 분류용 새 head <code>[768×2]</code>를 이식한다. 맨 앞 <code>[CLS]</code> 위치의 요약 벡터 <code>[1×768]</code>를 새 head와 곱하면 <code>[1×2]</code> 확률(예 <code>[0.01, 0.99]</code>)이 나와 splice site 여부를 판정한다. 학습 시 사전학습 지식을 보존하려고 하부 12층 body는 작은 학습률(\(10^{-5}\))로 동결에 가깝게, 새 head는 큰 학습률(\(10^{-3}\))로 집중 학습하는 <b>차별적 학습률(discriminative learning rate)</b>을 쓰는 것이 일반적이다(fine-tuning 관행, 학습률 값은 설정에 따라 다름).
+        <span class="pt">채점 포인트 · vocab \(4^6+5=4101\) / 임베딩 3종 element-wise 합→[L×768] / Segment=팀 구별 / head 교체 [768×4101]→[768×2] / [CLS][1×768]·[1×2] / 차별적 학습률</span>
       </div></div>
     </div>
   </section>
@@ -634,7 +691,7 @@
   <section class="sec">
     <div class="sec-h"><span class="en">Core Question</span><span class="ko">핵심 문제</span><span class="rule"></span></div>
     <div class="mission" style="background:linear-gradient(160deg,rgba(192,132,252,.08),var(--panel))">
-      <div class="mhead"><span class="mtag" style="background:var(--w3);color:#1a0a2e">서술형 문제</span><span style="color:var(--muted);font-size:.82rem">입력→출력 양식</span></div>
+      <div class="mhead"><span class="mtag" style="background:var(--w3);color:#1a0a2e">서술형</span><span style="color:var(--muted);font-size:.82rem">입력→출력 양식</span></div>
       <div class="mq">분자의 <span class="hl" style="color:var(--w3)">독성(toxicity)</span>을 예측하려 한다. 분자를 <span class="hl" style="color:var(--w3)">그래프로 입력하는 방법</span>, GNN의 <span class="hl" style="color:var(--w3)">message passing</span>으로 노드 표현이 갱신되는 과정, 그리고 분자 전체(graph-level)의 <span class="hl" style="color:var(--w3)">출력</span>을 내는 방법을 서술하라.</div>
     </div>
   </section>
@@ -644,7 +701,7 @@
     <div class="answer">
       <span class="atag">모범 답안 · full-text</span>
       <div class="afull">
-        <p><span class="ph">[입력]</span> 분자를 <b>그래프</b>로 표현한다 — 원자를 노드(특징 \(x_v\)), 결합을 엣지로 둔다. 입력은 <b>인접행렬 \(A \in \mathbb{R}^{N\times N}\)</b>(연결성)과 <b>노드특징 행렬 \(X \in \mathbb{R}^{N\times d}\)</b>다. SMILES 같은 1D 문자열은 3D 구조의 이웃 정보를 잃지만, 그래프는 그대로 보존한다. 이웃 수가 가변이고 순서가 없으므로 모델은 <b>permutation invariant</b>해야 한다.</p>
+        <p><span class="ph">[입력]</span> 분자를 <b>그래프</b>로 표현한다 — 원자를 노드(특징 \(x_v\)), 결합을 엣지로 둔다. 입력은 <b>인접행렬 \(A \in \mathbb{R}^{N\times N}\)</b>(연결성)과 <b>노드특징 행렬 \(X \in \mathbb{R}^{N\times d}\)</b>다. SMILES 같은 1D 문자열도 연결성을 선형 문자열로 인코딩하지만 인접행렬 같은 <b>명시적 행렬 형태는 아니다</b> — 그래프는 원자–결합 <b>연결성(2D topology)</b>을 행렬로 직접 보존한다(3D 입체 구조·거리는 별도 좌표 feature 필요). 이웃 수가 가변이고 순서가 없으므로 모델은 <b>permutation invariant</b>해야 한다.</p>
         <p><span class="ph">[모델·message passing]</span> 각 노드를 이웃에서 배운다. \(h_v^{(0)}=x_v\)로 시작해, 이웃 표현을 <b>AGGREGATE</b>(mean/sum/max)로 모아 메시지를 만들고 자기 표현과 결합해 <b>UPDATE</b>한다: \(h_v^{(k+1)}=\sigma(W_{\text{neigh}}\,m_v^{(k)} + W_{\text{self}}\,h_v^{(k)} + b)\). 이를 \(k\)번 반복하면 \(k\)-hop 떨어진 이웃까지 정보가 모인다(CNN에서 필터 크기로 보는 범위를 정하는 것과 같다).</p>
         <p><span class="ph">[출력]</span> graph-level 예측은 모든 노드 표현을 <b>풀링</b>(주로 mean pooling)해 그래프 임베딩 \(h_G\)를 만들고 독성 여부를 분류한다. 같은 골격으로 node-level(노드 라벨), edge-level(두 노드 관계, 예: 단백질-약물 결합)도 푼다.</p>
       </div>
@@ -670,38 +727,73 @@
         <p>관계가 핵심 정보인 데이터(분자, 단백질 상호작용, 소셜 네트워크)는 격자(이미지)나 순서열(텍스트)로 표현되지 않는다. 그래프는 <b>노드 집합과 엣지 집합</b>으로 정의되며, 연결성은 <b>인접행렬 \(A\)</b>로 적는다(\(A_{uv}=1\)이면 엣지 존재). 노드 \(v\)의 이웃 \(\mathcal{N}(v)\)는 \(v\)와 엣지로 연결된 노드들이다.</p>
         <div class="simple"><span class="who">단순 설명</span>분자에서 원자는 점(노드), 결합은 선(엣지)이다. 같은 탄소라도 옆에 무엇이 붙어 있느냐에 따라 성질이 달라진다 — 그 "이웃 관계"를 모델이 보게 하려고 그래프로 넣는다.</div>
         <p>이웃 수가 노드마다 다르고(3개·4개·5개…) 순서도 없으므로, 모델은 ① 가변 이웃 수를 처리하고 ② 이웃 순서에 무관(<b>permutation invariant</b>)해야 한다.</p>
+        <div class="simple"><span class="who">Week 1과 정반대</span>이미지는 위치가 본질이라 픽셀을 셔플하면 망가져야 정상(CNN의 이동 불변성)이었다. 그래프는 반대로 <b>이웃에 순서가 없는 것이 데이터의 본질</b>이라, 셔플해도 같은 답을 내는 <b>순열 불변성이 오히려 필수</b>다. 같은 "셔플" 실험이 이미지에선 취약점, 그래프에선 요구 조건이다.</div>
         <div class="shapebox" data-shape="w3s1"><div class="shape-stage"></div><div class="shape-desc"></div>
           <div class="shape-ctrl"><button class="tbtn" data-prev>◀</button><button class="tbtn" data-next>▶</button><span class="dots"></span></div></div>
       </div></div>
     </div>
 
+    <div class="step" id="w3task">
+      <div class="qbar" onclick="toggleStep('w3task')"><div class="qnum">2</div>
+        <div class="qtxt"><div class="qlabel">임무 분류</div><div class="qmain">GNN이 푸는 세 가지 예측 문제</div></div><span class="chev">▶</span></div>
+      <div class="drill"><div class="dinner">
+        <p>GNN의 출력은 "무엇을 맞히느냐"에 따라 셋으로 나뉜다 — 점 하나(노드), 두 점 사이(엣지), 그래프 전체. 같은 message passing 골격을 쓰고 마지막에 읽어내는 단위만 다르다.</p>
+        <div class="cmp-wrap"><table class="cmp">
+          <thead><tr><th>임무</th><th>무엇을 맞히나</th><th>직관</th><th>생명과학 예시</th></tr></thead>
+          <tbody>
+            <tr><td>노드 분류<br><span style="color:var(--muted);font-weight:500">node classification</span></td><td>개별 노드(원자)의 숨은 성질</td><td>이 점의 정체</td><td>단백질 상호작용(PPI) 망에서 개별 단백질의 구체적 기능 예측</td></tr>
+            <tr><td>링크 예측<br><span style="color:var(--muted);font-weight:500">link prediction</span></td><td>두 노드 사이 새 연결 확률</td><td>둘이 이어질까</td><td>약물 재창출 — 화합물·질병 단백질 결합 효능, 약물 병용 부작용 예측</td></tr>
+            <tr><td>그래프 분류<br><span style="color:var(--muted);font-weight:500">graph classification</span></td><td>그래프 전체의 고유 성질</td><td>이 모임의 정체</td><td>합성 화합물 분자 그래프 전체의 인체 독성·수용성 예측</td></tr>
+          </tbody>
+        </table></div>
+        <div class="shapebox" data-shape="w3task"><div class="shape-stage"></div><div class="shape-desc"></div>
+          <div class="shape-ctrl"><button class="tbtn" data-prev>◀</button><button class="tbtn" data-next>▶</button><span class="dots"></span></div></div>
+      </div></div>
+    </div>
+
     <div class="step gatenode" id="w3s2">
-      <div class="qbar" onclick="toggleStep('w3s2')"><div class="qnum">2</div>
+      <div class="qbar" onclick="toggleStep('w3s2')"><div class="qnum">3</div>
         <div class="qtxt"><div class="qlabel" style="color:var(--hot)">학습 · 수식 출제 확정 ★</div><div class="qmain">message passing — aggregate와 update</div></div><span class="chev">▶</span></div>
       <div class="drill"><div class="dinner">
-        <p>GNN의 핵심은 <b>message passing</b>이다. 노드는 이웃으로부터 메시지를 받아 자기 표현을 갱신한다.</p>
+        <p>GNN의 핵심은 <b>message passing</b>이다. 외롭게 떨어져 있던 노드가 이웃의 추출물을 모아 자기 뜻을 갱신한다.</p>
+        <div class="simple"><span class="who">3단계 도미노 · Message → Aggregate → Update</span><b>① Message</b>: 각 이웃이 주는 쪽·받는 쪽과 결합 방식(단일/이중결합)을 반영해 전해줄 메시지 벡터(추출물 엑기스)를 굽는다. <b>② Aggregate</b>: 나에게 연결된 모든 이웃의 엑기스를 하나로 뭉친다 — 이웃 수가 몇이든 고정 크기를 유지하고 <b>순열 불변</b>을 지키려면 순서 무관 함수(<code>Sum·Mean·Max</code>)만 쓴다. <b>③ Update</b>: 뭉친 엑기스와 원래 내 벡터를 버무려 다음 층의 새로운 나로 업그레이드한다.</div>
         <div class="eqbox">초기화: \( h_v^{(0)} = x_v \)</div>
         <div class="eqbox">집계(AGGREGATE): \( m_v^{(k)} = \dfrac{1}{|\mathcal{N}(v)|}\sum_{u\in\mathcal{N}(v)} h_u^{(k)} \) &nbsp;(mean; sum·max도 가능)</div>
         <div class="eqbox">갱신(UPDATE): \( h_v^{(k+1)} = \sigma\big(W_{\text{neigh}}\,m_v^{(k)} + W_{\text{self}}\,h_v^{(k)} + b\big) \)</div>
         <p><b>\(k\)번 반복 = \(k\)-hop</b>: 1번이면 직접 이웃만, 2번이면 이웃의 이웃까지 정보가 모인다. CNN의 필터 크기처럼 "얼마나 멀리 볼지"를 정한다. (너무 많이 반복하면 모든 노드가 비슷해지는 over-smoothing 주의.)</p>
-        <div class="simple"><span class="who">수치 예제</span>노드 특징 \(x=[1,2,0,4]\), 자기 포함 이웃 \(\tilde{\mathcal{N}}(v_1)=\{v_1,v_2,v_3\}\). 평균 \(m_{v_1}=\tfrac{1+2+0}{3}=1.0\). \(W=[0.6,0.4]\)(자기 0.6, 이웃 0.4)면 \(h_{v_1}^{(1)}=0.6\cdot1.0+0.4\cdot1.0=1.0\).</div>
+        <div class="simple"><span class="who">수치 예제</span>노드 특징 \(x_{v_1}=1,\ x_{v_2}=2,\ x_{v_3}=0\), 이웃 \(\mathcal{N}(v_1)=\{v_2,v_3\}\). 이웃 평균 \(m_{v_1}=\tfrac{2+0}{2}=1.0\). \(W=[0.6,0.4]\)(자기 0.6, 이웃 0.4)면 \(h_{v_1}^{(1)}=0.6\cdot x_{v_1}+0.4\cdot m_{v_1}=0.6\cdot1.0+0.4\cdot1.0=1.0\)(자기·이웃 분리 집계).</div>
         <div class="shapebox" data-shape="w3s2"><div class="shape-stage"></div><div class="shape-desc"></div>
           <div class="shape-ctrl"><button class="tbtn" data-prev>◀</button><button class="tbtn" data-next>▶</button><span class="dots"></span></div></div>
       </div></div>
     </div>
 
+    <div class="step" id="w3gcn">
+      <div class="qbar" onclick="toggleStep('w3gcn')"><div class="qnum">4</div>
+        <div class="qtxt"><div class="qlabel">행렬 형태 · GCN</div><div class="qmain">GCN 한 줄 공식 — self-loop와 대칭 정규화</div></div><span class="chev">▶</span></div>
+      <div class="drill"><div class="dinner">
+        <p>message passing을 행렬 한 줄로 적으면 <b>GCN</b>(Graph Convolutional Network)이다. 노드별로 따로 돌리지 않고 전 노드를 한꺼번에 곱한다.</p>
+        <div class="eqbox">\( H^{(l+1)} = \sigma\big(\, \tilde D^{-1/2}\,\tilde A\,\tilde D^{-1/2}\,H^{(l)}\,W \,\big),\qquad \tilde A = A + I \)</div>
+        <div class="calc"><span class="who">수식 뜯어보기 · 두 안정화 장치</span>
+          <div class="step-r"><b>Self-loop \(\tilde A = A+I\)</b>: 인접행렬은 대각이 0이라 집계할 때 <b>내 정보가 소외된다</b>. 대각에 1(내 머리 위 가상의 연결 고리)을 달아 이웃과 함께 나 자신도 포함시킨다.</div>
+          <div class="step-r"><b>대칭 정규화 \(\tilde D^{-1/2}\tilde A\tilde D^{-1/2}\)</b>: 결합이 많은 헤비 원자(탄소 등)의 신호가 과도하게 증폭돼 숫자가 폭발하는 것을 막는다. 양옆에서 차수(self-loop 포함)의 제곱근 역수를 곱해 — 차수가 클수록 작게 — <b>차분하게 평탄화(scaling)</b>하는 밸런싱 장치다(노드 총수 N과 무관, 차수 의존).</div>
+          <div class="step-r">한 엣지의 실효 가중치 \(= \dfrac{1}{\sqrt{\tilde d_v}\,\sqrt{\tilde d_u}}\) (\(\tilde d\)=self-loop 포함 차수) — 양끝 노드의 차수가 클수록 작아진다.</div>
+        </div>
+        <div class="simple"><span class="who">한 줄 정리</span>self-loop는 "나도 포함", 대칭 정규화는 "연결 많은 이웃의 목소리를 공평하게 줄이기". 단 이 가중치는 <b>차수(연결 수)만</b> 보고 이웃의 내용은 못 본다 — 그 한계를 다음의 GAT가 푼다.</div>
+      </div></div>
+    </div>
+
     <div class="step" id="w3s3">
-      <div class="qbar" onclick="toggleStep('w3s3')"><div class="qnum">3</div>
+      <div class="qbar" onclick="toggleStep('w3s3')"><div class="qnum">5</div>
         <div class="qtxt"><div class="qlabel">비교 · 출제 강조</div><div class="qmain">GNN vs CNN — 가중치 공유와 파라미터</div></div><span class="chev">▶</span></div>
       <div class="drill"><div class="dinner">
         <p>GNN과 CNN은 닮았으면서 다르다. 둘 다 "주변 정보를 모아 가운데를 갱신"하지만, CNN은 이웃 <b>위치가 고정</b>(3×3 격자)이고 GNN은 이웃 수가 <b>가변</b>이다.</p>
-        <p><b>파라미터</b>: CNN의 3×3 필터는 9개 파라미터로 전 위치를 스캔한다(위치별로 다른 가중치). GNN은 이웃이 몇 개든 다 더한 뒤(AGGREGATE) 그 벡터에 가중치를 곱하므로, <b>파라미터 수는 노드 개수와 무관하고 feature 크기에만 의존</b>한다. 그리고 <b>같은 가중치 행렬을 모든 이웃에 공유</b>한다(이웃 순서가 없으므로). — 이 "가중치 공유"는 Week1 CNN과 같은 아이디어다.</p>
+        <p><b>파라미터</b>: CNN의 3×3 필터는 9개 파라미터로 전 위치를 스캔한다(위치별로 다른 가중치). GNN은 이웃이 몇 개든 다 더한 뒤(AGGREGATE) 그 벡터에 가중치를 곱하므로, <b>파라미터 수는 노드 개수와 무관하고 feature 크기에만 의존</b>한다. 그리고 <b>같은 가중치 행렬을 모든 이웃에 공유</b>한다(이웃 순서가 없으므로). — 이 "가중치 공유"는 Week1 CNN과 같은 아이디어다(단 공유 축이 다르다 — CNN은 <b>위치</b>에, GNN은 <b>이웃</b>에 같은 가중치를 공유).</p>
         <div class="simple"><span class="who">자주 헷갈리는 점</span>기본 GNN에서 학습되는 가중치는 <b>노드별 가중치가 아니라 feature(벡터 원소)별 가중치</b>다. 이웃마다 다른 중요도를 주는 것은 다음 단계의 <b>attention(GAT)</b>이 한다.</div>
       </div></div>
     </div>
 
     <div class="step" id="w3s4">
-      <div class="qbar" onclick="toggleStep('w3s4')"><div class="qnum">4</div>
+      <div class="qbar" onclick="toggleStep('w3s4')"><div class="qnum">6</div>
         <div class="qtxt"><div class="qlabel">발전 · 시험범위 논문</div><div class="qmain">GAT — attention으로 이웃 중요도를 학습</div></div><span class="chev">▶</span></div>
       <div class="drill"><div class="dinner">
         <p>기본 GNN은 모든 이웃을 똑같이(또는 차수로 고정 정규화) 집계한다. <b>GAT</b>(Graph Attention Network)는 이웃마다 <b>다른 중요도(attention)</b>를 학습해 더 정보가 많은 이웃을 강조한다. 3단계다:</p>
@@ -711,7 +803,34 @@
         <div class="eqbox">③ 갱신: \( h_v^{(k+1)} = \sigma\big(\sum_{u\in\mathcal{N}(v)} \alpha_{vu}\,W h_u\big) \)</div>
         <p><b>score 함수 \(a(\cdot)\)는 왜 신경망인가</b>: 가장 단순한 선택은 두 임베딩의 <b>내적(dot product)</b>이지만(정렬↑→큼), <b>학습 파라미터가 없어</b> 표현력이 약하다. 그래서 GAT는 <b>학습되는</b> 투영 \(W\)와 벡터 \(\vec a\)에 LeakyReLU를 씌운 <b>작은 신경망</b>을 score로 쓴다 — 이것이 self-attention의 \(Q\!\cdot\!K\)에 대응하는 그래프판이다. \(W\)와 \(\vec a\) 두 곳에서 학습이 일어난다.</p>
         <p>여러 head를 병렬로 두고(multi-head) 결과를 concat하거나 평균한다. GCN의 고정 차수 정규화(\(\tilde{D}^{-1/2}\tilde{A}\tilde{D}^{-1/2}\))를 학습된 \(\alpha_{vu}\)로 바꾼 것이며, 학습 중 본 적 없는 그래프에도 적용 가능(inductive)해 단백질 상호작용(PPI)처럼 미지 그래프 예측에 강하다.</p>
+        <div class="simple"><span class="who">XAI · 설명 가능성의 무기</span>GCN처럼 <b>차수 기반 고정 가중치</b>로 이웃을 (내용과 무관하게) 나누는 방식은 한계가 있다 — 실제 화학 반응에선 특정 핵심 기능기(산소·황 등)가 독성에 지대한 영향을 준다. GAT는 이웃 파이프라인에 <b>편애하는 동적 가중치 \(\alpha_{vu}\)</b>를 부여한다. 학습이 끝난 뒤 이 \(\alpha\) 격자를 시각화하면, 모델이 분자의 <b>어느 결합 구역에 주목</b>했는지 거꾸로 추적하는 <b>단서</b>가 된다 — 신약 부작용 원인 해석의 출발점이다(단 \(\alpha\)는 상관 단서이며, 인과 확정은 ablation·counterfactual 등 추가 분석이 필요하다).</div>
+        <div class="shapebox" data-shape="w3gat"><div class="shape-stage"></div><div class="shape-desc"></div>
+          <div class="shape-ctrl"><button class="tbtn" data-prev>◀</button><button class="tbtn" data-next>▶</button><span class="dots"></span></div></div>
         <div class="simple"><span class="who">한 줄 정리</span>기본 GNN은 message passing의 집계 가중치를 <code>1/|N(v)|</code>로 고정, GAT는 그 가중치를 attention \(\alpha_{vu}\)로 <b>학습</b>한다. 골격(이웃 모아 갱신)은 그대로다.</div>
+      </div></div>
+    </div>
+
+    <div class="step gatenode" id="w3full">
+      <div class="qbar" onclick="toggleStep('w3full')"><div class="qnum">7</div>
+        <div class="qtxt"><div class="qlabel" style="color:var(--ok)">전체 흐름 · 입력→출력 풀 사이클 ★</div><div class="qmain">H–C–O 화합물 — 독성 판정까지</div></div><span class="chev">▶</span></div>
+      <div class="drill"><div class="dinner">
+        <p>수소–탄소–산소가 일렬로 단일 결합한 3원자 화합물을 입력으로, 독성 여부를 판정하기까지의 전 과정이다. 행렬 크기의 진화에 주목한다.</p>
+        <div class="calc"><span class="who">입력 격자판 · X[3×2], A[3×3]</span>
+          <div class="step-r">특징 행렬 \(X=\begin{bmatrix}1&1\\6&2\\8&1\end{bmatrix}\) — 각 행이 한 원자의 \([\text{원자번호},\ \text{결합수}]\): H=[1,1], C=[6,2], O=[8,1].</div>
+          <div class="step-r">인접 행렬 \(A=\begin{bmatrix}0&1&0\\1&0&1\\0&1&0\end{bmatrix}\) — H–C, C–O 결합. self-loop 후 \(\tilde A=A+I\).</div>
+        </div>
+        <div class="flowline">
+          <div class="fb"><div class="fl-l">입력</div><div class="fl-v">\(X[3{\times}2]\), \(A[3{\times}3]\)</div></div>
+          <div class="arrow">→</div>
+          <div class="fb"><div class="fl-l">전파</div><div class="fl-v">\(\hat A X W\) → \(H[3{\times}64]\)</div></div>
+          <div class="arrow">→</div>
+          <div class="fb"><div class="fl-l">Readout</div><div class="fl-v">GAP → \(1{\times}64\)</div></div>
+          <div class="arrow">→</div>
+          <div class="fb"><div class="fl-l">출력</div><div class="fl-v">\([64{\times}2]\) → \([0.99,0.01]\)</div></div>
+        </div>
+        <div class="shapebox" data-shape="w3full"><div class="shape-stage"></div><div class="shape-desc"></div>
+          <div class="shape-ctrl"><button class="tbtn" data-prev>◀</button><button class="tbtn" data-next>▶</button><button class="tbtn" data-play>▶ 자동</button><span class="dots"></span></div></div>
+        <span class="reduced-note" style="font-size:.78rem;color:var(--muted)">⚙ 모션 최소화 설정 감지 — 자동재생 비활성.</span>
       </div></div>
     </div>
   </section>
@@ -720,29 +839,20 @@
     <div class="sec-h"><span class="en">Practice</span><span class="ko">예상 문제</span><span class="rule"></span><span class="unver">AI 생성 · 미검증</span></div>
 
     <div class="qa">
-      <div class="qa-q"><span class="qa-type eq">문제 1 · 수식·계산</span><span>GNN의 message passing 일반식(AGGREGATE, UPDATE)을 쓰고, 노드 특징 \(x=[1,2,0,4]\), 자기 포함 이웃 \(\tilde{\mathcal{N}}(v_1)=\{v_1,v_2,v_3\}\), 가중치 \(W=[a,b]=[0.6,0.4]\)(자기·이웃), mean aggregation일 때 1-layer 갱신 표현 \(h_{v_1}^{(1)}\)을 계산하라.</span></div>
-      <button class="reveal" onclick="revealQA(this)">모범 답안 보기</button>
+      <div class="qa-q"><span class="qa-type eq">문제 1 · 서술형</span><span>[슬라이드 · 그래프 신경망(graphNN)] 분자의 <b>독성(toxicity)</b>을 예측하는 GNN의 <b>입력 구성</b>, <b>message passing</b>으로 노드 표현이 갱신되는 과정, 분자 전체(graph-level)의 <b>출력</b> 방법을 <b>수식과 함께</b> 서술하라. 인접행렬·노드특징, AGGREGATE/UPDATE 3단계, permutation invariance, k-hop, readout을 포함하라.</span></div>
+      <button class="reveal" onclick="revealQA(this)">모범 답안</button>
       <div class="qa-a"><div class="qa-a-in">
-        <b>일반식</b>: \(m_v^{(k)}=\frac{1}{|\mathcal{N}(v)|}\sum_{u\in\mathcal{N}(v)}h_u^{(k)}\) (AGGREGATE), \(h_v^{(k+1)}=\sigma(W_{\text{neigh}}m_v^{(k)}+W_{\text{self}}h_v^{(k)}+b)\) (UPDATE). <b>계산</b>: ① 집계 \(m_{v_1}=\frac{1+2+0}{3}=\mathbf{1.0}\). ② 갱신 \(h_{v_1}^{(1)}=0.6\cdot h_{v_1}+0.4\cdot m_{v_1}=0.6\cdot1.0+0.4\cdot1.0=\mathbf{1.0}\). 핵심: mean은 순서 불변(permutation invariant)이고, \(1/|\mathcal{N}(v)|\)로 이웃 수를 정규화하며, \(W_{\text{neigh}}\)는 모든 이웃에 공유된다.
-        <span class="pt">채점 포인트 · AGGREGATE/UPDATE 식 / mean 정규화 / \(m_{v_1}=1.0\) / \(h_{v_1}^{(1)}=1.0\) / 가중치 공유 이유</span>
+        <b>[입력]</b> 분자를 그래프로 표현한다 — 원자=노드(특징 \(x_v\)), 결합=엣지. 입력은 인접행렬 \(A\in\mathbb{R}^{N\times N}\)와 노드특징 행렬 \(X\in\mathbb{R}^{N\times d}\)다. 이웃 수가 가변이고 순서가 없으므로 모델은 <b>permutation invariant</b>해야 한다. <b>[message passing]</b> \(h_v^{(0)}=x_v\)로 시작해 3단계를 반복한다. ① <b>Message</b>: 각 이웃이 결합 방식을 반영해 전할 메시지 생성. ② <b>Aggregate</b>: 이웃 메시지를 순서 무관 함수(Sum·Mean·Max)로 모은다 \(m_v=\frac{1}{|\mathcal{N}(v)|}\sum_{u\in\mathcal{N}(v)}h_u\). ③ <b>Update</b>: \(h_v^{(k+1)}=\sigma(W_{\text{neigh}}m_v+W_{\text{self}}h_v+b)\). \(k\)번 반복하면 \(k\)-hop 이웃까지 정보가 모인다(과도하면 over-smoothing). 행렬형이 GCN \(H^{(l+1)}=\sigma(\tilde D^{-1/2}\tilde A\tilde D^{-1/2}HW)\)이며, \(\tilde A=A+I\)(self-loop)로 내 정보를 포함하고 대칭 정규화로 헤비 원자의 신호 폭발을 막는다. <b>[출력]</b> graph-level 예측은 모든 노드 표현을 풀링(readout, 주로 mean=Global Average Pooling)해 그래프 임베딩 \(h_G\)를 만들고, 분류층을 통과시켜 독성 여부를 출력한다.
+        <span class="pt">채점 포인트 · 입력 \((A,X)\)·permutation / Message·Aggregate(순서무관)·Update 3단계 식 / k-hop·over-smoothing / GCN self-loop·대칭정규화 / readout(GAP)→\(h_G\)→분류</span>
       </div></div>
     </div>
 
     <div class="qa">
-      <div class="qa-q"><span class="qa-type">문제 2 · 서술형</span><span>GNN이 CNN과 어떻게 닮았고 다른지 가중치 공유·파라미터 수·permutation 관점에서 설명하고, GAT가 기본 GNN의 이웃 집계를 어떻게 바꾸는지 attention 3단계 식으로 서술하라.</span></div>
-      <button class="reveal" onclick="revealQA(this)">모범 답안 보기</button>
+      <div class="qa-q"><span class="qa-type eq">문제 2 · 서술형</span><span>[논문 · GAT (Veličković et al., 2018)] GAT가 기본 GNN(GCN)의 이웃 집계를 어떻게 바꾸는지 <b>attention 3단계 수식</b>으로 서술하고, GCN의 고정 정규화 대비 장점과, 학습된 \(\alpha\)를 통한 <b>설명 가능성(XAI)</b>의 의의를 함께 서술하라.</span></div>
+      <button class="reveal" onclick="revealQA(this)">모범 답안</button>
       <div class="qa-a"><div class="qa-a-in">
-        <b>공통</b>: 둘 다 주변 정보를 모아 가운데 표현을 갱신한다. <b>차이</b>: CNN은 이웃 위치가 고정(3×3)이라 위치별 다른 가중치를 갖고 파라미터는 필터 크기(예 9)로 정해진다. GNN은 이웃 수가 가변이라 모두 더한 뒤 갱신하므로 <b>파라미터가 노드 수와 무관(feature 크기에만 의존)</b>하고, <b>같은 가중치 행렬을 모든 이웃에 공유</b>해 <b>permutation invariant</b>하다. <b>GAT</b>는 이웃마다 다른 중요도를 학습한다: ① \(e_{vu}=a(Wh_v,Wh_u)\), ② \(\alpha_{vu}=\text{softmax}_u(e_{vu})\), ③ \(h_v'=\sigma(\sum_u \alpha_{vu}Wh_u)\). 즉 집계 가중치를 \(1/|\mathcal{N}(v)|\) 고정에서 학습된 \(\alpha_{vu}\)로 바꾼다.
-        <span class="pt">채점 포인트 · 공통(이웃 집계) / CNN 위치고정 vs GNN 가변·공유 / 파라미터 노드 무관 / permutation / GAT 3식</span>
-      </div></div>
-    </div>
-
-    <div class="qa">
-      <div class="qa-q"><span class="qa-type eq">문제 3 · 계산</span><span>GAT에서 노드 \(v\)의 두 이웃에 대한 raw attention score가 \(e_{v,1}=2,\ e_{v,2}=0\)이다. softmax로 정규화한 \(\alpha_{v,1},\alpha_{v,2}\)를 구하고, 투영된 이웃 표현이 \(Wh_1=2,\ Wh_2=4\)(스칼라)일 때 활성함수 직전의 가중합 \(\sum_u \alpha_{vu}Wh_u\)를 계산하라.</span></div>
-      <button class="reveal" onclick="revealQA(this)">모범 답안 보기</button>
-      <div class="qa-a"><div class="qa-a-in">
-        softmax: \(\alpha_{v,1}=\frac{e^2}{e^2+e^0}=\frac{7.389}{8.389}=\mathbf{0.881}\), \(\alpha_{v,2}=\frac{1}{8.389}=\mathbf{0.119}\)(합=1). 가중합 \(=0.881\times2+0.119\times4=1.762+0.476=\mathbf{2.238}\). 이후 \(h_v'=\sigma(2.238)\). 핵심: 기본 GNN이라면 두 이웃을 \(1/2\)씩 균등(=3.0) 집계했겠지만, GAT는 score가 큰 이웃 1을 \(0.881\)로 <b>더 크게</b> 본다 — 집계 가중치를 <b>학습된 \(\alpha\)</b>로 바꾼 결과다.
-        <span class="pt">채점 포인트 · softmax=[0.881,0.119] / 합=1 / 가중합=2.238 / 균등(0.5)과 대비 → 학습된 가중치</span>
+        <b>GCN</b>은 이웃을 차수로 고정 정규화(\(1/\sqrt{d_v d_u}\))해 연결 수만 보고 이웃의 <b>내용</b>은 못 본다. <b>GAT</b>는 집계 가중치를 이웃 임베딩의 내용으로 학습한다. ① <b>score</b> \(e_{vu}=\text{LeakyReLU}(\vec a^\top[Wh_v\,\Vert\,Wh_u])\) — 학습되는 투영 \(W\)와 벡터 \(\vec a\)로 만든 작은 신경망(self-attention의 \(Q\!\cdot\!K\)에 대응). ② <b>정규화</b> \(\alpha_{vu}=\text{softmax}_u(e_{vu})\)로 이웃에 대해 합 1. ③ <b>갱신</b> \(h_v'=\sigma(\sum_{u\in\mathcal{N}(v)}\alpha_{vu}Wh_u)\). 여러 head를 병렬로 두고 concat/평균한다. 연결 수가 같아도 더 의미 있는 이웃을 골라 보므로 핵심 기능기(산소·황)가 독성에 미치는 영향을 포착하고, 학습 중 본 적 없는 그래프에도 적용 가능(inductive)하다. <b>XAI</b>: 학습 후 \(\alpha\) 격자를 시각화하면 모델이 분자의 어느 결합 부위를 보고 독성을 판정했는지 역추적할 수 있어, 신약 부작용 원인 해석의 강력한 무기가 된다.
+        <span class="pt">채점 포인트 · GCN 고정 정규화의 한계(내용 못 봄) / GAT 3식(score·softmax·갱신) / 학습되는 \(W,\vec a\) / multi-head·inductive / XAI(α 역추적)</span>
       </div></div>
     </div>
   </section>
@@ -750,7 +860,7 @@
   <!-- ===================== 영상 자료 ===================== -->
   <section class="sec vidsec" id="videos">
     <div class="sec-h"><span class="en">Source Videos</span><span class="ko">개념별 영상 자료</span><span class="rule"></span></div>
-    <p class="lead">위 설명은 아래 영상들의 전체 스크립트를 분석해 핵심을 추출·재구성한 것이다. 막히는 개념은 해당 토글을 열어 원본 영상으로 확인한다.</p>
+    <p class="lead">위 설명은 아래 영상 9편의 전체 스크립트를 분석해 핵심을 추출·재구성한 것이다. 개념별 원본 영상은 각 토글에 정리해 두었다.</p>
 
     <div class="step" id="vid-conv">
       <div class="qbar" onclick="toggleStep('vid-conv')"><div class="qnum">1</div>
@@ -798,7 +908,7 @@
   </section>
 
   <footer>
-    의생명과학을 위한 AI · 노미나 교수 · 전체 시험대비 (Week 1–3).<br>
+    의생명공학을 위한 AI · 노미나 교수 · 전체 시험대비 (Week 1–3).<br>
     출처 · 강의 영상 + 개념 영상 9편(3Blue1Brown · IBM · CodeEmporium · DeepFindr 등) + 논문 3편(Deep Learning 2015 · DNABERT 2021 · GAT 2018).<br>
     <span class="warn">⚠ 예상 문제는 AI 생성·미검증 (실제 기출 아님)</span> · 개인 학습용 · 강의 저작권은 담당 교수.
   </footer>
@@ -814,7 +924,7 @@
   function toggleStep(id){ document.getElementById(id).classList.toggle('open'); }
   function revealQA(btn){
     const a=btn.nextElementSibling;
-    const open=a.classList.toggle('show'); btn.textContent=open?'모범 답안 숨기기':'모범 답안 보기';
+    const open=a.classList.toggle('show'); btn.textContent=open?'모범 답안 숨기기':'모범 답안';
     if(open&&window.renderMathInElement&&!window.__noKatex){
       try{renderMathInElement(a,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}],throwOnError:false});}catch(e){}
     }
@@ -829,42 +939,97 @@
 
   const SHAPES={
     w1s1:[
-      {d:'환자 세포에서 DNA를 추출하면 약 30억 bp(A·T·G·C)의 서열을 확보한다.',
-       r(){return svg(120)+DEFS+box(150,40,160,44,'환자 DNA (30억 bp)',C.ac)+'</svg>';}},
-      {d:'시퀀서가 분할 판독해 수억 개의 짧은 조각(reads)을 만든다. 형식은 <code>FASTQ</code>.',
-       r(){let s=svg(120)+DEFS+box(20,40,120,40,'DNA',C.ac)+arrow(145,210,60);
-         for(let i=0;i<5;i++)s+='<rect x="230" y="'+(30+i*14)+'" width="120" height="10" rx="3" fill="none" stroke="'+C.ok+'"/>';
-         s+='<text x="365" y="65" fill="'+C.mut+'">reads ×수억</text>';return s+'</svg>';}},
-      {d:'reads를 참조 서열(reference)에 정렬해 각 조각의 위치를 확정한다.',
-       r(){let s=svg(130)+DEFS+'<line x1="20" y1="35" x2="440" y2="35" stroke="'+C.line+'" stroke-width="2"/><text x="20" y="26" fill="'+C.mut+'">reference</text>';
-         for(let i=0;i<5;i++){const x=40+i*70;s+='<rect x="'+x+'" y="'+(50+i%3*16)+'" width="90" height="11" rx="3" fill="none" stroke="'+C.ok+'"/>';}
+      {d:'<b>Reference</b> — 인류 공통의 표준 유전체. 완성된 퍼즐 그림에 해당하며, 환자 변이를 재는 기준점.',
+       r(){let s=svg(110)+DEFS;
+         s+='<text x="20" y="28" fill="'+C.mut+'" font-size="11">reference (표준 설계도)</text>';
+         s+='<rect x="20" y="40" width="420" height="24" rx="4" fill="rgba(91,157,255,0.08)" stroke="'+C.ac+'"/>';
+         s+='<text x="230" y="57" text-anchor="middle" fill="'+C.ink+'" letter-spacing="3" font-size="12">… A C G T A C G T A C G T A …</text>';
+         for(let i=0;i<=4;i++){const x=20+i*105;s+='<line x1="'+x+'" y1="64" x2="'+x+'" y2="72" stroke="'+C.line+'"/><text x="'+x+'" y="88" text-anchor="middle" fill="'+C.mut+'" font-size="10">'+(i*15)+'k</text>';}
+         return s+'</svg>';}},
+      {d:'<b>Reads</b> — 시퀀서가 30억 글자를 통째로 못 읽어 100~150 bp로 잘게 부순 퍼즐 조각. 수억 개가 쏟아진다.',
+       r(){let s=svg(125)+DEFS+box(20,48,118,30,'환자 DNA',C.ac)+arrow(143,200,63);
+         const rp=[[222,26],[300,40],[238,58],[332,72],[262,88],[358,30],[212,76]];
+         rp.forEach(p=>{s+='<rect x="'+p[0]+'" y="'+p[1]+'" width="70" height="11" rx="3" fill="none" stroke="'+C.ok+'"/>';});
+         s+='<text x="420" y="115" text-anchor="end" fill="'+C.mut+'" font-size="11">reads ×수억 (100~150 bp)</text>';
+         return s+'</svg>';}},
+      {d:'조각들은 자기 좌표를 모른다 — 뒤죽박죽 흩어진 상태. 어느 줄에서 왔는지 대조가 필요하다.',
+       r(){let s=svg(140)+DEFS;
+         s+='<line x1="20" y1="104" x2="440" y2="104" stroke="'+C.line+'" stroke-width="2"/><text x="20" y="122" fill="'+C.mut+'" font-size="10">reference 좌표 (빈칸)</text>';
+         const sc=[[60,22],[185,34],[305,18],[120,50],[250,56],[360,44],[210,18]];
+         sc.forEach(p=>{s+='<rect x="'+p[0]+'" y="'+p[1]+'" width="78" height="11" rx="3" fill="none" stroke="'+C.ok+'" opacity="0.85" transform="rotate('+((p[0]%7)-3)+' '+(p[0]+39)+' '+(p[1]+5)+')"/>';});
+         s+='<text x="230" y="135" text-anchor="middle" fill="'+C.hot+'" font-size="11">위치 미상 — 매핑 전</text>';
+         return s+'</svg>';}},
+      {d:'<b>Mapping</b> — 문자열 검색 엔진이 reference를 인덱싱하고, read의 시드(seed)를 맞춰 최적 좌표에 정렬한다.',
+       r(){let s=svg(140)+DEFS;
+         s+='<line x1="20" y1="50" x2="440" y2="50" stroke="'+C.ac+'" stroke-width="2"/><text x="20" y="40" fill="'+C.mut+'" font-size="10">reference</text>';
+         const al=[[36,64],[126,64],[228,64],[330,64],[80,80],[200,80],[300,80],[160,96],[262,96]];
+         al.forEach(p=>{s+='<rect x="'+p[0]+'" y="'+p[1]+'" width="84" height="11" rx="3" fill="rgba(52,211,153,0.12)" stroke="'+C.ok+'"/>';});
+         s+='<text x="230" y="128" text-anchor="middle" fill="'+C.ok+'" font-size="11">시드 매칭 → 좌표에 착착 정렬 (mapping 완료)</text>';
          return s+'</svg>';}},
     ],
     w1s2:[
-      {d:'같은 위치의 reads를 위아래로 쌓으면 그 칸의 염기 분포가 드러난다.',
-       r(){let s=svg(150)+DEFS;const bases=['T','T','T','C','T','T','C','T'];
-         for(let i=0;i<bases.length;i++){const col=bases[i]==='C'?C.hot:C.ac;
-           s+='<rect x="200" y="'+(20+i*15)+'" width="60" height="12" rx="2" fill="none" stroke="'+col+'"/><text x="230" y="'+(30+i*15)+'" text-anchor="middle" fill="'+C.ink+'" font-size="10">'+bases[i]+'</text>';}
-         s+='<text x="120" y="80" fill="'+C.mut+'">위치 115</text><text x="300" y="80" fill="'+C.hot+'" font-size="11">C 2개 = 변이 후보</text>';return s+'</svg>';}},
-      {d:'쌓은 더미를 이미지 텐서로 인코딩한다. 행=깊이, 열=위치, 채널=묘사(6).',
+      {d:'같은 좌표의 reads를 위아래로 쌓는다(pileup). 한 칸에 수십~수백 개가 겹친다 — 이것이 깊이(Depth).',
+       r(){let s=svg(150)+DEFS;const bases=['T','T','C','T','T','T','C','T','T','C','T','T'];
+         for(let i=0;i<bases.length;i++){const col=bases[i]==='C'?C.hot:C.ac;const y=18+i*10;
+           s+='<rect x="205" y="'+y+'" width="50" height="8" rx="2" fill="'+(bases[i]==='C'?'rgba(255,107,107,0.18)':'none')+'" stroke="'+col+'"/>';
+           s+='<text x="230" y="'+(y+7)+'" text-anchor="middle" fill="'+C.ink+'" font-size="8">'+bases[i]+'</text>';}
+         s+='<text x="100" y="80" fill="'+C.mut+'" font-size="11">위치 115</text>';
+         s+='<line x1="280" y1="18" x2="280" y2="138" stroke="'+C.gold+'" stroke-dasharray="3 3"/><text x="350" y="82" text-anchor="middle" fill="'+C.gold+'" font-size="11">Depth = 12</text>';
+         s+='<text x="350" y="100" text-anchor="middle" fill="'+C.mut+'" font-size="10">(실험 규격 30X·100X)</text>';return s+'</svg>';}},
+      {d:'수직 분포를 본다. C가 ~50%면 실제 이형접합(Het) 변이, 1~2개뿐이면 기계 오차.',
        r(){let s=svg(150)+DEFS;
-         for(let c=0;c<3;c++){const x=120+c*70,y=25+c*8;
-           s+='<rect x="'+x+'" y="'+y+'" width="120" height="80" rx="4" fill="rgba(91,157,255,0.06)" stroke="'+C.ac2+'"/>';}
-         s+='<text x="250" y="135" text-anchor="middle" fill="'+C.ink+'">텐서 (100, 221, 6)</text>';return s+'</svg>';}},
-      {d:'완성된 입력은 <code>(100, 221, 6)</code> = (read 깊이, 위치 너비, 6채널)이다.',
-       r(){let s=svg(120)+DEFS+box(60,40,100,44,'read 더미',C.ok)+arrow(165,250,62)+box(250,40,150,44,'(100,221,6)',C.ac2);return s+'</svg>';}},
+         const colA=['C','T','C','C','T','C','T','C'],colB=['T','T','T','T','C','T','T','T'];
+         function stack(x,col,lbl,real){let g='';for(let i=0;i<col.length;i++){const c=col[i]==='C'?C.hot:C.ac;const y=24+i*12;
+           g+='<rect x="'+x+'" y="'+y+'" width="44" height="10" rx="2" fill="'+(col[i]==='C'?'rgba(255,107,107,0.18)':'none')+'" stroke="'+c+'"/><text x="'+(x+22)+'" y="'+(y+8)+'" text-anchor="middle" fill="'+C.ink+'" font-size="9">'+col[i]+'</text>';}
+           g+='<text x="'+(x+22)+'" y="18" text-anchor="middle" fill="'+(real?C.ok:C.mut)+'" font-size="10">'+lbl+'</text>';return g;}
+         s+=stack(95,colA,'C ~50%',true)+stack(305,colB,'C 1개',false);
+         s+='<text x="117" y="138" text-anchor="middle" fill="'+C.ok+'" font-size="10">실제 Het 변이</text>';
+         s+='<text x="327" y="138" text-anchor="middle" fill="'+C.mut+'" font-size="10">기계 오차</text>';return s+'</svg>';}},
+      {d:'세로 100을 맞춰야 한다. reads가 부족하면(예 60개) 빈 행을 0으로 채운다 — Padding.',
+       r(){let s=svg(150)+DEFS;s+='<text x="20" y="20" fill="'+C.mut+'" font-size="10">depth 슬롯 100칸 (그림은 10칸 축약)</text>';
+         for(let r=0;r<10;r++){const filled=r<6,y=30+r*11;
+           for(let c=0;c<6;c++){const x=150+c*23;s+='<rect x="'+x+'" y="'+y+'" width="21" height="9" fill="'+(filled?'rgba(52,211,153,0.16)':'rgba(255,212,121,0.10)')+'" stroke="'+(filled?C.ok:C.gold)+'"/>';
+             if(!filled)s+='<text x="'+(x+10)+'" y="'+(y+8)+'" text-anchor="middle" fill="'+C.gold+'" font-size="8">0</text>';}
+           if(r===7)s+='<text x="300" y="'+(y+8)+'" fill="'+C.gold+'" font-size="10">← 0 padding (40행)</text>';}
+         s+='<text x="75" y="80" fill="'+C.ink+'" font-size="11">reads 60개</text>';return s+'</svg>';}},
+      {d:'reads가 100을 넘으면(예 140개) 품질 높은 것만 추려낸다 — Sampling. 저품질 행은 버린다.',
+       r(){let s=svg(150)+DEFS;s+='<text x="20" y="20" fill="'+C.mut+'" font-size="10">reads 140개 &gt; 100 → 추려내기</text>';
+         for(let r=0;r<12;r++){const drop=(r%4===3),y=28+r*10;
+           for(let c=0;c<6;c++){const x=150+c*23;s+='<rect x="'+x+'" y="'+y+'" width="21" height="8" fill="'+(drop?'transparent':'rgba(52,211,153,0.16)')+'" stroke="'+(drop?C.hot:C.ok)+'" opacity="'+(drop?0.55:1)+'"/>';}
+           if(drop)s+='<text x="300" y="'+(y+7)+'" fill="'+C.hot+'" font-size="9">✗ 저품질 버림</text>';}
+         return s+'</svg>';}},
+      {d:'정리된 더미가 <code>(100, 221, 6)</code> 텐서 = (깊이, 위치 너비, 6채널). 6채널을 RGB처럼 층층이 쌓는다.',
+       r(){let s=svg(150)+DEFS;
+         for(let c=0;c<3;c++){const x=110+c*60,y=28+c*9;s+='<rect x="'+x+'" y="'+y+'" width="130" height="78" rx="4" fill="rgba(91,157,255,0.06)" stroke="'+C.ac2+'"/>';}
+         s+='<text x="250" y="138" text-anchor="middle" fill="'+C.ink+'">텐서 (100, 221, 6)</text>';return s+'</svg>';}},
     ],
     w1s3:[
-      {d:'손글씨 이미지의 행·열을 셔플해도 일반 신경망 성능은 동일하다 — 위치를 안 보기 때문.',
-       r(){let s=svg(130)+DEFS;
-         for(let r=0;r<3;r++)for(let c=0;c<3;c++){const x=80+c*26,y=25+r*26;s+='<rect x="'+x+'" y="'+y+'" width="22" height="22" fill="'+((r+c)%2?'rgba(91,157,255,0.25)':'transparent')+'" stroke="'+C.line+'"/>';}
-         s+='<text x="160" y="120" text-anchor="middle" fill="'+C.mut+'">셔플 전/후 정확도 동일 → 관계 학습 불가</text>';
-         for(let r=0;r<3;r++)for(let c=0;c<3;c++){const x=300+c*26,y=25+r*26;s+='<rect x="'+x+'" y="'+y+'" width="22" height="22" fill="'+((r*c)%2?'rgba(91,157,255,0.25)':'transparent')+'" stroke="'+C.line+'"/>';}
-         return s+'</svg>';}},
-      {d:'CNN: 작은 필터가 국소 패턴을 보고, 같은 필터를 전 위치에 공유 → 파라미터 급감.',
-       r(){let s=svg(120)+DEFS+box(40,40,130,44,'(100,221,6)',C.ac2)+arrow(175,230,62)+box(230,40,90,44,'CNN',C.ac);
-         s+='<text x="360" y="66" fill="'+C.mut+'" font-size="11">필터 공유</text>';return s+'</svg>';}},
-      {d:'출력은 genotype likelihood <code>[Hom-ref, Het, Hom-alt]</code>이며 최대값을 택한다.',
+      {d:'<b>FC(일반 신경망)</b>: 2D 격자를 1D 벡터로 펼친다(flatten). 각 칸이 독립 가중치 — "이웃" 개념이 없다.',
+       r(){let s=svg(150)+DEFS;const g=[[1,1,0],[0,1,0],[0,1,1]];
+         for(let r=0;r<3;r++)for(let c=0;c<3;c++){const x=44+c*30,y=26+r*30;s+='<rect x="'+x+'" y="'+y+'" width="28" height="28" fill="'+(g[r][c]?'rgba(91,157,255,0.28)':'transparent')+'" stroke="'+C.line+'"/>';}
+         s+='<text x="89" y="135" text-anchor="middle" fill="'+C.mut+'" font-size="10">2D 격자 (위치 정보)</text>';
+         s+=arrow(140,182,70);
+         for(let i=0;i<9;i++){const x=196+i*27;const v=g[Math.floor(i/3)][i%3];s+='<rect x="'+x+'" y="56" width="25" height="25" fill="'+(v?'rgba(91,157,255,0.28)':'transparent')+'" stroke="'+C.line+'"/>';}
+         s+='<text x="320" y="102" text-anchor="middle" fill="'+C.hot+'" font-size="10">1D로 펼침 → 이웃 관계 소실</text>';return s+'</svg>';}},
+      {d:'격자를 셔플해도 칸과 가중치가 같이 섞일 뿐 — 연산 메커니즘 그대로. 정확도 완전히 동일.',
+       r(){let s=svg(150)+DEFS;const sh=[[0,1,1],[1,0,1],[0,1,0]];
+         for(let r=0;r<3;r++)for(let c=0;c<3;c++){const x=44+c*30,y=26+r*30;s+='<rect x="'+x+'" y="'+y+'" width="28" height="28" fill="'+(sh[r][c]?'rgba(148,163,182,0.25)':'transparent')+'" stroke="'+C.line+'"/>';}
+         s+='<text x="89" y="135" text-anchor="middle" fill="'+C.mut+'" font-size="10">셔플된 격자</text>';
+         s+=arrow(140,182,70);
+         const fv=[0,1,1,1,0,1,0,1,0];for(let i=0;i<9;i++){const x=196+i*27;s+='<rect x="'+x+'" y="56" width="25" height="25" fill="'+(fv[i]?'rgba(148,163,182,0.25)':'transparent')+'" stroke="'+C.line+'"/>';}
+         s+='<text x="320" y="100" text-anchor="middle" fill="'+C.mut+'" font-size="10">순서만 교체 · 결과 불변</text>';
+         s+='<text x="320" y="116" text-anchor="middle" fill="'+C.hot+'" font-size="10">→ FC는 위치를 못 본다</text>';return s+'</svg>';}},
+      {d:'<b>CNN</b>: 작은 커널(3×3)이 격자 위를 슬라이딩하며 이웃 문맥을 본다 — 국소 연결 + 같은 커널 공유.',
+       r(){let s=svg(155)+DEFS;const G=[[1,0,0,0,1],[0,1,0,1,0],[0,0,1,0,0],[0,1,0,1,0],[1,0,0,0,1]];
+         for(let r=0;r<5;r++)for(let c=0;c<5;c++){const x=130+c*32,y=18+r*24;s+='<rect x="'+x+'" y="'+y+'" width="30" height="22" fill="'+(G[r][c]?'rgba(91,157,255,0.28)':'transparent')+'" stroke="'+C.line+'"/>';}
+         s+='<rect x="129" y="17" width="94" height="70" fill="none" stroke="'+C.gold+'" stroke-width="2.5"/>';
+         s+='<text x="245" y="142" text-anchor="middle" fill="'+C.gold+'" font-size="11">3×3 커널 = 돋보기, 전 영역에 같은 도장</text>';return s+'</svg>';}},
+      {d:'그 격자를 셔플하면 이웃 관계가 깨진다 — 커널이 볼 국소 패턴이 사라져 연산이 무력해진다.',
+       r(){let s=svg(155)+DEFS;const Gs=[[1,0,1,0,0],[0,0,0,1,1],[1,1,0,0,0],[0,0,1,0,1],[0,1,0,1,0]];
+         for(let r=0;r<5;r++)for(let c=0;c<5;c++){const x=130+c*32,y=18+r*24;s+='<rect x="'+x+'" y="'+y+'" width="30" height="22" fill="'+(Gs[r][c]?'rgba(255,107,107,0.20)':'transparent')+'" stroke="'+C.line+'"/>';}
+         s+='<rect x="129" y="17" width="94" height="70" fill="none" stroke="'+C.hot+'" stroke-width="2.5" stroke-dasharray="4 3"/>';
+         s+='<text x="245" y="142" text-anchor="middle" fill="'+C.hot+'" font-size="11">국소 패턴 깨짐 → 커널 무력. CNN은 셔플에 망가진다.</text>';return s+'</svg>';}},
+      {d:'그래서 CNN을 쓴다. 출력은 유전형 확률 <code>[Hom-ref, Het, Hom-alt]</code>이며 최대값을 택한다.',
        r(){let s=svg(130)+DEFS+box(20,45,90,40,'CNN',C.ac)+arrow(115,170,65);
          const v=['0.01','0.95','0.04'],lb=['Hom-ref','Het','Hom-alt'];
          for(let i=0;i<3;i++){const x=180+i*90,hot=i===1;
@@ -878,6 +1043,12 @@
       {d:'<b>Loss</b> — 예측 \\(y\\)와 정답 \\(t\\)를 비교해 \\(E=\\tfrac12(y-t)^2\\)를 잰다.',r(){return bpSvg(1);}},
       {d:'<b>Backward</b> — 출력층 \\(\\partial E/\\partial y=y-t\\)부터 거꾸로 기울기를 전파한다.',r(){return bpSvg(2);}},
       {d:'<b>Update</b> — \\(w\\leftarrow w-\\eta\\,\\partial E/\\partial w\\)로 기울기 반대 방향으로 갱신한다.',r(){return bpSvg(3);}},
+    ],
+    w1s4b:[
+      {d:'<b>출력층</b> — 정답을 알기에 오차를 직접 계산: \\(\\partial E/\\partial z=y-t\\). 여기서 "비명"(에러 신호)이 시작된다.',r(){return mlbpSvg(0);}},
+      {d:'<b>은닉3</b> — 정답을 모른다. 바로 뒷층의 에러에 연결 가중치를 곱해 거꾸로 합산 \\(\\sum_l w_{kl}\\,\\delta_l\\)로 자기 책임을 구한다.',r(){return mlbpSvg(1);}},
+      {d:'<b>은닉2</b> — 같은 릴레이. 은닉3가 넘긴 책임을 받아 \\(\\sum w\\cdot\\delta\\)로 자기 몫의 오차를 떠안는다.',r(){return mlbpSvg(2);}},
+      {d:'<b>은닉1</b> — 입력층 코앞까지 책임이 전달된다. 단 한 번의 backward로 전 층의 기울기가 완성된다.',r(){return mlbpSvg(3);}},
     ],
     w2s1:[
       {d:'DNA 서열에는 단어 경계가 없다. 토큰 단위를 먼저 정한다.',
@@ -927,6 +1098,23 @@
       {d:'k번 반복하면 k-hop 떨어진 이웃까지 정보가 모인다.',
        r(){let s=svg(100)+DEFS;for(let k=0;k<3;k++){const x=55+k*150;s+=box(x,35,120,40,(k+1)+'-hop',k===0?C.w3:C.ac2);if(k<2)s+=arrow(x+120,x+205,55);}return s+'</svg>';}},
     ],
+    w3task:[
+      {d:'<b>노드 분류</b> — 그래프 속 개별 원자(점) 하나의 숨은 성질을 맞힌다. (예: PPI 망에서 단백질의 기능)',r(){return gnnTaskSvg(0);}},
+      {d:'<b>링크 예측</b> — 두 원자 사이에 새 결합·상호작용이 생길 확률을 맞힌다. (예: 약물–질병 단백질 결합)',r(){return gnnTaskSvg(1);}},
+      {d:'<b>그래프 분류</b> — 점·선이 모인 분자 전체의 고유 성질을 맞힌다. (예: 화합물 독성·수용성)',r(){return gnnTaskSvg(2);}},
+    ],
+    w3gat:[
+      {d:'<b>GCN</b>: 모든 이웃을 \\(1/N\\)로 균등 집계한다 — 핵심 기능기를 강조하지 못한다.',r(){return gatAlphaSvg(0);}},
+      {d:'<b>GAT</b>: 편애하는 동적 가중치 \\(\\alpha_{vu}\\)로 산소(O) 결합을 크게 본다. 학습 후 α 격자를 보면 독성 원인 부위를 역추적(XAI).',r(){return gatAlphaSvg(1);}},
+    ],
+    w3full:[
+      {d:'<b>입력</b> — H–C–O 3원자 화합물. 특징 행렬 \\(X[3\\times2]\\)와 인접행렬 \\(A[3\\times3]\\).',r(){return fcW3Svg(0);}},
+      {d:'<b>정규화</b> — self-loop \\(A+I\\) 후 대칭 정규화 \\(\\hat A=D^{-1/2}(A+I)D^{-1/2}\\)로 신호를 평탄화.',r(){return fcW3Svg(1);}},
+      {d:'<b>행렬곱</b> — \\(\\hat A X W\\)로 이웃을 흡수 → \\(H[3\\times64]\\)로 진화(차원 상승).',r(){return fcW3Svg(2);}},
+      {d:'<b>Readout</b> — 원자 벡터를 가로로 평균(Global Average Pooling) → 분자 대표 \\([1\\times64]\\).',r(){return fcW3Svg(3);}},
+      {d:'<b>분류</b> — 이진 분류층 \\([64\\times2]\\) 통과 → 확률 \\([1\\times2]\\).',r(){return fcW3Svg(4);}},
+      {d:'<b>출력</b> — \\([0.99, 0.01]\\) → "독성 없을 확률 99% · 안전" 판정.',r(){return fcW3Svg(5);}},
+    ],
     w1s3g:[
       {d:'cost \\(E(w)=(w-3)^2\\). 시작 \\(w_0=0\\) — 경사가 음(−6)이라 오른쪽이 내리막.',r(){return gdSvg(0);}},
       {d:'한 걸음: \\(w_1=0-0.1(-6)=0.6\\). 음의 기울기 방향으로 이동.',r(){return gdSvg(1);}},
@@ -937,6 +1125,40 @@
       {d:'"creature"의 query와 각 key의 내적 → score. fluffy·blue는 크고 the는 작다.',r(){return attnSvg(0);}},
       {d:'softmax로 열 합을 1로 정규화 → attention 가중치 α (관련 토큰만 큼).',r(){return attnSvg(1);}},
       {d:'각 토큰의 value를 α로 가중합(Δe) → creature 임베딩을 문맥으로 갱신.',r(){return attnSvg(2);}},
+    ],
+    w1full:[
+      {d:'<b>입력</b> — 환자 1번 염색체 특정 좌표의 pileup을 \\((100,221,6)\\) 텐서로 굽는다.',r(){return fcW1Svg(0);}},
+      {d:'<b>CNN</b> — conv·pooling 층이 국소 변이 패턴을 특징으로 추출한다.',r(){return fcW1Svg(1);}},
+      {d:'<b>FC</b> — flatten 후 완전연결층이 세 유전형 점수(logits \\([3]\\))를 낸다.',r(){return fcW1Svg(2);}},
+      {d:'<b>Softmax</b> — logits를 확률 분포 \\([0.01, 0.95, 0.04]\\)로 만든다.',r(){return fcW1Svg(3);}},
+      {d:'<b>판정</b> — argmax가 두 번째(Het)를 가리킨다 → 이형접합 변이로 최종 판정.',r(){return fcW1Svg(4);}},
+    ],
+    w2emb:[
+      {d:'① <b>Token embedding</b> — 토큰의 사전적 의미 벡터 \\([L\\times768]\\).',r(){return embSumSvg(0);}},
+      {d:'② <b>Segment embedding</b> — 두 조각이 이어 붙어 들어올 때 각 토큰의 소속 조각을 표시하는 768차원 팀 구별 벡터.',r(){return embSumSvg(1);}},
+      {d:'③ <b>Position embedding</b> — 서열 내 위치 \\([L\\times768]\\).',r(){return embSumSvg(2);}},
+      {d:'세 임베딩을 같은 768차원 공간에서 element-wise로 합산 → 입력 행렬 \\([L\\times768]\\).',r(){return embSumSvg(3);}},
+    ],
+    w2dim:[
+      {d:'<b>입력</b> — 토큰 임베딩 행렬 \\([L\\times768]\\)에서 출발한다.',r(){return attnDimSvg(0);}},
+      {d:'<b>Q·K·V 투영</b> — \\(W_Q,W_K,W_V\\)로 세 행렬을 만든다 (head당 \\([L\\times d_k]\\), \\(d_k=64\\)).',r(){return attnDimSvg(1);}},
+      {d:'<b>점수 격자</b> — \\(QK^\\top/\\sqrt{d_k}\\)로 모든 토큰 쌍의 연관성 \\([L\\times L]\\)을 만든다.',r(){return attnDimSvg(2);}},
+      {d:'<b>softmax</b> — 행별로 정규화해 attention pattern \\([L\\times L]\\)을 얻는다.',r(){return attnDimSvg(3);}},
+      {d:'<b>·V</b> — Value를 가중합해 \\([L\\times768]\\) 문맥 반영 행렬로 거듭난다(차원 보존).',r(){return attnDimSvg(4);}},
+    ],
+    w2ft:[
+      {d:'사전학습은 빈칸 채우기용 \\([768\\times4101]\\) 머리(MLM head)를 썼다.',r(){return ftHeadSvg(0);}},
+      {d:'그 \\([768\\times4101]\\) 머리를 잘라낸다 (head replacement).',r(){return ftHeadSvg(1);}},
+      {d:'splice site 이진 분류용 새 머리 \\([768\\times2]\\)를 이식한다.',r(){return ftHeadSvg(2);}},
+      {d:'\\([CLS]\\) 요약 \\([1\\times768]\\) × \\([768\\times2]\\) → \\([1\\times2]=[0.01,0.99]\\) → Splice site 맞다.',r(){return ftHeadSvg(3);}},
+    ],
+    w2full:[
+      {d:'<b>입력</b> — 환자 Raw DNA 서열 <code>A C G T A C G T</code> (8 글자).',r(){return fcW2Svg(0);}},
+      {d:'<b>토큰화</b> — 6-mer overlap → ACGTAC·CGTACG·GTACGT 3개 + <code>[CLS]·[SEP]</code> = 5 토큰.',r(){return fcW2Svg(1);}},
+      {d:'<b>임베딩 합</b> — 세 임베딩 합산 → \\([5\\times768]\\) 입력 행렬.',r(){return fcW2Svg(2);}},
+      {d:'<b>self-attention</b> — 문맥을 버무린다 → \\([5\\times768]\\) (차원 보존).',r(){return fcW2Svg(3);}},
+      {d:'<b>[CLS] 추출</b> — 맨 앞 요약 벡터 \\([1\\times768]\\)를 새 머리 \\([768\\times2]\\)에 통과.',r(){return fcW2Svg(4);}},
+      {d:'<b>출력</b> — \\([0.01, 0.99]\\) → "Splice site가 맞다" 판정.',r(){return fcW2Svg(5);}},
     ],
   };
   function bpSvg(phase){
@@ -988,6 +1210,149 @@
       }
     }
     if(phase===2) s+='<text x="20" y="142" fill="'+C.gold+'">Δe = Σ α·V → creature 임베딩 갱신</text>';
+    return s+'</svg>';
+  }
+  function mlbpSvg(phase){
+    const xs=[70,190,310,410], names=['은닉1','은닉2','은닉3','출력'];
+    const active=3-phase;            // phase0 → 출력(3), phase3 → 은닉1(0)
+    let s=svg(155)+'<defs><marker id="bk" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M6,0 L0,3 L6,6 Z" fill="'+C.hot+'"/></marker></defs>';
+    for(let L=0;L<3;L++)for(let i=0;i<3;i++)for(let j=0;j<3;j++)
+      s+='<line x1="'+(xs[L]+14)+'" y1="'+(42+i*38)+'" x2="'+(xs[L+1]-14)+'" y2="'+(42+j*38)+'" stroke="'+C.line+'" stroke-width="0.5" opacity="0.4"/>';
+    if(active<3){
+      const from=xs[active+1]-14, to=xs[active]+14, y=80;
+      s+='<line x1="'+from+'" y1="'+y+'" x2="'+to+'" y2="'+y+'" stroke="'+C.hot+'" stroke-width="3" marker-end="url(#bk)"/>';
+      s+='<text x="'+((from+to)/2)+'" y="'+(y-8)+'" text-anchor="middle" fill="'+C.hot+'" font-size="10">Σ w·δ</text>';
+    }
+    for(let L=0;L<4;L++){
+      const isA=L===active, isOut=L===3;
+      for(let i=0;i<3;i++){const y=42+i*38;
+        s+='<circle cx="'+xs[L]+'" cy="'+y+'" r="13" fill="'+(isA?'rgba(255,107,107,0.22)':(isOut?'rgba(138,107,255,0.12)':'transparent'))+'" stroke="'+(isA?C.hot:C.ink)+'" stroke-width="'+(isA?2.2:1.4)+'"/>';}
+      s+='<text x="'+xs[L]+'" y="146" text-anchor="middle" fill="'+(isA?C.hot:C.mut)+'">'+names[L]+'</text>';
+    }
+    s+='<text x="20" y="20" fill="'+C.mut+'" font-size="10">에러 신호 역전파 (출력 → 입력 방향)</text>';
+    return s+'</svg>';
+  }
+  function mbox(x,y,w,h,title,shape,col){
+    let s='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="7" fill="rgba(91,157,255,0.05)" stroke="'+(col||C.ac)+'" stroke-width="1.8"/>';
+    s+='<text x="'+(x+w/2)+'" y="'+(y+h/2-2)+'" text-anchor="middle" fill="'+C.ink+'" font-size="11.5">'+title+'</text>';
+    if(shape)s+='<text x="'+(x+w/2)+'" y="'+(y+h/2+14)+'" text-anchor="middle" fill="'+(col||C.mut)+'" font-size="10">'+shape+'</text>';
+    return s;
+  }
+  function fcW1Svg(p){
+    let s=svg(155)+DEFS;
+    const st=[['pileup','(100,221,6)',C.ac2],['CNN conv','특징 추출',C.ac],['FC','logits [3]',C.ac],['softmax','확률 [3]',C.ok]];
+    for(let i=0;i<4;i++){const on=i<=p,x=14+i*108;
+      s+=mbox(x,36,96,44,st[i][0],st[i][1],on?st[i][2]:C.line);
+      if(i<3)s+='<line x1="'+(x+96)+'" y1="58" x2="'+(x+108)+'" y2="58" stroke="'+(i<p?C.mut:C.line)+'" stroke-width="2" marker-end="url(#ah)"/>';}
+    if(p>=3){const v=[0.01,0.95,0.04],lb=['Hom-ref','Het','Hom-alt'];
+      for(let i=0;i<3;i++){const x=70+i*120,win=p>=4&&i===1;
+        s+='<rect x="'+x+'" y="100" width="100" height="32" rx="6" fill="'+(win?'rgba(52,211,153,0.18)':'transparent')+'" stroke="'+(win?C.ok:C.line)+'" stroke-width="'+(win?2.2:1.4)+'"/>';
+        s+='<text x="'+(x+50)+'" y="120" text-anchor="middle" fill="'+C.ink+'">'+v[i].toFixed(2)+'</text>';
+        s+='<text x="'+(x+50)+'" y="148" text-anchor="middle" fill="'+(win?C.ok:C.mut)+'" font-size="10">'+lb[i]+'</text>';}
+      if(p>=4)s+='<text x="430" y="120" text-anchor="end" fill="'+C.ok+'" font-size="11">argmax → Het</text>';}
+    return s+'</svg>';
+  }
+  function embSumSvg(p){
+    let s=svg(160)+DEFS;
+    const rows=[['Token emb','토큰 의미',C.ac],['Segment emb','소속 조각(팀)',C.ac2],['Position emb','서열 내 위치',C.gold]];
+    for(let i=0;i<3;i++){const on=i<=p,y=22+i*36;
+      s+='<rect x="20" y="'+y+'" width="160" height="28" rx="5" fill="'+(on?'rgba(91,157,255,0.08)':'transparent')+'" stroke="'+(on?rows[i][2]:C.line)+'"/>';
+      s+='<text x="100" y="'+(y+13)+'" text-anchor="middle" fill="'+(on?C.ink:C.mut)+'" font-size="11">'+rows[i][0]+' [L×768]</text>';
+      s+='<text x="100" y="'+(y+24)+'" text-anchor="middle" fill="'+C.mut+'" font-size="9">'+rows[i][1]+'</text>';
+      if(i<2)s+='<text x="100" y="'+(y+35)+'" text-anchor="middle" fill="'+C.mut+'" font-size="13">+</text>';}
+    if(p>=3){s+='<line x1="190" y1="74" x2="256" y2="74" stroke="'+C.ok+'" stroke-width="2" marker-end="url(#ah)"/>';
+      s+='<rect x="258" y="52" width="178" height="44" rx="7" fill="rgba(52,211,153,0.10)" stroke="'+C.ok+'"/>';
+      s+='<text x="347" y="72" text-anchor="middle" fill="'+C.ink+'">입력 행렬</text>';
+      s+='<text x="347" y="88" text-anchor="middle" fill="'+C.ok+'" font-size="11">[L × 768]</text>';
+      s+='<text x="347" y="122" text-anchor="middle" fill="'+C.mut+'" font-size="10">동일 768차원 내 합 — 차원 팽창 없음</text>';}
+    return s+'</svg>';
+  }
+  function attnDimSvg(p){
+    let s=svg(150)+DEFS;
+    const node=[['입력','[L×768]',C.ac],['Q·K·V','[L×dₖ]',C.ac2],['QKᵀ/√dₖ','[L×L]',C.gold],['softmax','[L×L]',C.gold],['·V','[L×768]',C.ok]];
+    for(let i=0;i<5;i++){const on=i<=p,x=14+i*88;
+      s+='<rect x="'+x+'" y="42" width="80" height="48" rx="7" fill="'+(on?'rgba(91,157,255,0.06)':'transparent')+'" stroke="'+(on?node[i][2]:C.line)+'" stroke-width="'+(on?1.8:1)+'"/>';
+      s+='<text x="'+(x+40)+'" y="62" text-anchor="middle" fill="'+(on?C.ink:C.mut)+'" font-size="11">'+node[i][0]+'</text>';
+      s+='<text x="'+(x+40)+'" y="78" text-anchor="middle" fill="'+(on?node[i][2]:C.line)+'" font-size="10">'+node[i][1]+'</text>';
+      if(i<4)s+='<line x1="'+(x+80)+'" y1="66" x2="'+(x+88)+'" y2="66" stroke="'+(i<p?C.mut:C.line)+'" stroke-width="2" marker-end="url(#ah)"/>';}
+    const cap=['입력 행렬에서 출발','세 투영으로 Q·K·V 생성','모든 토큰 쌍 연관성 점수 격자','행별 softmax로 가중치화','Value 가중합 → 차원 보존 갱신'];
+    s+='<text x="230" y="120" text-anchor="middle" fill="'+C.mut+'" font-size="11">'+cap[Math.min(p,4)]+'</text>';
+    return s+'</svg>';
+  }
+  function ftHeadSvg(p){
+    let s=svg(160)+DEFS;
+    s+=mbox(18,52,118,52,'Transformer','12층 body',C.ac);
+    s+='<line x1="136" y1="78" x2="160" y2="78" stroke="'+C.mut+'" stroke-width="2" marker-end="url(#ah)"/>';
+    s+=mbox(162,60,80,36,'[CLS]','1×768',C.ac2);
+    if(p===0){s+='<line x1="242" y1="78" x2="274" y2="78" stroke="'+C.mut+'" stroke-width="2" marker-end="url(#ah)"/>';
+      s+=mbox(276,58,160,40,'MLM head','768×4101',C.gold);
+      s+='<text x="356" y="120" text-anchor="middle" fill="'+C.mut+'" font-size="10">빈칸 채우기용 (사전학습)</text>';}
+    else if(p===1){s+=mbox(276,58,160,40,'MLM head','768×4101',C.hot);
+      s+='<line x1="280" y1="60" x2="432" y2="96" stroke="'+C.hot+'" stroke-width="2"/><line x1="432" y1="60" x2="280" y2="96" stroke="'+C.hot+'" stroke-width="2"/>';
+      s+='<text x="356" y="120" text-anchor="middle" fill="'+C.hot+'" font-size="10">잘라냄</text>';}
+    else{s+='<line x1="242" y1="78" x2="274" y2="78" stroke="'+C.mut+'" stroke-width="2" marker-end="url(#ah)"/>';
+      s+=mbox(276,58,160,40,'splice head','768×2',C.ok);
+      if(p>=3){s+='<text x="356" y="118" text-anchor="middle" fill="'+C.ok+'" font-size="11">[1×768]·[768×2] → [1×2]</text>';
+        s+='<text x="356" y="135" text-anchor="middle" fill="'+C.ink+'" font-size="11">[0.01, 0.99] → Splice site ✓</text>';}
+      else s+='<text x="356" y="120" text-anchor="middle" fill="'+C.mut+'" font-size="10">이진 분류용 (새 머리)</text>';}
+    return s+'</svg>';
+  }
+  function fcW2Svg(p){
+    let s=svg(160)+DEFS;
+    s+='<text x="230" y="22" text-anchor="middle" fill="'+(p===0?C.ink:C.mut)+'" font-size="'+(p===0?16:12)+'" letter-spacing="3">A C G T A C G T</text>';
+    const node=[['6-mer 토큰','5개',C.ac],['임베딩 합','[5×768]',C.ac2],['self-attn','[5×768]',C.ac],['[CLS]·head','[768×2]',C.gold],['출력','[1×2]',C.ok]];
+    for(let i=0;i<5;i++){const on=(p-1)>=i,x=14+i*88;
+      s+='<rect x="'+x+'" y="46" width="80" height="46" rx="7" fill="'+(on?'rgba(91,157,255,0.06)':'transparent')+'" stroke="'+(on?node[i][2]:C.line)+'"/>';
+      s+='<text x="'+(x+40)+'" y="66" text-anchor="middle" fill="'+(on?C.ink:C.mut)+'" font-size="10.5">'+node[i][0]+'</text>';
+      s+='<text x="'+(x+40)+'" y="82" text-anchor="middle" fill="'+(on?node[i][2]:C.line)+'" font-size="10">'+node[i][1]+'</text>';
+      if(i<4)s+='<line x1="'+(x+80)+'" y1="69" x2="'+(x+88)+'" y2="69" stroke="'+((p-1)>i?C.mut:C.line)+'" stroke-width="2" marker-end="url(#ah)"/>';}
+    if(p>=5)s+='<text x="230" y="128" text-anchor="middle" fill="'+C.ok+'" font-size="12">[0.01, 0.99] → Splice site가 맞다 ✓</text>';
+    return s+'</svg>';
+  }
+  function gnnTaskSvg(p){
+    let s=svg(155)+DEFS;
+    const pos=[[90,50],[200,38],[160,116],[280,95],[300,40]];
+    const ed=[[0,1],[0,2],[1,3],[2,3],[1,4]];
+    ed.forEach(e=>{s+='<line x1="'+pos[e[0]][0]+'" y1="'+pos[e[0]][1]+'" x2="'+pos[e[1]][0]+'" y2="'+pos[e[1]][1]+'" stroke="'+C.line+'" stroke-width="2"/>';});
+    if(p===1)s+='<line x1="'+pos[0][0]+'" y1="'+pos[0][1]+'" x2="'+pos[4][0]+'" y2="'+pos[4][1]+'" stroke="'+C.gold+'" stroke-width="2.4" stroke-dasharray="5 4"/>';
+    if(p===2){s+='<rect x="62" y="20" width="262" height="116" rx="14" fill="rgba(192,132,252,0.06)" stroke="'+C.w3+'" stroke-dasharray="4 3"/>';
+      s+='<line x1="330" y1="78" x2="368" y2="78" stroke="'+C.w3+'" stroke-width="2" marker-end="url(#ah)"/>'+box(372,60,78,36,'h_G',C.w3);}
+    const lab=['C','O','N','C','S'];
+    pos.forEach((pp,i)=>{const hot=(p===0&&i===0)||(p===1&&(i===0||i===4));
+      s+='<circle cx="'+pp[0]+'" cy="'+pp[1]+'" r="15" fill="'+(hot?'rgba(255,212,121,0.25)':'#141a23')+'" stroke="'+(hot?C.gold:C.w3)+'" stroke-width="'+(hot?2.6:2)+'"/><text x="'+pp[0]+'" y="'+(pp[1]+5)+'" text-anchor="middle" fill="'+C.ink+'">'+lab[i]+'</text>';});
+    const cap=['노드 분류 — 개별 원자의 숨은 기능 맞히기','링크 예측 — 두 원자 사이 새 결합 확률','그래프 분류 — 분자 전체의 독성 여부'];
+    s+='<text x="20" y="148" fill="'+C.mut+'" font-size="11">'+cap[p]+'</text>';
+    return s+'</svg>';
+  }
+  function gatAlphaSvg(p){
+    let s=svg(150)+DEFS;
+    const c=[90,72],nb=[[28,30],[28,118],[150,38]],lab=['C','O','C'];
+    const w=p===0?[2,2,2]:[1.5,6,2];
+    for(let i=0;i<3;i++){const col=(p===1&&i===1)?C.gold:C.line;
+      s+='<line x1="'+c[0]+'" y1="'+c[1]+'" x2="'+nb[i][0]+'" y2="'+nb[i][1]+'" stroke="'+col+'" stroke-width="'+w[i]+'"/>';}
+    s+='<circle cx="'+c[0]+'" cy="'+c[1]+'" r="16" fill="#141a23" stroke="'+C.w3+'" stroke-width="2"/><text x="'+c[0]+'" y="'+(c[1]+5)+'" text-anchor="middle" fill="'+C.ink+'">v</text>';
+    nb.forEach((n,i)=>{const hot=(p===1&&i===1);s+='<circle cx="'+n[0]+'" cy="'+n[1]+'" r="13" fill="'+(hot?'rgba(255,212,121,0.25)':'#141a23')+'" stroke="'+(hot?C.gold:C.w3)+'"/><text x="'+n[0]+'" y="'+(n[1]+4)+'" text-anchor="middle" fill="'+C.ink+'" font-size="11">'+lab[i]+'</text>';});
+    const a=p===0?[0.33,0.33,0.33]:[0.18,0.64,0.18];
+    s+='<text x="245" y="28" fill="'+C.mut+'" font-size="11">'+(p===0?'GCN 고정 1/N':'GAT 학습된 α')+'</text>';
+    for(let i=0;i<3;i++){const y=50+i*26,hot=(p===1&&i===1);
+      s+='<text x="245" y="'+y+'" fill="'+C.ink+'" font-size="11">α(v,'+lab[i]+')</text>';
+      s+='<rect x="320" y="'+(y-12)+'" width="'+(a[i]*130).toFixed(0)+'" height="15" rx="3" fill="'+(hot?'rgba(255,212,121,0.4)':'rgba(192,132,252,0.3)')+'" stroke="'+(hot?C.gold:C.w3)+'"/>';
+      s+='<text x="'+(326+a[i]*130).toFixed(0)+'" y="'+y+'" fill="'+C.ink+'" font-size="10">'+a[i].toFixed(2)+'</text>';}
+    s+='<text x="18" y="143" fill="'+(p===1?C.gold:C.mut)+'" font-size="11">'+(p===1?'산소(O) 결합에 큰 α → "이 부위가 독성" 추적(XAI)':'모든 이웃을 똑같이 — 핵심 기능기를 못 짚는다')+'</text>';
+    return s+'</svg>';
+  }
+  function fcW3Svg(p){
+    let s=svg(165)+DEFS;
+    const mol=[[150,22],[210,22],[270,22]],ml=['H','C','O'];
+    for(let i=0;i<2;i++)s+='<line x1="'+mol[i][0]+'" y1="22" x2="'+mol[i+1][0]+'" y2="22" stroke="'+C.line+'" stroke-width="2"/>';
+    mol.forEach((m,i)=>{s+='<circle cx="'+m[0]+'" cy="22" r="12" fill="#141a23" stroke="'+(p===0?C.w3:C.mut)+'"/><text x="'+m[0]+'" y="26" text-anchor="middle" fill="'+C.ink+'" font-size="10">'+ml[i]+'</text>';});
+    const node=[['입력','X[3×2]·A',C.w3],['정규화','Â=D⁻½ÃD⁻½',C.ac2],['행렬곱','H[3×64]',C.ac],['Readout','1×64',C.gold],['분류','[1×2]',C.ok]];
+    for(let i=0;i<5;i++){const on=i<=p,x=14+i*88;
+      s+='<rect x="'+x+'" y="54" width="80" height="48" rx="7" fill="'+(on?'rgba(192,132,252,0.06)':'transparent')+'" stroke="'+(on?node[i][2]:C.line)+'"/>';
+      s+='<text x="'+(x+40)+'" y="74" text-anchor="middle" fill="'+(on?C.ink:C.mut)+'" font-size="10.5">'+node[i][0]+'</text>';
+      s+='<text x="'+(x+40)+'" y="90" text-anchor="middle" fill="'+(on?node[i][2]:C.line)+'" font-size="9">'+node[i][1]+'</text>';
+      if(i<4)s+='<line x1="'+(x+80)+'" y1="78" x2="'+(x+88)+'" y2="78" stroke="'+(i<p?C.mut:C.line)+'" stroke-width="2" marker-end="url(#ah)"/>';}
+    if(p>=5)s+='<text x="230" y="135" text-anchor="middle" fill="'+C.ok+'" font-size="12">[0.99, 0.01] → 독성 없을 확률 99% · 안전 ✓</text>';
     return s+'</svg>';
   }
 
